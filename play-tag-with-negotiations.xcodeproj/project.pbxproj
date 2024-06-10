@@ -54,6 +54,7 @@
 				DEDB913B2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift */,
 				DEDB913D2C17343500A8DA37 /* ContentView.swift */,
 				DEDB913F2C17343600A8DA37 /* Assets.xcassets */,
+				DEDB914C2C17393300A8DA37 /* Variable Name */,
 				DEDB91412C17343600A8DA37 /* Preview Content */,
 			);
 			path = "play-tag-with-negotiations";
@@ -65,6 +66,13 @@
 				DEDB91422C17343600A8DA37 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DEDB914C2C17393300A8DA37 /* Variable Name */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Variable Name";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
