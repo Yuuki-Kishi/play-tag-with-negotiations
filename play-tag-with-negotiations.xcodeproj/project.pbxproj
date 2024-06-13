@@ -11,6 +11,12 @@
 		DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB913D2C17343500A8DA37 /* ContentView.swift */; };
 		DEDB91402C17343600A8DA37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEDB913F2C17343600A8DA37 /* Assets.xcassets */; };
 		DEDB91432C17343600A8DA37 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEDB91422C17343600A8DA37 /* Preview Assets.xcassets */; };
+		DEDB914E2C173A2400A8DA37 /* PlayTagRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB914D2C173A2400A8DA37 /* PlayTagRoom.swift */; };
+		DEDB91502C173F7C00A8DA37 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB914F2C173F7C00A8DA37 /* Player.swift */; };
+		DEDB91532C17417700A8DA37 /* PublicRoomsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91522C17417700A8DA37 /* PublicRoomsView.swift */; };
+		DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91542C18890400A8DA37 /* RoomSettingView.swift */; };
+		DEDB91582C189BCB00A8DA37 /* RoomSettingCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91572C189BCB00A8DA37 /* RoomSettingCellView.swift */; };
+		DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91592C1B378900A8DA37 /* MyPageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +25,12 @@
 		DEDB913D2C17343500A8DA37 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DEDB913F2C17343600A8DA37 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DEDB91422C17343600A8DA37 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DEDB914D2C173A2400A8DA37 /* PlayTagRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayTagRoom.swift; sourceTree = "<group>"; };
+		DEDB914F2C173F7C00A8DA37 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		DEDB91522C17417700A8DA37 /* PublicRoomsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRoomsView.swift; sourceTree = "<group>"; };
+		DEDB91542C18890400A8DA37 /* RoomSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSettingView.swift; sourceTree = "<group>"; };
+		DEDB91572C189BCB00A8DA37 /* RoomSettingCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSettingCellView.swift; sourceTree = "<group>"; };
+		DEDB91592C1B378900A8DA37 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,8 +65,11 @@
 			children = (
 				DEDB913B2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift */,
 				DEDB913D2C17343500A8DA37 /* ContentView.swift */,
-				DEDB913F2C17343600A8DA37 /* Assets.xcassets */,
 				DEDB914C2C17393300A8DA37 /* Variable Name */,
+				DEDB91522C17417700A8DA37 /* PublicRoomsView.swift */,
+				DEDB91562C189BAF00A8DA37 /* RoomSetting */,
+				DEDB91592C1B378900A8DA37 /* MyPageView.swift */,
+				DEDB913F2C17343600A8DA37 /* Assets.xcassets */,
 				DEDB91412C17343600A8DA37 /* Preview Content */,
 			);
 			path = "play-tag-with-negotiations";
@@ -71,8 +86,19 @@
 		DEDB914C2C17393300A8DA37 /* Variable Name */ = {
 			isa = PBXGroup;
 			children = (
+				DEDB914D2C173A2400A8DA37 /* PlayTagRoom.swift */,
+				DEDB914F2C173F7C00A8DA37 /* Player.swift */,
 			);
 			path = "Variable Name";
+			sourceTree = "<group>";
+		};
+		DEDB91562C189BAF00A8DA37 /* RoomSetting */ = {
+			isa = PBXGroup;
+			children = (
+				DEDB91542C18890400A8DA37 /* RoomSettingView.swift */,
+				DEDB91572C189BCB00A8DA37 /* RoomSettingCellView.swift */,
+			);
+			path = RoomSetting;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,8 +171,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEDB91582C189BCB00A8DA37 /* RoomSettingCellView.swift in Sources */,
+				DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */,
+				DEDB91502C173F7C00A8DA37 /* Player.swift in Sources */,
+				DEDB914E2C173A2400A8DA37 /* PlayTagRoom.swift in Sources */,
 				DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */,
 				DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */,
+				DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */,
+				DEDB91532C17417700A8DA37 /* PublicRoomsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
