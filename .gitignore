@@ -1,7 +1,7 @@
-GoogleService-Info.plist
-
 .DS_Store
 # Xcode
+
+GoogleService-Info.plist
 
 ## User settings
 xcuserdata/

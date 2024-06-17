@@ -20,7 +20,7 @@ struct ContentView: View {
                     .foregroundStyle(Color.accentColor)
                     .frame(width: UIScreen.main.bounds.height / 4, height: UIScreen.main.bounds.height / 4)
                 Spacer()
-                GoogleSignInButton(action: GoogleAuth.handleSignInButton)
+                GoogleSignInButton(viewModel: GoogleSignInButtonViewModel, action: GoogleAuth.handleSignInButton)
                     .frame(width: UIScreen.main.bounds.width / 1.5)
                 Spacer()
             }
