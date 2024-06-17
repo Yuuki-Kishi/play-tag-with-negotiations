@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PublicRoomsView: View {
+    @ObservedObject var userDataStore: UserDataStore
     @State private var testArray = [PlayTagRoom]()
     @State private var isShowAlert = false
     @State private var roomId = String()
@@ -15,20 +16,8 @@ struct PublicRoomsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                List($testArray) { $playTagRoom in
-                    Section {
-                        NavigationLink(value: playTagRoom, label: {
-                            VStack {
-                                Text(playTagRoom.playTagName)
-                                    .font(.system(size: 30.0))
-                                    .lineLimit(1)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                Text(playTagRoomPhase(playTagRoom: playTagRoom))
-                                    .lineLimit(1)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                        })
-                    }
+                List($testArray) { playTagRoom in
+                    PublicRoomsCellView(playTagRoom: playTagRoom)
                 }
                 .navigationDestination(for: PlayTagRoom.self) { playTagRoom in
                     
@@ -63,6 +52,7 @@ struct PublicRoomsView: View {
                 })
             }
             .onAppear() {
+                testArray = []
                 testArray.append(PlayTagRoom())
                 testArray.append(PlayTagRoom())
             }
@@ -76,7 +66,7 @@ struct PublicRoomsView: View {
             NavigationLink(destination: RoomSettingView(playTagName: "鬼ごっこ"), label: {
                 Label("ルーム作成", systemImage: "plus")
             })
-            NavigationLink(destination: MyPageView(icon: Image(systemName: "person"), userName: "わて", onePhrase: "しかのこのこのここしたんたん"), label: {
+            NavigationLink(destination: MyPageView(userDataStore: userDataStore), label: {
                 Label("マイページ", systemImage: "person.circle")
             })
             Menu {
@@ -99,13 +89,8 @@ struct PublicRoomsView: View {
             Image(systemName: "ellipsis.circle")
         }
     }
-    func playTagRoomPhase(playTagRoom: PlayTagRoom) -> String {
-        let phaseMax = String(playTagRoom.phaseMax) + "フェーズ"
-        let phaseNow = String(playTagRoom.phaseNow) + "フェーズ"
-        return phaseNow + " / " + phaseMax
-    }
 }
 
 #Preview {
-    PublicRoomsView()
+    PublicRoomsView(userDataStore: UserDataStore.shared)
 }

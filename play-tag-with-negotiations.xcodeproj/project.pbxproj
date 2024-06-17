@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB384D2C1DC27D007639F6 /* WaitingRoomView.swift */; };
+		DEAB385B2C1E9165007639F6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEAB385A2C1E9165007639F6 /* GoogleService-Info.plist */; };
+		DEAB38622C1EA178007639F6 /* GoogleAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB38612C1EA178007639F6 /* GoogleAuth.swift */; };
+		DEAB386C2C1EAAA6007639F6 /* UserDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB386B2C1EAAA6007639F6 /* UserDataStore.swift */; };
+		DEAB386F2C1EB32E007639F6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB386E2C1EB32E007639F6 /* User.swift */; };
+		DEAB38752C205FA8007639F6 /* PublicRoomsCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB38742C205FA8007639F6 /* PublicRoomsCellView.swift */; };
+		DEAB38782C2060D3007639F6 /* MyPageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB38772C2060D3007639F6 /* MyPageListView.swift */; };
+		DEAB387B2C2061C2007639F6 /* WaitingRoomCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB387A2C2061C2007639F6 /* WaitingRoomCellView.swift */; };
 		DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB913B2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift */; };
 		DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB913D2C17343500A8DA37 /* ContentView.swift */; };
 		DEDB91402C17343600A8DA37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEDB913F2C17343600A8DA37 /* Assets.xcassets */; };
@@ -17,9 +25,24 @@
 		DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91542C18890400A8DA37 /* RoomSettingView.swift */; };
 		DEDB91582C189BCB00A8DA37 /* RoomSettingCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91572C189BCB00A8DA37 /* RoomSettingCellView.swift */; };
 		DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91592C1B378900A8DA37 /* MyPageView.swift */; };
+		DEE48EE82C20694000CEAC4A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DEE48EE72C20694000CEAC4A /* FirebaseAuth */; };
+		DEE48EEA2C20694000CEAC4A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DEE48EE92C20694000CEAC4A /* FirebaseFirestore */; };
+		DEE48EEC2C20694000CEAC4A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DEE48EEB2C20694000CEAC4A /* FirebaseFirestoreSwift */; };
+		DEE48EEE2C20694000CEAC4A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DEE48EED2C20694000CEAC4A /* FirebaseStorage */; };
+		DEE48EF12C20694B00CEAC4A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = DEE48EF02C20694B00CEAC4A /* GoogleSignIn */; };
+		DEE48EF32C20694B00CEAC4A /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DEE48EF22C20694B00CEAC4A /* GoogleSignInSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DEAB384D2C1DC27D007639F6 /* WaitingRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomView.swift; sourceTree = "<group>"; };
+		DEAB385A2C1E9165007639F6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DEAB38612C1EA178007639F6 /* GoogleAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuth.swift; sourceTree = "<group>"; };
+		DEAB386B2C1EAAA6007639F6 /* UserDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataStore.swift; sourceTree = "<group>"; };
+		DEAB386D2C1EABED007639F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DEAB386E2C1EB32E007639F6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		DEAB38742C205FA8007639F6 /* PublicRoomsCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRoomsCellView.swift; sourceTree = "<group>"; };
+		DEAB38772C2060D3007639F6 /* MyPageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageListView.swift; sourceTree = "<group>"; };
+		DEAB387A2C2061C2007639F6 /* WaitingRoomCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomCellView.swift; sourceTree = "<group>"; };
 		DEDB91382C17343500A8DA37 /* play-tag-with-negotiations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "play-tag-with-negotiations.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEDB913B2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = play_tag_with_negotiationsApp.swift; sourceTree = "<group>"; };
 		DEDB913D2C17343500A8DA37 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -38,12 +61,91 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEE48EF12C20694B00CEAC4A /* GoogleSignIn in Frameworks */,
+				DEE48EE82C20694000CEAC4A /* FirebaseAuth in Frameworks */,
+				DEE48EEE2C20694000CEAC4A /* FirebaseStorage in Frameworks */,
+				DEE48EF32C20694B00CEAC4A /* GoogleSignInSwift in Frameworks */,
+				DEE48EEA2C20694000CEAC4A /* FirebaseFirestore in Frameworks */,
+				DEE48EEC2C20694000CEAC4A /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DEAB38632C1EA17C007639F6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DEAB38712C1EBC45007639F6 /* DataStore */,
+				DEDB914C2C17393300A8DA37 /* Entity */,
+				DEAB38722C1F0D9A007639F6 /* Repository */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DEAB38642C1EA183007639F6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DEDB913D2C17343500A8DA37 /* ContentView.swift */,
+				DEAB38732C205F2B007639F6 /* PublicRooms */,
+				DEDB91562C189BAF00A8DA37 /* RoomSetting */,
+				DEAB38762C206083007639F6 /* MyPage */,
+				DEAB38792C206170007639F6 /* WaitingRoom */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DEAB38692C1EAA7F007639F6 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				DEAB38612C1EA178007639F6 /* GoogleAuth.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		DEAB38712C1EBC45007639F6 /* DataStore */ = {
+			isa = PBXGroup;
+			children = (
+				DEAB386B2C1EAAA6007639F6 /* UserDataStore.swift */,
+			);
+			path = DataStore;
+			sourceTree = "<group>";
+		};
+		DEAB38722C1F0D9A007639F6 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				DEAB38692C1EAA7F007639F6 /* Auth */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		DEAB38732C205F2B007639F6 /* PublicRooms */ = {
+			isa = PBXGroup;
+			children = (
+				DEDB91522C17417700A8DA37 /* PublicRoomsView.swift */,
+				DEAB38742C205FA8007639F6 /* PublicRoomsCellView.swift */,
+			);
+			path = PublicRooms;
+			sourceTree = "<group>";
+		};
+		DEAB38762C206083007639F6 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				DEDB91592C1B378900A8DA37 /* MyPageView.swift */,
+				DEAB38772C2060D3007639F6 /* MyPageListView.swift */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
+		DEAB38792C206170007639F6 /* WaitingRoom */ = {
+			isa = PBXGroup;
+			children = (
+				DEAB384D2C1DC27D007639F6 /* WaitingRoomView.swift */,
+				DEAB387A2C2061C2007639F6 /* WaitingRoomCellView.swift */,
+			);
+			path = WaitingRoom;
+			sourceTree = "<group>";
+		};
 		DEDB912F2C17343500A8DA37 = {
 			isa = PBXGroup;
 			children = (
@@ -63,13 +165,12 @@
 		DEDB913A2C17343500A8DA37 /* play-tag-with-negotiations */ = {
 			isa = PBXGroup;
 			children = (
+				DEAB386D2C1EABED007639F6 /* Info.plist */,
 				DEDB913B2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift */,
-				DEDB913D2C17343500A8DA37 /* ContentView.swift */,
-				DEDB914C2C17393300A8DA37 /* Variable Name */,
-				DEDB91522C17417700A8DA37 /* PublicRoomsView.swift */,
-				DEDB91562C189BAF00A8DA37 /* RoomSetting */,
-				DEDB91592C1B378900A8DA37 /* MyPageView.swift */,
+				DEAB38632C1EA17C007639F6 /* Model */,
+				DEAB38642C1EA183007639F6 /* View */,
 				DEDB913F2C17343600A8DA37 /* Assets.xcassets */,
+				DEAB385A2C1E9165007639F6 /* GoogleService-Info.plist */,
 				DEDB91412C17343600A8DA37 /* Preview Content */,
 			);
 			path = "play-tag-with-negotiations";
@@ -83,13 +184,14 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		DEDB914C2C17393300A8DA37 /* Variable Name */ = {
+		DEDB914C2C17393300A8DA37 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				DEDB914D2C173A2400A8DA37 /* PlayTagRoom.swift */,
+				DEAB386E2C1EB32E007639F6 /* User.swift */,
 				DEDB914F2C173F7C00A8DA37 /* Player.swift */,
+				DEDB914D2C173A2400A8DA37 /* PlayTagRoom.swift */,
 			);
-			path = "Variable Name";
+			path = Entity;
 			sourceTree = "<group>";
 		};
 		DEDB91562C189BAF00A8DA37 /* RoomSetting */ = {
@@ -117,6 +219,14 @@
 			dependencies = (
 			);
 			name = "play-tag-with-negotiations";
+			packageProductDependencies = (
+				DEE48EE72C20694000CEAC4A /* FirebaseAuth */,
+				DEE48EE92C20694000CEAC4A /* FirebaseFirestore */,
+				DEE48EEB2C20694000CEAC4A /* FirebaseFirestoreSwift */,
+				DEE48EED2C20694000CEAC4A /* FirebaseStorage */,
+				DEE48EF02C20694B00CEAC4A /* GoogleSignIn */,
+				DEE48EF22C20694B00CEAC4A /* GoogleSignInSwift */,
+			);
 			productName = "play-tag-with-negotiations";
 			productReference = DEDB91382C17343500A8DA37 /* play-tag-with-negotiations.app */;
 			productType = "com.apple.product-type.application";
@@ -138,13 +248,18 @@
 			};
 			buildConfigurationList = DEDB91332C17343500A8DA37 /* Build configuration list for PBXProject "play-tag-with-negotiations" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = DEDB912F2C17343500A8DA37;
+			packageReferences = (
+				DEE48EE62C20694000CEAC4A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				DEE48EEF2C20694B00CEAC4A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
 			productRefGroup = DEDB91392C17343500A8DA37 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -161,6 +276,7 @@
 			files = (
 				DEDB91432C17343600A8DA37 /* Preview Assets.xcassets in Resources */,
 				DEDB91402C17343600A8DA37 /* Assets.xcassets in Resources */,
+				DEAB385B2C1E9165007639F6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,12 +287,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEAB38752C205FA8007639F6 /* PublicRoomsCellView.swift in Sources */,
+				DEAB38622C1EA178007639F6 /* GoogleAuth.swift in Sources */,
 				DEDB91582C189BCB00A8DA37 /* RoomSettingCellView.swift in Sources */,
 				DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */,
 				DEDB91502C173F7C00A8DA37 /* Player.swift in Sources */,
 				DEDB914E2C173A2400A8DA37 /* PlayTagRoom.swift in Sources */,
+				DEAB386C2C1EAAA6007639F6 /* UserDataStore.swift in Sources */,
+				DEAB38782C2060D3007639F6 /* MyPageListView.swift in Sources */,
 				DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */,
+				DEAB387B2C2061C2007639F6 /* WaitingRoomCellView.swift in Sources */,
 				DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */,
+				DEAB386F2C1EB32E007639F6 /* User.swift in Sources */,
+				DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */,
 				DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */,
 				DEDB91532C17417700A8DA37 /* PublicRoomsView.swift in Sources */,
 			);
@@ -315,6 +438,7 @@
 				DEVELOPMENT_TEAM = 85MXHZWC2N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "play-tag-with-negotiations/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -344,6 +468,7 @@
 				DEVELOPMENT_TEAM = 85MXHZWC2N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "play-tag-with-negotiations/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -384,6 +509,58 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DEE48EE62C20694000CEAC4A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.27.0;
+			};
+		};
+		DEE48EEF2C20694B00CEAC4A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DEE48EE72C20694000CEAC4A /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEE48EE62C20694000CEAC4A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		DEE48EE92C20694000CEAC4A /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEE48EE62C20694000CEAC4A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		DEE48EEB2C20694000CEAC4A /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEE48EE62C20694000CEAC4A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+		DEE48EED2C20694000CEAC4A /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEE48EE62C20694000CEAC4A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		DEE48EF02C20694B00CEAC4A /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEE48EEF2C20694B00CEAC4A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		DEE48EF22C20694B00CEAC4A /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEE48EEF2C20694B00CEAC4A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DEDB91302C17343500A8DA37 /* Project object */;
 }

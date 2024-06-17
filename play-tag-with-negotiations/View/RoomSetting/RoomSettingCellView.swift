@@ -106,16 +106,10 @@ struct RoomSettingCellView: View {
         }
     }
     func checkTextIsNumber(before: String, after: String) -> String {
-        let range = 0...9
-        var numberArray = [String]()
-        if let text = Int(after) {
-            let charArray = Array(arrayLiteral: text)
-            for char in charArray {
-                if range.contains(char) {
-                    numberArray.append(String(char))
-                }
+        if let result = Int(after) {
+            if result > 0 {
+                return Int(after) == nil ? before : after
             }
-            return numberArray.joined()
         }
         return before
     }

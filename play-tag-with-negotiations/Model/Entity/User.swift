@@ -1,0 +1,44 @@
+//
+//  User.swift
+//  play-tag-with-negotiations
+//
+//  Created by 岸　優樹 on 2024/06/16.
+//
+
+import Foundation
+
+class User: Identifiable, Equatable {
+    static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.userId == rhs.userId
+    }
+    
+    var id: UUID
+    var userId: String
+    var userName: String
+    var iconUrl: String
+    var onePhrase: String
+    
+    init(userId: String, userName: String, iconUrl: String, onePhrase: String) {
+        self.id = UUID()
+        self.userId = userId
+        self.userName = userName
+        self.iconUrl = iconUrl
+        self.onePhrase = onePhrase
+    }
+    
+    init(userId: String) {
+        self.id = UUID()
+        self.userId = userId
+        self.userName = ""
+        self.iconUrl = ""
+        self.onePhrase = ""
+    }
+    
+    init() {
+        self.id = UUID()
+        self.userId = "unknownUserId"
+        self.userName = "unknown"
+        self.iconUrl = "unknownURL"
+        self.onePhrase = "Who am I?"
+    }
+}
