@@ -25,7 +25,6 @@
 		DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91542C18890400A8DA37 /* RoomSettingView.swift */; };
 		DEDB91582C189BCB00A8DA37 /* RoomSettingCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91572C189BCB00A8DA37 /* RoomSettingCellView.swift */; };
 		DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91592C1B378900A8DA37 /* MyPageView.swift */; };
-		DEDEF6CF2C208E2C00A01FFF /* GoogleSignInButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6CE2C208E2C00A01FFF /* GoogleSignInButtonViewModel.swift */; };
 		DEE48EE82C20694000CEAC4A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DEE48EE72C20694000CEAC4A /* FirebaseAuth */; };
 		DEE48EEA2C20694000CEAC4A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DEE48EE92C20694000CEAC4A /* FirebaseFirestore */; };
 		DEE48EEC2C20694000CEAC4A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DEE48EEB2C20694000CEAC4A /* FirebaseFirestoreSwift */; };
@@ -55,7 +54,6 @@
 		DEDB91542C18890400A8DA37 /* RoomSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSettingView.swift; sourceTree = "<group>"; };
 		DEDB91572C189BCB00A8DA37 /* RoomSettingCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSettingCellView.swift; sourceTree = "<group>"; };
 		DEDB91592C1B378900A8DA37 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
-		DEDEF6CE2C208E2C00A01FFF /* GoogleSignInButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInButtonViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,7 +91,6 @@
 				DEDB91562C189BAF00A8DA37 /* RoomSetting */,
 				DEAB38762C206083007639F6 /* MyPage */,
 				DEAB38792C206170007639F6 /* WaitingRoom */,
-				DEDEF6CE2C208E2C00A01FFF /* GoogleSignInButtonViewModel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -301,7 +298,6 @@
 				DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */,
 				DEAB387B2C2061C2007639F6 /* WaitingRoomCellView.swift in Sources */,
 				DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */,
-				DEDEF6CF2C208E2C00A01FFF /* GoogleSignInButtonViewModel.swift in Sources */,
 				DEAB386F2C1EB32E007639F6 /* User.swift in Sources */,
 				DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */,
 				DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */,

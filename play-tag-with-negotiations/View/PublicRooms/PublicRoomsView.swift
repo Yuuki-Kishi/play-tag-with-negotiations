@@ -9,14 +9,14 @@ import SwiftUI
 
 struct PublicRoomsView: View {
     @ObservedObject var userDataStore: UserDataStore
-    @State private var testArray = [PlayTagRoom]()
+    @State private var playTagRoomsArray = [PlayTagRoom]()
     @State private var isShowAlert = false
     @State private var roomId = String()
     
     var body: some View {
         NavigationStack {
             ZStack {
-                List($testArray) { playTagRoom in
+                List($playTagRoomsArray) { playTagRoom in
                     PublicRoomsCellView(playTagRoom: playTagRoom)
                 }
                 .navigationDestination(for: PlayTagRoom.self) { playTagRoom in
@@ -52,9 +52,9 @@ struct PublicRoomsView: View {
                 })
             }
             .onAppear() {
-                testArray = []
-                testArray.append(PlayTagRoom())
-                testArray.append(PlayTagRoom())
+                playTagRoomsArray = []
+                playTagRoomsArray.append(PlayTagRoom())
+                playTagRoomsArray.append(PlayTagRoom())
             }
         }
     }
@@ -70,16 +70,16 @@ struct PublicRoomsView: View {
                 Label("マイページ", systemImage: "person.circle")
             })
             Menu {
-                Button(action: {}, label: {
+                Button(action: {playTagRoomsArray.sort {$0.playTagName < $1.playTagName}}, label: {
                     Text("名前昇順")
                 })
-                Button(action: {}, label: {
+                Button(action: {playTagRoomsArray.sort {$0.playTagName > $1.playTagName}}, label: {
                     Text("名前降順")
                 })
-                Button(action: {}, label: {
+                Button(action: {playTagRoomsArray.sort {$0.phaseNow < $1.phaseNow}}, label: {
                     Text("フェーズ昇順")
                 })
-                Button(action: {}, label: {
+                Button(action: {playTagRoomsArray.sort {$0.phaseNow > $1.phaseNow}}, label: {
                     Text("フェーズ降順")
                 })
             } label: {
