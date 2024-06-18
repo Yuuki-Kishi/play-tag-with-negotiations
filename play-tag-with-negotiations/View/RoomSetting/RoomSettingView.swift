@@ -8,36 +8,22 @@
 import SwiftUI
 
 struct RoomSettingView: View {
-    @State private var roomId = UUID()
-    @State private var playTagName: String
-    @State private var phaseNow = 0
-    @State private var phaseMax = 10
-    @State private var chaserNumber = 1
-    @State private var fugitiveNumber = 4
-    @State private var isPublic = false
-    @State private var isCanJoinAfter = false
-    @State private var isNegotiate = true
-    @State private var isCanDoQuest = true
-    @State private var isCanUseItem = true
+    @State var playTagRoom: PlayTagRoom = PlayTagRoom(roomId: UUID(), playTagName: "鬼ごっこ", phaseNow: 0, phaseMax: 10, chaserNumber: 1, fugitiveNumber: 4, isPublic: false, isCanJoinAfter: false, isNegotiate: true, isCanDoQuest: true, isCanUseItem: true)
     @State private var isShowAlert = false
-    
-    init(playTagName: String) {
-        self.playTagName = playTagName
-    }
     
     var body: some View {
         ZStack {
             List {
-                RoomSettingCellView(itemElement: "ルームID", stringDataElement: roomId.uuidString, itemType: .UUID)
-                RoomSettingCellView(itemElement: "鬼ごっこ名", stringDataElement: playTagName, itemType: .String)
-                RoomSettingCellView(itemElement: "最大フェーズ", stringDataElement: String(phaseMax), itemType: .Int)
-                RoomSettingCellView(itemElement: "鬼の人数", stringDataElement: String(chaserNumber), itemType: .Int)
-                RoomSettingCellView(itemElement: "逃走者の人数", stringDataElement: String(fugitiveNumber), itemType: .Int)
-                RoomSettingCellView(itemElement: "公開", boolDataElement: isPublic, itemType: .Bool)
-                RoomSettingCellView(itemElement: "途中参加", boolDataElement: isCanJoinAfter, itemType: .Bool)
-                RoomSettingCellView(itemElement: "交渉", boolDataElement: isNegotiate, itemType: .Bool)
-                RoomSettingCellView(itemElement: "クエスト", boolDataElement: isCanDoQuest, itemType: .Bool)
-                RoomSettingCellView(itemElement: "アイテム", boolDataElement: isCanUseItem, itemType: .Bool)
+                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .roomId)
+                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .playTagName)
+                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .phaseMax)
+                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .chaserNumber)
+                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .fugitiveNumber)
+                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .isPublic)
+                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .isCanJoinAfter)
+                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .isNegotiate)
+                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .isCanDoQuest)
+                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .isCanUseItem)
             }
             Button(action: {
                 isShowAlert = true
@@ -57,6 +43,7 @@ struct RoomSettingView: View {
                     Text("キャンセル")
                 })
                 Button(action: {
+                    UpdateDocument.createPlayTagRoom(playTagRoom: playTagRoom)
                     
                 }, label: {
                     Text("作成")
@@ -70,5 +57,5 @@ struct RoomSettingView: View {
 }
 
 #Preview {
-    RoomSettingView(playTagName: "鬼ごっこ名")
+    RoomSettingView()
 }

@@ -25,6 +25,7 @@
 		DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91542C18890400A8DA37 /* RoomSettingView.swift */; };
 		DEDB91582C189BCB00A8DA37 /* RoomSettingCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91572C189BCB00A8DA37 /* RoomSettingCellView.swift */; };
 		DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91592C1B378900A8DA37 /* MyPageView.swift */; };
+		DEDEF6D42C21BA1800A01FFF /* UpdateDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6D32C21BA1800A01FFF /* UpdateDocument.swift */; };
 		DEE48EE82C20694000CEAC4A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DEE48EE72C20694000CEAC4A /* FirebaseAuth */; };
 		DEE48EEA2C20694000CEAC4A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DEE48EE92C20694000CEAC4A /* FirebaseFirestore */; };
 		DEE48EEC2C20694000CEAC4A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DEE48EEB2C20694000CEAC4A /* FirebaseFirestoreSwift */; };
@@ -54,6 +55,7 @@
 		DEDB91542C18890400A8DA37 /* RoomSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSettingView.swift; sourceTree = "<group>"; };
 		DEDB91572C189BCB00A8DA37 /* RoomSettingCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSettingCellView.swift; sourceTree = "<group>"; };
 		DEDB91592C1B378900A8DA37 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
+		DEDEF6D32C21BA1800A01FFF /* UpdateDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDocument.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				DEAB38692C1EAA7F007639F6 /* Auth */,
+				DEDEF6D02C21B97800A01FFF /* Firestore */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -203,6 +206,14 @@
 			path = RoomSetting;
 			sourceTree = "<group>";
 		};
+		DEDEF6D02C21B97800A01FFF /* Firestore */ = {
+			isa = PBXGroup;
+			children = (
+				DEDEF6D32C21BA1800A01FFF /* UpdateDocument.swift */,
+			);
+			path = Firestore;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -288,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEAB38752C205FA8007639F6 /* PublicRoomsCellView.swift in Sources */,
+				DEDEF6D42C21BA1800A01FFF /* UpdateDocument.swift in Sources */,
 				DEAB38622C1EA178007639F6 /* GoogleAuth.swift in Sources */,
 				DEDB91582C189BCB00A8DA37 /* RoomSettingCellView.swift in Sources */,
 				DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */,

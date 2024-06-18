@@ -63,7 +63,7 @@ struct PublicRoomsView: View {
     }
     func toolBarMenu() -> some View {
         Menu {
-            NavigationLink(destination: RoomSettingView(playTagName: "鬼ごっこ"), label: {
+            NavigationLink(destination: RoomSettingView(), label: {
                 Label("ルーム作成", systemImage: "plus")
             })
             NavigationLink(destination: MyPageView(userDataStore: userDataStore), label: {

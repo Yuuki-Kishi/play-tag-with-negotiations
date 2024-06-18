@@ -36,6 +36,7 @@ class GoogleAuth {
             }
             guard let userId = authResult?.user.uid else { return }
             UserDataStore.shared.signInUser = User(userId: userId)
+            UpdateDocument.createUser(userId: userId)
         }
     }
 }
