@@ -7,6 +7,7 @@
 
 import SwiftUI
 import GoogleSignInSwift
+import AuthenticationServices
 
 struct ContentView: View {
     @State private var isShowModal = false
@@ -19,9 +20,17 @@ struct ContentView: View {
                 RoundedRectangle(cornerRadius: 50)
                     .foregroundStyle(Color.accentColor)
                     .frame(width: UIScreen.main.bounds.height / 4, height: UIScreen.main.bounds.height / 4)
-                Spacer()
-                GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .light, style: .wide, state: .normal), action: GoogleAuth.handleSignInButton)
+                Spacer(minLength: UIScreen.main.bounds.height / 4)
+                GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .light, style: .wide, state: .normal), action: Google.handleSignInButton)
                     .frame(width: UIScreen.main.bounds.width / 1.5)
+                    .padding(.bottom, 30)
+                SignInWithAppleButton(.signIn) { request in
+                    Apple.shared.signInWithApple(request: request)
+                } onCompletion: { authResults in
+                    Apple.shared.login(authRequest: authResults)
+                }
+                .signInWithAppleButtonStyle(.whiteOutline)
+                .frame(width: UIScreen.main.bounds.width / 1.5, height: 40)
                 Spacer()
             }
             .onChange(of: UserDataStore.shared.signInUser) {

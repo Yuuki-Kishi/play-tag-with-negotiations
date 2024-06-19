@@ -10,7 +10,7 @@ import GoogleSignIn
 import FirebaseCore
 import FirebaseAuth
 
-class GoogleAuth {
+class Google {
     static func handleSignInButton() {
         guard let clientID:String = FirebaseApp.app()?.options.clientID else { return }
         let config:GIDConfiguration = GIDConfiguration(clientID: clientID)

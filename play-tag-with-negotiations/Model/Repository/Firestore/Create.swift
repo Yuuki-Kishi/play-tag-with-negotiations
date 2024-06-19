@@ -10,7 +10,6 @@ import FirebaseCore
 import FirebaseFirestore
 
 class Create {
-    
     static func createUser(userId: String) {
         Task {
             if await Read.isWriteUserName() {
