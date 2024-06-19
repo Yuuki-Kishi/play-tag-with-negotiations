@@ -19,20 +19,12 @@ struct MyPageView: View {
             Spacer()
             MyPageListView(userDataStore: userDataStore)
             Spacer()
-            Button(action: {
-                
-            }, label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 15)
-                    Text("保存")
-                        .foregroundStyle(Color.primary)
-                }
-            })
-            .frame(width: UIScreen.main.bounds.width / 2, height: 30)
-            .padding(.vertical, 30)
         }
         .background(Color(UIColor.systemGray6))
         .navigationTitle("マイページ")
+        .onAppear() {
+            Observe.observeUser()
+        }
     }
 }
 

@@ -43,7 +43,7 @@ struct RoomSettingView: View {
                     Text("キャンセル")
                 })
                 Button(action: {
-                    UpdateDocument.createPlayTagRoom(playTagRoom: playTagRoom)
+                    Create.createPlayTagRoom(playTagRoom: playTagRoom)
                     
                 }, label: {
                     Text("作成")

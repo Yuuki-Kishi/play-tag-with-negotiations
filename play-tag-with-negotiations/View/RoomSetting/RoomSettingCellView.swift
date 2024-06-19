@@ -30,8 +30,18 @@ struct RoomSettingCellView: View {
             intCell(item: "逃走者の人数", data: playTagRoom.fugitiveNumber)
         case .isPublic:
             Toggle("公開", isOn: $playTagRoom.isPublic)
+                .onChange(of: playTagRoom.isPublic) {
+                    if playTagRoom.isPublic {
+                        playTagRoom.isCanJoinAfter = true
+                    }
+                }
         case .isCanJoinAfter:
             Toggle("途中参加", isOn: $playTagRoom.isCanJoinAfter)
+                .onChange(of: playTagRoom.isCanJoinAfter) {
+                    if !playTagRoom.isCanJoinAfter {
+                        playTagRoom.isPublic = false
+                    }
+                }
         case .isNegotiate:
             Toggle("交渉", isOn: $playTagRoom.isNegotiate)
         case .isCanDoQuest:
@@ -64,12 +74,12 @@ struct RoomSettingCellView: View {
             UIPasteboard.general.string = data
             isShowCopiedAlert = true
         }
-        .alert("ルームIDをコピーしました", isPresented: $isShowCopiedAlert, actions: {
-            Button(action: {
-                isShowCopiedAlert = false
-            }, label: {
+        .alert("コピーしました", isPresented: $isShowCopiedAlert, actions: {
+            Button(action: {}, label: {
                 Text("OK")
             })
+        }, message: {
+            Text("ルームIDをクリップボードにコピーしました。")
         })
     }
     func stringCell(item: String, data: String) -> some View {

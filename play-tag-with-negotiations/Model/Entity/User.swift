@@ -16,14 +16,14 @@ class User: Identifiable, Equatable {
     var userId: String
     var userName: String
     var iconUrl: String
-    var onePhrase: String
+    var pronoun: String
     
-    init(userId: String, userName: String, iconUrl: String, onePhrase: String) {
+    init(userId: String, userName: String, iconUrl: String, pronoun: String) {
         self.id = UUID()
         self.userId = userId
         self.userName = userName
         self.iconUrl = iconUrl
-        self.onePhrase = onePhrase
+        self.pronoun = pronoun
     }
     
     init(userId: String) {
@@ -31,7 +31,7 @@ class User: Identifiable, Equatable {
         self.userId = userId
         self.userName = ""
         self.iconUrl = ""
-        self.onePhrase = ""
+        self.pronoun = ""
     }
     
     init() {
@@ -39,6 +39,6 @@ class User: Identifiable, Equatable {
         self.userId = "unknownUserId"
         self.userName = "unknown"
         self.iconUrl = "unknownURL"
-        self.onePhrase = "Who am I?"
+        self.pronoun = "Who am I?"
     }
 }

@@ -19,7 +19,7 @@ struct WaitingRoomCellView: View {
                     Text(user.userName)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.system(size: 25))
-                    Text(user.onePhrase)
+                    Text(user.pronoun)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .lineLimit(1)
                 }

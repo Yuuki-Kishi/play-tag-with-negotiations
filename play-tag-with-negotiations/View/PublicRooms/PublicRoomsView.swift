@@ -12,6 +12,7 @@ struct PublicRoomsView: View {
     @State private var playTagRoomsArray = [PlayTagRoom]()
     @State private var isShowAlert = false
     @State private var roomId = String()
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationStack {
@@ -51,6 +52,11 @@ struct PublicRoomsView: View {
                     toolBarMenu()
                 })
             }
+            .onChange(of: userDataStore.signInUser) {
+                if userDataStore.signInUser == nil {
+                    dismiss()
+                }
+            }
             .onAppear() {
                 playTagRoomsArray = []
                 playTagRoomsArray.append(PlayTagRoom())
@@ -85,6 +91,12 @@ struct PublicRoomsView: View {
             } label: {
                 Label("並び替え", systemImage: "arrow.up.arrow.down")
             }
+            Divider()
+            Button(role: .destructive, action: {
+                SignOut.signOut()
+            }, label: {
+                Text("サインアウト")
+            })
         } label: {
             Image(systemName: "ellipsis.circle")
         }
