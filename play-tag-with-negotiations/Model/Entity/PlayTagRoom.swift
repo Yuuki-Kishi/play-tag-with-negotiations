@@ -15,19 +15,23 @@ struct PlayTagRoom: Codable, Hashable, Identifiable {
     var phaseMax: Int
     var chaserNumber: Int
     var fugitiveNumber: Int
+    var horizontalCount: Int
+    var verticalCount: Int
     var isPublic: Bool
     var isCanJoinAfter: Bool
     var isNegotiate: Bool
     var isCanDoQuest: Bool
     var isCanUseItem: Bool
     
-    init(roomId: UUID, playTagName: String, phaseNow: Int, phaseMax: Int, chaserNumber: Int, fugitiveNumber: Int, isPublic: Bool, isCanJoinAfter: Bool, isNegotiate: Bool, isCanDoQuest: Bool, isCanUseItem: Bool) {
+    init(roomId: UUID, playTagName: String, phaseNow: Int, phaseMax: Int, chaserNumber: Int, fugitiveNumber: Int, horizontalCount: Int, verticalCount: Int, isPublic: Bool, isCanJoinAfter: Bool, isNegotiate: Bool, isCanDoQuest: Bool, isCanUseItem: Bool) {
         self.roomId = roomId
         self.playTagName = playTagName
         self.phaseNow = phaseNow
         self.phaseMax = phaseMax
         self.chaserNumber = chaserNumber
         self.fugitiveNumber = fugitiveNumber
+        self.horizontalCount = horizontalCount
+        self.verticalCount = verticalCount
         self.isPublic = isPublic
         self.isCanJoinAfter = isCanJoinAfter
         self.isNegotiate = isNegotiate
@@ -42,6 +46,8 @@ struct PlayTagRoom: Codable, Hashable, Identifiable {
         self.phaseMax = 0
         self.chaserNumber = 0
         self.fugitiveNumber = 0
+        self.horizontalCount = 0
+        self.verticalCount = 0
         self.isPublic = false
         self.isCanJoinAfter = false
         self.isNegotiate = false

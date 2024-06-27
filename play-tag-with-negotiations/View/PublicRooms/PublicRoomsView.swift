@@ -44,6 +44,7 @@ struct PublicRoomsView: View {
                 })
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                 .padding(.trailing, 35)
+                .padding(.bottom, 35)
             }
             .navigationTitle("公開中")
             .navigationBarTitleDisplayMode(.inline)

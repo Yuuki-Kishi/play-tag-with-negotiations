@@ -38,6 +38,9 @@
 		DEDEF6EA2C23303600A01FFF /* SignOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6E92C23303600A01FFF /* SignOut.swift */; };
 		DEDEF6EC2C23322D00A01FFF /* Read.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6EB2C23322D00A01FFF /* Read.swift */; };
 		DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6EE2C2341D600A01FFF /* Apple.swift */; };
+		DEDEF6F32C23C9AF00A01FFF /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F22C23C9AF00A01FFF /* Game.swift */; };
+		DEDEF6F52C23C9BB00A01FFF /* FieldMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F42C23C9BB00A01FFF /* FieldMap.swift */; };
+		DEFA54D02C246E2300CF6BD1 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54CF2C246E2300CF6BD1 /* Position.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +72,9 @@
 		DEDEF6EB2C23322D00A01FFF /* Read.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Read.swift; sourceTree = "<group>"; };
 		DEDEF6ED2C233C5B00A01FFF /* play-tag-with-negotiations.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "play-tag-with-negotiations.entitlements"; sourceTree = "<group>"; };
 		DEDEF6EE2C2341D600A01FFF /* Apple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apple.swift; sourceTree = "<group>"; };
+		DEDEF6F22C23C9AF00A01FFF /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		DEDEF6F42C23C9BB00A01FFF /* FieldMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldMap.swift; sourceTree = "<group>"; };
+		DEFA54CF2C246E2300CF6BD1 /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +112,7 @@
 				DEDB91562C189BAF00A8DA37 /* RoomSetting */,
 				DEAB38762C206083007639F6 /* MyPage */,
 				DEAB38792C206170007639F6 /* WaitingRoom */,
+				DEDEF6F02C23C92E00A01FFF /* Game */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -209,6 +216,7 @@
 			children = (
 				DEAB386E2C1EB32E007639F6 /* User.swift */,
 				DEDB914F2C173F7C00A8DA37 /* Player.swift */,
+				DEFA54CF2C246E2300CF6BD1 /* Position.swift */,
 				DEDB914D2C173A2400A8DA37 /* PlayTagRoom.swift */,
 			);
 			path = Entity;
@@ -232,6 +240,23 @@
 				DEDEF6E32C23016E00A01FFF /* Observe.swift */,
 			);
 			path = Firestore;
+			sourceTree = "<group>";
+		};
+		DEDEF6F02C23C92E00A01FFF /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				DEDEF6F22C23C9AF00A01FFF /* Game.swift */,
+				DEDEF6F12C23C9A000A01FFF /* Element */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		DEDEF6F12C23C9A000A01FFF /* Element */ = {
+			isa = PBXGroup;
+			children = (
+				DEDEF6F42C23C9BB00A01FFF /* FieldMap.swift */,
+			);
+			path = Element;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -329,6 +354,7 @@
 				DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */,
 				DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */,
 				DEDB91502C173F7C00A8DA37 /* Player.swift in Sources */,
+				DEDEF6F52C23C9BB00A01FFF /* FieldMap.swift in Sources */,
 				DEDB914E2C173A2400A8DA37 /* PlayTagRoom.swift in Sources */,
 				DEAB386C2C1EAAA6007639F6 /* UserDataStore.swift in Sources */,
 				DEAB38782C2060D3007639F6 /* MyPageListView.swift in Sources */,
@@ -340,6 +366,8 @@
 				DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */,
 				DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */,
 				DEDB91532C17417700A8DA37 /* PublicRoomsView.swift in Sources */,
+				DEFA54D02C246E2300CF6BD1 /* Position.swift in Sources */,
+				DEDEF6F32C23C9AF00A01FFF /* Game.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,7 +14,8 @@ struct RoomSettingCellView: View {
     @State private var isShowCopiedAlert = false
     @State private var isShowStringAlert = false
     @State private var isShowIntAlert = false
-    enum itemTypeEnum { case roomId, playTagName, phaseMax, chaserNumber, fugitiveNumber, isPublic, isCanJoinAfter, isNegotiate, isCanDoQuest, isCanUseItem }
+    enum itemTypeEnum { case roomId, playTagName, phaseMax, chaserNumber, fugitiveNumber, horizontalCount,
+        verticalCount, isPublic, isCanJoinAfter, isNegotiate, isCanDoQuest, isCanUseItem }
     
     var body: some View {
         switch itemType {
@@ -28,6 +29,10 @@ struct RoomSettingCellView: View {
             intCell(item: "鬼の人数", data: playTagRoom.chaserNumber)
         case .fugitiveNumber:
             intCell(item: "逃走者の人数", data: playTagRoom.fugitiveNumber)
+        case .horizontalCount:
+            intCell(item: "横のマスの数", data: playTagRoom.horizontalCount)
+        case .verticalCount:
+            intCell(item: "縦のますの数", data: playTagRoom.verticalCount)
         case .isPublic:
             Toggle("公開", isOn: $playTagRoom.isPublic)
                 .onChange(of: playTagRoom.isPublic) {

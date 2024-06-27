@@ -29,6 +29,7 @@ struct WaitingRoomView: View {
             })
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
             .padding(.trailing, 35)
+            .padding(.bottom, 35)
         }
         .navigationTitle("待合室")
     }

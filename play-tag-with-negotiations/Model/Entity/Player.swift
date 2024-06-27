@@ -11,13 +11,11 @@ import SwiftUI
 class Player: Identifiable {
     var id = UUID()
     var user: User
-    var x: Int
-    var y: Int
+    var playerPosition: PlayerPosition
     
-    init(user: User, x: Int, y: Int) {
+    init(user: User, playerPosition: PlayerPosition) {
         self.id = UUID()
         self.user = user
-        self.x = x
-        self.y = y
+        self.playerPosition = playerPosition
     }
 }

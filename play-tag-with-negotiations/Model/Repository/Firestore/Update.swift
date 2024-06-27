@@ -18,4 +18,12 @@ class Update {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         Firestore.firestore().collection("Users").document(userId).setData(["pronoun": newPronoun], merge: true)
     }
+    
+    static func updateRoomCount(isPublic: Bool, roomCount: Int) {
+        if isPublic {
+            Firestore.firestore().collection("PlayTagRooms").document("PlayTagRooms").collection("PublicRooms").document("PublicRooms").updateData(["RoomCount": roomCount + 1])
+        } else {
+            Firestore.firestore().collection("PlayTagRooms").document("PlayTagRooms").collection("PrivateRooms").document("PrivateRooms").updateData(["RoomCount": roomCount + 1])
+        }
+    }
 }

@@ -30,4 +30,21 @@ class Read {
             return false
         }
     }
+    
+    static func getRoomCount(isPublic: Bool) async -> Int {
+        do {
+            if isPublic {
+                let document = try await Firestore.firestore().collection("PlayTagRooms").document("PlayTagRooms").collection("PublicRooms").document("PublicRooms").getDocument()
+                guard let roomCount = document["RoomCount"] as? Int else { return -1 }
+                return roomCount
+            } else {
+                let document = try await Firestore.firestore().collection("PlayTagRooms").document("PlayTagRooms").collection("PrivateRooms").document("PrivateRooms").getDocument()
+                guard let roomCount = document["RoomCount"] as? Int else { return -1 }
+                return roomCount
+            }
+        } catch {
+            print("Error getting document: \(error)")
+            return -1
+        }
+    }
 }

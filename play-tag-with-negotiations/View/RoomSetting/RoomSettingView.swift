@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RoomSettingView: View {
-    @State var playTagRoom: PlayTagRoom = PlayTagRoom(roomId: UUID(), playTagName: "鬼ごっこ", phaseNow: 0, phaseMax: 10, chaserNumber: 1, fugitiveNumber: 4, isPublic: false, isCanJoinAfter: false, isNegotiate: true, isCanDoQuest: true, isCanUseItem: true)
+    @State var playTagRoom: PlayTagRoom = PlayTagRoom(roomId: UUID(), playTagName: "鬼ごっこ", phaseNow: 0, phaseMax: 10, chaserNumber: 1, fugitiveNumber: 4, horizontalCount: 10, verticalCount: 10,  isPublic: false, isCanJoinAfter: false, isNegotiate: true, isCanDoQuest: true, isCanUseItem: true)
     @State private var isShowAlert = false
     
     var body: some View {
@@ -19,6 +19,8 @@ struct RoomSettingView: View {
                 RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .phaseMax)
                 RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .chaserNumber)
                 RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .fugitiveNumber)
+                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .horizontalCount)
+                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .verticalCount)
                 RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .isPublic)
                 RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .isCanJoinAfter)
                 RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .isNegotiate)
@@ -38,6 +40,7 @@ struct RoomSettingView: View {
             })
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
             .padding(.trailing, 35)
+            .padding(.bottom, 35)
             .alert("ルームを作成しますか？", isPresented: $isShowAlert, actions: {
                 Button(role: .cancel, action: {}, label: {
                     Text("キャンセル")
