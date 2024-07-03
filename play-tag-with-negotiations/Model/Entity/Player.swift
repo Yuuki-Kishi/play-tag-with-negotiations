@@ -8,14 +8,29 @@
 import Foundation
 import SwiftUI
 
-class Player: Identifiable {
+struct Player: Codable, Hashable, Identifiable {
     var id = UUID()
-    var user: User
+    var userId: String
+    var isHost: Bool
+    var point: Int
+    var isDecided: Bool
     var playerPosition: PlayerPosition
-    
-    init(user: User, playerPosition: PlayerPosition) {
+        
+    init(userId: String, isHost: Bool, point: Int, isDecided: Bool, playerPosition: PlayerPosition) {
         self.id = UUID()
-        self.user = user
+        self.userId = userId
+        self.isHost = isHost
+        self.point = point
+        self.isDecided = isDecided
         self.playerPosition = playerPosition
+    }
+    
+    init() {
+        self.id = UUID()
+        self.userId = "unknownUserId"
+        self.isHost = false
+        self.point = 0
+        self.isDecided = true
+        self.playerPosition = PlayerPosition()
     }
 }

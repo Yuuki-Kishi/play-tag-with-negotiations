@@ -7,12 +7,20 @@
 
 import Foundation
 
-class PlayerPosition {
+struct PlayerPosition: Codable, Hashable, Identifiable {
+    var id: UUID
     var x: Int
     var y: Int
     
     init(x: Int, y: Int) {
+        self.id = UUID()
         self.x = x
         self.y = y
+    }
+    
+    init() {
+        self.id = UUID()
+        self.x = 0
+        self.y = 0
     }
 }

@@ -40,7 +40,8 @@
 		DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6EE2C2341D600A01FFF /* Apple.swift */; };
 		DEDEF6F32C23C9AF00A01FFF /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F22C23C9AF00A01FFF /* Game.swift */; };
 		DEDEF6F52C23C9BB00A01FFF /* FieldMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F42C23C9BB00A01FFF /* FieldMap.swift */; };
-		DEFA54D02C246E2300CF6BD1 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54CF2C246E2300CF6BD1 /* Position.swift */; };
+		DEFA54D02C246E2300CF6BD1 /* PlayerPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */; };
+		DEFA54D22C3103D100CF6BD1 /* PlayerDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54D12C3103D100CF6BD1 /* PlayerDataStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,7 +75,8 @@
 		DEDEF6EE2C2341D600A01FFF /* Apple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apple.swift; sourceTree = "<group>"; };
 		DEDEF6F22C23C9AF00A01FFF /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		DEDEF6F42C23C9BB00A01FFF /* FieldMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldMap.swift; sourceTree = "<group>"; };
-		DEFA54CF2C246E2300CF6BD1 /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
+		DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPosition.swift; sourceTree = "<group>"; };
+		DEFA54D12C3103D100CF6BD1 /* PlayerDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDataStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				DEAB386B2C1EAAA6007639F6 /* UserDataStore.swift */,
+				DEFA54D12C3103D100CF6BD1 /* PlayerDataStore.swift */,
 			);
 			path = DataStore;
 			sourceTree = "<group>";
@@ -216,7 +219,7 @@
 			children = (
 				DEAB386E2C1EB32E007639F6 /* User.swift */,
 				DEDB914F2C173F7C00A8DA37 /* Player.swift */,
-				DEFA54CF2C246E2300CF6BD1 /* Position.swift */,
+				DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */,
 				DEDB914D2C173A2400A8DA37 /* PlayTagRoom.swift */,
 			);
 			path = Entity;
@@ -363,10 +366,11 @@
 				DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */,
 				DEAB386F2C1EB32E007639F6 /* User.swift in Sources */,
 				DEDEF6E42C23016E00A01FFF /* Observe.swift in Sources */,
+				DEFA54D22C3103D100CF6BD1 /* PlayerDataStore.swift in Sources */,
 				DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */,
 				DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */,
 				DEDB91532C17417700A8DA37 /* PublicRoomsView.swift in Sources */,
-				DEFA54D02C246E2300CF6BD1 /* Position.swift in Sources */,
+				DEFA54D02C246E2300CF6BD1 /* PlayerPosition.swift in Sources */,
 				DEDEF6F32C23C9AF00A01FFF /* Game.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

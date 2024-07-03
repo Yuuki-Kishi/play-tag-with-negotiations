@@ -15,6 +15,7 @@ struct MyPageView: View {
             Spacer(minLength: 50)
             Image(systemName: "person")
                 .scaledToFit()
+                .font(.system(size: 50.0))
                 .frame(width: UIScreen.main.bounds.height / 4, height: UIScreen.main.bounds.height / 4)
             Spacer()
             MyPageListView(userDataStore: userDataStore)
@@ -23,7 +24,7 @@ struct MyPageView: View {
         .background(Color(UIColor.systemGray6))
         .navigationTitle("マイページ")
         .onAppear() {
-            Observe.observeUser()
+            Observe.observeUserData()
         }
     }
 }

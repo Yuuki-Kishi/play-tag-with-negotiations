@@ -12,6 +12,7 @@ import AuthenticationServices
 struct ContentView: View {
     @State private var isShowModal = false
     @ObservedObject var userDataStore: UserDataStore
+    @ObservedObject var playerDataStore: PlayerDataStore
     
     var body: some View {
         NavigationStack {
@@ -39,7 +40,7 @@ struct ContentView: View {
                 }
             }
             .fullScreenCover(isPresented: $isShowModal, content: {
-                PublicRoomsView(userDataStore: userDataStore)
+                PublicRoomsView(userDataStore: userDataStore, playerDataStore: playerDataStore)
             })
             .padding()
         }
@@ -50,5 +51,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(userDataStore: UserDataStore.shared)
+    ContentView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
 }

@@ -22,39 +22,32 @@ class Create {
     }
     
     static func createPlayTagRoom(playTagRoom: PlayTagRoom) {
+        let roomId = playTagRoom.roomId.uuidString
+        let playTagName = playTagRoom.playTagName
+        let hostUserId = playTagRoom.hostUserId
+        let phaseNow = playTagRoom.phaseNow
+        let phaseMax = playTagRoom.phaseMax
+        let chaserNumber = playTagRoom.chaserNumber
+        let fugitiveNumber = playTagRoom.fugitiveNumber
+        let horizontalCount = playTagRoom.horizontalCount
+        let verticalCount = playTagRoom.verticalCount
+        let isPublic = playTagRoom.isPublic
+        let isCanJoinAfter = playTagRoom.isCanJoinAfter
+        let isNegotiate = playTagRoom.isNegotiate
+        let isCanDoQuest = playTagRoom.isCanDoQuest
+        let isCanUseItem = playTagRoom.isCanUseItem
         Task {
-            let roomId = playTagRoom.roomId.uuidString
-            let playTagName = playTagRoom.playTagName
-            let phaseNow = playTagRoom.phaseNow
-            let phaseMax = playTagRoom.phaseMax
-            let chaserNumber = playTagRoom.chaserNumber
-            let fugitiveNumber = playTagRoom.fugitiveNumber
-            let horizontalCount = playTagRoom.horizontalCount
-            let verticalCount = playTagRoom.verticalCount
-            let isPublic = playTagRoom.isPublic
-            let isCanJoinAfter = playTagRoom.isCanJoinAfter
-            let isNegotiate = playTagRoom.isNegotiate
-            let isCanDoQuest = playTagRoom.isCanDoQuest
-            let isCanUseItem = playTagRoom.isCanUseItem
-            let roomCount = await Read.getRoomCount(isPublic: isPublic)
-            if roomCount >= 0 {
-                if isPublic {
-                    try await Firestore.firestore().collection("PlayTagRooms").document("PlayTagRooms").collection("PublicRooms").document("PublicRooms").collection(roomId).document("RoomInfo").setData(["playTagName": playTagName, "phaseNow": phaseNow, "phaseMax": phaseMax, "chaserNumber": chaserNumber, "fugitiveNumber": fugitiveNumber, "horizontalCount": horizontalCount, "verticalCount": verticalCount, "isPublic": isPublic, "isCanJoinAfter": isCanJoinAfter, "isNegotiate": isNegotiate, "isCanDoQuest": isCanDoQuest, "isCanUseItem": isCanUseItem], merge: false)
-                    Update.updateRoomCount(isPublic: isPublic, roomCount: roomCount)
-                } else {
-                    try await Firestore.firestore().collection("PlayTagRooms").document("PlayTagRooms").collection("PrivateRooms").document("PrivateRooms").collection(roomId).document("RoomInfo").setData(["playTagName": playTagName, "phaseNow": phaseNow, "phaseMax": phaseMax, "chaserNumber": chaserNumber, "fugitiveNumber": fugitiveNumber, "horizontalCount": horizontalCount, "verticalCount": verticalCount, "isPublic": isPublic, "isCanJoinAfter": isCanJoinAfter, "isNegotiate": isNegotiate, "isCanDoQuest": isCanDoQuest, "isCanUseItem": isCanUseItem], merge: false)
-                    Update.updateRoomCount(isPublic: isPublic, roomCount: roomCount)
-                }
-            }
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).setData(["roomId": roomId, "hostUserId": hostUserId, "playTagName": playTagName, "phaseNow": phaseNow, "phaseMax": phaseMax, "chaserNumber": chaserNumber, "fugitiveNumber": fugitiveNumber, "horizontalCount": horizontalCount, "verticalCount": verticalCount, "isPublic": isPublic, "isCanJoinAfter": isCanJoinAfter, "isNegotiate": isNegotiate, "isCanDoQuest": isCanDoQuest, "isCanUseItem": isCanUseItem], merge: false)
+            await enterRoom(roomId: roomId, isHost: true)
         }
     }
     
-    static func enterRoom(roomId: String, isPublic: Bool) {
+    static func enterRoom(roomId: String, isHost: Bool) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-        if isPublic {
-            
-        } else {
-            Firestore.firestore().collection("PlayTagRooms").document("roomCollections").collection("privateRooms").document(roomId).collection("players").document(userId)
+        do {
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).setData(["userId": userId, "isHost": isHost, "point": 0, "isDecided": false])
+        } catch {
+            print(error)
         }
     }
 }

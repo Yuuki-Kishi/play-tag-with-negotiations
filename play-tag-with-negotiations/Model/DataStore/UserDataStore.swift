@@ -10,5 +10,4 @@ import Foundation
 class UserDataStore: ObservableObject {
     static let shared = UserDataStore()
     @Published var signInUser: User? = nil
-    @Published var beingRoom: PlayTagRoom? = nil
 }

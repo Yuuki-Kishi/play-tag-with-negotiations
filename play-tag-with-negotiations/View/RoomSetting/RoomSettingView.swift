@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct RoomSettingView: View {
-    @State var playTagRoom: PlayTagRoom = PlayTagRoom(roomId: UUID(), playTagName: "鬼ごっこ", phaseNow: 0, phaseMax: 10, chaserNumber: 1, fugitiveNumber: 4, horizontalCount: 10, verticalCount: 10,  isPublic: false, isCanJoinAfter: false, isNegotiate: true, isCanDoQuest: true, isCanUseItem: true)
+    @ObservedObject var userDataStore: UserDataStore
+    @ObservedObject var playerDataStore: PlayerDataStore
+    @State var playTagRoom: PlayTagRoom = PlayTagRoom(playTagName: "鬼ごっこ")
     @State private var isShowAlert = false
-    
+    @State private var isNavigation = false
+
     var body: some View {
         ZStack {
             List {
                 RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .roomId)
+                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .hostUserId)
                 RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .playTagName)
                 RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .phaseMax)
                 RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .chaserNumber)
@@ -33,7 +37,7 @@ struct RoomSettingView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 25)
                         .frame(width: 75, height: 75)
-                    Image(systemName: "arrow.right")
+                    Image(systemName: "plus")
                         .font(.system(size: 30))
                         .foregroundStyle(Color.primary)
                 }
@@ -47,18 +51,22 @@ struct RoomSettingView: View {
                 })
                 Button(action: {
                     Create.createPlayTagRoom(playTagRoom: playTagRoom)
-                    
+                    playerDataStore.playingRoom = playTagRoom
+                    isNavigation = true
                 }, label: {
                     Text("作成")
                 })
             }, message: {
                 Text("あとから設定を変更することはできません。")
             })
+            .navigationDestination(isPresented: $isNavigation) { 
+                WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore)
+            }
         }
         .navigationTitle("ルーム作成")
     }
 }
 
 #Preview {
-    RoomSettingView()
+    RoomSettingView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
 }

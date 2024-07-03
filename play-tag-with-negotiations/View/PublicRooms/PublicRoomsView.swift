@@ -9,9 +9,12 @@ import SwiftUI
 
 struct PublicRoomsView: View {
     @ObservedObject var userDataStore: UserDataStore
-    @State private var playTagRoomsArray = [PlayTagRoom]()
+    @ObservedObject var playerDataStore: PlayerDataStore
+    @State private var playTagRoomsArray: [PlayTagRoom] = []
     @State private var isShowAlert = false
-    @State private var roomId = String()
+    @State private var isNavigationToRoom = false
+    @State private var isNavigationToInvited = false
+    @State private var roomId = ""
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -39,8 +42,17 @@ struct PublicRoomsView: View {
                     TextField("ルームID", text: $roomId)
                     Button("キャンセル", role: .cancel, action: {})
                     Button("入室", action: {
-                        print(roomId)
+                        Task {
+                            if await Read.checkIsThereRoom(roomId: roomId) {
+                                playerDataStore.playingRoom = await Read.getRoomData(roomId: roomId)
+                                await Create.enterRoom(roomId: roomId, isHost: false)
+                                isNavigationToRoom = true
+                            }
+                        }
                     })
+                })
+                .navigationDestination(isPresented: $isNavigationToRoom, destination: {
+                    WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore)
                 })
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                 .padding(.trailing, 35)
@@ -50,9 +62,19 @@ struct PublicRoomsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing, content: {
-                    toolBarMenu()
+                    HStack {
+                        Button(action: {
+                            isNavigationToInvited = true
+                        }, label: {
+                            Image(systemName: "envelope")
+                        })
+                        toolBarMenu()
+                    }
                 })
             }
+            .navigationDestination(isPresented: $isNavigationToInvited, destination: {
+                
+            })
             .onChange(of: userDataStore.signInUser) {
                 if userDataStore.signInUser == nil {
                     dismiss()
@@ -70,7 +92,7 @@ struct PublicRoomsView: View {
     }
     func toolBarMenu() -> some View {
         Menu {
-            NavigationLink(destination: RoomSettingView(), label: {
+            NavigationLink(destination: RoomSettingView(userDataStore: userDataStore, playerDataStore: playerDataStore), label: {
                 Label("ルーム作成", systemImage: "plus")
             })
             NavigationLink(destination: MyPageView(userDataStore: userDataStore), label: {
@@ -105,5 +127,5 @@ struct PublicRoomsView: View {
 }
 
 #Preview {
-    PublicRoomsView(userDataStore: UserDataStore.shared)
+    PublicRoomsView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
 }

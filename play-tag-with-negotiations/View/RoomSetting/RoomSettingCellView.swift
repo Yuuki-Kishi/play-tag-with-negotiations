@@ -14,15 +14,17 @@ struct RoomSettingCellView: View {
     @State private var isShowCopiedAlert = false
     @State private var isShowStringAlert = false
     @State private var isShowIntAlert = false
-    enum itemTypeEnum { case roomId, playTagName, phaseMax, chaserNumber, fugitiveNumber, horizontalCount,
+    enum itemTypeEnum { case roomId, playTagName, hostUserId, phaseMax, chaserNumber, fugitiveNumber, horizontalCount,
         verticalCount, isPublic, isCanJoinAfter, isNegotiate, isCanDoQuest, isCanUseItem }
     
     var body: some View {
         switch itemType {
         case .roomId:
             uuidCell(item: "ルームID", data: playTagRoom.roomId.uuidString)
+        case .hostUserId:
+            hostUserIdCell(item: "ホストユーザーID", data: playTagRoom.hostUserId)
         case .playTagName:
-            stringCell(item: "鬼ごっこ名", data: playTagRoom.playTagName)
+            playTagNameCell(item: "鬼ごっこ名", data: playTagRoom.playTagName)
         case .phaseMax:
             intCell(item: "最大フェーズ", data: playTagRoom.phaseMax)
         case .chaserNumber:
@@ -32,7 +34,7 @@ struct RoomSettingCellView: View {
         case .horizontalCount:
             intCell(item: "横のマスの数", data: playTagRoom.horizontalCount)
         case .verticalCount:
-            intCell(item: "縦のますの数", data: playTagRoom.verticalCount)
+            intCell(item: "縦のマスの数", data: playTagRoom.verticalCount)
         case .isPublic:
             Toggle("公開", isOn: $playTagRoom.isPublic)
                 .onChange(of: playTagRoom.isPublic) {
@@ -87,7 +89,19 @@ struct RoomSettingCellView: View {
             Text("ルームIDをクリップボードにコピーしました。")
         })
     }
-    func stringCell(item: String, data: String) -> some View {
+    func hostUserIdCell(item: String, data: String) -> some View {
+        HStack {
+            Text(item)
+                .frame(alignment: .leading)
+            Spacer()
+            Text(data)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .lineLimit(1)
+                .foregroundStyle(Color.gray)
+                .font(.system(size: 12))
+        }
+    }
+    func playTagNameCell(item: String, data: String) -> some View {
         HStack {
             Text(item)
                 .frame(maxWidth: .infinity, alignment: .leading)

@@ -31,20 +31,56 @@ class Read {
         }
     }
     
-    static func getRoomCount(isPublic: Bool) async -> Int {
+    static func getUserData(userId: String) async -> User {
         do {
-            if isPublic {
-                let document = try await Firestore.firestore().collection("PlayTagRooms").document("PlayTagRooms").collection("PublicRooms").document("PublicRooms").getDocument()
-                guard let roomCount = document["RoomCount"] as? Int else { return -1 }
-                return roomCount
-            } else {
-                let document = try await Firestore.firestore().collection("PlayTagRooms").document("PlayTagRooms").collection("PrivateRooms").document("PrivateRooms").getDocument()
-                guard let roomCount = document["RoomCount"] as? Int else { return -1 }
-                return roomCount
+            let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
+            guard let userName = document["userName"] as? String else { return User() }
+            let iconUrl = document["iconUrl"] as? String ?? ""
+            guard let pronoun = document["pronoun"] as? String else { return User() }
+            return User(userId: userId, userName: userName, iconUrl: iconUrl, pronoun: pronoun)
+        } catch {
+            print(error)
+            return User()
+        }
+    }
+    
+    static func checkIsThereRoom(roomId: String) async -> Bool {
+        do {
+            let playTagRooms = try await Firestore.firestore().collection("PlayTagRooms").getDocuments()
+            for playTagRoom in playTagRooms.documents {
+                if playTagRoom.documentID == roomId {
+                    return true
+                }
             }
         } catch {
-            print("Error getting document: \(error)")
-            return -1
+            print(error)
+            return false
         }
+        return false
+    }
+    
+    static func getRoomData(roomId: String) async -> PlayTagRoom {
+        do {
+            let playTagRoom = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).getDocument()
+            guard let roomIdString = playTagRoom["roomId"] as? String else { return PlayTagRoom() }
+            guard let roomId = UUID(uuidString: roomIdString) else { return PlayTagRoom() }
+            guard let hostUserId = playTagRoom["hostUserId"] as? String else { return PlayTagRoom() }
+            guard let playTagName = playTagRoom["playTagName"] as? String else { return PlayTagRoom() }
+            guard let phaseNow = playTagRoom["phaseNow"] as? Int else { return PlayTagRoom() }
+            guard let phaseMax = playTagRoom["phaseMax"] as? Int else { return PlayTagRoom() }
+            guard let chaserNumber = playTagRoom["chaserNumber"] as? Int else { return PlayTagRoom() }
+            guard let fugitiveNumber = playTagRoom["fugitiveNumber"] as? Int else { return PlayTagRoom() }
+            guard let horizontalCount = playTagRoom["horizontalCount"] as? Int else { return PlayTagRoom() }
+            guard let verticalCount = playTagRoom["verticalCount"] as? Int else { return PlayTagRoom() }
+            guard let isPublic = playTagRoom["isPublic"] as? Bool else { return PlayTagRoom() }
+            guard let isCanJoinAfter = playTagRoom["isCanJoinAfter"] as? Bool else { return PlayTagRoom() }
+            guard let isNegotiate = playTagRoom["isNegotiate"] as? Bool else { return PlayTagRoom() }
+            guard let isCanDoQuest = playTagRoom["isCanDoQuest"] as? Bool else { return PlayTagRoom() }
+            guard let isCanUseItem = playTagRoom["isCanUseItem"] as? Bool else { return PlayTagRoom() }
+            return PlayTagRoom(roomId: roomId, hostUserId: hostUserId, playTagName: playTagName, players: [], phaseNow: phaseNow, phaseMax: phaseMax, chaserNumber: chaserNumber, fugitiveNumber: fugitiveNumber, horizontalCount: horizontalCount, verticalCount: verticalCount, isPublic: isPublic, isCanJoinAfter: isCanJoinAfter, isNegotiate: isNegotiate, isCanDoQuest: isCanDoQuest, isCanUseItem: isCanUseItem)
+        } catch {
+            print(error)
+        }
+        return PlayTagRoom()
     }
 }

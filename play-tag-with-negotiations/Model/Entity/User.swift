@@ -7,12 +7,12 @@
 
 import Foundation
 
-class User: Identifiable, Equatable {
+struct User: Hashable, Identifiable, Equatable {
     static func == (lhs: User, rhs: User) -> Bool {
         return lhs.userId == rhs.userId
     }
     
-    var id: UUID
+    var id = UUID()
     var userId: String
     var userName: String
     var iconUrl: String

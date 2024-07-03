@@ -9,12 +9,25 @@ import SwiftUI
 
 struct WaitingRoomView: View {
     @ObservedObject var userDataStore: UserDataStore
-    @State private var userArray: [User] = [User()]
+    @ObservedObject var playerDataStore: PlayerDataStore
     
     var body: some View {
         ZStack {
-            List($userArray) { user in
-                WaitingRoomCellView(user: user)
+            List {
+                Section(content: {
+                    WaitingRoomCellView(userDataStore: userDataStore, user: $playerDataStore.hostUser)
+                }, header: {
+                    Text("ホスト")
+                })
+                Section(content: {
+                    ForEach($playerDataStore.userArray, id: \.self) { user in
+                        if user.wrappedValue != playerDataStore.hostUser {
+                            WaitingRoomCellView(userDataStore: userDataStore, user: user)
+                        }
+                    }
+                }, header: {
+                    Text("ゲスト")
+                })
             }
             Button(action: {
                
@@ -32,9 +45,13 @@ struct WaitingRoomView: View {
             .padding(.bottom, 35)
         }
         .navigationTitle("待合室")
+        .navigationBarBackButtonHidden(true)
+        .onAppear() {
+            Observe.observePlayer()
+        }
     }
 }
 
 #Preview {
-    WaitingRoomView(userDataStore: UserDataStore.shared)
+    WaitingRoomView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
 }
