@@ -19,9 +19,16 @@ class Delete {
         }
     }
     
+    static func hostExitRoom(roomId: String) async {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        guard let nextHostUserId = PlayerDataStore.shared.playerArray.filter({ $0.userId != userId }).randomElement()?.userId else { return }
+        await Update.playerUpToHost(roomId: roomId, nextHostUserId: nextHostUserId)
+        await exitRoom(roomId: roomId)
+    }
+    
     static func deleteRoom(roomId: String) async {
         do {
-            try await Firestore.firestore().collection("PlayTagRoom").document(roomId).delete()
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).delete()
         } catch {
             print(error)
         }

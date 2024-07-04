@@ -40,7 +40,9 @@ struct MyPageListView: View {
                     Text("キャンセル")
                 })
                 Button("変更", action: {
-                    Update.updateUserName(newName: text)
+                    Task {
+                        await Update.updateUserName(newName: text)
+                    }
                 })
             })
             HStack {
@@ -91,7 +93,9 @@ struct MyPageListView: View {
                     Text("キャンセル")
                 })
                 Button("変更", action: {
-                    Update.updatePronoun(newPronoun: text)
+                    Task {
+                        await Update.updatePronoun(newPronoun: text)
+                    }
                 })
             }, message: {
                 Text("代名詞を入力してください。")

@@ -12,6 +12,6 @@ class PlayerDataStore: ObservableObject {
     @Published var playingRoom: PlayTagRoom? = nil
     @Published var hostUser: User = User()
     @Published var hostPlayer: Player = Player()
-    @Published var userSet: Set<User> = []
-    @Published var playerSet: Set<Player> = []
+    @Published var userArray: [User] = []
+    @Published var playerArray: [Player] = []
 }

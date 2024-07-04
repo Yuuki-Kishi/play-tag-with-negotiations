@@ -8,11 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Player: Codable, Hashable, Identifiable, Equatable {
-    static func == (lhs: Player, rhs: Player) -> Bool {
-        return lhs.userId == rhs.userId
-    }
-    
+struct Player: Codable, Hashable, Identifiable {
     var id = UUID()
     var userId: String
     var isHost: Bool
