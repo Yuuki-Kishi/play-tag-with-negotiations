@@ -15,21 +15,24 @@ struct User: Hashable, Identifiable, Equatable {
     var id = UUID()
     var userId: String
     var userName: String
+    var creationDate: Date
     var iconUrl: String
     var pronoun: String
     
-    init(userId: String, userName: String, iconUrl: String, pronoun: String) {
+    init(userId: String, userName: String, creationDate: Date, iconUrl: String, pronoun: String) {
         self.id = UUID()
         self.userId = userId
         self.userName = userName
+        self.creationDate = creationDate
         self.iconUrl = iconUrl
         self.pronoun = pronoun
     }
     
-    init(userId: String) {
+    init(userId: String, creationDate: Date) {
         self.id = UUID()
         self.userId = userId
         self.userName = ""
+        self.creationDate = creationDate
         self.iconUrl = ""
         self.pronoun = ""
     }
@@ -38,6 +41,7 @@ struct User: Hashable, Identifiable, Equatable {
         self.id = UUID()
         self.userId = "unknownUserId"
         self.userName = "unknown"
+        self.creationDate = Date()
         self.iconUrl = "unknownURL"
         self.pronoun = "Who am I?"
     }

@@ -87,7 +87,8 @@ class Apple {
             Auth.auth().signIn(with: credential) { result, error in
                 if result?.user != nil{
                     guard let userId = result?.user.uid else { return }
-                    UserDataStore.shared.signInUser = User(userId: userId)
+                    guard let creationDate = result?.user.metadata.creationDate else { return }
+                    UserDataStore.shared.signInUser = User(userId: userId, creationDate: creationDate)
                 }
             }
             

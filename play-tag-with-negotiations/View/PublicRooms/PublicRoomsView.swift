@@ -28,7 +28,6 @@ struct PublicRoomsView: View {
                 }
                 Button(action: {
                     isShowAlert = true
-                    testPrint()
                 }, label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 25)

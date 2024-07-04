@@ -42,6 +42,7 @@
 		DEDEF6F52C23C9BB00A01FFF /* FieldMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F42C23C9BB00A01FFF /* FieldMap.swift */; };
 		DEFA54D02C246E2300CF6BD1 /* PlayerPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */; };
 		DEFA54D22C3103D100CF6BD1 /* PlayerDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54D12C3103D100CF6BD1 /* PlayerDataStore.swift */; };
+		DEFA54D52C3674EE00CF6BD1 /* Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54D42C3674EE00CF6BD1 /* Delete.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +78,7 @@
 		DEDEF6F42C23C9BB00A01FFF /* FieldMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldMap.swift; sourceTree = "<group>"; };
 		DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPosition.swift; sourceTree = "<group>"; };
 		DEFA54D12C3103D100CF6BD1 /* PlayerDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDataStore.swift; sourceTree = "<group>"; };
+		DEFA54D42C3674EE00CF6BD1 /* Delete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delete.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +242,7 @@
 				DEDEF6D32C21BA1800A01FFF /* Create.swift */,
 				DEDEF6EB2C23322D00A01FFF /* Read.swift */,
 				DEDEF6E72C23283200A01FFF /* Update.swift */,
+				DEFA54D42C3674EE00CF6BD1 /* Delete.swift */,
 				DEDEF6E32C23016E00A01FFF /* Observe.swift */,
 			);
 			path = Firestore;
@@ -358,6 +361,7 @@
 				DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */,
 				DEDB91502C173F7C00A8DA37 /* Player.swift in Sources */,
 				DEDEF6F52C23C9BB00A01FFF /* FieldMap.swift in Sources */,
+				DEFA54D52C3674EE00CF6BD1 /* Delete.swift in Sources */,
 				DEDB914E2C173A2400A8DA37 /* PlayTagRoom.swift in Sources */,
 				DEAB386C2C1EAAA6007639F6 /* UserDataStore.swift in Sources */,
 				DEAB38782C2060D3007639F6 /* MyPageListView.swift in Sources */,

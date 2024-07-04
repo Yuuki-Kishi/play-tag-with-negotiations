@@ -35,7 +35,8 @@ class Google {
                 return
             }
             guard let userId = authResult?.user.uid else { return }
-            UserDataStore.shared.signInUser = User(userId: userId)
+            guard let creationDate = authResult?.user.metadata.creationDate else { return }
+            UserDataStore.shared.signInUser = User(userId: userId, creationDate: creationDate)
             Create.createUser(userId: userId)
         }
     }
