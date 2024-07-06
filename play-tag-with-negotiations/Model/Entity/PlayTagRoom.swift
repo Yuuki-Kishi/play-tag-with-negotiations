@@ -26,6 +26,9 @@ struct PlayTagRoom: Codable, Hashable, Identifiable {
     var isCanDoQuest: Bool
     var isCanUseItem: Bool
     
+    enum itemType { case roomId, playTagName, hostUserId, phaseMax, chaserNumber, fugitiveNumber, horizontalCount,
+        verticalCount, isPublic, isCanJoinAfter, isNegotiate, isCanDoQuest, isCanUseItem }
+    
     init(roomId: UUID, hostUserId: String, playTagName: String, creationDate: Date, players: [Player], phaseNow: Int, phaseMax: Int, chaserNumber: Int, fugitiveNumber: Int, horizontalCount: Int, verticalCount: Int, isPublic: Bool, isCanJoinAfter: Bool, isNegotiate: Bool, isCanDoQuest: Bool, isCanUseItem: Bool) {
         self.roomId = roomId
         self.hostUserId = hostUserId

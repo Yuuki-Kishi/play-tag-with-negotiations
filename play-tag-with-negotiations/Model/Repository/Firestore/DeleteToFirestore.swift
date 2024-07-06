@@ -9,7 +9,7 @@ import Foundation
 import FirebaseCore
 import FirebaseFirestore
 
-class Delete {
+class DeleteToFirestore {
     static func exitRoom(roomId: String) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
@@ -22,7 +22,7 @@ class Delete {
     static func hostExitRoom(roomId: String) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         guard let nextHostUserId = PlayerDataStore.shared.playerArray.filter({ $0.userId != userId }).randomElement()?.userId else { return }
-        await Update.playerUpToHost(roomId: roomId, nextHostUserId: nextHostUserId)
+        await UpdateToFirestore.playerUpToHost(roomId: roomId, nextHostUserId: nextHostUserId)
         await exitRoom(roomId: roomId)
     }
     

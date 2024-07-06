@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PublicRoomsCellView: View {
+struct PublicRoomsViewCell: View {
     @Binding var playTagRoom: PlayTagRoom
     
     var body: some View {
@@ -33,5 +33,5 @@ struct PublicRoomsCellView: View {
 }
 
 //#Preview {
-//    PublicRoomsCellView(playTagRoom: PlayTagRoom())
+//    PublicRoomsViewCell(playTagRoom: PlayTagRoom())
 //}

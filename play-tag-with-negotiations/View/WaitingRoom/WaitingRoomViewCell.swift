@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WaitingRoomCellView: View {
+struct WaitingRoomViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @Binding var user: User
     
@@ -37,5 +37,5 @@ struct WaitingRoomCellView: View {
 }
 
 //#Preview {
-//    WaitingRoomCellView(user: User())
+//    WaitingRoomViewCell(user: User())
 //}

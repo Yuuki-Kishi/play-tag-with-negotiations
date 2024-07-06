@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-class Update {
+class UpdateToFirestore {
     static func updateUserName(newName: String) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
@@ -22,6 +22,15 @@ class Update {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
             try await Firestore.firestore().collection("Users").document(userId).setData(["pronoun": newPronoun], merge: true)
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func updateIconUrl(iconUrl: String) async {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        do {
+            try await Firestore.firestore().collection("Users").document(userId).setData(["iconUrl": iconUrl], merge: true)
         } catch {
             print(error)
         }

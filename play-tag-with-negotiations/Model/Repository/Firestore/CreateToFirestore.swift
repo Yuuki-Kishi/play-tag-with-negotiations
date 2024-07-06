@@ -9,13 +9,13 @@ import Foundation
 import FirebaseCore
 import FirebaseFirestore
 
-class Create {
+class CreateToFirestore {
     static func createUser(userId: String) {
         Task {
-            if await Read.isWriteUserName() {
+            if await ReadToFirestore.isWriteUserName() {
                 try await Firestore.firestore().collection("Users").document(userId).setData(["userName": "未設定"], merge: true)
             }
-            if await Read.isWritePronoun() {
+            if await ReadToFirestore.isWritePronoun() {
                 try await Firestore.firestore().collection("Users").document(userId).setData(["pronoun": "未設定"], merge: true)
             }
         }
@@ -44,7 +44,7 @@ class Create {
     }
     
     static func enterRoom(roomId: String, isHost: Bool) async {
-        if await !Read.isBeingRoom(roomId: roomId) {
+        if await !ReadToFirestore.isBeingRoom(roomId: roomId) {
             guard let userId = UserDataStore.shared.signInUser?.userId else { return }
             do {
                 try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).setData(["userId": userId, "isHost": isHost, "point": 0, "enteredTime": Date(), "isDecided": false])

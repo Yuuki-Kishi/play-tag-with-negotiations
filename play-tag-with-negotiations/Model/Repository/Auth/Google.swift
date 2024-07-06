@@ -37,7 +37,7 @@ class Google {
             guard let userId = authResult?.user.uid else { return }
             guard let creationDate = authResult?.user.metadata.creationDate else { return }
             UserDataStore.shared.signInUser = User(userId: userId, creationDate: creationDate)
-            Create.createUser(userId: userId)
+            CreateToFirestore.createUser(userId: userId)
         }
     }
 }

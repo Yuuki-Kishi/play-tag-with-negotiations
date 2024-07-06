@@ -19,14 +19,14 @@ struct WaitingRoomView: View {
         ZStack {
             List {
                 Section(content: {
-                    WaitingRoomCellView(userDataStore: userDataStore, user: $playerDataStore.hostUser)
+                    WaitingRoomViewCell(userDataStore: userDataStore, user: $playerDataStore.hostUser)
                 }, header: {
                     Text("ホスト")
                 })
                 Section(content: {
                     ForEach($playerDataStore.userArray, id: \.self) { user in
                         if user.wrappedValue != playerDataStore.hostUser {
-                            WaitingRoomCellView(userDataStore: userDataStore, user: user)
+                            WaitingRoomViewCell(userDataStore: userDataStore, user: user)
                         }
                     }
                 }, header: {
@@ -100,7 +100,7 @@ struct WaitingRoomView: View {
     func toolBarMenu() -> some View {
         Menu {
             NavigationLink(destination: {
-                
+                RoomInfomationView(playTagRoom: Binding(get: { playerDataStore.playingRoom ?? PlayTagRoom() }, set: { playerDataStore.playingRoom = $0 }))
             }, label: {
                 Label("ルーム情報", systemImage: "info.circle")
             })
@@ -127,28 +127,28 @@ struct WaitingRoomView: View {
     func lastExit() {
         Task {
             guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
-            await Delete.deleteRoom(roomId: roomId)
+            await DeleteToFirestore.deleteRoom(roomId: roomId)
             dismiss()
         }
     }
     func hostExit() {
         Task {
             guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
-            await Delete.hostExitRoom(roomId: roomId)
+            await DeleteToFirestore.hostExitRoom(roomId: roomId)
             dismiss()
         }
     }
     func exit() {
         Task {
             guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
-            await Delete.exitRoom(roomId: roomId)
+            await DeleteToFirestore.exitRoom(roomId: roomId)
             dismiss()
         }
     }
     func onAppear() {
         guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
-        Observe.observePlayer()
-        Observe.observeRoomField(roomId: roomId)
+        ObserveToFirestore.observePlayer()
+        ObserveToFirestore.observeRoomField(roomId: roomId)
     }
 }
 

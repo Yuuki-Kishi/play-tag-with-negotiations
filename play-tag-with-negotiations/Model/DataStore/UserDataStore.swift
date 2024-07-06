@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 class UserDataStore: ObservableObject {
     static let shared = UserDataStore()
     @Published var signInUser: User? = nil
+    @Published var iconImageData: Data? = nil
 }

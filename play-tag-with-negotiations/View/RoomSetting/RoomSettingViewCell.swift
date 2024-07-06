@@ -7,15 +7,13 @@
 
 import SwiftUI
 
-struct RoomSettingCellView: View {
+struct RoomSettingViewCell: View {
     @Binding var playTagRoom: PlayTagRoom
-    @State var itemType: RoomSettingCellView.itemTypeEnum
+    @State var itemType: PlayTagRoom.itemType
     @State private var text = ""
     @State private var isShowCopiedAlert = false
     @State private var isShowStringAlert = false
     @State private var isShowIntAlert = false
-    enum itemTypeEnum { case roomId, playTagName, hostUserId, phaseMax, chaserNumber, fugitiveNumber, horizontalCount,
-        verticalCount, isPublic, isCanJoinAfter, isNegotiate, isCanDoQuest, isCanUseItem }
     
     var body: some View {
         switch itemType {

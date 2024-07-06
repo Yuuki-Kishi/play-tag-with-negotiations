@@ -13,44 +13,39 @@ struct RoomSettingView: View {
     @State var playTagRoom: PlayTagRoom = PlayTagRoom(playTagName: "鬼ごっこ")
     @State private var isShowAlert = false
     @State private var isNavigation = false
-
+    
     var body: some View {
         ZStack {
             List {
-                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .roomId)
-                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .hostUserId)
-                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .playTagName)
-                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .phaseMax)
-                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .chaserNumber)
-                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .fugitiveNumber)
-                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .horizontalCount)
-                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .verticalCount)
-                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .isPublic)
-                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .isCanJoinAfter)
-                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .isNegotiate)
-                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .isCanDoQuest)
-                RoomSettingCellView(playTagRoom: $playTagRoom, itemType: .isCanUseItem)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .roomId)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .hostUserId)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .playTagName)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .phaseMax)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .chaserNumber)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .fugitiveNumber)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .horizontalCount)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .verticalCount)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .isPublic)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .isCanJoinAfter)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .isNegotiate)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .isCanDoQuest)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .isCanUseItem)
             }
-            Button(action: {
-                isShowAlert = true
-            }, label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 25)
-                        .frame(width: 75, height: 75)
-                    Image(systemName: "plus")
-                        .font(.system(size: 30))
-                        .foregroundStyle(Color.primary)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        isShowAlert = true
+                    }, label: {
+                        Text("作成")
+                    })
                 }
-            })
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-            .padding(.trailing, 35)
-            .padding(.bottom, 35)
+            }
             .alert("ルームを作成しますか？", isPresented: $isShowAlert, actions: {
                 Button(role: .cancel, action: {}, label: {
                     Text("キャンセル")
                 })
                 Button(action: {
-                    Create.createPlayTagRoom(playTagRoom: playTagRoom)
+                    CreateToFirestore.createPlayTagRoom(playTagRoom: playTagRoom)
                     playerDataStore.playingRoom = playTagRoom
                     isNavigation = true
                 }, label: {
@@ -59,11 +54,11 @@ struct RoomSettingView: View {
             }, message: {
                 Text("あとから設定を変更することはできません。")
             })
-            .navigationDestination(isPresented: $isNavigation) { 
+            .navigationDestination(isPresented: $isNavigation) {
                 WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore)
             }
+            .navigationTitle("ルーム作成")
         }
-        .navigationTitle("ルーム作成")
     }
 }
 

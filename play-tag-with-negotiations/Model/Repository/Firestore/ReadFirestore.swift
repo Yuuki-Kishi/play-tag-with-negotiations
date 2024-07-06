@@ -9,7 +9,7 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-class Read {
+class ReadToFirestore {
     static func isWriteUserName() async -> Bool {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return false }
         do {

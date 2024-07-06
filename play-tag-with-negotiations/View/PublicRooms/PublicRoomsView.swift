@@ -21,7 +21,7 @@ struct PublicRoomsView: View {
         NavigationStack {
             ZStack {
                 List($playTagRoomsArray) { playTagRoom in
-                    PublicRoomsCellView(playTagRoom: playTagRoom)
+                    PublicRoomsViewCell(playTagRoom: playTagRoom)
                 }
                 .navigationDestination(for: PlayTagRoom.self) { playTagRoom in
                     
@@ -42,9 +42,9 @@ struct PublicRoomsView: View {
                     Button("キャンセル", role: .cancel, action: {})
                     Button("入室", action: {
                         Task {
-                            if await Read.checkIsThereRoom(roomId: roomId) {
-                                playerDataStore.playingRoom = await Read.getRoomData(roomId: roomId)
-                                await Create.enterRoom(roomId: roomId, isHost: false)
+                            if await ReadToFirestore.checkIsThereRoom(roomId: roomId) {
+                                playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
+                                await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
                                 isNavigationToRoom = true
                             }
                         }
