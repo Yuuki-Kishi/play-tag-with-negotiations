@@ -20,6 +20,10 @@ struct RoomInfomationViewCell: View {
             stringCell(item: "ホストユーザーID", data: playTagRoom.hostUserId)
         case .playTagName:
             stringCell(item: "鬼ごっこ名", data: playTagRoom.playTagName)
+        case .creationDate:
+            dateCell(item: "作成日時", data: playTagRoom.creationDate)
+        case .phaseNow:
+            intCell(item: "現在のフェーズ", data: playTagRoom.phaseNow)
         case .phaseMax:
             intCell(item: "最大フェーズ", data: playTagRoom.phaseMax)
         case .chaserNumber:
@@ -76,6 +80,17 @@ struct RoomInfomationViewCell: View {
                 .foregroundStyle(Color.gray)
         }
     }
+    func dateCell(item: String, data: Date) -> some View {
+        HStack {
+            Text(item)
+                .frame(alignment: .leading)
+            Spacer()
+            Text(dateToString(date: data))
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .lineLimit(1)
+                .foregroundStyle(Color.gray)
+        }
+    }
     func intCell(item: String, data: Int) -> some View {
         HStack {
             Text(item)
@@ -100,6 +115,11 @@ struct RoomInfomationViewCell: View {
                     .frame(alignment: .trailing)
             }
         }
+    }
+    func dateToString(date: Date) -> String {
+        let dateFomatter = DateFormatter()
+        dateFomatter.dateFormat = "yyyy/mm/dd HH:mm:ss:SSS"
+        return dateFomatter.string(from: date)
     }
 }
 

@@ -45,9 +45,11 @@ struct RoomSettingView: View {
                     Text("キャンセル")
                 })
                 Button(action: {
-                    CreateToFirestore.createPlayTagRoom(playTagRoom: playTagRoom)
-                    playerDataStore.playingRoom = playTagRoom
-                    isNavigation = true
+                    Task {
+                        await CreateToFirestore.createPlayTagRoom(playTagRoom: playTagRoom)
+                        playerDataStore.playingRoom = playTagRoom
+                        isNavigation = true
+                    }
                 }, label: {
                     Text("作成")
                 })
