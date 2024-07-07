@@ -24,10 +24,8 @@ struct WaitingRoomView: View {
                     Text("ホスト")
                 })
                 Section(content: {
-                    ForEach($playerDataStore.userArray, id: \.self) { user in
-                        if user.wrappedValue != playerDataStore.hostUser {
-                            WaitingRoomViewCell(userDataStore: userDataStore, user: user)
-                        }
+                    ForEach($playerDataStore.guestUserArray, id: \.self) { user in
+                        WaitingRoomViewCell(userDataStore: userDataStore, user: user)
                     }
                 }, header: {
                     Text("ゲスト")
@@ -108,7 +106,7 @@ struct WaitingRoomView: View {
             Button(role: .destructive, action: {
                 guard let userId = userDataStore.signInUser?.userId else { return }
                 guard let hostUserId = playerDataStore.playingRoom?.hostUserId else { return }
-                if playerDataStore.userArray.count == 1 {
+                if playerDataStore.guestUserArray.count == 0 {
                     isShowLastUserAlert = true
                 } else {
                     if userId == hostUserId {

@@ -86,9 +86,15 @@ class Apple {
             let credential = OAuthProvider.credential(withProviderID: "apple.com",idToken: idTokenString,rawNonce: nonce)
             Auth.auth().signIn(with: credential) { result, error in
                 if result?.user != nil{
-                    guard let userId = result?.user.uid else { return }
-                    guard let creationDate = result?.user.metadata.creationDate else { return }
-                    UserDataStore.shared.signInUser = User(userId: userId, creationDate: creationDate)
+                    Task {
+                        guard let userId = result?.user.uid else { return }
+                        guard let creationDate = result?.user.metadata.creationDate else { return }
+                        let user = User(userId: userId, creationDate: creationDate)
+                        if await !ReadToFirestore.isWroteUser(userId: userId) {
+                            await CreateToFirestore.createUser(user: user)
+                        }
+                        UserDataStore.shared.signInUser = user
+                    }
                 }
             }
             

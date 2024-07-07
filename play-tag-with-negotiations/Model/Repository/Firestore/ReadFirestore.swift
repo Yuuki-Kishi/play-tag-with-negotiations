@@ -10,27 +10,16 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class ReadToFirestore {
-    static func isWriteUserName() async -> Bool {
-        guard let userId = UserDataStore.shared.signInUser?.userId else { return false }
+    static func isWroteUser(userId: String) async -> Bool {
         do {
-            let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
-            guard let documentData = document.data() else { return false }
-            return documentData["userName"] == nil ? true : false
+            let userDocuments = try await Firestore.firestore().collection("Users").whereField("userId", isEqualTo: userId).getDocuments()
+            for userDocument in userDocuments.documents {
+                if userDocument.documentID == userId { return true }
+            }
+            return false
         } catch {
             print("Error getting document: \(error)")
-            return false
-        }
-    }
-    
-    static func isWritePronoun() async -> Bool {
-        guard let userId = UserDataStore.shared.signInUser?.userId else { return false }
-        do {
-            let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
-            guard let documentData = document.data() else { return false }
-            return documentData["pronoun"] == nil ? true : false
-        } catch {
-            print("Error getting document: \(error)")
-            return false
+            return true
         }
     }
     
@@ -49,8 +38,6 @@ class ReadToFirestore {
         do {
             let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
             guard let documentData = document.data() else { return User() }
-            print("userInfo")
-            print(documentData)
             guard let userName = documentData["userName"] as? String else { return User() }
             guard let creationDate = Auth.auth().currentUser?.metadata.creationDate else { return User() }
             let iconUrl = documentData["iconUrl"] as? String ?? ""

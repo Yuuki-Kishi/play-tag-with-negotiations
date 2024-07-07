@@ -10,36 +10,24 @@ import FirebaseCore
 import FirebaseFirestore
 
 class CreateToFirestore {
-    static func createUser(userId: String) {
-        Task {
-            if await ReadToFirestore.isWriteUserName() {
-                try await Firestore.firestore().collection("Users").document(userId).setData(["userName": "未設定"], merge: true)
-            }
-            if await ReadToFirestore.isWritePronoun() {
-                try await Firestore.firestore().collection("Users").document(userId).setData(["pronoun": "未設定"], merge: true)
-            }
+    static func createUser(user: User) async {
+        let encoded = try! JSONEncoder().encode(user)
+        do {
+            guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
+            try await Firestore.firestore().collection("Users").document(user.userId).setData(jsonObject)
+        } catch {
+            print(error)
         }
     }
     
-    static func createPlayTagRoom(playTagRoom: PlayTagRoom) {
+    static func createPlayTagRoom(playTagRoom: PlayTagRoom) async {
+        let encoded = try! JSONEncoder().encode(playTagRoom)
         let roomId = playTagRoom.roomId.uuidString
-        let hostUserId = playTagRoom.hostUserId
-        let playTagName = playTagRoom.playTagName
-        let creationDate = playTagRoom.creationDate
-        let phaseNow = playTagRoom.phaseNow
-        let phaseMax = playTagRoom.phaseMax
-        let chaserNumber = playTagRoom.chaserNumber
-        let fugitiveNumber = playTagRoom.fugitiveNumber
-        let horizontalCount = playTagRoom.horizontalCount
-        let verticalCount = playTagRoom.verticalCount
-        let isPublic = playTagRoom.isPublic
-        let isCanJoinAfter = playTagRoom.isCanJoinAfter
-        let isNegotiate = playTagRoom.isNegotiate
-        let isCanDoQuest = playTagRoom.isCanDoQuest
-        let isCanUseItem = playTagRoom.isCanUseItem
-        Task {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).setData(["roomId": roomId, "hostUserId": hostUserId, "playTagName": playTagName, "creationDate": creationDate, "phaseNow": phaseNow, "phaseMax": phaseMax, "chaserNumber": chaserNumber, "fugitiveNumber": fugitiveNumber, "horizontalCount": horizontalCount, "verticalCount": verticalCount, "isPublic": isPublic, "isCanJoinAfter": isCanJoinAfter, "isNegotiate": isNegotiate, "isCanDoQuest": isCanDoQuest, "isCanUseItem": isCanUseItem], merge: false)
-            await enterRoom(roomId: roomId, isHost: true)
+        do {
+            guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).setData(jsonObject)
+        } catch {
+            print(error)
         }
     }
     

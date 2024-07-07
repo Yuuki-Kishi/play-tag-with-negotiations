@@ -30,14 +30,19 @@ class Google {
     
     static func login(credential: AuthCredential) {
         Auth.auth().signIn(with: credential) { (authResult, error) in
-            if let error = error {
-                print("SignInError: \(error.localizedDescription)")
-                return
+            Task {
+                if let error = error {
+                    print("SignInError: \(error.localizedDescription)")
+                    return
+                }
+                guard let userId = authResult?.user.uid else { return }
+                guard let creationDate = authResult?.user.metadata.creationDate else { return }
+                let user = User(userId: userId, creationDate: creationDate)
+                if await !ReadToFirestore.isWroteUser(userId: userId) {
+                    await CreateToFirestore.createUser(user: user)
+                }
+                UserDataStore.shared.signInUser = user
             }
-            guard let userId = authResult?.user.uid else { return }
-            guard let creationDate = authResult?.user.metadata.creationDate else { return }
-            UserDataStore.shared.signInUser = User(userId: userId, creationDate: creationDate)
-            CreateToFirestore.createUser(userId: userId)
         }
     }
 }
