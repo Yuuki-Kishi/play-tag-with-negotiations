@@ -21,7 +21,6 @@ class DeleteToFirestore {
     }
     
     static func hostExitRoom(roomId: String) async {
-        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         guard let nextHostUserId = PlayerDataStore.shared.guestPlayerArray.randomElement()?.userId else { return }
         await UpdateToFirestore.playerUpToHost(roomId: roomId, nextHostUserId: nextHostUserId)
         await exitRoom(roomId: roomId)

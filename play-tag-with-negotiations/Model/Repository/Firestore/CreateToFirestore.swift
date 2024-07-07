@@ -26,6 +26,7 @@ class CreateToFirestore {
         do {
             guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).setData(jsonObject)
+            await enterRoom(roomId: roomId, isHost: true)
         } catch {
             print(error)
         }
@@ -34,8 +35,11 @@ class CreateToFirestore {
     static func enterRoom(roomId: String, isHost: Bool) async {
         if await !ReadToFirestore.isBeingRoom(roomId: roomId) {
             guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+            let player = Player(userId: userId, isHost: isHost)
+            let encoded = try! JSONEncoder().encode(player)
             do {
-                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).setData(["userId": userId, "isHost": isHost, "point": 0, "enteredTime": Date(), "isDecided": false])
+                guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).setData(jsonObject)
                 try await Firestore.firestore().collection("Users").document(userId).setData(["beingRoom": roomId], merge: true)
             } catch {
                 print(error)

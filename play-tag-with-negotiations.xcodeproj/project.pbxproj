@@ -182,8 +182,7 @@
 			children = (
 				DEAB384D2C1DC27D007639F6 /* WaitingRoomView.swift */,
 				DEAB387A2C2061C2007639F6 /* WaitingRoomViewCell.swift */,
-				DEFA54D92C39076C00CF6BD1 /* RoomInfomationView.swift */,
-				DEFA54DB2C3907D800CF6BD1 /* RoomInfomationViewCell.swift */,
+				DEFA54F02C3AFF7F00CF6BD1 /* RoomInfomation */,
 			);
 			path = WaitingRoom;
 			sourceTree = "<group>";
@@ -283,6 +282,15 @@
 				DEFA54E02C39955200CF6BD1 /* ReadToStorage.swift */,
 			);
 			path = Storage;
+			sourceTree = "<group>";
+		};
+		DEFA54F02C3AFF7F00CF6BD1 /* RoomInfomation */ = {
+			isa = PBXGroup;
+			children = (
+				DEFA54D92C39076C00CF6BD1 /* RoomInfomationView.swift */,
+				DEFA54DB2C3907D800CF6BD1 /* RoomInfomationViewCell.swift */,
+			);
+			path = RoomInfomation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
