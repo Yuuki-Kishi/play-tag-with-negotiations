@@ -14,6 +14,7 @@ class DeleteToFirestore {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).delete()
+            try await Firestore.firestore().collection("Users").document(userId).updateData(["beingRoom": FieldValue.delete()])
         } catch {
             print(error)
         }

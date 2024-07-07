@@ -14,7 +14,8 @@ class ReadToFirestore {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return false }
         do {
             let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
-            return document["userName"] == nil ? true : false
+            guard let documentData = document.data() else { return false }
+            return documentData["userName"] == nil ? true : false
         } catch {
             print("Error getting document: \(error)")
             return false
@@ -25,7 +26,8 @@ class ReadToFirestore {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return false }
         do {
             let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
-            return document["pronoun"] == nil ? true : false
+            guard let documentData = document.data() else { return false }
+            return documentData["pronoun"] == nil ? true : false
         } catch {
             print("Error getting document: \(error)")
             return false
@@ -46,10 +48,13 @@ class ReadToFirestore {
     static func getUserData(userId: String) async -> User {
         do {
             let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
-            guard let userName = document["userName"] as? String else { return User() }
+            guard let documentData = document.data() else { return User() }
+            print("userInfo")
+            print(documentData)
+            guard let userName = documentData["userName"] as? String else { return User() }
             guard let creationDate = Auth.auth().currentUser?.metadata.creationDate else { return User() }
-            let iconUrl = document["iconUrl"] as? String ?? ""
-            guard let pronoun = document["pronoun"] as? String else { return User() }
+            let iconUrl = documentData["iconUrl"] as? String ?? ""
+            guard let pronoun = documentData["pronoun"] as? String else { return User() }
             return User(userId: userId, userName: userName, creationDate: creationDate, iconUrl: iconUrl, pronoun: pronoun)
         } catch {
             print(error)

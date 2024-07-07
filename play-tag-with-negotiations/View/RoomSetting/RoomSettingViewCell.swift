@@ -72,7 +72,6 @@ struct RoomSettingViewCell: View {
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .lineLimit(1)
                 .foregroundStyle(Color.gray)
-                .font(.system(size: 12))
         }
         .contentShape(Rectangle())
         .onTapGesture {
@@ -96,7 +95,6 @@ struct RoomSettingViewCell: View {
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .lineLimit(1)
                 .foregroundStyle(Color.gray)
-                .font(.system(size: 12))
         }
     }
     func playTagNameCell(item: String, data: String) -> some View {
