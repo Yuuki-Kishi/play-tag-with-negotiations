@@ -34,6 +34,18 @@ class ReadToFirestore {
         return true
     }
     
+    static func getBeingRoomId() async -> String? {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return nil }
+        do {
+            let userDocument = try await Firestore.firestore().collection("Users").document(userId).getDocument().data()
+            guard let beingRoomId = userDocument?["beingRoomId"] as? String else { return nil }
+            return beingRoomId
+        } catch {
+            print(error)
+        }
+        return nil
+    }
+    
     static func getUserData(userId: String) async -> User {
         do {
             let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()

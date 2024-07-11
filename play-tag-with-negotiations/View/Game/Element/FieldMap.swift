@@ -12,10 +12,10 @@ struct FieldMap: View {
     @State private var verticalCount: Int = 10
     
     var body: some View {
-        let columns: [GridItem] = Array(repeating: .init(.flexible()), count: horizontalCount)
+        let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 5), count: horizontalCount)
         
         ScrollView([.horizontal, .vertical]) {
-            LazyVGrid(columns: columns, spacing: 10) {
+            LazyVGrid(columns: columns, spacing: 5) {
                 ForEach(0 ..< horizontalCount * verticalCount) { num in
                     Text(changeToCoordinate(num: num))
                         .frame(width: 50, height: 50)
@@ -23,8 +23,7 @@ struct FieldMap: View {
                         .background(Color.gray)
                 }
             }
-            .padding(.top)
-            .padding(.horizontal)
+            .padding()
         }
     }
     func changeToCoordinate(num: Int) -> String {

@@ -13,7 +13,6 @@ struct PlayTagRoom: Codable, Hashable, Identifiable {
     var hostUserId: String
     var playTagName: String
     var creationDate: Date
-    var players: [Player]
     var phaseNow: Int
     var phaseMax: Int
     var chaserNumber: Int
@@ -42,8 +41,13 @@ struct PlayTagRoom: Codable, Hashable, Identifiable {
         self.roomId = try container.decode(UUID.self, forKey: .roomId)
         self.hostUserId = try container.decode(String.self, forKey: .hostUserId)
         self.playTagName = try container.decode(String.self, forKey: .playTagName)
-        self.creationDate = try container.decode(Date.self, forKey: .creationDate)
-        self.players = []
+        let formatter = ISO8601DateFormatter()
+        let dateString = try container.decode(String.self, forKey: .creationDate)
+        if let date = formatter.date(from: dateString) {
+            self.creationDate = date
+        } else {
+            throw DecodingError.dataCorruptedError(forKey: .creationDate, in: container, debugDescription: "Failed to decode creationDate.")
+        }
         self.phaseNow = try container.decode(Int.self, forKey: .phaseNow)
         self.phaseMax = try container.decode(Int.self, forKey: .phaseMax)
         self.chaserNumber = try container.decode(Int.self, forKey: .chaserNumber)
@@ -62,7 +66,9 @@ struct PlayTagRoom: Codable, Hashable, Identifiable {
         try container.encode(roomId, forKey: .roomId)
         try container.encode(hostUserId, forKey: .hostUserId)
         try container.encode(playTagName, forKey: .playTagName)
-        try container.encode(creationDate, forKey: .creationDate)
+        let formatter = ISO8601DateFormatter()
+        let dateString = formatter.string(from: creationDate)
+        try container.encode(dateString, forKey: .creationDate)
         try container.encode(phaseNow, forKey: .phaseNow)
         try container.encode(phaseMax, forKey: .phaseMax)
         try container.encode(chaserNumber, forKey: .chaserNumber)
@@ -76,12 +82,11 @@ struct PlayTagRoom: Codable, Hashable, Identifiable {
         try container.encode(isCanUseItem, forKey: .isCanUseItem)
     }
     
-    init(roomId: UUID, hostUserId: String, playTagName: String, creationDate: Date, players: [Player], phaseNow: Int, phaseMax: Int, chaserNumber: Int, fugitiveNumber: Int, horizontalCount: Int, verticalCount: Int, isPublic: Bool, isCanJoinAfter: Bool, isNegotiate: Bool, isCanDoQuest: Bool, isCanUseItem: Bool) {
+    init(roomId: UUID, hostUserId: String, playTagName: String, creationDate: Date, phaseNow: Int, phaseMax: Int, chaserNumber: Int, fugitiveNumber: Int, horizontalCount: Int, verticalCount: Int, isPublic: Bool, isCanJoinAfter: Bool, isNegotiate: Bool, isCanDoQuest: Bool, isCanUseItem: Bool) {
         self.roomId = roomId
         self.hostUserId = hostUserId
         self.playTagName = playTagName
         self.creationDate = creationDate
-        self.players = players
         self.phaseNow = phaseNow
         self.phaseMax = phaseMax
         self.chaserNumber = chaserNumber
@@ -100,7 +105,6 @@ struct PlayTagRoom: Codable, Hashable, Identifiable {
         self.hostUserId = UserDataStore.shared.signInUser?.userId ?? "unknownHostUserId"
         self.playTagName = playTagName
         self.creationDate = Date()
-        self.players = []
         self.phaseNow = 0
         self.phaseMax = 10
         self.chaserNumber = 1
@@ -119,7 +123,6 @@ struct PlayTagRoom: Codable, Hashable, Identifiable {
         self.hostUserId = "unknownHostUserId"
         self.playTagName = "unknownPlayTag"
         self.creationDate = Date()
-        self.players = []
         self.phaseNow = 0
         self.phaseMax = 0
         self.chaserNumber = 0

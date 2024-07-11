@@ -40,10 +40,22 @@ class CreateToFirestore {
             do {
                 guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
                 try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).setData(jsonObject)
-                try await Firestore.firestore().collection("Users").document(userId).setData(["beingRoom": roomId], merge: true)
+                try await Firestore.firestore().collection("Users").document(userId).setData(["beingRoomId": roomId], merge: true)
             } catch {
                 print(error)
             }
+        }
+    }
+    
+    static func sendRequestOfFriend(to: String) async {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+        let friend = Friend(userId: myUserId)
+        let encoded = try! JSONEncoder().encode(friend)
+        do {
+            guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
+            try await Firestore.firestore().collection("Users").document(to).collection("friend").document(myUserId).setData(jsonObject)
+        } catch {
+            print(error)
         }
     }
 }

@@ -67,6 +67,13 @@ struct MyPageListView: View {
             }, message: {
                 Text("ユーザーIDをクリップボードにコピーしました。")
             })
+            HStack {
+                Text("アカウント作成日")
+                Spacer()
+                Text(dateToString(date: userDataStore.signInUser?.creationDate))
+                    .foregroundStyle(Color.gray)
+                    .font(.system(size: 13))
+            }
             VStack {
                 Text("代名詞")
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -101,6 +108,12 @@ struct MyPageListView: View {
                 Text("代名詞を入力してください。")
             })
         }
+    }
+    func dateToString(date: Date?) -> String {
+        guard let creationDate = date else { return "不明" }
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        return dateformatter.string(from: creationDate)
     }
 }
 

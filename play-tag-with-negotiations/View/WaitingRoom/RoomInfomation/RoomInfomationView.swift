@@ -15,6 +15,8 @@ struct RoomInfomationView: View {
             RoomInfomationViewCell(playTagRoom: playTagRoom, itemType: .roomId)
             RoomInfomationViewCell(playTagRoom: playTagRoom, itemType: .hostUserId)
             RoomInfomationViewCell(playTagRoom: playTagRoom, itemType: .playTagName)
+            RoomInfomationViewCell(playTagRoom: playTagRoom, itemType: .creationDate)
+            RoomInfomationViewCell(playTagRoom: playTagRoom, itemType: .phaseNow)
             RoomInfomationViewCell(playTagRoom: playTagRoom, itemType: .phaseMax)
             RoomInfomationViewCell(playTagRoom: playTagRoom, itemType: .chaserNumber)
             RoomInfomationViewCell(playTagRoom: playTagRoom, itemType: .fugitiveNumber)

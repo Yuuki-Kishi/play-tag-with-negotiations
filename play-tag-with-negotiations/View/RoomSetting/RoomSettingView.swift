@@ -20,6 +20,8 @@ struct RoomSettingView: View {
                 RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .roomId)
                 RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .hostUserId)
                 RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .playTagName)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .creationDate)
+                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .phaseNow)
                 RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .phaseMax)
                 RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .chaserNumber)
                 RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .fugitiveNumber)

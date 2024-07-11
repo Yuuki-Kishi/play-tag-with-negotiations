@@ -28,7 +28,13 @@ struct User: Hashable, Identifiable, Equatable, Codable {
         self.id = UUID()
         self.userId = try container.decode(String.self, forKey: .userId)
         self.userName = try container.decode(String.self, forKey: .userName)
-        self.creationDate = try container.decode(Date.self, forKey: .creationDate)
+        let formatter = ISO8601DateFormatter()
+        let dateString = try container.decode(String.self, forKey: .creationDate)
+        if let date = formatter.date(from: dateString) {
+            self.creationDate = date
+        } else {
+            throw DecodingError.dataCorruptedError(forKey: .creationDate, in: container, debugDescription: "Failed to decode creationDate.")
+        }
         self.iconUrl = try container.decode(String.self, forKey: .iconUrl)
         self.pronoun = try container.decode(String.self, forKey: .pronoun)
     }
@@ -37,7 +43,9 @@ struct User: Hashable, Identifiable, Equatable, Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(userId, forKey: .userId)
         try container.encode(userName, forKey: .userName)
-        try container.encode(creationDate, forKey: .creationDate)
+        let formatter = ISO8601DateFormatter()
+        let dateString = formatter.string(from: creationDate)
+        try container.encode(dateString, forKey: .creationDate)
         try container.encode(iconUrl, forKey: .iconUrl)
         try container.encode(pronoun, forKey: .pronoun)
     }
@@ -56,7 +64,7 @@ struct User: Hashable, Identifiable, Equatable, Codable {
         self.userId = userId
         self.userName = "未設定"
         self.creationDate = creationDate
-        self.iconUrl = ""
+        self.iconUrl = "default"
         self.pronoun = "未設定"
     }
     
@@ -65,7 +73,7 @@ struct User: Hashable, Identifiable, Equatable, Codable {
         self.userId = "unknownUserId"
         self.userName = "unknown"
         self.creationDate = Date()
-        self.iconUrl = "unknownURL"
+        self.iconUrl = "default"
         self.pronoun = "Who am I?"
     }
 }

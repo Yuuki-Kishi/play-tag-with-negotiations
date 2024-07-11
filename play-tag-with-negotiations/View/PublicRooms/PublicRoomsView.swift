@@ -10,22 +10,35 @@ import SwiftUI
 struct PublicRoomsView: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
-    @State private var playTagRoomsArray: [PlayTagRoom] = []
+    @ObservedObject var roomDataStore: RoomDataStore
     @State private var isShowAlert = false
-    @State private var isNavigationToRoom = false
+    @State private var isNavigationToWaitingRoomView = false
+    @State private var isNavigationToRoomSettingView = false
     @State private var isNavigationToInvited = false
     @State private var roomId = ""
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var envData: EnvironmentData
     
     var body: some View {
         NavigationStack {
             ZStack {
-                List($playTagRoomsArray) { playTagRoom in
-                    PublicRoomsViewCell(playTagRoom: playTagRoom)
+                List($roomDataStore.publicRoomsArray) { $playTagRoom in
+                    PublicRoomsViewCell(playTagRoom: $playTagRoom)
+                        .onTapGesture {
+                            let roomId = playTagRoom.roomId.uuidString
+                            Task {
+                                if await ReadToFirestore.checkIsThereRoom(roomId: roomId) {
+                                    playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
+                                    await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
+                                    isNavigationToWaitingRoomView = true
+//                                    envData.isNavigationFromPublicRoomsView = $isNavigationToWaitingRoomView
+                                }
+                            }
+                        }
                 }
-                .navigationDestination(for: PlayTagRoom.self) { playTagRoom in
-                    
-                }
+                .navigationDestination(isPresented: $isNavigationToWaitingRoomView, destination: {
+                    WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore)
+                })
                 Button(action: {
                     isShowAlert = true
                 }, label: {
@@ -45,13 +58,11 @@ struct PublicRoomsView: View {
                             if await ReadToFirestore.checkIsThereRoom(roomId: roomId) {
                                 playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
                                 await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
-                                isNavigationToRoom = true
+                                isNavigationToWaitingRoomView = true
+//                                envData.isNavigationFromPublicRoomsView = $isNavigationToWaitingRoomView
                             }
                         }
                     })
-                })
-                .navigationDestination(isPresented: $isNavigationToRoom, destination: {
-                    WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore)
                 })
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                 .padding(.trailing, 35)
@@ -80,34 +91,40 @@ struct PublicRoomsView: View {
                 }
             }
             .onAppear() {
-                playTagRoomsArray = []
-                playTagRoomsArray.append(PlayTagRoom())
-                playTagRoomsArray.append(PlayTagRoom())
+                Task {
+                    if let roomId = await ReadToFirestore.getBeingRoomId() {
+                        playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
+                        isNavigationToWaitingRoomView = true
+//                        envData.isNavigationFromPublicRoomsView = $isNavigationToWaitingRoomView
+                    } else {
+                        ObserveToFirestore.observePublicRooms()
+                    }
+                }
             }
         }
     }
-    func testPrint() {
-        print("Tapped")
-    }
     func toolBarMenu() -> some View {
         Menu {
-            NavigationLink(destination: RoomSettingView(userDataStore: userDataStore, playerDataStore: playerDataStore), label: {
+            Button(action: {
+                isNavigationToRoomSettingView = true
+//                envData.isNavigationFromPublicRoomsView = $isNavigationToRoomSettingView
+            }, label: {
                 Label("ルーム作成", systemImage: "plus")
             })
             NavigationLink(destination: MyPageView(userDataStore: userDataStore), label: {
                 Label("マイページ", systemImage: "person.circle")
             })
             Menu {
-                Button(action: {playTagRoomsArray.sort {$0.playTagName < $1.playTagName}}, label: {
+                Button(action: { roomDataStore.publicRoomsArray.sort {$0.playTagName < $1.playTagName}}, label: {
                     Text("名前昇順")
                 })
-                Button(action: {playTagRoomsArray.sort {$0.playTagName > $1.playTagName}}, label: {
+                Button(action: { roomDataStore.publicRoomsArray.sort {$0.playTagName > $1.playTagName}}, label: {
                     Text("名前降順")
                 })
-                Button(action: {playTagRoomsArray.sort {$0.phaseNow < $1.phaseNow}}, label: {
+                Button(action: { roomDataStore.publicRoomsArray.sort {$0.phaseNow < $1.phaseNow}}, label: {
                     Text("フェーズ昇順")
                 })
-                Button(action: {playTagRoomsArray.sort {$0.phaseNow > $1.phaseNow}}, label: {
+                Button(action: { roomDataStore.publicRoomsArray.sort {$0.phaseNow > $1.phaseNow}}, label: {
                     Text("フェーズ降順")
                 })
             } label: {
@@ -122,9 +139,12 @@ struct PublicRoomsView: View {
         } label: {
             Image(systemName: "ellipsis.circle")
         }
+        .navigationDestination(isPresented: $isNavigationToRoomSettingView, destination: {
+            RoomSettingView(userDataStore: userDataStore, playerDataStore: playerDataStore)
+        })
     }
 }
 
 #Preview {
-    PublicRoomsView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
+    PublicRoomsView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared, roomDataStore: RoomDataStore.shared)
 }

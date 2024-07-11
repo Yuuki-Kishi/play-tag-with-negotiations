@@ -14,21 +14,24 @@ class DeleteToFirestore {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).delete()
-            try await Firestore.firestore().collection("Users").document(userId).updateData(["beingRoom": FieldValue.delete()])
+            try await Firestore.firestore().collection("Users").document(userId).updateData(["beingRoomId": FieldValue.delete()])
         } catch {
             print(error)
         }
     }
     
     static func hostExitRoom(roomId: String) async {
-        guard let nextHostUserId = PlayerDataStore.shared.guestPlayerArray.randomElement()?.userId else { return }
-        await UpdateToFirestore.playerUpToHost(roomId: roomId, nextHostUserId: nextHostUserId)
+        guard let nextHostUserId = PlayerDataStore.shared.guestPlayerArray.randomElement() else { return }
+        await UpdateToFirestore.playerUpToHost(roomId: roomId, nextHostUserId: nextHostUserId.userId)
         await exitRoom(roomId: roomId)
     }
     
     static func deleteRoom(roomId: String) async {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).delete()
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).delete()
+            try await Firestore.firestore().collection("Users").document(userId).updateData(["beingRoomId": FieldValue.delete()])
         } catch {
             print(error)
         }

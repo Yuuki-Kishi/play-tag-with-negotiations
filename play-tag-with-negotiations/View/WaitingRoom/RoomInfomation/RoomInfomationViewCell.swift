@@ -118,7 +118,7 @@ struct RoomInfomationViewCell: View {
     }
     func dateToString(date: Date) -> String {
         let dateFomatter = DateFormatter()
-        dateFomatter.dateFormat = "yyyy/mm/dd HH:mm:ss:SSS"
+        dateFomatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
         return dateFomatter.string(from: date)
     }
 }

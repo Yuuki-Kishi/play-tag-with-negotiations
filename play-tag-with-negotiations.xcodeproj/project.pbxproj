@@ -27,7 +27,6 @@
 		DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91592C1B378900A8DA37 /* MyPageView.swift */; };
 		DEDEF6D42C21BA1800A01FFF /* CreateToFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6D32C21BA1800A01FFF /* CreateToFirestore.swift */; };
 		DEDEF6E42C23016E00A01FFF /* ObserveToFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6E32C23016E00A01FFF /* ObserveToFirestore.swift */; };
-		DEDEF6E62C231AB200A01FFF /* ObserveIsSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6E52C231AB200A01FFF /* ObserveIsSignIn.swift */; };
 		DEDEF6E82C23283200A01FFF /* UpdateToFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6E72C23283200A01FFF /* UpdateToFirestore.swift */; };
 		DEDEF6EA2C23303600A01FFF /* SignOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6E92C23303600A01FFF /* SignOut.swift */; };
 		DEDEF6EC2C23322D00A01FFF /* ReadFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6EB2C23322D00A01FFF /* ReadFirestore.swift */; };
@@ -47,6 +46,12 @@
 		DEFA54EA2C39A03100CF6BD1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DEFA54E92C39A03100CF6BD1 /* FirebaseStorage */; };
 		DEFA54ED2C39A03F00CF6BD1 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = DEFA54EC2C39A03F00CF6BD1 /* GoogleSignIn */; };
 		DEFA54EF2C39A03F00CF6BD1 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DEFA54EE2C39A03F00CF6BD1 /* GoogleSignInSwift */; };
+		DEFA54F22C3D4E6400CF6BD1 /* CheckSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54F12C3D4E6400CF6BD1 /* CheckSignIn.swift */; };
+		DEFA54F42C3D5C6700CF6BD1 /* RoomDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54F32C3D5C6700CF6BD1 /* RoomDataStore.swift */; };
+		DEFA54F72C3E9EB800CF6BD1 /* EnvironmentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54F62C3E9EB800CF6BD1 /* EnvironmentData.swift */; };
+		DEFA55002C401D6200CF6BD1 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54FF2C401D6200CF6BD1 /* Friend.swift */; };
+		DEFA55032C40204500CF6BD1 /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55022C40204500CF6BD1 /* SelectionView.swift */; };
+		DEFA55052C402DB700CF6BD1 /* MovePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55042C402DB700CF6BD1 /* MovePanel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,7 +77,6 @@
 		DEDB91592C1B378900A8DA37 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		DEDEF6D32C21BA1800A01FFF /* CreateToFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateToFirestore.swift; sourceTree = "<group>"; };
 		DEDEF6E32C23016E00A01FFF /* ObserveToFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ObserveToFirestore.swift; path = ../../../../../../Documents/ObserveToFirestore.swift; sourceTree = "<group>"; };
-		DEDEF6E52C231AB200A01FFF /* ObserveIsSignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ObserveIsSignIn.swift; path = "../../../../../../.Trash/play-tag-with-negotiations/play-tag-with-negotiations/Model/Repository/Auth/ObserveIsSignIn.swift"; sourceTree = "<group>"; };
 		DEDEF6E72C23283200A01FFF /* UpdateToFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateToFirestore.swift; sourceTree = "<group>"; };
 		DEDEF6E92C23303600A01FFF /* SignOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOut.swift; sourceTree = "<group>"; };
 		DEDEF6EB2C23322D00A01FFF /* ReadFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadFirestore.swift; sourceTree = "<group>"; };
@@ -87,6 +91,12 @@
 		DEFA54DB2C3907D800CF6BD1 /* RoomInfomationViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfomationViewCell.swift; sourceTree = "<group>"; };
 		DEFA54DE2C3989FC00CF6BD1 /* UploadToStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadToStorage.swift; sourceTree = "<group>"; };
 		DEFA54E02C39955200CF6BD1 /* ReadToStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadToStorage.swift; sourceTree = "<group>"; };
+		DEFA54F12C3D4E6400CF6BD1 /* CheckSignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSignIn.swift; sourceTree = "<group>"; };
+		DEFA54F32C3D5C6700CF6BD1 /* RoomDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDataStore.swift; sourceTree = "<group>"; };
+		DEFA54F62C3E9EB800CF6BD1 /* EnvironmentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentData.swift; sourceTree = "<group>"; };
+		DEFA54FF2C401D6200CF6BD1 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		DEFA55022C40204500CF6BD1 /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
+		DEFA55042C402DB700CF6BD1 /* MovePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovePanel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,7 +144,7 @@
 			children = (
 				DEAB38612C1EA178007639F6 /* Google.swift */,
 				DEDEF6EE2C2341D600A01FFF /* Apple.swift */,
-				DEDEF6E52C231AB200A01FFF /* ObserveIsSignIn.swift */,
+				DEFA54F12C3D4E6400CF6BD1 /* CheckSignIn.swift */,
 				DEDEF6E92C23303600A01FFF /* SignOut.swift */,
 			);
 			path = Auth;
@@ -145,6 +155,7 @@
 			children = (
 				DEAB386B2C1EAAA6007639F6 /* UserDataStore.swift */,
 				DEFA54D12C3103D100CF6BD1 /* PlayerDataStore.swift */,
+				DEFA54F32C3D5C6700CF6BD1 /* RoomDataStore.swift */,
 			);
 			path = DataStore;
 			sourceTree = "<group>";
@@ -231,8 +242,10 @@
 			children = (
 				DEAB386E2C1EB32E007639F6 /* User.swift */,
 				DEDB914F2C173F7C00A8DA37 /* Player.swift */,
+				DEFA54FF2C401D6200CF6BD1 /* Friend.swift */,
 				DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */,
 				DEDB914D2C173A2400A8DA37 /* PlayTagRoom.swift */,
+				DEFA54F62C3E9EB800CF6BD1 /* EnvironmentData.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -271,6 +284,7 @@
 			isa = PBXGroup;
 			children = (
 				DEDEF6F42C23C9BB00A01FFF /* FieldMap.swift */,
+				DEFA54F52C3D71B300CF6BD1 /* ControlPanel */,
 			);
 			path = Element;
 			sourceTree = "<group>";
@@ -291,6 +305,23 @@
 				DEFA54DB2C3907D800CF6BD1 /* RoomInfomationViewCell.swift */,
 			);
 			path = RoomInfomation;
+			sourceTree = "<group>";
+		};
+		DEFA54F52C3D71B300CF6BD1 /* ControlPanel */ = {
+			isa = PBXGroup;
+			children = (
+				DEFA55022C40204500CF6BD1 /* SelectionView.swift */,
+				DEFA55012C40203600CF6BD1 /* Elements */,
+			);
+			path = ControlPanel;
+			sourceTree = "<group>";
+		};
+		DEFA55012C40203600CF6BD1 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				DEFA55042C402DB700CF6BD1 /* MovePanel.swift */,
+			);
+			path = Elements;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -385,10 +416,10 @@
 				DEAB38622C1EA178007639F6 /* Google.swift in Sources */,
 				DEDEF6E82C23283200A01FFF /* UpdateToFirestore.swift in Sources */,
 				DEDB91582C189BCB00A8DA37 /* RoomSettingViewCell.swift in Sources */,
-				DEDEF6E62C231AB200A01FFF /* ObserveIsSignIn.swift in Sources */,
 				DEFA54DF2C3989FC00CF6BD1 /* UploadToStorage.swift in Sources */,
 				DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */,
 				DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */,
+				DEFA54F72C3E9EB800CF6BD1 /* EnvironmentData.swift in Sources */,
 				DEDB91502C173F7C00A8DA37 /* Player.swift in Sources */,
 				DEFA54DA2C39076C00CF6BD1 /* RoomInfomationView.swift in Sources */,
 				DEDEF6F52C23C9BB00A01FFF /* FieldMap.swift in Sources */,
@@ -396,9 +427,13 @@
 				DEDB914E2C173A2400A8DA37 /* PlayTagRoom.swift in Sources */,
 				DEAB386C2C1EAAA6007639F6 /* UserDataStore.swift in Sources */,
 				DEAB38782C2060D3007639F6 /* MyPageListView.swift in Sources */,
+				DEFA55032C40204500CF6BD1 /* SelectionView.swift in Sources */,
+				DEFA54F42C3D5C6700CF6BD1 /* RoomDataStore.swift in Sources */,
 				DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */,
 				DEFA54E12C39955200CF6BD1 /* ReadToStorage.swift in Sources */,
+				DEFA54F22C3D4E6400CF6BD1 /* CheckSignIn.swift in Sources */,
 				DEAB387B2C2061C2007639F6 /* WaitingRoomViewCell.swift in Sources */,
+				DEFA55052C402DB700CF6BD1 /* MovePanel.swift in Sources */,
 				DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */,
 				DEAB386F2C1EB32E007639F6 /* User.swift in Sources */,
 				DEDEF6E42C23016E00A01FFF /* ObserveToFirestore.swift in Sources */,
@@ -406,6 +441,7 @@
 				DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */,
 				DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */,
 				DEDB91532C17417700A8DA37 /* PublicRoomsView.swift in Sources */,
+				DEFA55002C401D6200CF6BD1 /* Friend.swift in Sources */,
 				DEFA54D02C246E2300CF6BD1 /* PlayerPosition.swift in Sources */,
 				DEDEF6F32C23C9AF00A01FFF /* Game.swift in Sources */,
 			);

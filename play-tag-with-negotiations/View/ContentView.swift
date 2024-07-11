@@ -10,9 +10,10 @@ import GoogleSignInSwift
 import AuthenticationServices
 
 struct ContentView: View {
-    @State private var isShowModal = false
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
+    @ObservedObject var roomDataStore: RoomDataStore
+    @State private var isShowModal = false
     
     var body: some View {
         NavigationStack {
@@ -40,16 +41,16 @@ struct ContentView: View {
                 }
             }
             .fullScreenCover(isPresented: $isShowModal, content: {
-                PublicRoomsView(userDataStore: userDataStore, playerDataStore: playerDataStore)
+                PublicRoomsView(userDataStore: userDataStore, playerDataStore: playerDataStore, roomDataStore: roomDataStore).environmentObject(EnvironmentData())
             })
             .padding()
         }
         .onAppear() {
-            ObserveIsSignIn.checkIsSignIn()
+            Task { await CheckSignIn.isSignIn() }
         }
     }
 }
 
 #Preview {
-    ContentView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
+    ContentView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared, roomDataStore: RoomDataStore.shared)
 }

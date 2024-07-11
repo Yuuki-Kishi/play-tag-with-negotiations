@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 struct Player: Codable, Hashable, Identifiable {
     var id = UUID()
@@ -20,6 +19,10 @@ struct Player: Codable, Hashable, Identifiable {
     enum CodingKeys: String, CodingKey {
         case userId, isHost, point, enteredTime, isDecided, playerPosition
     }
+    
+    enum PlayerPositionKeys: String, CodingKey {
+        case x, y
+    }
         
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -27,9 +30,18 @@ struct Player: Codable, Hashable, Identifiable {
         self.userId = try container.decode(String.self, forKey: .userId)
         self.isHost = try container.decode(Bool.self, forKey: .isHost)
         self.point = try container.decode(Int.self, forKey: .point)
-        self.enteredTime = try container.decode(Date.self, forKey: .enteredTime)
+        let formatter = ISO8601DateFormatter()
+        let dateString = try container.decode(String.self, forKey: .enteredTime)
+        if let date = formatter.date(from: dateString) {
+            self.enteredTime = date
+        } else {
+            throw DecodingError.dataCorruptedError(forKey: .enteredTime, in: container, debugDescription: "Failed to decode creationDate.")
+        }
         self.isDecided = try container.decode(Bool.self, forKey: .isDecided)
-        self.playerPosition = try container.decode(PlayerPosition.self, forKey: .playerPosition)
+        let playerPosition = try container.nestedContainer(keyedBy: PlayerPositionKeys.self, forKey: .playerPosition)
+        let x = try playerPosition.decode(Int.self, forKey: .x)
+        let y = try playerPosition.decode(Int.self, forKey: .y)
+        self.playerPosition = PlayerPosition(x: x, y: y)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -37,9 +49,13 @@ struct Player: Codable, Hashable, Identifiable {
         try container.encode(self.userId, forKey: .userId)
         try container.encode(self.isHost, forKey: .isHost)
         try container.encode(self.point, forKey: .point)
-        try container.encode(self.enteredTime, forKey: .enteredTime)
+        let formatter = ISO8601DateFormatter()
+        let dateString = formatter.string(from: enteredTime)
+        try container.encode(dateString, forKey: .enteredTime)
         try container.encode(self.isDecided, forKey: .isDecided)
-        try container.encode(self.playerPosition, forKey: .playerPosition)
+        var playerPlosition = container.nestedContainer(keyedBy: PlayerPositionKeys.self, forKey: .playerPosition)
+        try playerPlosition.encode(self.playerPosition.x, forKey: .x)
+        try playerPlosition.encode(self.playerPosition.y, forKey: .y)
     }
     
     init(userId: String, isHost: Bool, point: Int, enteredTime: Date, isDecided: Bool, playerPosition: PlayerPosition) {

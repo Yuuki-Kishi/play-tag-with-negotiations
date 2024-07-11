@@ -9,7 +9,9 @@ import SwiftUI
 
 struct WaitingRoomViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
+    @ObservedObject var playerDataStore: PlayerDataStore
     @Binding var user: User
+    @State private var isShowAlert = false
     
     var body: some View {
         HStack {
@@ -24,6 +26,25 @@ struct WaitingRoomViewCell: View {
                 Text(user.pronoun)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(1)
+                    .font(.system(size: 15))
+            }
+            if user.userId != userDataStore.signInUser?.userId {
+                Button(action: {
+                    Task {
+                        await CreateToFirestore.sendRequestOfFriend(to: user.userId)
+                        isShowAlert = true
+                    }
+                }, label: {
+                    Image(systemName: "paperplane.fill")
+                })
+                .buttonStyle(.plain)
+                .frame(width: 30, height: 40)
+                .foregroundStyle(Color.accentColor)
+                .alert("フレンド申請を送信しました", isPresented: $isShowAlert, actions: {
+                    Button(action: {}, label: {
+                        Text("OK")
+                    })
+                })
             }
         }
     }

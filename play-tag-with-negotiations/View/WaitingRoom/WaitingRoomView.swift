@@ -14,18 +14,19 @@ struct WaitingRoomView: View {
     @State private var isShowHostAlert = false
     @State private var isShowLastUserAlert = false
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var envData: EnvironmentData
     
     var body: some View {
         ZStack {
             List {
                 Section(content: {
-                    WaitingRoomViewCell(userDataStore: userDataStore, user: $playerDataStore.hostUser)
+                    WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: $playerDataStore.hostUser)
                 }, header: {
                     Text("ホスト")
                 })
                 Section(content: {
                     ForEach($playerDataStore.guestUserArray, id: \.self) { user in
-                        WaitingRoomViewCell(userDataStore: userDataStore, user: user)
+                        WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: user)
                     }
                 }, header: {
                     Text("ゲスト")
@@ -89,7 +90,7 @@ struct WaitingRoomView: View {
                 Text("退出")
             })
         }, message: {
-            Text("再入室する場合はルームIDが必要です。")
+            Text("非公開ルームの場合、再入室するにはルームIDが必要です。")
         })
         .onAppear() {
             onAppear()
@@ -127,6 +128,7 @@ struct WaitingRoomView: View {
             guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
             await DeleteToFirestore.deleteRoom(roomId: roomId)
             dismiss()
+//            envData.isNavigationFromPublicRoomsView.wrappedValue = false
         }
     }
     func hostExit() {
@@ -134,6 +136,7 @@ struct WaitingRoomView: View {
             guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
             await DeleteToFirestore.hostExitRoom(roomId: roomId)
             dismiss()
+//            envData.isNavigationFromPublicRoomsView.wrappedValue = false
         }
     }
     func exit() {
@@ -141,6 +144,7 @@ struct WaitingRoomView: View {
             guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
             await DeleteToFirestore.exitRoom(roomId: roomId)
             dismiss()
+//            envData.isNavigationFromPublicRoomsView.wrappedValue = false
         }
     }
     func onAppear() {

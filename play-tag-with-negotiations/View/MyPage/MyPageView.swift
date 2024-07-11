@@ -19,7 +19,7 @@ struct MyPageView: View {
             VStack {
                 Spacer(minLength: 50)
                 PhotosPicker(selection: $selectedImage) {
-                    if userDataStore.signInUser?.iconUrl == "" {
+                    if userDataStore.signInUser?.iconUrl == "default" {
                         Image(systemName: "person.circle")
                             .scaledToFit()
                             .font(.system(size: 200.0).weight(.ultraLight))
@@ -61,8 +61,7 @@ struct MyPageView: View {
     func getIconUIImage() {
         Task {
             guard let iconUrl = userDataStore.signInUser?.iconUrl else { return }
-            print(iconUrl)
-            await ReadToStorage.getIconImage(iconUrl: iconUrl)
+            await ReadToStorage.getMyIconImage(iconUrl: iconUrl)
         }
     }
     func imageDataToUIImage(data: Data?) {
