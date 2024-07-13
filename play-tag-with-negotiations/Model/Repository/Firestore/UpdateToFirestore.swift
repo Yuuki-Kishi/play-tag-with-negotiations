@@ -44,4 +44,15 @@ class UpdateToFirestore {
             print(error)
         }
     }
+    
+    static func becomeFriend(friendUserId: String) async {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        let formatter = ISO8601DateFormatter()
+        let time = formatter.string(from: Date())
+        do {
+            try await Firestore.firestore().collection("Users").document(userId).collection("Friends").document(friendUserId).updateData(["isFriend": true, "editedTime": time])
+        } catch {
+            print(error)
+        }
+    }
 }

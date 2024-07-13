@@ -12,7 +12,7 @@ import AuthenticationServices
 struct ContentView: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
-    @ObservedObject var roomDataStore: RoomDataStore
+    @StateObject var roomDataStore = RoomDataStore.shared
     @State private var isShowModal = false
     
     var body: some View {

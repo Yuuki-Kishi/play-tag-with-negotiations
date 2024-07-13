@@ -53,7 +53,7 @@ class CreateToFirestore {
         let encoded = try! JSONEncoder().encode(friend)
         do {
             guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
-            try await Firestore.firestore().collection("Users").document(to).collection("friend").document(myUserId).setData(jsonObject)
+            try await Firestore.firestore().collection("Users").document(to).collection("Friends").document(myUserId).setData(jsonObject)
         } catch {
             print(error)
         }

@@ -7,9 +7,11 @@
 
 import SwiftUI
 
-struct FieldMap: View {
-    @State private var horizontalCount: Int = 10
-    @State private var verticalCount: Int = 10
+struct FieldMapView: View {
+    @ObservedObject var userDataStore: UserDataStore
+    @ObservedObject var playerDataStore: PlayerDataStore
+    @State private var horizontalCount: Int = 5
+    @State private var verticalCount: Int = 5
     
     var body: some View {
         let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 5), count: horizontalCount)
@@ -35,5 +37,5 @@ struct FieldMap: View {
 }
 
 #Preview {
-    FieldMap()
+    FieldMapView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
 }

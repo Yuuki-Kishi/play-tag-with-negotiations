@@ -10,6 +10,7 @@ import PhotosUI
 
 struct MyPageView: View {
     @ObservedObject var userDataStore: UserDataStore
+    @StateObject var friendDataStore =  FriendDataStore.shared
     @State private var selectedImage: PhotosPickerItem?
     @State private var iconUIImage: UIImage? = nil
     
@@ -51,12 +52,24 @@ struct MyPageView: View {
                 Spacer()
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing, content: {
+                toolBarMenu()
+            })
+        }
         .background(Color(UIColor.systemGray6))
         .navigationTitle("マイページ")
         .onAppear() {
             ObserveToFirestore.observeUserData()
             getIconUIImage()
         }
+    }
+    func toolBarMenu() -> some View {
+        NavigationLink(destination: {
+            FriendView(friendDataStore: friendDataStore)
+        }, label: {
+            Image(systemName: "person.2.fill")
+        })
     }
     func getIconUIImage() {
         Task {

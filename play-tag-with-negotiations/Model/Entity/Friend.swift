@@ -10,11 +10,11 @@ import Foundation
 struct Friend: Codable, Hashable, Identifiable {
     var id = UUID()
     var userId: String
-    var requestTime: Date
+    var editedTime: Date
     var isFriend: Bool
     
     enum CodingKeys: String, CodingKey {
-        case userId, requestTime, isFriend
+        case userId, editedTime, isFriend
     }
     
     init(from decoder: Decoder) throws {
@@ -22,11 +22,11 @@ struct Friend: Codable, Hashable, Identifiable {
         self.id = UUID()
         self.userId = try container.decode(String.self, forKey: .userId)
         let formatter = ISO8601DateFormatter()
-        let dateString = try container.decode(String.self, forKey: .requestTime)
+        let dateString = try container.decode(String.self, forKey: .editedTime)
         if let date = formatter.date(from: dateString) {
-            self.requestTime = date
+            self.editedTime = date
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .requestTime, in: container, debugDescription: "Failed to decode creationDate.")
+            throw DecodingError.dataCorruptedError(forKey: .editedTime, in: container, debugDescription: "Failed to decode creationDate.")
         }
         self.isFriend = try container.decode(Bool.self, forKey: .isFriend)
     }
@@ -35,29 +35,29 @@ struct Friend: Codable, Hashable, Identifiable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.userId, forKey: .userId)
         let formatter = ISO8601DateFormatter()
-        let dateString = formatter.string(from: requestTime)
-        try container.encode(dateString, forKey: .requestTime)
+        let dateString = formatter.string(from: editedTime)
+        try container.encode(dateString, forKey: .editedTime)
         try container.encode(self.isFriend, forKey: .isFriend)
     }
     
-    init(userId: String, requestTime: Date, isFriend: Bool) {
+    init(userId: String, editedTime: Date, isFriend: Bool) {
         self.id = UUID()
         self.userId = userId
-        self.requestTime = requestTime
+        self.editedTime = editedTime
         self.isFriend = isFriend
     }
     
     init(userId: String) {
         self.id = UUID()
         self.userId = userId
-        self.requestTime = Date()
+        self.editedTime = Date()
         self.isFriend = false
     }
     
     init() {
         self.id = UUID()
         self.userId = "unknownUserId"
-        self.requestTime = Date()
+        self.editedTime = Date()
         self.isFriend = false
     }
 }

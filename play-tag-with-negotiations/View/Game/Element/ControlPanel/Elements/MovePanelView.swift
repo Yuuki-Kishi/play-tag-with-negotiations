@@ -7,7 +7,10 @@
 
 import SwiftUI
 
-struct MovePanel: View {
+struct MovePanelView: View {
+    @ObservedObject var userDataStore: UserDataStore
+    @ObservedObject var playerDataStore: PlayerDataStore
+    
     var body: some View {
         VStack {
             HStack {
@@ -15,19 +18,19 @@ struct MovePanel: View {
                     
                 }, label: {
                     Image(systemName: "arrow.up.left.square.fill")
-                        .font(.system(size: 100).weight(.semibold))
+                        .font(.system(size: 80).weight(.semibold))
                 })
                 Button(action: {
                     
                 }, label: {
                     Image(systemName: "arrow.up.square.fill")
-                        .font(.system(size: 100).weight(.semibold))
+                        .font(.system(size: 80).weight(.semibold))
                 })
                 Button(action: {
                     
                 }, label: {
                     Image(systemName: "arrow.up.right.square.fill")
-                        .font(.system(size: 100).weight(.semibold))
+                        .font(.system(size: 80).weight(.semibold))
                 })
             }
             HStack {
@@ -35,19 +38,21 @@ struct MovePanel: View {
                     
                 }, label: {
                     Image(systemName: "arrow.left.square.fill")
-                        .font(.system(size: 100).weight(.semibold))
+                        .font(.system(size: 80).weight(.semibold))
                 })
                 Button(action: {
                     
                 }, label: {
-                    Image(systemName: "octagon.fill")
-                        .font(.system(size: 90).weight(.semibold))
+                    ZStack {
+                        Image(systemName: "octagon.fill")
+                            .font(.system(size: 73).weight(.semibold))
+                    }
                 })
                 Button(action: {
                     
                 }, label: {
                     Image(systemName: "arrow.right.square.fill")
-                        .font(.system(size: 100).weight(.semibold))
+                        .font(.system(size: 80).weight(.semibold))
                 })
             }
             HStack {
@@ -55,19 +60,19 @@ struct MovePanel: View {
                     
                 }, label: {
                     Image(systemName: "arrow.down.left.square.fill")
-                        .font(.system(size: 100).weight(.semibold))
+                        .font(.system(size: 80).weight(.semibold))
                 })
                 Button(action: {
                     
                 }, label: {
                     Image(systemName: "arrow.down.square.fill")
-                        .font(.system(size: 100).weight(.semibold))
+                        .font(.system(size: 80).weight(.semibold))
                 })
                 Button(action: {
                     
                 }, label: {
                     Image(systemName: "arrow.down.right.square.fill")
-                        .font(.system(size: 100).weight(.semibold))
+                        .font(.system(size: 80).weight(.semibold))
                 })
             }
         }
@@ -75,5 +80,5 @@ struct MovePanel: View {
 }
 
 #Preview {
-    MovePanel()
+    MovePanelView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
 }

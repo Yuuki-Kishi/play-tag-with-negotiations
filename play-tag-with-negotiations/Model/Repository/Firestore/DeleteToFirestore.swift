@@ -36,4 +36,13 @@ class DeleteToFirestore {
             print(error)
         }
     }
+    
+    static func deleteFriend(friendUserId: String) async {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        do {
+            try await Firestore.firestore().collection("Users").document(userId).collection("Friends").document(friendUserId).delete()
+        } catch {
+            print(error)
+        }
+    }
 }
