@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RoomSettingViewCell: View {
-    @Binding var playTagRoom: PlayTagRoom
+    @ObservedObject var playerDataStore: PlayerDataStore
     @State var itemType: PlayTagRoom.displayItemType
     @State private var text = ""
     @State private var isShowCopiedAlert = false
@@ -18,54 +18,36 @@ struct RoomSettingViewCell: View {
     var body: some View {
         switch itemType {
         case .roomId:
-            uuidCell(item: "ルームID", data: playTagRoom.roomId.uuidString)
+            uuidCell(item: "ルームID", data: playerDataStore.playingRoom.roomId.uuidString)
         case .hostUserId:
-            hostUserIdCell(item: "ホストユーザーID", data: playTagRoom.hostUserId)
+            hostUserIdCell(item: "ホストユーザーID", data: playerDataStore.playingRoom.hostUserId)
         case .playTagName:
-            playTagNameCell(item: "鬼ごっこ名", data: playTagRoom.playTagName)
+            playTagNameCell(item: "鬼ごっこ名", data: playerDataStore.playingRoom.playTagName)
         case .creationDate:
-            dateCell(item: "作成日時", data: playTagRoom.creationDate)
+            dateCell(item: "作成日時", data: playerDataStore.playingRoom.creationDate)
         case .phaseNow:
-            intCell(item: "現在のフェーズ", data: playTagRoom.phaseNow)
+            intCell(item: "現在のフェーズ", data: playerDataStore.playingRoom.phaseNow)
         case .phaseMax:
-            intCell(item: "最大フェーズ", data: playTagRoom.phaseMax)
+            intCell(item: "最大フェーズ", data: playerDataStore.playingRoom.phaseMax)
         case .chaserNumber:
-            intCell(item: "鬼の人数", data: playTagRoom.chaserNumber)
+            intCell(item: "鬼の人数", data: playerDataStore.playingRoom.chaserNumber)
         case .fugitiveNumber:
-            intCell(item: "逃走者の人数", data: playTagRoom.fugitiveNumber)
+            intCell(item: "逃走者の人数", data: playerDataStore.playingRoom.fugitiveNumber)
         case .horizontalCount:
-            intCell(item: "横のマスの数", data: playTagRoom.horizontalCount)
+            intCell(item: "横のマスの数", data: playerDataStore.playingRoom.horizontalCount)
         case .verticalCount:
-            intCell(item: "縦のマスの数", data: playTagRoom.verticalCount)
+            intCell(item: "縦のマスの数", data: playerDataStore.playingRoom.verticalCount)
         case .isPublic:
-            Toggle("公開", isOn: $playTagRoom.isPublic)
-                .onChange(of: playTagRoom.isPublic) {
-                    if playTagRoom.isPublic {
-                        playTagRoom.isCanJoinAfter = true
-                    }
-                }
+            Toggle("公開", isOn: $playerDataStore.playingRoom.isPublic)
         case .isCanJoinAfter:
-            Toggle("途中参加", isOn: $playTagRoom.isCanJoinAfter)
-                .onChange(of: playTagRoom.isCanJoinAfter) {
-                    if !playTagRoom.isCanJoinAfter {
-                        playTagRoom.isPublic = false
-                    }
-                }
+            Toggle("途中参加", isOn: $playerDataStore.playingRoom.isCanJoinAfter)
         case .isNegotiate:
-            Toggle("交渉", isOn: $playTagRoom.isNegotiate)
+            Toggle("交渉", isOn: $playerDataStore.playingRoom.isNegotiate)
         case .isCanDoQuest:
-            Toggle("クエスト", isOn: $playTagRoom.isCanDoQuest)
+            Toggle("クエスト", isOn: $playerDataStore.playingRoom.isCanDoQuest)
         case .isCanUseItem:
-            Toggle("アイテム", isOn: $playTagRoom.isCanUseItem)
+            Toggle("アイテム", isOn: $playerDataStore.playingRoom.isCanUseItem)
         }
-    }
-    func checkTextIsNumber(before: Int, after: String) -> Int {
-        if let result = Int(after) {
-            if result > 0 {
-                return Int(after) == nil ? before : Int(after)!
-            }
-        }
-        return before
     }
     func uuidCell(item: String, data: String) -> some View {
         HStack {
@@ -119,7 +101,7 @@ struct RoomSettingViewCell: View {
             TextField(item, text: $text)
             Button("キャンセル", role: .cancel, action: {})
             Button("変更", action: {
-                playTagRoom.playTagName = text
+                playerDataStore.playingRoom.playTagName = text
                 isShowStringAlert = false
             })
         })
@@ -155,17 +137,25 @@ struct RoomSettingViewCell: View {
             Button("変更", action: {
                 switch itemType {
                 case .phaseMax:
-                    playTagRoom.phaseMax = checkTextIsNumber(before: playTagRoom.phaseMax, after: text)
+                    playerDataStore.playingRoom.phaseMax = checkTextIsNumber(before: playerDataStore.playingRoom.phaseMax, after: text)
                 case .chaserNumber:
-                    playTagRoom.chaserNumber = checkTextIsNumber(before: playTagRoom.chaserNumber, after: text)
+                    playerDataStore.playingRoom.chaserNumber = checkTextIsNumber(before: playerDataStore.playingRoom.chaserNumber, after: text)
                 case .fugitiveNumber:
-                    playTagRoom.fugitiveNumber = checkTextIsNumber(before: playTagRoom.chaserNumber, after: text)
+                    playerDataStore.playingRoom.fugitiveNumber = checkTextIsNumber(before: playerDataStore.playingRoom.chaserNumber, after: text)
                 default:
                     break
                 }
                 isShowStringAlert = false
             })
         })
+    }
+    func checkTextIsNumber(before: Int, after: String) -> Int {
+        if let result = Int(after) {
+            if result > 0 {
+                return Int(after) == nil ? before : Int(after)!
+            }
+        }
+        return before
     }
     func dateToString(date: Date) -> String {
         let dateFomatter = DateFormatter()
@@ -175,5 +165,5 @@ struct RoomSettingViewCell: View {
 }
 
 //#Preview {
-//    RoomSettingCellView(playTagRoom: PlayTagRoom(), itemType: .roomId)
+//    RoomSettingCellView(playerDataStore.playTagRoom: playerDataStore.playTagRoom(), itemType: .roomId)
 //}

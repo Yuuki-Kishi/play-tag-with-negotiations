@@ -10,7 +10,7 @@ import SwiftUI
 struct WaitingRoomViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
-    @State var user: User
+    @Binding var user: User
     @State private var isShowAlert = false
     
     var body: some View {

@@ -24,8 +24,20 @@ struct PlayTagRoom: Codable, Hashable, Identifiable, Equatable {
     var fugitiveNumber: Int
     var horizontalCount: Int
     var verticalCount: Int
-    var isPublic: Bool
-    var isCanJoinAfter: Bool
+    var isPublic: Bool {
+        didSet {
+            if isPublic == true && isCanJoinAfter == false {
+                isCanJoinAfter = true
+            }
+        }
+    }
+    var isCanJoinAfter: Bool {
+        didSet {
+            if isCanJoinAfter == false && isPublic == true {
+                isPublic = false
+            }
+        }
+    }
     var isNegotiate: Bool
     var isCanDoQuest: Bool
     var isCanUseItem: Bool

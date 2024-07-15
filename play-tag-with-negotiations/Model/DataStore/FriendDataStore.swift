@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import OrderedCollections
 
 class FriendDataStore: ObservableObject {
     static let shared = FriendDataStore()

@@ -11,14 +11,13 @@ struct RoomSettingView: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     @ObservedObject var pathDataStore: PathDataStore
-    @State var playTagRoom: PlayTagRoom = PlayTagRoom(playTagName: "鬼ごっこ")
     @State private var isShowAlert = false
     
     var body: some View {
         ZStack {
             List {
                 ForEach(PlayTagRoom.displayItemType.allCases, id: \.self) { itemType in
-                    RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: itemType)
+                    RoomSettingViewCell(playerDataStore: playerDataStore, itemType: itemType)
                 }
             }
             .toolbar {
@@ -36,8 +35,7 @@ struct RoomSettingView: View {
                 })
                 Button(action: {
                     Task {
-                        await CreateToFirestore.createPlayTagRoom(playTagRoom: playTagRoom)
-                        playerDataStore.playingRoom = playTagRoom
+                        await CreateToFirestore.createPlayTagRoom(playTagRoom: playerDataStore.playingRoom)
                         pathDataStore.navigatetionPath.append(.WaitingRoom)
                     }
                 }, label: {
@@ -50,6 +48,9 @@ struct RoomSettingView: View {
                 WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
             }
             .navigationTitle("ルーム作成")
+            .onAppear() {
+                playerDataStore.playingRoom = PlayTagRoom(playTagName: "鬼ごっこ")
+            }
         }
     }
 }

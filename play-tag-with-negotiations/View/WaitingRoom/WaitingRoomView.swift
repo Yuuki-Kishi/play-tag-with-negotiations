@@ -20,21 +20,21 @@ struct WaitingRoomView: View {
         ZStack {
             List {
                 Section(content: {
-                    WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: playerDataStore.hostUser)
+                    WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: $playerDataStore.hostUser)
                 }, header: {
                     Text("ホスト")
                 })
-                Section(content: {
-                    List {
-                        ForEach(playerDataStore.guestUserArray, id: \.self) { user in
+                if !playerDataStore.guestUserArray.isEmpty {
+                    Section(content: {
+                        List($playerDataStore.guestUserArray) { user in
                             WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: user)
                         }
-                    }
-                }, header: {
-                    Text("ゲスト")
-                })
+                    }, header: {
+                        Text("ゲスト")
+                    })
+                }
             }
-            if userDataStore.signInUser?.userId == playerDataStore.playingRoom?.hostUserId {
+            if userDataStore.signInUser?.userId == playerDataStore.playingRoom.hostUserId {
                 Button(action: {
                     
                 }, label: {
@@ -52,7 +52,7 @@ struct WaitingRoomView: View {
             }
         }
         .navigationDestination(for: PathDataStore.path.self) { path in
-            RoomInfomationView(playTagRoom: playerDataStore.playingRoom ?? PlayTagRoom())
+            RoomInfomationView(playerDataStore: playerDataStore)
         }
         .navigationTitle("待合室")
         .navigationBarBackButtonHidden(true)
@@ -111,7 +111,7 @@ struct WaitingRoomView: View {
             Divider()
             Button(role: .destructive, action: {
                 guard let userId = userDataStore.signInUser?.userId else { return }
-                guard let hostUserId = playerDataStore.playingRoom?.hostUserId else { return }
+                let hostUserId = playerDataStore.playingRoom.hostUserId
                 if playerDataStore.guestUserArray.count == 0 {
                     isShowLastUserAlert = true
                 } else {
@@ -130,27 +130,27 @@ struct WaitingRoomView: View {
     }
     func lastExit() {
         Task {
-            guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
+            let roomId = playerDataStore.playingRoom.roomId.uuidString
             await DeleteToFirestore.deleteRoom(roomId: roomId)
             dismiss()
         }
     }
     func hostExit() {
         Task {
-            guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
+            let roomId = playerDataStore.playingRoom.roomId.uuidString
             await DeleteToFirestore.hostExitRoom(roomId: roomId)
             dismiss()
         }
     }
     func exit() {
         Task {
-            guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
+            let roomId = playerDataStore.playingRoom.roomId.uuidString
             await DeleteToFirestore.exitRoom(roomId: roomId)
             dismiss()
         }
     }
     func onAppear() {
-        guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
+        let roomId = playerDataStore.playingRoom.roomId.uuidString
         ObserveToFirestore.observePlayer()
         ObserveToFirestore.observeRoomField(roomId: roomId)
     }

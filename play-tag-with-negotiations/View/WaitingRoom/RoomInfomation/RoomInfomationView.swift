@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct RoomInfomationView: View {
-    @State var playTagRoom: PlayTagRoom
+    @ObservedObject var playerDataStore: PlayerDataStore
     
     var body: some View {
         List {
             ForEach(PlayTagRoom.displayItemType.allCases, id: \.self) { itemType in
-                RoomInfomationViewCell(playTagRoom: playTagRoom, itemType: itemType)
+                RoomInfomationViewCell(playTagRoom: playerDataStore.playingRoom, itemType: itemType)
             }
         }
         .navigationTitle("ルーム情報")

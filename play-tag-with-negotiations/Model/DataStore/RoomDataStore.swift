@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import OrderedCollections
 
 class RoomDataStore: ObservableObject {
     static let shared = RoomDataStore()
-    @Published var publicRoomsArray: OrderedSet<PlayTagRoom> = []
+    @Published var publicRoomsArray: [PlayTagRoom] = []
 }
