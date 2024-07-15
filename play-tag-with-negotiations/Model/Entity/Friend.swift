@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct Friend: Codable, Hashable, Identifiable {
+struct Friend: Codable, Hashable, Identifiable, Equatable {
+    static func == (lhs: Friend, rhs: Friend) -> Bool {
+        return lhs.userId == rhs.userId
+    }
+    
     var id = UUID()
     var userId: String
     var editedTime: Date

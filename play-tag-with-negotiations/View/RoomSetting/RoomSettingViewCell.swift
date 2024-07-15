@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RoomSettingViewCell: View {
     @Binding var playTagRoom: PlayTagRoom
-    @State var itemType: PlayTagRoom.itemType
+    @State var itemType: PlayTagRoom.displayItemType
     @State private var text = ""
     @State private var isShowCopiedAlert = false
     @State private var isShowStringAlert = false

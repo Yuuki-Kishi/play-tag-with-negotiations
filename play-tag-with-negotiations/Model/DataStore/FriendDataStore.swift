@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import OrderedCollections
 
 class FriendDataStore: ObservableObject {
     static let shared = FriendDataStore()
-    @Published var notFriendArray: [User] = []
     @Published var friendArray: [User] = []
+    @Published var requestUserArray: [User] = []
 }

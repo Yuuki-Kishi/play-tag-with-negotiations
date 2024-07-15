@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OrderedCollections
 
 class PlayerDataStore: ObservableObject {
     static let shared = PlayerDataStore()
@@ -14,4 +15,18 @@ class PlayerDataStore: ObservableObject {
     @Published var hostPlayer: Player = Player()
     @Published var guestUserArray: [User] = []
     @Published var guestPlayerArray: [Player] = []
+}
+
+extension PlayerDataStore {
+    func appendUser(user: User) {
+        if !guestUserArray.contains(where: { $0.userId == user.userId }) {
+            guestUserArray.append(user)
+        }
+    }
+    
+    func appendPlayer(player: Player) {
+        if !guestPlayerArray.contains(where: { $0.userId == player.userId }) {
+            guestPlayerArray.append(player)
+        }
+    }
 }

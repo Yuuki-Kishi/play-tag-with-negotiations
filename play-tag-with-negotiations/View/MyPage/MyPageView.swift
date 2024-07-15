@@ -10,52 +10,54 @@ import PhotosUI
 
 struct MyPageView: View {
     @ObservedObject var userDataStore: UserDataStore
-    @StateObject var friendDataStore =  FriendDataStore.shared
+    @ObservedObject var pathDataStore: PathDataStore
     @State private var selectedImage: PhotosPickerItem?
     @State private var iconUIImage: UIImage? = nil
     
     var body: some View {
         GeometryReader { geome in
             let size = geome.size.width * 0.6
-            VStack {
-                Spacer(minLength: 50)
-                PhotosPicker(selection: $selectedImage) {
-                    if userDataStore.signInUser?.iconUrl == "default" {
-                        Image(systemName: "person.circle")
-                            .scaledToFit()
-                            .font(.system(size: 200.0).weight(.ultraLight))
-                    } else if let image = iconUIImage {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFill()
-                            .clipShape(Circle())
-                    } else {
-                        Image(systemName: "person.circle")
-                            .scaledToFit()
-                            .font(.system(size: 200.0).weight(.ultraLight))
-                    }
+            Spacer(minLength: 50)
+            PhotosPicker(selection: $selectedImage) {
+                if userDataStore.signInUser?.iconUrl == "default" {
+                    Image(systemName: "person.circle")
+                        .scaledToFit()
+                        .font(.system(size: 200.0).weight(.ultraLight))
+                } else if let image = iconUIImage {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .clipShape(Circle())
+                } else {
+                    Image(systemName: "person.circle")
+                        .scaledToFit()
+                        .font(.system(size: 200.0).weight(.ultraLight))
                 }
-                .onChange(of: selectedImage, {
-                    Task {
-                        await UploadToStorage.uploadIconImage(selectedItem: selectedImage)
-                    }
-                })
-                .onChange(of: userDataStore.signInUser?.iconUrl, {
-                    getIconUIImage()
-                })
-                .onChange(of: userDataStore.iconImageData, {
-                    imageDataToUIImage(data: userDataStore.iconImageData)
-                })
-                .contentShape(Circle())
-                .frame(width: size, height: size, alignment: .center)
-                MyPageListView(userDataStore: userDataStore)
-                Spacer()
             }
+            .onChange(of: selectedImage, {
+                Task {
+                    await UploadToStorage.uploadIconImage(selectedItem: selectedImage)
+                }
+            })
+            .onChange(of: userDataStore.signInUser?.iconUrl, {
+                getIconUIImage()
+            })
+            .onChange(of: userDataStore.iconImageData, {
+                imageDataToUIImage(data: userDataStore.iconImageData)
+            })
+            .contentShape(Circle())
+            .frame(width: size, height: size, alignment: .center)
+            MyPageListView(userDataStore: userDataStore)
+            Spacer()
+            
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing, content: {
                 toolBarMenu()
             })
+        }
+        .navigationDestination(for: PathDataStore.path.self) { path in
+            FriendView()
         }
         .background(Color(UIColor.systemGray6))
         .navigationTitle("マイページ")
@@ -65,8 +67,8 @@ struct MyPageView: View {
         }
     }
     func toolBarMenu() -> some View {
-        NavigationLink(destination: {
-            FriendView(friendDataStore: friendDataStore)
+        Button(action: {
+            pathDataStore.navigatetionPath.append(.Friend)
         }, label: {
             Image(systemName: "person.2.fill")
         })
@@ -85,5 +87,5 @@ struct MyPageView: View {
 }
 
 #Preview {
-    MyPageView(userDataStore: UserDataStore.shared)
+    MyPageView(userDataStore: UserDataStore.shared, pathDataStore: PathDataStore.shared)
 }

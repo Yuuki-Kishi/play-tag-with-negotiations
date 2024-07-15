@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct PublicRoomsViewCell: View {
-    @Binding var playTagRoom: PlayTagRoom
+    @ObservedObject var playerDataStore: PlayerDataStore
+    @ObservedObject var pathDataStore: PathDataStore
+    @State var playTagRoom: PlayTagRoom
     
     var body: some View {
         Section {
@@ -23,6 +25,16 @@ struct PublicRoomsViewCell: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .contentShape(Rectangle())
+                .onTapGesture {
+                    let roomId = playTagRoom.roomId.uuidString
+                    Task {
+                        if await ReadToFirestore.checkIsThereRoom(roomId: roomId) {
+                            playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
+                            await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
+                            pathDataStore.navigatetionPath.append(.WaitingRoom)
+                        }
+                    }
+                }
             })
         }
     }

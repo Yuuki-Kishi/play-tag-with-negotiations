@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RoomInfomationViewCell: View {
     @State var playTagRoom: PlayTagRoom
-    @State var itemType: PlayTagRoom.itemType
+    @State var itemType: PlayTagRoom.displayItemType
     @State private var isShowAlert = false
     
     var body: some View {

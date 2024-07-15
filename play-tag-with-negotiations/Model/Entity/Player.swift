@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct Player: Codable, Hashable, Identifiable {
+struct Player: Codable, Hashable, Identifiable, Equatable {
+    static func == (lhs: Player, rhs: Player) -> Bool {
+        return lhs.userId == rhs.userId
+    }
+    
     var id = UUID()
     var userId: String
     var isHost: Bool

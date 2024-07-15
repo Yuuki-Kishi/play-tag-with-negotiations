@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NegotiationPanelViewCell: View {
-    @Binding var user: User
+    @State var user: User
     
     var body: some View {
         HStack {

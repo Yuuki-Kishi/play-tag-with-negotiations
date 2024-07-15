@@ -12,7 +12,6 @@ import AuthenticationServices
 struct ContentView: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
-    @StateObject var roomDataStore = RoomDataStore.shared
     @State private var isShowModal = false
     
     var body: some View {
@@ -41,7 +40,7 @@ struct ContentView: View {
                 }
             }
             .fullScreenCover(isPresented: $isShowModal, content: {
-                PublicRoomsView(userDataStore: userDataStore, playerDataStore: playerDataStore, roomDataStore: roomDataStore).environmentObject(EnvironmentData())
+                PublicRoomsView(userDataStore: userDataStore, playerDataStore: playerDataStore)
             })
             .padding()
         }
@@ -52,5 +51,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared, roomDataStore: RoomDataStore.shared)
+    ContentView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
 }

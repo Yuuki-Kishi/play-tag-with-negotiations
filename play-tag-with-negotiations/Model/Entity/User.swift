@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct User: Hashable, Identifiable, Equatable, Codable {
-//    static func == (lhs: User, rhs: User) -> Bool {
-//        return lhs.userId == rhs.userId
-//    }
+struct User: Codable, Hashable, Identifiable, Equatable {
+    static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.userId == rhs.userId
+    }
     
     var id = UUID()
     var userId: String

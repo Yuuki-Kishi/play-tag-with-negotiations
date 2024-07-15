@@ -10,23 +10,25 @@ import SwiftUI
 struct WaitingRoomView: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
+    @ObservedObject var pathDataStore: PathDataStore
     @State private var isShowExitAlert = false
     @State private var isShowHostAlert = false
     @State private var isShowLastUserAlert = false
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var envData: EnvironmentData
     
     var body: some View {
         ZStack {
             List {
                 Section(content: {
-                    WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: $playerDataStore.hostUser)
+                    WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: playerDataStore.hostUser)
                 }, header: {
                     Text("ホスト")
                 })
                 Section(content: {
-                    ForEach($playerDataStore.guestUserArray, id: \.self) { user in
-                        WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: user)
+                    List {
+                        ForEach(playerDataStore.guestUserArray, id: \.self) { user in
+                            WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: user)
+                        }
                     }
                 }, header: {
                     Text("ゲスト")
@@ -48,6 +50,9 @@ struct WaitingRoomView: View {
                 .padding(.trailing, 35)
                 .padding(.bottom, 35)
             }
+        }
+        .navigationDestination(for: PathDataStore.path.self) { path in
+            RoomInfomationView(playTagRoom: playerDataStore.playingRoom ?? PlayTagRoom())
         }
         .navigationTitle("待合室")
         .navigationBarBackButtonHidden(true)
@@ -98,8 +103,8 @@ struct WaitingRoomView: View {
     }
     func toolBarMenu() -> some View {
         Menu {
-            NavigationLink(destination: {
-                RoomInfomationView(playTagRoom: Binding(get: { playerDataStore.playingRoom ?? PlayTagRoom() }, set: { playerDataStore.playingRoom = $0 }))
+            Button(action: {
+                pathDataStore.navigatetionPath.append(.roomInfo)
             }, label: {
                 Label("ルーム情報", systemImage: "info.circle")
             })
@@ -128,7 +133,6 @@ struct WaitingRoomView: View {
             guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
             await DeleteToFirestore.deleteRoom(roomId: roomId)
             dismiss()
-//            envData.isNavigationFromPublicRoomsView.wrappedValue = false
         }
     }
     func hostExit() {
@@ -136,7 +140,6 @@ struct WaitingRoomView: View {
             guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
             await DeleteToFirestore.hostExitRoom(roomId: roomId)
             dismiss()
-//            envData.isNavigationFromPublicRoomsView.wrappedValue = false
         }
     }
     func exit() {
@@ -144,7 +147,6 @@ struct WaitingRoomView: View {
             guard let roomId = playerDataStore.playingRoom?.roomId.uuidString else { return }
             await DeleteToFirestore.exitRoom(roomId: roomId)
             dismiss()
-//            envData.isNavigationFromPublicRoomsView.wrappedValue = false
         }
     }
     func onAppear() {
@@ -155,5 +157,5 @@ struct WaitingRoomView: View {
 }
 
 #Preview {
-    WaitingRoomView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
+    WaitingRoomView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared, pathDataStore: PathDataStore.shared)
 }

@@ -10,28 +10,16 @@ import SwiftUI
 struct RoomSettingView: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
+    @ObservedObject var pathDataStore: PathDataStore
     @State var playTagRoom: PlayTagRoom = PlayTagRoom(playTagName: "鬼ごっこ")
     @State private var isShowAlert = false
-    @State private var isNavigation = false
     
     var body: some View {
         ZStack {
             List {
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .roomId)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .hostUserId)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .playTagName)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .creationDate)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .phaseNow)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .phaseMax)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .chaserNumber)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .fugitiveNumber)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .horizontalCount)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .verticalCount)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .isPublic)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .isCanJoinAfter)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .isNegotiate)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .isCanDoQuest)
-                RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: .isCanUseItem)
+                ForEach(PlayTagRoom.displayItemType.allCases, id: \.self) { itemType in
+                    RoomSettingViewCell(playTagRoom: $playTagRoom, itemType: itemType)
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -50,7 +38,7 @@ struct RoomSettingView: View {
                     Task {
                         await CreateToFirestore.createPlayTagRoom(playTagRoom: playTagRoom)
                         playerDataStore.playingRoom = playTagRoom
-                        isNavigation = true
+                        pathDataStore.navigatetionPath.append(.WaitingRoom)
                     }
                 }, label: {
                     Text("作成")
@@ -58,8 +46,8 @@ struct RoomSettingView: View {
             }, message: {
                 Text("あとから設定を変更することはできません。")
             })
-            .navigationDestination(isPresented: $isNavigation) {
-                WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore)
+            .navigationDestination(for: PathDataStore.path.self) { path in
+                WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
             }
             .navigationTitle("ルーム作成")
         }
@@ -67,5 +55,5 @@ struct RoomSettingView: View {
 }
 
 #Preview {
-    RoomSettingView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
+    RoomSettingView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared, pathDataStore: PathDataStore.shared)
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FriendView: View {
-    @ObservedObject var friendDataStore: FriendDataStore
+    @StateObject var friendDataStore =  FriendDataStore.shared
     enum picker: String, CaseIterable, Identifiable {
         case friend
         case notFriend
@@ -37,14 +37,18 @@ struct FriendView: View {
             .padding()
             switch isFriend {
             case .friend:
-                List($friendDataStore.friendArray) { friend in
-                    FriendViewCell(friend: friend)
+                List {
+                    ForEach(friendDataStore.friendArray, id: \.userId) { friend in
+                        FriendViewCell(friend: friend)
+                    }
                 }
                 .scrollContentBackground(.hidden)
                 .background(Color(UIColor.systemGray6))
             case .notFriend:
-                List($friendDataStore.notFriendArray) { notFriend in
-                    NotFriendViewCell(friend: notFriend)
+                List {
+                    ForEach(friendDataStore.requestUserArray, id: \.userId) { requestUser in
+                        NotFriendViewCell(friend: requestUser)
+                    }
                 }
                 .scrollContentBackground(.hidden)
                 .background(Color(UIColor.systemGray6))
