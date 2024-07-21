@@ -15,7 +15,6 @@ struct PublicRoomsView: View {
     @State private var isShowAlert = false
     @State private var isNavigationToInvited = false
     @State private var roomId = ""
-    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationStack(path: $pathDataStore.navigatetionPath) {
@@ -27,11 +26,19 @@ struct PublicRoomsView: View {
                 }
                 .navigationDestination(for: PathDataStore.path.self) { path in
                     switch path {
-                    case .WaitingRoom:
-                        WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
                     case .roomSetting:
                         RoomSettingView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                    default:
+                    case .myPage:
+                        MyPageView(userDataStore: userDataStore, pathDataStore: pathDataStore)
+                    case .friend:
+                        FriendView()
+                    case .waitingRoom:
+                        WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                    case .roomInfo:
+                        RoomInfomationView(playerDataStore: playerDataStore)
+                    case .game:
+                        GameView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                    case .result:
                         EmptyView()
                     }
                 }
@@ -52,9 +59,10 @@ struct PublicRoomsView: View {
                     Button("入室", action: {
                         Task {
                             if await ReadToFirestore.checkIsThereRoom(roomId: roomId) {
+                                roomId = ""
                                 playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
                                 await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
-                                pathDataStore.navigatetionPath.append(.WaitingRoom)
+                                pathDataStore.navigatetionPath.append(.waitingRoom)
                             }
                         }
                     })
@@ -80,16 +88,16 @@ struct PublicRoomsView: View {
             .navigationDestination(isPresented: $isNavigationToInvited, destination: {
                 
             })
-            .onChange(of: userDataStore.signInUser) {
-                if userDataStore.signInUser == nil {
-                    dismiss()
-                }
-            }
             .onAppear() {
                 Task {
                     if let roomId = await ReadToFirestore.getBeingRoomId() {
-                        playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
-                        pathDataStore.navigatetionPath.append(.WaitingRoom)
+                        let playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
+                        playerDataStore.playingRoom = playingRoom
+                        if playingRoom.isPlaying {
+                            pathDataStore.navigatetionPath.append(.game)
+                        } else {
+                            pathDataStore.navigatetionPath.append(.waitingRoom)
+                        }
                     } else {
                         ObserveToFirestore.observePublicRooms()
                     }
@@ -104,7 +112,9 @@ struct PublicRoomsView: View {
             }, label: {
                 Label("ルーム作成", systemImage: "plus")
             })
-            NavigationLink(destination: MyPageView(userDataStore: userDataStore, pathDataStore: pathDataStore), label: {
+            Button(action: {
+                pathDataStore.navigatetionPath.append(.myPage)
+            }, label: {
                 Label("マイページ", systemImage: "person.circle")
             })
             Menu {

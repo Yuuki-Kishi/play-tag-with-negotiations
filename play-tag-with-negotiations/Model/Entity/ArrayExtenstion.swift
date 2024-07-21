@@ -14,3 +14,11 @@ extension Array where Element == User {
         }
     }
 }
+
+extension Array where Element == Player {
+    mutating func append(ifNoOverlap item: Element) {
+        if !self.contains(where: { $0.userId == item.userId }) {
+            self.append(item)
+        }
+    }
+}

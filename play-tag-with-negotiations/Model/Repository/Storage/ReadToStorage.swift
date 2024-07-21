@@ -10,34 +10,9 @@ import FirebaseCore
 import FirebaseStorage
 
 class ReadToStorage {
-    static func getMyIconImage(iconUrl: String) async {
-        if iconUrl == "default" { return }
-        else {
-            let storageRef = Storage.storage().reference(forURL: iconUrl)
-            storageRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
-                if let error = error {
-                    print(error)
-                } else {
-                    let imageData: Data? = data
-                    UserDataStore.shared.iconImageData = imageData
-                }
-            }
-        }
-    }
-    
-    static func getPlayerIconImage(iconUrl: String) async -> Data? {
-        if iconUrl == "default" { return Data() }
-        else {
-            let storageRef = Storage.storage().reference(forURL: iconUrl)
-            var imageData: Data? = Data()
-            storageRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
-                if let error = error {
-                    print(error)
-                } else {
-                    imageData = data
-                }
-            }
-            return imageData
-        }
+    static func getIconImage(iconUrl: String) async -> Data? {
+        let imageRef = Storage.storage().reference(forURL: iconUrl)
+        let imageData = try? await imageRef.data(maxSize: 1 * 1024 * 1024)
+        return imageData
     }
 }

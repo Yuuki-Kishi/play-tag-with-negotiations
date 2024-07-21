@@ -11,13 +11,22 @@ struct WaitingRoomViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     @Binding var user: User
+    @State private var icon: UIImage? = nil
     @State private var isShowAlert = false
     
     var body: some View {
         HStack {
-            Image(systemName: "person")
-                .font(.system(size: 50.0))
-                .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 6)
+            if let iconImage = icon {
+                Image(uiImage: iconImage)
+                    .resizable()
+                    .scaledToFill()
+                    .clipShape(Circle())
+                    .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 6)
+            } else {
+                Image(systemName: "person")
+                    .font(.system(size: 50.0))
+                    .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 6)
+            }
             VStack {
                 Text(user.userName)
                     .foregroundStyle(userNameColor())
@@ -47,6 +56,9 @@ struct WaitingRoomViewCell: View {
                 })
             }
         }
+        .onAppear() {
+            getIcon(iconUrl: user.iconUrl)
+        }
     }
     func userNameColor() -> Color {
         var color = Color.primary
@@ -54,6 +66,14 @@ struct WaitingRoomViewCell: View {
             color = Color.green
         }
         return color
+    }
+    func getIcon(iconUrl: String) {
+        if iconUrl != "default" {
+            Task {
+                guard let imageData = await ReadToStorage.getIconImage(iconUrl: iconUrl) else { return }
+                icon = UIImage(data: imageData)
+            }
+        }
     }
 }
 

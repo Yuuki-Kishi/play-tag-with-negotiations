@@ -55,4 +55,30 @@ class UpdateToFirestore {
             print(error)
         }
     }
+    
+    static func gameStart() async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        do {
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["isPlaying": true])
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func randomInitialPosition() async {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let horizontalCount = PlayerDataStore.shared.playingRoom.horizontalCount
+        let  verticalCount = PlayerDataStore.shared.playingRoom.verticalCount
+        let initialX = Int.random(in: 0 ..< horizontalCount)
+        let initialY = Int.random(in: 0 ..< verticalCount)
+        let initialPosition = PlayerPosition(x: initialX, y: initialY)
+        let encoded = try! JSONEncoder().encode(initialPosition)
+        do {
+            guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(jsonObject)
+        } catch {
+            print(error)
+        }
+    }
 }

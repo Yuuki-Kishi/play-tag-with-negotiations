@@ -23,11 +23,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct play_tag_with_negotiationsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @StateObject var userDataStore = UserDataStore.shared
-    @StateObject var playerDataStore = PlayerDataStore.shared
     var body: some Scene {
         WindowGroup {
-            ContentView(userDataStore: userDataStore, playerDataStore: playerDataStore)
+            ContentView()
         }
     }
 }

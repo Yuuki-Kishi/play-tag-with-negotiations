@@ -24,19 +24,19 @@ struct WaitingRoomView: View {
                 }, header: {
                     Text("ホスト")
                 })
-                if !playerDataStore.guestUserArray.isEmpty {
-                    Section(content: {
-                        List($playerDataStore.guestUserArray) { user in
-                            WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: user)
-                        }
-                    }, header: {
-                        Text("ゲスト")
-                    })
-                }
+                Section(content: {
+                    ForEach($playerDataStore.guestUserArray, id: \.userId) { user in
+                        WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: user)
+                    }
+                }, header: {
+                    Text("ゲスト")
+                })
             }
             if userDataStore.signInUser?.userId == playerDataStore.playingRoom.hostUserId {
                 Button(action: {
-                    
+                    Task {
+                        await UpdateToFirestore.gameStart()
+                    }
                 }, label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 25)
@@ -51,11 +51,13 @@ struct WaitingRoomView: View {
                 .padding(.bottom, 35)
             }
         }
-        .navigationDestination(for: PathDataStore.path.self) { path in
-            RoomInfomationView(playerDataStore: playerDataStore)
-        }
         .navigationTitle("待合室")
         .navigationBarBackButtonHidden(true)
+        .onChange(of: playerDataStore.playingRoom.isPlaying) {
+            if playerDataStore.playingRoom.isPlaying {
+                pathDataStore.navigatetionPath.append(.game)
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing, content: {
                 toolBarMenu()
@@ -106,7 +108,7 @@ struct WaitingRoomView: View {
             Button(action: {
                 pathDataStore.navigatetionPath.append(.roomInfo)
             }, label: {
-                Label("ルーム情報", systemImage: "info.circle")
+                Label("ルール", systemImage: "info.circle")
             })
             Divider()
             Button(role: .destructive, action: {
@@ -153,6 +155,9 @@ struct WaitingRoomView: View {
         let roomId = playerDataStore.playingRoom.roomId.uuidString
         ObserveToFirestore.observePlayer()
         ObserveToFirestore.observeRoomField(roomId: roomId)
+        Task {
+            await UpdateToFirestore.randomInitialPosition()
+        }
     }
 }
 

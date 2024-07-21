@@ -18,19 +18,22 @@ struct MovePanelView: View {
                     
                 }, label: {
                     Image(systemName: "arrow.up.left.square.fill")
-                        .font(.system(size: 80).weight(.semibold))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                 })
                 Button(action: {
                     
                 }, label: {
                     Image(systemName: "arrow.up.square.fill")
-                        .font(.system(size: 80).weight(.semibold))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                 })
                 Button(action: {
                     
                 }, label: {
                     Image(systemName: "arrow.up.right.square.fill")
-                        .font(.system(size: 80).weight(.semibold))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                 })
             }
             HStack {
@@ -38,21 +41,24 @@ struct MovePanelView: View {
                     
                 }, label: {
                     Image(systemName: "arrow.left.square.fill")
-                        .font(.system(size: 80).weight(.semibold))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                 })
                 Button(action: {
                     
                 }, label: {
                     ZStack {
                         Image(systemName: "octagon.fill")
-                            .font(.system(size: 73).weight(.semibold))
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
                     }
                 })
                 Button(action: {
                     
                 }, label: {
                     Image(systemName: "arrow.right.square.fill")
-                        .font(.system(size: 80).weight(.semibold))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                 })
             }
             HStack {
@@ -60,19 +66,22 @@ struct MovePanelView: View {
                     
                 }, label: {
                     Image(systemName: "arrow.down.left.square.fill")
-                        .font(.system(size: 80).weight(.semibold))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                 })
                 Button(action: {
                     
                 }, label: {
                     Image(systemName: "arrow.down.square.fill")
-                        .font(.system(size: 80).weight(.semibold))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                 })
                 Button(action: {
                     
                 }, label: {
                     Image(systemName: "arrow.down.right.square.fill")
-                        .font(.system(size: 80).weight(.semibold))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                 })
             }
         }

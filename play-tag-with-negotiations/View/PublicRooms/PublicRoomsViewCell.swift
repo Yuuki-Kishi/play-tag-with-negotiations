@@ -14,13 +14,15 @@ struct PublicRoomsViewCell: View {
     
     var body: some View {
         Section {
-            NavigationLink(value: playTagRoom, label: {
+            Button(action: {
+                pathDataStore.navigatetionPath.append(.waitingRoom)
+            }, label: {
                 VStack {
                     Text(playTagRoom.playTagName)
                         .font(.system(size: 30.0))
                         .lineLimit(1)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    Text(playTagRoomPhase(playTagRoom: playTagRoom))
+                    Text(playTagRoomPhase())
                         .lineLimit(1)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -31,14 +33,14 @@ struct PublicRoomsViewCell: View {
                         if await ReadToFirestore.checkIsThereRoom(roomId: roomId) {
                             playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
                             await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
-                            pathDataStore.navigatetionPath.append(.WaitingRoom)
+                            pathDataStore.navigatetionPath.append(.waitingRoom)
                         }
                     }
                 }
             })
         }
     }
-    func playTagRoomPhase(playTagRoom: PlayTagRoom) -> String {
+    func playTagRoomPhase() -> String {
         let phaseMax = String(playTagRoom.phaseMax) + "フェーズ"
         let phaseNow = String(playTagRoom.phaseNow) + "フェーズ"
         return phaseNow + " / " + phaseMax

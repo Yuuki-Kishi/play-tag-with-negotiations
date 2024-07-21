@@ -36,7 +36,7 @@ struct RoomSettingView: View {
                 Button(action: {
                     Task {
                         await CreateToFirestore.createPlayTagRoom(playTagRoom: playerDataStore.playingRoom)
-                        pathDataStore.navigatetionPath.append(.WaitingRoom)
+                        pathDataStore.navigatetionPath.append(.waitingRoom)
                     }
                 }, label: {
                     Text("作成")
@@ -44,9 +44,6 @@ struct RoomSettingView: View {
             }, message: {
                 Text("あとから設定を変更することはできません。")
             })
-            .navigationDestination(for: PathDataStore.path.self) { path in
-                WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-            }
             .navigationTitle("ルーム作成")
             .onAppear() {
                 playerDataStore.playingRoom = PlayTagRoom(playTagName: "鬼ごっこ")

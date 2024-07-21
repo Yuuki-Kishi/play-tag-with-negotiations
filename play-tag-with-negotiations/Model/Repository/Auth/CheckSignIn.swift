@@ -11,7 +11,11 @@ import FirebaseAuth
 class CheckSignIn {
     static func isSignIn() async {
         if let currentUser = Auth.auth().currentUser {
-            UserDataStore.shared.signInUser = await ReadToFirestore.getUserData(userId: currentUser.uid)
+            let user = await ReadToFirestore.getUserData(userId: currentUser.uid)
+            DispatchQueue.main.async {
+                UserDataStore.shared.userResult = .success(user)
+                UserDataStore.shared.signInUser = user
+            }
         }
     }
 }

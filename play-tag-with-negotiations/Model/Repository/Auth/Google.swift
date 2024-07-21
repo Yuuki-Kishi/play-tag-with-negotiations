@@ -41,7 +41,10 @@ class Google {
                 if await !ReadToFirestore.isWroteUser(userId: userId) {
                     await CreateToFirestore.createUser(user: user)
                 }
-                UserDataStore.shared.signInUser = user
+                DispatchQueue.main.async {
+                    UserDataStore.shared.userResult = .success(user)
+                    UserDataStore.shared.signInUser = user
+                }
             }
         }
     }

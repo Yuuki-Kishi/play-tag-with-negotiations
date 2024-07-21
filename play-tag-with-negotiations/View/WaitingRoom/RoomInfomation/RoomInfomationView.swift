@@ -16,7 +16,7 @@ struct RoomInfomationView: View {
                 RoomInfomationViewCell(playTagRoom: playerDataStore.playingRoom, itemType: itemType)
             }
         }
-        .navigationTitle("ルーム情報")
+        .navigationTitle("ルール")
     }
 }
 

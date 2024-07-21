@@ -8,14 +8,22 @@
 import SwiftUI
 
 struct FriendViewCell: View {
-    @State var friend: User
+    @Binding var friend: User
+    @State private var icon: UIImage? = nil
     @State private var isShowAlert = false
     
     var body: some View {
         HStack {
-            Image(systemName: "person")
-                .font(.system(size: 50.0))
-                .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 6)
+            if let iconImage = icon {
+                Image(uiImage: iconImage)
+                    .resizable()
+                    .scaledToFill()
+                    .clipShape(Circle())
+            } else {
+                Image(systemName: "person")
+                    .font(.system(size: 50.0))
+                    .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 6)
+            }
             VStack {
                 Text(friend.userName)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -46,6 +54,17 @@ struct FriendViewCell: View {
                 Text("解消")
             })
         })
+        .onAppear() {
+            getIcon()
+        }
+    }
+    func getIcon() {
+        if friend.iconUrl != "default" {
+            Task {
+                guard let imageData = await ReadToStorage.getIconImage(iconUrl: friend.iconUrl) else { return }
+                icon = UIImage(data: imageData)
+            }
+        }
     }
 }
 

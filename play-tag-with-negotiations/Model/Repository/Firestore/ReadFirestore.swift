@@ -46,14 +46,18 @@ class ReadToFirestore {
         return nil
     }
     
-    static func getUserData(userId: String) async -> User {
+    static func getUserData(userId: String) async -> User? {
         do {
             let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
-            let user = try document.data(as: User.self)
-            return user
+            if document.exists {
+                let user = try document.data(as: User.self)
+                return user
+            } else {
+                return nil
+            }
         } catch {
             print(error)
-            return User()
+            return nil
         }
     }
     

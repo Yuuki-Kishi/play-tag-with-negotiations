@@ -10,29 +10,37 @@ import SwiftUI
 struct FieldMapView: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
-    @State private var horizontalCount: Int = 5
-    @State private var verticalCount: Int = 5
     
     var body: some View {
-        let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 5), count: horizontalCount)
+        let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 5), count: playerDataStore.playingRoom.horizontalCount)
         
         ScrollView([.horizontal, .vertical]) {
             LazyVGrid(columns: columns, spacing: 5) {
-                ForEach(0 ..< horizontalCount * verticalCount) { num in
-                    Text(changeToCoordinate(num: num))
-                        .frame(width: 50, height: 50)
-                        .contentShape(Rectangle())
-                        .background(Color.gray)
+                ForEach(0 ..< playerDataStore.playingRoom.horizontalCount * playerDataStore.playingRoom.verticalCount) { num in
+                    Image(systemName: "person.circle")
+                        .resizable()
+                        .frame(width: squareSize(), height: squareSize())
+                        .background(Rectangle().foregroundStyle(Color(UIColor.systemGray5)))
                 }
             }
             .padding()
         }
+        .background(Color.clear)
     }
     func changeToCoordinate(num: Int) -> String {
-        let x = num % horizontalCount
-        let y = num / horizontalCount
+        let x = num % playerDataStore.playingRoom.horizontalCount
+        let y = num / playerDataStore.playingRoom.horizontalCount
         let coordinate = "(" + String(x) + ", " + String(y) + ")"
         return coordinate
+    }
+    func squareSize() -> CGFloat {
+        let width = UIScreen.main.bounds.width
+        let height = UIScreen.main.bounds.height * 0.6
+        if width > height {
+            return height * 0.8 / CGFloat(playerDataStore.playingRoom.horizontalCount)
+        } else {
+            return width * 0.8 / CGFloat(playerDataStore.playingRoom.horizontalCount)
+        }
     }
 }
 

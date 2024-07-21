@@ -12,11 +12,9 @@ struct NegotiationPanelView: View {
     @ObservedObject var playerDataStore: PlayerDataStore
     
     var body: some View {
-        List {
-            ForEach(playerDataStore.guestUserArray, id: \.userId) { user in
-                if user.userId != userDataStore.signInUser?.userId {
-                    NegotiationPanelViewCell(user: user)
-                }
+        List($playerDataStore.playerUserArray) { user in
+            if user.wrappedValue.userId != userDataStore.signInUser?.userId {
+                NegotiationPanelViewCell(user: user)
             }
         }
     }

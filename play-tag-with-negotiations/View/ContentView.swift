@@ -10,39 +10,20 @@ import GoogleSignInSwift
 import AuthenticationServices
 
 struct ContentView: View {
-    @ObservedObject var userDataStore: UserDataStore
-    @ObservedObject var playerDataStore: PlayerDataStore
-    @State private var isShowModal = false
+    @StateObject var userDataStore = UserDataStore.shared
+    @StateObject var playerDataStore = PlayerDataStore.shared
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                Spacer(minLength: 50)
-                RoundedRectangle(cornerRadius: 50)
-                    .foregroundStyle(Color.accentColor)
-                    .frame(width: UIScreen.main.bounds.height / 4, height: UIScreen.main.bounds.height / 4)
-                Spacer(minLength: UIScreen.main.bounds.height / 4)
-                GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .light, style: .wide, state: .normal), action: Google.handleSignInButton)
-                    .frame(width: UIScreen.main.bounds.width / 1.5)
-                    .padding(.bottom, 30)
-                SignInWithAppleButton(.signIn) { request in
-                    Apple.shared.signInWithApple(request: request)
-                } onCompletion: { authResults in
-                    Apple.shared.login(authRequest: authResults)
-                }
-                .signInWithAppleButtonStyle(.whiteOutline)
-                .frame(width: UIScreen.main.bounds.width / 1.5, height: 40)
-                Spacer()
-            }
-            .onChange(of: UserDataStore.shared.signInUser) {
-                if UserDataStore.shared.signInUser != nil {
-                    isShowModal = true
+        Group {
+            if userDataStore.userResult == nil {
+                Text("読み込み中")
+            } else {
+                if userDataStore.signInUser == nil {
+                    SignInView()
+                } else {
+                    PublicRoomsView(userDataStore: userDataStore, playerDataStore: playerDataStore)
                 }
             }
-            .fullScreenCover(isPresented: $isShowModal, content: {
-                PublicRoomsView(userDataStore: userDataStore, playerDataStore: playerDataStore)
-            })
-            .padding()
         }
         .onAppear() {
             Task { await CheckSignIn.isSignIn() }
@@ -51,5 +32,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
+    ContentView()
 }

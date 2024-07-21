@@ -10,28 +10,55 @@ import SwiftUI
 struct GameView: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
+    @ObservedObject var pathDataStore: PathDataStore
     
     var body: some View {
         VStack {
             FieldMapView(userDataStore: userDataStore, playerDataStore: playerDataStore)
-                .frame(height: UIScreen.main.bounds.height * 0.5)
+            Text(displayPhase())
             VStack {
                 SelectionView(userDataStore: userDataStore, playerDataStore: playerDataStore)
-                    .padding(.top, 20)
-                Spacer()
-                switch userDataStore.displayControlPanel {
-                case .movement:
-                    ControlPanelCoordination(userDataStore: userDataStore, playerDataStore: playerDataStore)
-                case .negotiation:
-                    NegotiationPanelView(userDataStore: userDataStore, playerDataStore: playerDataStore)
-                }
-                Spacer()
+                ControlPanelCoordination(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                Spacer(minLength: 20)
             }
-            .frame(height: UIScreen.main.bounds.height * 0.5)
+            .frame(height: UIScreen.main.bounds.height * 0.35)
         }
+        .navigationTitle(playerDataStore.playingRoom.playTagName)
+        .background(Color(UIColor.systemGray6))
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing, content: {
+                Menu {
+                    Button(action: {
+                        pathDataStore.navigatetionPath.append(.roomInfo)
+                    }, label: {
+                        Label("ルール", systemImage: "info.circle")
+                    })
+                    Divider()
+                    Button(role: .destructive, action: {
+                        
+                    }, label: {
+                        Text("退室")
+                    })
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
+            })
+        }
+        .navigationBarBackButtonHidden()
+        .onAppear() {
+            let roomId = playerDataStore.playingRoom.roomId.uuidString
+            ObserveToFirestore.observeRoomField(roomId: roomId)
+            ObserveToFirestore.observePlayer()
+        }
+    }
+    func displayPhase() -> String {
+        let phaseNow = String(playerDataStore.playingRoom.phaseNow)
+        let phaseMax = String(playerDataStore.playingRoom.phaseMax)
+        let text = phaseNow + "フェーズ / " + phaseMax + "フェーズ"
+        return text
     }
 }
 
 #Preview {
-    GameView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
+    GameView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared, pathDataStore: PathDataStore.shared)
 }

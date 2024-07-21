@@ -8,13 +8,21 @@
 import SwiftUI
 
 struct NegotiationPanelViewCell: View {
-    @State var user: User
+    @Binding var user: User
+    @State private var icon: UIImage? = nil
     
     var body: some View {
         HStack {
-            Image(systemName: "person")
-                .font(.system(size: 50.0))
-                .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 6)
+            if let iconImage = icon {
+                Image(uiImage: iconImage)
+                    .resizable()
+                    .scaledToFill()
+                    .clipShape(Circle())
+            } else {
+                Image(systemName: "person")
+                    .font(.system(size: 50.0))
+                    .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 6)
+            }
             VStack {
                 Text(user.userName)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -23,6 +31,17 @@ struct NegotiationPanelViewCell: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(1)
                     .font(.system(size: 15))
+            }
+        }
+        .onAppear() {
+            getIcon(iconUrl: user.iconUrl)
+        }
+    }
+    func getIcon(iconUrl: String) {
+        if iconUrl != "default" {
+            Task {
+                guard let imageData = await ReadToStorage.getIconImage(iconUrl: iconUrl) else { return }
+                icon = UIImage(data: imageData)
             }
         }
     }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NotFriendViewCell: View {
-    @State var friend: User
+    @Binding var friend: User
     @State private var isShowAlert = false
     
     var body: some View {
