@@ -7,8 +7,11 @@
 
 import Foundation
 
-struct PlayerPosition: Codable, Hashable, Identifiable {
-    var id: UUID
+struct PlayerPosition: Codable, Hashable {
+//    static func == (lhs: PlayerPosition, rhs: PlayerPosition) -> Bool {
+//        return lhs.x == rhs.x && lhs.y == rhs.y
+//    }
+//    
     var x: Int
     var y: Int
     
@@ -22,7 +25,6 @@ struct PlayerPosition: Codable, Hashable, Identifiable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = UUID()
         let playerPosition = try container.nestedContainer(keyedBy: PlayerPositionKeys.self, forKey: .playerPosition)
         self.x = try playerPosition.decode(Int.self, forKey: .x)
         self.y = try playerPosition.decode(Int.self, forKey: .y)
@@ -36,13 +38,11 @@ struct PlayerPosition: Codable, Hashable, Identifiable {
     }
     
     init(x: Int, y: Int) {
-        self.id = UUID()
         self.x = x
         self.y = y
     }
     
     init() {
-        self.id = UUID()
         self.x = 0
         self.y = 0
     }

@@ -61,6 +61,7 @@
 		DEFA551B2C43A07D00CF6BD1 /* ArrayExtenstion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA551A2C43A07D00CF6BD1 /* ArrayExtenstion.swift */; };
 		DEFA551D2C4798B200CF6BD1 /* ObserveToFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA551C2C4798B200CF6BD1 /* ObserveToFirestore.swift */; };
 		DEFA55222C4C1FB200CF6BD1 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55212C4C1FB200CF6BD1 /* SignInView.swift */; };
+		DEFA55262C4EA1B300CF6BD1 /* FieldMapViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55252C4EA1B300CF6BD1 /* FieldMapViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -115,6 +116,7 @@
 		DEFA551A2C43A07D00CF6BD1 /* ArrayExtenstion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtenstion.swift; sourceTree = "<group>"; };
 		DEFA551C2C4798B200CF6BD1 /* ObserveToFirestore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserveToFirestore.swift; sourceTree = "<group>"; };
 		DEFA55212C4C1FB200CF6BD1 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		DEFA55252C4EA1B300CF6BD1 /* FieldMapViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldMapViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -305,7 +307,7 @@
 		DEDEF6F12C23C9A000A01FFF /* Element */ = {
 			isa = PBXGroup;
 			children = (
-				DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */,
+				DEFA55272C4EA98A00CF6BD1 /* FieldMap */,
 				DEFA54F52C3D71B300CF6BD1 /* ControlPanel */,
 			);
 			path = Element;
@@ -373,6 +375,15 @@
 				DEFA55152C42BDF800CF6BD1 /* NotFriendViewCell.swift */,
 			);
 			path = FriendViewCell;
+			sourceTree = "<group>";
+		};
+		DEFA55272C4EA98A00CF6BD1 /* FieldMap */ = {
+			isa = PBXGroup;
+			children = (
+				DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */,
+				DEFA55252C4EA1B300CF6BD1 /* FieldMapViewCell.swift */,
+			);
+			path = FieldMap;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -503,6 +514,7 @@
 				DEFA55002C401D6200CF6BD1 /* Friend.swift in Sources */,
 				DEFA54D02C246E2300CF6BD1 /* PlayerPosition.swift in Sources */,
 				DEFA550F2C4265A500CF6BD1 /* FriendView.swift in Sources */,
+				DEFA55262C4EA1B300CF6BD1 /* FieldMapViewCell.swift in Sources */,
 				DEDEF6F32C23C9AF00A01FFF /* GameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

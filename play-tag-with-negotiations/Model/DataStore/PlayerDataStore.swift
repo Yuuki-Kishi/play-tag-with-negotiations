@@ -14,6 +14,6 @@ class PlayerDataStore: ObservableObject {
     @Published var hostPlayer: Player = Player()
     @Published var guestUserArray: [User] = []
     @Published var guestPlayerArray: [Player] = []
-    @Published var playerUserArray: [User] = []
-    @Published var playerPlayerArray: [Player] = []
+    @Published var userArray: [User] = []
+    @Published var playerArray: [Player] = []
 }

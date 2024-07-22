@@ -12,7 +12,7 @@ struct NegotiationPanelView: View {
     @ObservedObject var playerDataStore: PlayerDataStore
     
     var body: some View {
-        List($playerDataStore.playerUserArray) { user in
+        List($playerDataStore.userArray) { user in
             if user.wrappedValue.userId != userDataStore.signInUser?.userId {
                 NegotiationPanelViewCell(user: user)
             }

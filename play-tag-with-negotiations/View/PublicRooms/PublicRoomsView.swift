@@ -19,10 +19,8 @@ struct PublicRoomsView: View {
     var body: some View {
         NavigationStack(path: $pathDataStore.navigatetionPath) {
             ZStack {
-                List {
-                    ForEach(roomDataStore.publicRoomsArray, id: \.roomId) { playTagRoom in
-                        PublicRoomsViewCell(playerDataStore: playerDataStore, pathDataStore: pathDataStore, playTagRoom: playTagRoom)
-                    }
+                List(roomDataStore.publicRoomsArray) { playTagRoom in
+                    PublicRoomsViewCell(playerDataStore: playerDataStore, pathDataStore: pathDataStore, playTagRoom: playTagRoom)
                 }
                 .navigationDestination(for: PathDataStore.path.self) { path in
                     switch path {
@@ -57,14 +55,7 @@ struct PublicRoomsView: View {
                     TextField("ルームID", text: $roomId)
                     Button("キャンセル", role: .cancel, action: {})
                     Button("入室", action: {
-                        Task {
-                            if await ReadToFirestore.checkIsThereRoom(roomId: roomId) {
-                                roomId = ""
-                                playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
-                                await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
-                                pathDataStore.navigatetionPath.append(.waitingRoom)
-                            }
-                        }
+                        enterRoom()
                     })
                 })
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
@@ -89,19 +80,17 @@ struct PublicRoomsView: View {
                 
             })
             .onAppear() {
-                Task {
-                    if let roomId = await ReadToFirestore.getBeingRoomId() {
-                        let playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
-                        playerDataStore.playingRoom = playingRoom
-                        if playingRoom.isPlaying {
-                            pathDataStore.navigatetionPath.append(.game)
-                        } else {
-                            pathDataStore.navigatetionPath.append(.waitingRoom)
-                        }
-                    } else {
-                        ObserveToFirestore.observePublicRooms()
-                    }
-                }
+                onAppear()
+            }
+        }
+    }
+    func enterRoom() {
+        Task {
+            if await ReadToFirestore.checkIsThereRoom(roomId: roomId) {
+                playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
+                await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
+                roomId = ""
+                pathDataStore.navigatetionPath.append(.waitingRoom)
             }
         }
     }
@@ -141,6 +130,21 @@ struct PublicRoomsView: View {
             })
         } label: {
             Image(systemName: "ellipsis.circle")
+        }
+    }
+    func onAppear() {
+        Task {
+            if let roomId = await ReadToFirestore.getBeingRoomId() {
+                let playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
+                playerDataStore.playingRoom = playingRoom
+                if playingRoom.isPlaying {
+                    pathDataStore.navigatetionPath.append(.game)
+                } else {
+                    pathDataStore.navigatetionPath.append(.waitingRoom)
+                }
+            } else {
+                ObserveToFirestore.observePublicRooms()
+            }
         }
     }
 }

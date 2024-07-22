@@ -16,7 +16,7 @@ struct ContentView: View {
     var body: some View {
         Group {
             if userDataStore.userResult == nil {
-                Text("読み込み中")
+                Text("読み込み中...")
             } else {
                 if userDataStore.signInUser == nil {
                     SignInView()

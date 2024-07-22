@@ -17,30 +17,22 @@ struct FieldMapView: View {
         ScrollView([.horizontal, .vertical]) {
             LazyVGrid(columns: columns, spacing: 5) {
                 ForEach(0 ..< playerDataStore.playingRoom.horizontalCount * playerDataStore.playingRoom.verticalCount) { num in
-                    Image(systemName: "person.circle")
-                        .resizable()
-                        .frame(width: squareSize(), height: squareSize())
-                        .background(Rectangle().foregroundStyle(Color(UIColor.systemGray5)))
+                    let playerPosition = changeToPlayerPosition(num: num)
+                    let players = playerDataStore.playerArray.filter({ $0.playerPosition == playerPosition })
+                    FieldMapViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, players: players)
                 }
             }
             .padding()
         }
         .background(Color.clear)
     }
-    func changeToCoordinate(num: Int) -> String {
+    func changeToPlayerPosition(num: Int) -> PlayerPosition {
         let x = num % playerDataStore.playingRoom.horizontalCount
         let y = num / playerDataStore.playingRoom.horizontalCount
-        let coordinate = "(" + String(x) + ", " + String(y) + ")"
-        return coordinate
-    }
-    func squareSize() -> CGFloat {
-        let width = UIScreen.main.bounds.width
-        let height = UIScreen.main.bounds.height * 0.6
-        if width > height {
-            return height * 0.8 / CGFloat(playerDataStore.playingRoom.horizontalCount)
-        } else {
-            return width * 0.8 / CGFloat(playerDataStore.playingRoom.horizontalCount)
-        }
+        let playerPosition = PlayerPosition(x: x, y: y)
+        let players = playerDataStore.playerArray.filter({ $0.playerPosition == playerPosition })
+        print(players.count)
+        return playerPosition
     }
 }
 

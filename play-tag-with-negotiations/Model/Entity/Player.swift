@@ -17,11 +17,12 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
     var isHost: Bool
     var point: Int
     var enteredTime: Date
+    var isChaser: Bool
     var isDecided: Bool
     var playerPosition: PlayerPosition
     
     enum CodingKeys: String, CodingKey {
-        case userId, isHost, point, enteredTime, isDecided, playerPosition
+        case userId, isHost, point, enteredTime, isChaser, isDecided, playerPosition
     }
     
     enum PlayerPositionKeys: String, CodingKey {
@@ -41,6 +42,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         } else {
             throw DecodingError.dataCorruptedError(forKey: .enteredTime, in: container, debugDescription: "Failed to decode creationDate.")
         }
+        self.isChaser = try container.decode(Bool.self, forKey: .isChaser)
         self.isDecided = try container.decode(Bool.self, forKey: .isDecided)
         let playerPosition = try container.nestedContainer(keyedBy: PlayerPositionKeys.self, forKey: .playerPosition)
         let x = try playerPosition.decode(Int.self, forKey: .x)
@@ -56,18 +58,20 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         let formatter = ISO8601DateFormatter()
         let dateString = formatter.string(from: enteredTime)
         try container.encode(dateString, forKey: .enteredTime)
+        try container.encode(self.isChaser, forKey: .isChaser)
         try container.encode(self.isDecided, forKey: .isDecided)
         var playerPlosition = container.nestedContainer(keyedBy: PlayerPositionKeys.self, forKey: .playerPosition)
         try playerPlosition.encode(self.playerPosition.x, forKey: .x)
         try playerPlosition.encode(self.playerPosition.y, forKey: .y)
     }
     
-    init(userId: String, isHost: Bool, point: Int, enteredTime: Date, isDecided: Bool, playerPosition: PlayerPosition) {
+    init(userId: String, isHost: Bool, point: Int, enteredTime: Date, isChaser: Bool, isDecided: Bool, playerPosition: PlayerPosition) {
         self.id = UUID()
         self.userId = userId
         self.isHost = isHost
         self.point = point
         self.enteredTime = enteredTime
+        self.isChaser = isChaser
         self.isDecided = isDecided
         self.playerPosition = playerPosition
     }
@@ -78,6 +82,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.isHost = isHost
         self.point = 0
         self.enteredTime = Date()
+        self.isChaser = false
         self.isDecided = false
         self.playerPosition = PlayerPosition()
     }
@@ -88,6 +93,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.isHost = false
         self.point = 0
         self.enteredTime = Date()
+        self.isChaser = false
         self.isDecided = true
         self.playerPosition = PlayerPosition()
     }

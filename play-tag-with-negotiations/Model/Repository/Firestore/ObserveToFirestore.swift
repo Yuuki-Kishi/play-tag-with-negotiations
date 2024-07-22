@@ -61,8 +61,8 @@ class ObserveToFirestore {
                             }
                         }
                         DispatchQueue.main.async {
-                            PlayerDataStore.shared.playerUserArray.append(ifNoOverlap: user)
-                            PlayerDataStore.shared.playerPlayerArray.append(ifNoOverlap: player)
+                            PlayerDataStore.shared.userArray.append(ifNoOverlap: user)
+                            PlayerDataStore.shared.playerArray.append(ifNoOverlap: player)
                         }
                     } catch {
                         print(error)
