@@ -17,22 +17,12 @@ struct FieldMapView: View {
         ScrollView([.horizontal, .vertical]) {
             LazyVGrid(columns: columns, spacing: 5) {
                 ForEach(0 ..< playerDataStore.playingRoom.horizontalCount * playerDataStore.playingRoom.verticalCount) { num in
-                    let playerPosition = changeToPlayerPosition(num: num)
-                    let players = playerDataStore.playerArray.filter({ $0.playerPosition == playerPosition })
-                    FieldMapViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, players: players)
+                    FieldMapViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, num: num)
                 }
             }
             .padding()
         }
         .background(Color.clear)
-    }
-    func changeToPlayerPosition(num: Int) -> PlayerPosition {
-        let x = num % playerDataStore.playingRoom.horizontalCount
-        let y = num / playerDataStore.playingRoom.horizontalCount
-        let playerPosition = PlayerPosition(x: x, y: y)
-        let players = playerDataStore.playerArray.filter({ $0.playerPosition == playerPosition })
-        print(players.count)
-        return playerPosition
     }
 }
 

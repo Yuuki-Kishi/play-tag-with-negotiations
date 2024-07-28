@@ -10,7 +10,6 @@ import SwiftUI
 struct ControlPanelCoordination: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
-    @ObservedObject var pathDataStore: PathDataStore
     
     var body: some View {
         switch userDataStore.displayControlPanel {
@@ -23,5 +22,5 @@ struct ControlPanelCoordination: View {
 }
 
 #Preview {
-    ControlPanelCoordination(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared, pathDataStore: PathDataStore.shared)
+    ControlPanelCoordination(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
 }

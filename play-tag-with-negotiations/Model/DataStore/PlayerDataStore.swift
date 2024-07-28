@@ -9,6 +9,7 @@ import Foundation
 
 class PlayerDataStore: ObservableObject {
     static let shared = PlayerDataStore()
+    @Published var player: Player = Player()
     @Published var playingRoom: PlayTagRoom = PlayTagRoom()
     @Published var hostUser: User = User()
     @Published var hostPlayer: Player = Player()

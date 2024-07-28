@@ -36,19 +36,27 @@ class ObserveToFirestore {
         }
     }
     
-    static func observePlayer() {
+    static func observePlayers() {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot?.documents else { return }
             DispatchQueue.main.async {
                 PlayerDataStore.shared.guestUserArray = []
                 PlayerDataStore.shared.guestPlayerArray = []
+                PlayerDataStore.shared.userArray = []
+                PlayerDataStore.shared.playerArray = []
             }
             for document in documents {
                 Task {
                     do {
                         let player = try document.data(as: Player.self)
                         guard let user = await ReadToFirestore.getUserData(userId: player.userId) else { return }
+                        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+                        if player.userId == myUserId {
+                            DispatchQueue.main.async {
+                                PlayerDataStore.shared.player = player
+                            }
+                        }
                         if player.isHost {
                             DispatchQueue.main.async {
                                 PlayerDataStore.shared.hostUser = user
@@ -68,6 +76,35 @@ class ObserveToFirestore {
                         print(error)
                     }
                 }
+            }
+        }
+    }
+    
+    static func observeIsDecided() {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").addSnapshotListener { QuerySnapshot, error in
+            do {
+                guard let documents = QuerySnapshot?.documents else { return }
+                var players: [Player] = []
+                for document in documents {
+                    let player = try document.data(as: Player.self)
+                    players.append(player)
+                }
+                let decidedPlayerCount = players.filter { $0.isDecided }.count
+                let playerCount = players.count
+                print(decidedPlayerCount, playerCount)
+                if decidedPlayerCount == playerCount {
+                    Task {
+                        await ReadToFirestore.getPlayers(roomId: roomId)
+                        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+                        let hostUserId = PlayerDataStore.shared.playingRoom.hostUserId
+                        if myUserId == hostUserId {
+                            await UpdateToFirestore.moveToNextPhase()
+                        }
+                    }
+                }
+            } catch {
+                print(error)
             }
         }
     }
@@ -115,4 +152,18 @@ class ObserveToFirestore {
             }
         }
     }
+    
+//    static func observePlayer() {
+//        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+//        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+//        Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).addSnapshotListener { documentSnapshot, error in
+//            do {
+//                guard let player = try documentSnapshot?.data(as: Player.self) else { return }
+//                PlayerDataStore.shared.player = player
+//            } catch {
+//                print(error)
+//            }
+//            
+//        }
+//    }
 }

@@ -18,7 +18,7 @@ struct GameView: View {
             Text(displayPhase())
             VStack {
                 SelectionView(userDataStore: userDataStore, playerDataStore: playerDataStore)
-                ControlPanelCoordination(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                ControlPanelCoordination(userDataStore: userDataStore, playerDataStore: playerDataStore)
                 Spacer(minLength: 20)
             }
             .frame(height: UIScreen.main.bounds.height * 0.35)
@@ -46,9 +46,12 @@ struct GameView: View {
         }
         .navigationBarBackButtonHidden()
         .onAppear() {
-            let roomId = playerDataStore.playingRoom.roomId.uuidString
-            ObserveToFirestore.observeRoomField(roomId: roomId)
-            ObserveToFirestore.observePlayer()
+            Task {
+                let roomId = playerDataStore.playingRoom.roomId.uuidString
+                ObserveToFirestore.observeRoomField(roomId: roomId)
+                ObserveToFirestore.observeIsDecided()
+                await ReadToFirestore.getPlayers(roomId: roomId)
+            }
         }
     }
     func displayPhase() -> String {

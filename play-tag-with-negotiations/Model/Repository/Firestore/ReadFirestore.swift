@@ -61,6 +61,47 @@ class ReadToFirestore {
         }
     }
     
+    static func getPlayers(roomId: String) async {
+        do {
+            let documents = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").getDocuments()
+            DispatchQueue.main.async {
+                PlayerDataStore.shared.guestUserArray = []
+                PlayerDataStore.shared.guestPlayerArray = []
+                PlayerDataStore.shared.userArray = []
+                PlayerDataStore.shared.playerArray = []
+            }
+            for document in documents.documents {
+                Task {
+                    let player = try document.data(as: Player.self)
+                    guard let user = await getUserData(userId: player.userId) else { return }
+                    guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+                    if player.userId == myUserId {
+                        DispatchQueue.main.async {
+                            PlayerDataStore.shared.player = player
+                        }
+                    }
+                    if player.isHost {
+                        DispatchQueue.main.async {
+                            PlayerDataStore.shared.hostUser = user
+                            PlayerDataStore.shared.hostPlayer = player
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            PlayerDataStore.shared.guestUserArray.append(ifNoOverlap: user)
+                            PlayerDataStore.shared.guestPlayerArray.append(ifNoOverlap: player)
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        PlayerDataStore.shared.userArray.append(ifNoOverlap: user)
+                        PlayerDataStore.shared.playerArray.append(ifNoOverlap: player)
+                    }
+                }
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
     static func checkIsThereRoom(roomId: String) async -> Bool {
         do {
             let playTagRooms = try await Firestore.firestore().collection("PlayTagRooms").getDocuments()

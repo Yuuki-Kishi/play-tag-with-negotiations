@@ -19,10 +19,10 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
     var enteredTime: Date
     var isChaser: Bool
     var isDecided: Bool
-    var playerPosition: PlayerPosition
+    var move: [PlayerPosition]
     
     enum CodingKeys: String, CodingKey {
-        case userId, isHost, point, enteredTime, isChaser, isDecided, playerPosition
+        case userId, isHost, point, enteredTime, isChaser, isDecided, move
     }
     
     enum PlayerPositionKeys: String, CodingKey {
@@ -47,7 +47,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         let playerPosition = try container.nestedContainer(keyedBy: PlayerPositionKeys.self, forKey: .playerPosition)
         let x = try playerPosition.decode(Int.self, forKey: .x)
         let y = try playerPosition.decode(Int.self, forKey: .y)
-        self.playerPosition = PlayerPosition(x: x, y: y)
+        let playerPosition = PlayerPosition(x: x, y: y)
     }
     
     public func encode(to encoder: Encoder) throws {
