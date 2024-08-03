@@ -33,12 +33,6 @@ struct GameView: View {
                     }, label: {
                         Label("ルール", systemImage: "info.circle")
                     })
-                    Divider()
-                    Button(role: .destructive, action: {
-                        
-                    }, label: {
-                        Text("退室")
-                    })
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }

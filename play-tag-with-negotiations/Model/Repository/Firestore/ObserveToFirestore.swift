@@ -28,6 +28,11 @@ class ObserveToFirestore {
             DispatchQueue.main.async {
                 do {
                     guard let playingRoom = try DocumentSnapshot?.data(as: PlayTagRoom.self) else { return }
+                    if PlayerDataStore.shared.playingRoom.phaseNow < playingRoom.phaseNow {
+                        Task {
+                            await UpdateToFirestore.isDecidedToFalse()
+                        }
+                    }
                     PlayerDataStore.shared.playingRoom = playingRoom
                 } catch {
                     print(error)
@@ -92,10 +97,8 @@ class ObserveToFirestore {
                 }
                 let decidedPlayerCount = players.filter { $0.isDecided }.count
                 let playerCount = players.count
-                print(decidedPlayerCount, playerCount)
                 if decidedPlayerCount == playerCount {
                     Task {
-                        await ReadToFirestore.getPlayers(roomId: roomId)
                         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
                         let hostUserId = PlayerDataStore.shared.playingRoom.hostUserId
                         if myUserId == hostUserId {

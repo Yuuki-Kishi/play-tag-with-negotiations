@@ -44,10 +44,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         }
         self.isChaser = try container.decode(Bool.self, forKey: .isChaser)
         self.isDecided = try container.decode(Bool.self, forKey: .isDecided)
-        let playerPosition = try container.nestedContainer(keyedBy: PlayerPositionKeys.self, forKey: .playerPosition)
-        let x = try playerPosition.decode(Int.self, forKey: .x)
-        let y = try playerPosition.decode(Int.self, forKey: .y)
-        let playerPosition = PlayerPosition(x: x, y: y)
+        self.move = try container.decode([PlayerPosition].self, forKey: .move)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -60,12 +57,13 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         try container.encode(dateString, forKey: .enteredTime)
         try container.encode(self.isChaser, forKey: .isChaser)
         try container.encode(self.isDecided, forKey: .isDecided)
-        var playerPlosition = container.nestedContainer(keyedBy: PlayerPositionKeys.self, forKey: .playerPosition)
-        try playerPlosition.encode(self.playerPosition.x, forKey: .x)
-        try playerPlosition.encode(self.playerPosition.y, forKey: .y)
+        try container.encode(self.move, forKey: .move)
+//        var playerPlosition = container.nestedContainer(keyedBy: PlayerPositionKeys.self, forKey: .playerPosition)
+//        try playerPlosition.encode(self.playerPosition.x, forKey: .x)
+//        try playerPlosition.encode(self.playerPosition.y, forKey: .y)
     }
     
-    init(userId: String, isHost: Bool, point: Int, enteredTime: Date, isChaser: Bool, isDecided: Bool, playerPosition: PlayerPosition) {
+    init(userId: String, isHost: Bool, point: Int, enteredTime: Date, isChaser: Bool, isDecided: Bool, move: [PlayerPosition]) {
         self.id = UUID()
         self.userId = userId
         self.isHost = isHost
@@ -73,7 +71,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.enteredTime = enteredTime
         self.isChaser = isChaser
         self.isDecided = isDecided
-        self.playerPosition = playerPosition
+        self.move = move
     }
     
     init(userId: String, isHost: Bool) {
@@ -84,7 +82,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.enteredTime = Date()
         self.isChaser = false
         self.isDecided = false
-        self.playerPosition = PlayerPosition()
+        self.move = []
     }
     
     init() {
@@ -95,6 +93,6 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.enteredTime = Date()
         self.isChaser = false
         self.isDecided = true
-        self.playerPosition = PlayerPosition()
+        self.move = []
     }
 }

@@ -126,7 +126,7 @@ struct PlayTagRoom: Codable, Hashable, Identifiable, Equatable {
         self.playTagName = playTagName
         self.creationDate = Date()
         self.isPlaying = false
-        self.phaseNow = 1
+        self.phaseNow = 0
         self.phaseMax = 10
         self.chaserNumber = 1
         self.fugitiveNumber = 3

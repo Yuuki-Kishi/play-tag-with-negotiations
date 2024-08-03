@@ -55,7 +55,15 @@ struct WaitingRoomView: View {
         .navigationBarBackButtonHidden(true)
         .onChange(of: playerDataStore.playingRoom.isPlaying) {
             if playerDataStore.playingRoom.isPlaying {
-                pathDataStore.navigatetionPath.append(.game)
+                guard let myUserId = userDataStore.signInUser?.userId else { return }
+                let hostUserId = playerDataStore.playingRoom.hostUserId
+                Task {
+                    await UpdateToFirestore.randomInitialPosition()
+                    if myUserId == hostUserId {
+                        await UpdateToFirestore.appointmentChaser()
+                    }
+                    pathDataStore.navigatetionPath.append(.game)
+                }
             }
         }
         .toolbar {
@@ -134,30 +142,30 @@ struct WaitingRoomView: View {
         Task {
             let roomId = playerDataStore.playingRoom.roomId.uuidString
             await DeleteToFirestore.deleteRoom(roomId: roomId)
-            dismiss()
+            pathDataStore.navigatetionPath.removeAll()
         }
     }
     func hostExit() {
         Task {
             let roomId = playerDataStore.playingRoom.roomId.uuidString
             await DeleteToFirestore.hostExitRoom(roomId: roomId)
-            dismiss()
+            pathDataStore.navigatetionPath.removeAll()
         }
     }
     func exit() {
         Task {
             let roomId = playerDataStore.playingRoom.roomId.uuidString
             await DeleteToFirestore.exitRoom(roomId: roomId)
-            dismiss()
+            pathDataStore.navigatetionPath.removeAll()
         }
     }
     func onAppear() {
         let roomId = playerDataStore.playingRoom.roomId.uuidString
         ObserveToFirestore.observePlayers()
         ObserveToFirestore.observeRoomField(roomId: roomId)
-        Task {
-            await UpdateToFirestore.randomInitialPosition()
-        }
+//        Task {
+//            await UpdateToFirestore.randomInitialPosition()
+//        }
     }
 }
 

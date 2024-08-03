@@ -115,6 +115,21 @@ class ReadToFirestore {
         return false
     }
     
+    static func isNotOverPlayer(roomId: String) async -> Bool {
+        do {
+            let playersCount = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").getDocuments().count
+            let playTagRoom = await getRoomData(roomId: roomId)
+            let playingPlayerCount = playTagRoom.chaserNumber + playTagRoom.fugitiveNumber
+            if playersCount < playingPlayerCount {
+                return true
+            }
+        } catch {
+            print(error)
+            return false
+        }
+        return false
+    }
+    
     static func getRoomData(roomId: String) async -> PlayTagRoom {
         do {
             let document = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).getDocument()

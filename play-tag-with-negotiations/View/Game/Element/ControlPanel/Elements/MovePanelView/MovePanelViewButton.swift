@@ -91,8 +91,8 @@ struct MovePanelViewButton: View {
         }
     }
     func isCanDisplay() -> Bool {
-        let x = playerDataStore.player.playerPosition.x
-        let y = playerDataStore.player.playerPosition.y
+        guard let x = playerDataStore.player.move.last?.x else { return false }
+        guard let y = playerDataStore.player.move.last?.y else { return false }
         let horizontalCount = playerDataStore.playingRoom.horizontalCount
         let verticalCount = playerDataStore.playingRoom.verticalCount
         switch direction {
@@ -149,8 +149,8 @@ struct MovePanelViewButton: View {
         }
     }
     func calculateCoordinate() -> PlayerPosition {
-        var x = playerDataStore.player.playerPosition.x
-        var y = playerDataStore.player.playerPosition.y
+        guard var x = playerDataStore.player.move.last?.x else { return PlayerPosition() }
+        guard var y = playerDataStore.player.move.last?.y else { return PlayerPosition() }
         switch direction {
         case .leftUp:
             x -= 1

@@ -17,13 +17,14 @@ struct User: Codable, Hashable, Identifiable, Equatable {
     var userName: String
     var creationDate: Date
     var iconUrl: String
+    var iconData: Data?
     var pronoun: String
     
     enum CodingKeys: String, CodingKey {
-        case userId, userName, creationDate, iconUrl, pronoun
+        case userId, userName, creationDate, iconUrl, iconData, pronoun
     }
     
-    init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) async throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = UUID()
         self.userId = try container.decode(String.self, forKey: .userId)
@@ -36,6 +37,7 @@ struct User: Codable, Hashable, Identifiable, Equatable {
             throw DecodingError.dataCorruptedError(forKey: .creationDate, in: container, debugDescription: "Failed to decode creationDate.")
         }
         self.iconUrl = try container.decode(String.self, forKey: .iconUrl)
+        self.iconData = await ReadToStorage.getIconImage(iconUrl: iconUrl)
         self.pronoun = try container.decode(String.self, forKey: .pronoun)
     }
     
@@ -50,12 +52,13 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         try container.encode(pronoun, forKey: .pronoun)
     }
     
-    init(userId: String, userName: String, creationDate: Date, iconUrl: String, pronoun: String) {
+    init(userId: String, userName: String, creationDate: Date, iconUrl: String, iconData: Data?, pronoun: String) {
         self.id = UUID()
         self.userId = userId
         self.userName = userName
         self.creationDate = creationDate
         self.iconUrl = iconUrl
+        self.iconData = iconData
         self.pronoun = pronoun
     }
     
@@ -65,6 +68,7 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         self.userName = "未設定"
         self.creationDate = creationDate
         self.iconUrl = "default"
+        self.iconData = nil
         self.pronoun = "未設定"
     }
     
@@ -74,6 +78,7 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         self.userName = "unknown"
         self.creationDate = Date()
         self.iconUrl = "default"
+        self.iconData = nil
         self.pronoun = "Who am I?"
     }
 }

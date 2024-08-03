@@ -21,11 +21,12 @@ struct WaitingRoomViewCell: View {
                     .resizable()
                     .scaledToFill()
                     .clipShape(Circle())
-                    .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 6)
+                    .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
             } else {
-                Image(systemName: "person")
-                    .font(.system(size: 50.0))
-                    .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 6)
+                Image(systemName: "person.circle")
+                    .foregroundStyle(Color.accentColor)
+                    .font(.system(size: 40.0))
+                    .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
             }
             VStack {
                 Text(user.userName)
@@ -68,6 +69,7 @@ struct WaitingRoomViewCell: View {
         return color
     }
     func getIcon(iconUrl: String) {
+        print(iconUrl)
         if iconUrl != "default" {
             Task {
                 guard let imageData = await ReadToStorage.getIconImage(iconUrl: iconUrl) else { return }

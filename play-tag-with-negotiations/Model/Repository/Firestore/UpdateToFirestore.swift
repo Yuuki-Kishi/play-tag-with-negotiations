@@ -69,14 +69,11 @@ class UpdateToFirestore {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         let horizontalCount = PlayerDataStore.shared.playingRoom.horizontalCount
-        let  verticalCount = PlayerDataStore.shared.playingRoom.verticalCount
+        let verticalCount = PlayerDataStore.shared.playingRoom.verticalCount
         let initialX = Int.random(in: 0 ..< horizontalCount)
         let initialY = Int.random(in: 0 ..< verticalCount)
-        let initialPosition = PlayerPosition(x: initialX, y: initialY)
-        let encoded = try! JSONEncoder().encode(initialPosition)
         do {
-            guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(jsonObject)
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["move": FieldValue.arrayUnion([["x": initialX, "y": initialY]])])
         } catch {
             print(error)
         }
@@ -85,11 +82,8 @@ class UpdateToFirestore {
     static func updatePosition(x: Int, y: Int) async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-        let playerPosition = PlayerPosition(x: x, y: y)
-        let encoded = try! JSONEncoder().encode(playerPosition)
         do {
-            guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(jsonObject)
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["move": FieldValue.arrayUnion([["x": x, "y": y]])])
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": true])
         } catch {
             print(error)
@@ -99,13 +93,33 @@ class UpdateToFirestore {
     static func moveToNextPhase() async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
-        let batch = Firestore.firestore().batch()
-        let documentRef = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players")
-        batch.updateData(["isDecided": true], forDocument: documentRef)
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["phaseNow": phaseNow + 1])
         } catch {
             print(error)
+        }
+    }
+    
+    static func isDecidedToFalse() async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        do {
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": false])
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func appointmentChaser() async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let chaserNumber = PlayerDataStore.shared.playingRoom.chaserNumber
+        let chasers = PlayerDataStore.shared.playerArray.shuffled().prefix(chaserNumber)
+        for chaser in chasers {
+            do {
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(chaser.userId).updateData(["isChaser": true])
+            } catch {
+                print(error)
+            }
         }
     }
 }

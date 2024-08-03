@@ -16,25 +16,19 @@ struct PlayerPosition: Codable, Hashable {
     var y: Int
     
     enum CodingKeys: String, CodingKey {
-        case playerPosition
-    }
-    
-    enum PlayerPositionKeys: String, CodingKey {
         case x, y
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let playerPosition = try container.nestedContainer(keyedBy: PlayerPositionKeys.self, forKey: .playerPosition)
-        self.x = try playerPosition.decode(Int.self, forKey: .x)
-        self.y = try playerPosition.decode(Int.self, forKey: .y)
+        self.x = try container.decode(Int.self, forKey: .x)
+        self.y = try container.decode(Int.self, forKey: .y)
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        var playerPlosition = container.nestedContainer(keyedBy: PlayerPositionKeys.self, forKey: .playerPosition)
-        try playerPlosition.encode(self.x, forKey: .x)
-        try playerPlosition.encode(self.y, forKey: .y)
+        try container.encode(self.x, forKey: .x)
+        try container.encode(self.y, forKey: .y)
     }
     
     init(x: Int, y: Int) {

@@ -12,7 +12,9 @@ struct PublicRoomsView: View {
     @ObservedObject var playerDataStore: PlayerDataStore
     @StateObject var roomDataStore = RoomDataStore.shared
     @StateObject var pathDataStore = PathDataStore.shared
-    @State private var isShowAlert = false
+    @State private var isShowEnterRoomAlert = false
+    @State private var isShowNotThereRoomAlert = false
+    @State private var isShowOverPlayerAlert = false
     @State private var isNavigationToInvited = false
     @State private var roomId = ""
     
@@ -41,7 +43,7 @@ struct PublicRoomsView: View {
                     }
                 }
                 Button(action: {
-                    isShowAlert = true
+                    isShowEnterRoomAlert = true
                 }, label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 25)
@@ -50,13 +52,6 @@ struct PublicRoomsView: View {
                             .font(.system(size: 30))
                             .foregroundStyle(Color.primary)
                     }
-                })
-                .alert("加入するルームID", isPresented: $isShowAlert, actions: {
-                    TextField("ルームID", text: $roomId)
-                    Button("キャンセル", role: .cancel, action: {})
-                    Button("入室", action: {
-                        enterRoom()
-                    })
                 })
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                 .padding(.trailing, 35)
@@ -79,6 +74,23 @@ struct PublicRoomsView: View {
             .navigationDestination(isPresented: $isNavigationToInvited, destination: {
                 
             })
+            .alert("参加するルームID", isPresented: $isShowEnterRoomAlert, actions: {
+                TextField("ルームID", text: $roomId)
+                Button("キャンセル", role: .cancel, action: {})
+                Button("入室", action: {
+                    enterRoom()
+                })
+            })
+            .alert("該当ルームが存在しません", isPresented: $isShowNotThereRoomAlert, actions: {
+                Button(action: {}) {
+                    Text("OK")
+                }
+            })
+            .alert("参加できる人数を超えています", isPresented: $isShowOverPlayerAlert, actions: {
+                Button(action: {}) {
+                    Text("OK")
+                }
+            })
             .onAppear() {
                 onAppear()
             }
@@ -86,11 +98,19 @@ struct PublicRoomsView: View {
     }
     func enterRoom() {
         Task {
-            if await ReadToFirestore.checkIsThereRoom(roomId: roomId) {
-                playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
-                await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
-                roomId = ""
-                pathDataStore.navigatetionPath.append(.waitingRoom)
+            let isThereRoom = await ReadToFirestore.checkIsThereRoom(roomId: roomId)
+            let isNotOverPlayer = await ReadToFirestore.isNotOverPlayer(roomId: roomId)
+            if isThereRoom {
+                if isNotOverPlayer {
+                    playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
+                    await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
+                    roomId = ""
+                    pathDataStore.navigatetionPath.append(.waitingRoom)
+                } else {
+                    isShowOverPlayerAlert = true
+                }
+            } else {
+                isShowNotThereRoomAlert = true
             }
         }
     }
