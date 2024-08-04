@@ -57,13 +57,13 @@ struct WaitingRoomView: View {
             if playerDataStore.playingRoom.isPlaying {
                 guard let myUserId = userDataStore.signInUser?.userId else { return }
                 let hostUserId = playerDataStore.playingRoom.hostUserId
-                Task {
-                    await UpdateToFirestore.randomInitialPosition()
-                    if myUserId == hostUserId {
+                if myUserId == hostUserId {
+                    Task {
                         await UpdateToFirestore.appointmentChaser()
+                        await UpdateToFirestore.moveToNextPhase()
                     }
-                    pathDataStore.navigatetionPath.append(.game)
                 }
+                pathDataStore.navigatetionPath.append(.game)
             }
         }
         .toolbar {
@@ -163,9 +163,9 @@ struct WaitingRoomView: View {
         let roomId = playerDataStore.playingRoom.roomId.uuidString
         ObserveToFirestore.observePlayers()
         ObserveToFirestore.observeRoomField(roomId: roomId)
-//        Task {
-//            await UpdateToFirestore.randomInitialPosition()
-//        }
+        Task {
+            await UpdateToFirestore.randomInitialPosition()
+        }
     }
 }
 

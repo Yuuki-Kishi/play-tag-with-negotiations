@@ -50,7 +50,8 @@ class ReadToFirestore {
         do {
             let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
             if document.exists {
-                let user = try document.data(as: User.self)
+                var user = try document.data(as: User.self)
+                user.iconData = await ReadToStorage.getIconImage(iconUrl: user.iconUrl)
                 return user
             } else {
                 return nil

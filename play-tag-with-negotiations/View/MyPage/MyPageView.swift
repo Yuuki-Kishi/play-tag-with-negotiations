@@ -12,13 +12,12 @@ struct MyPageView: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var pathDataStore: PathDataStore
     @State private var selectedImage: PhotosPickerItem?
-    @State private var icon: UIImage? = nil
     
     var body: some View {
         VStack {
             Spacer(minLength: 50)
             PhotosPicker(selection: $selectedImage) {
-                if let iconImage = icon {
+                if let iconImage = getIconUIImage() {
                     Image(uiImage: iconImage)
                         .resizable()
                         .scaledToFill()
@@ -35,12 +34,8 @@ struct MyPageView: View {
                     await UploadToStorage.uploadIconImage(selectedItem: selectedImage)
                 }
             })
-            .onChange(of: userDataStore.signInUser?.iconUrl, {
-                getIconUIImage(iconUrl: userDataStore.signInUser?.iconUrl ?? "default")
-            })
             MyPageListView(userDataStore: userDataStore)
             Spacer()
-            
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing, content: {
@@ -51,7 +46,6 @@ struct MyPageView: View {
         .navigationTitle("マイページ")
         .onAppear() {
             ObserveToFirestore.observeUserData()
-            getIconUIImage(iconUrl: userDataStore.signInUser?.iconUrl ?? "default")
         }
     }
     func toolBarMenu() -> some View {
@@ -61,12 +55,11 @@ struct MyPageView: View {
             Image(systemName: "person.2.fill")
         })
     }
-    func getIconUIImage(iconUrl: String) {
-        if iconUrl != "default" {
-            Task {
-                guard let imageData = await ReadToStorage.getIconImage(iconUrl: iconUrl) else { return }
-                icon = UIImage(data: imageData)
-            }
+    func getIconUIImage() -> UIImage? {
+        if let iconData = userDataStore.signInUser?.iconData {
+            return UIImage(data: iconData)
+        } else {
+            return nil
         }
     }
 }

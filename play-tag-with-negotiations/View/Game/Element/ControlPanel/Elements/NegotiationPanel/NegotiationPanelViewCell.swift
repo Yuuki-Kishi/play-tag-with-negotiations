@@ -9,11 +9,10 @@ import SwiftUI
 
 struct NegotiationPanelViewCell: View {
     @Binding var user: User
-    @State private var icon: UIImage? = nil
     
     var body: some View {
         HStack {
-            if let iconImage = icon {
+            if let iconImage = getIconImage() {
                 Image(uiImage: iconImage)
                     .resizable()
                     .scaledToFill()
@@ -35,16 +34,12 @@ struct NegotiationPanelViewCell: View {
                     .font(.system(size: 15))
             }
         }
-        .onAppear() {
-            getIcon(iconUrl: user.iconUrl)
-        }
     }
-    func getIcon(iconUrl: String) {
-        if iconUrl != "default" {
-            Task {
-                guard let imageData = await ReadToStorage.getIconImage(iconUrl: iconUrl) else { return }
-                icon = UIImage(data: imageData)
-            }
+    func getIconImage() -> UIImage? {
+        if let iconData = user.iconData {
+            return UIImage(data: iconData)
+        } else {
+            return nil
         }
     }
 }

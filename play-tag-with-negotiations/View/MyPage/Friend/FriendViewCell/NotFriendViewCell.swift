@@ -9,13 +9,23 @@ import SwiftUI
 
 struct NotFriendViewCell: View {
     @Binding var friend: User
-    @State private var isShowAlert = false
+    @State private var icon: UIImage? = nil
+    @State private var isShowBeFriendAlert = false
+    @State private var isShowDeleteFirendAlert = false
     
     var body: some View {
         HStack {
-            Image(systemName: "person")
-                .font(.system(size: 50.0))
-                .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 6)
+            if let iconImage = icon {
+                Image(uiImage: iconImage)
+                    .resizable()
+                    .scaledToFill()
+                    .clipShape(Circle())
+                    .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
+            } else {
+                Image(systemName: "person")
+                    .font(.system(size: 50.0))
+                    .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
+            }
             VStack {
                 Text(friend.userName)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -26,18 +36,22 @@ struct NotFriendViewCell: View {
                     .font(.system(size: 15))
             }
         }
-        .onTapGesture {
-            isShowAlert = true
-        }
-        .alert("フレンド申請を承認しますか？", isPresented: $isShowAlert, actions: {
-            Button(role: .destructive, action: {
-                Task {
-                    await DeleteToFirestore.deleteFriend(friendUserId: friend.userId)
-                }
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button(action: {
+                isShowDeleteFirendAlert = true
             }, label: {
-                Text("削除")
+                Text("解消")
             })
-            Button(role: .cancel, action: {
+        }
+        .tint(Color.red)
+        .onTapGesture {
+            isShowBeFriendAlert = true
+        }
+        .alert("フレンド申請を承認しますか？", isPresented: $isShowBeFriendAlert, actions: {
+            Button(role: .cancel, action: {}, label: {
+                Text("キャンセル")
+            })
+            Button(action: {
                 Task {
                     await UpdateToFirestore.becomeFriend(friendUserId: friend.userId)
                 }
@@ -45,6 +59,29 @@ struct NotFriendViewCell: View {
                 Text("承認")
             })
         })
+        .alert("フレンド申請を削除しますか？", isPresented: $isShowDeleteFirendAlert, actions: {
+            Button(role: .cancel, action: {}, label: {
+                Text("キャンセル")
+            })
+            Button(role: .destructive, action: {
+                Task {
+                    await DeleteToFirestore.deleteFriend(friendUserId: friend.userId)
+                }
+            }, label: {
+                Text("削除")
+            })
+        })
+        .onAppear() {
+            getIcon()
+        }
+    }
+    func getIcon() {
+        if friend.iconUrl != "default" {
+            Task {
+                guard let imageData = await ReadToStorage.getIconImage(iconUrl: friend.iconUrl) else { return }
+                icon = UIImage(data: imageData)
+            }
+        }
     }
 }
 

@@ -24,7 +24,7 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         case userId, userName, creationDate, iconUrl, iconData, pronoun
     }
     
-    init(from decoder: Decoder) async throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = UUID()
         self.userId = try container.decode(String.self, forKey: .userId)
@@ -37,7 +37,7 @@ struct User: Codable, Hashable, Identifiable, Equatable {
             throw DecodingError.dataCorruptedError(forKey: .creationDate, in: container, debugDescription: "Failed to decode creationDate.")
         }
         self.iconUrl = try container.decode(String.self, forKey: .iconUrl)
-        self.iconData = await ReadToStorage.getIconImage(iconUrl: iconUrl)
+        self.iconData = nil
         self.pronoun = try container.decode(String.self, forKey: .pronoun)
     }
     

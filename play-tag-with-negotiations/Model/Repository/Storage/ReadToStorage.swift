@@ -11,8 +11,12 @@ import FirebaseStorage
 
 class ReadToStorage {
     static func getIconImage(iconUrl: String) async -> Data? {
-        let imageRef = Storage.storage().reference(forURL: iconUrl)
-        let imageData = try? await imageRef.data(maxSize: 1 * 1024 * 1024)
-        return imageData
+        if iconUrl == "default" {
+            return nil
+        } else {
+            let imageRef = Storage.storage().reference(forURL: iconUrl)
+            let imageData = try? await imageRef.data(maxSize: 1 * 1024 * 1024)
+            return imageData
+        }
     }
 }

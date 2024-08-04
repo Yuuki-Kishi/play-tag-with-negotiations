@@ -19,10 +19,11 @@ struct FriendViewCell: View {
                     .resizable()
                     .scaledToFill()
                     .clipShape(Circle())
+                    .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
             } else {
                 Image(systemName: "person")
                     .font(.system(size: 50.0))
-                    .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 6)
+                    .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
             }
             VStack {
                 Text(friend.userName)

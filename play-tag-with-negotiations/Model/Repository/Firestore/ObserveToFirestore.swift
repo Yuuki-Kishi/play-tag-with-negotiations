@@ -13,9 +13,14 @@ class ObserveToFirestore {
     static func observeUserData() {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         Firestore.firestore().collection("Users").document(userId).addSnapshotListener { documentSnapshot, error in
-            DispatchQueue.main.async {
+            Task {
                 do {
-                    UserDataStore.shared.signInUser = try documentSnapshot?.data(as: User.self)
+                    guard let user = try documentSnapshot?.data(as: User.self) else { return }
+                    let iconData = await ReadToStorage.getIconImage(iconUrl: user.iconUrl)
+                    DispatchQueue.main.async {
+                        UserDataStore.shared.signInUser = user
+                        UserDataStore.shared.signInUser?.iconData = iconData
+                    }
                 } catch {
                     print(error)
                 }
@@ -31,6 +36,7 @@ class ObserveToFirestore {
                     if PlayerDataStore.shared.playingRoom.phaseNow < playingRoom.phaseNow {
                         Task {
                             await UpdateToFirestore.isDecidedToFalse()
+                            await ReadToFirestore.getPlayers(roomId: playingRoom.roomId.uuidString)
                         }
                     }
                     PlayerDataStore.shared.playingRoom = playingRoom
@@ -44,41 +50,43 @@ class ObserveToFirestore {
     static func observePlayers() {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").addSnapshotListener { querySnapshot, error in
-            guard let documents = querySnapshot?.documents else { return }
-            DispatchQueue.main.async {
-                PlayerDataStore.shared.guestUserArray = []
-                PlayerDataStore.shared.guestPlayerArray = []
-                PlayerDataStore.shared.userArray = []
-                PlayerDataStore.shared.playerArray = []
-            }
-            for document in documents {
-                Task {
-                    do {
-                        let player = try document.data(as: Player.self)
-                        guard let user = await ReadToFirestore.getUserData(userId: player.userId) else { return }
-                        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
-                        if player.userId == myUserId {
-                            DispatchQueue.main.async {
-                                PlayerDataStore.shared.player = player
+            if !PlayerDataStore.shared.playingRoom.isPlaying {
+                guard let documents = querySnapshot?.documents else { return }
+                DispatchQueue.main.async {
+                    PlayerDataStore.shared.guestUserArray = []
+                    PlayerDataStore.shared.guestPlayerArray = []
+                    PlayerDataStore.shared.userArray = []
+                    PlayerDataStore.shared.playerArray = []
+                }
+                for document in documents {
+                    Task {
+                        do {
+                            let player = try document.data(as: Player.self)
+                            guard let user = await ReadToFirestore.getUserData(userId: player.userId) else { return }
+                            guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+                            if player.userId == myUserId {
+                                DispatchQueue.main.async {
+                                    PlayerDataStore.shared.player = player
+                                }
                             }
-                        }
-                        if player.isHost {
-                            DispatchQueue.main.async {
-                                PlayerDataStore.shared.hostUser = user
-                                PlayerDataStore.shared.hostPlayer = player
+                            if player.isHost {
+                                DispatchQueue.main.async {
+                                    PlayerDataStore.shared.hostUser = user
+                                    PlayerDataStore.shared.hostPlayer = player
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    PlayerDataStore.shared.guestUserArray.append(ifNoOverlap: user)
+                                    PlayerDataStore.shared.guestPlayerArray.append(ifNoOverlap: player)
+                                }
                             }
-                        } else {
                             DispatchQueue.main.async {
-                                PlayerDataStore.shared.guestUserArray.append(ifNoOverlap: user)
-                                PlayerDataStore.shared.guestPlayerArray.append(ifNoOverlap: player)
+                                PlayerDataStore.shared.userArray.append(ifNoOverlap: user)
+                                PlayerDataStore.shared.playerArray.append(ifNoOverlap: player)
                             }
+                        } catch {
+                            print(error)
                         }
-                        DispatchQueue.main.async {
-                            PlayerDataStore.shared.userArray.append(ifNoOverlap: user)
-                            PlayerDataStore.shared.playerArray.append(ifNoOverlap: player)
-                        }
-                    } catch {
-                        print(error)
                     }
                 }
             }
