@@ -83,8 +83,7 @@ class UpdateToFirestore {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["move": FieldValue.arrayUnion([["x": x, "y": y]])])
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": true])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["move": FieldValue.arrayUnion([["x": x, "y": y]]), "isDecided": true])
         } catch {
             print(error)
         }
@@ -92,9 +91,23 @@ class UpdateToFirestore {
     
     static func moveToNextPhase() async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let phaseMax = PlayerDataStore.shared.playingRoom.phaseMax
         let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["phaseNow": phaseNow + 1])
+            if phaseNow == phaseMax {
+                await gameEnd()
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func gameEnd() async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
+        do {
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["isEnd": true])
         } catch {
             print(error)
         }
@@ -103,10 +116,13 @@ class UpdateToFirestore {
     static func isDecidedToFalse() async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-        do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": false])
-        } catch {
-            print(error)
+        let myIsDecided = PlayerDataStore.shared.player.isDecided
+        if myIsDecided {
+            do {
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": false])
+            } catch {
+                print(error)
+            }
         }
     }
     
@@ -120,6 +136,16 @@ class UpdateToFirestore {
             } catch {
                 print(error)
             }
+        }
+    }
+    
+    static func wasCaptured() async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        do {
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isCaptured": true])
+        } catch {
+            print(error)
         }
     }
 }

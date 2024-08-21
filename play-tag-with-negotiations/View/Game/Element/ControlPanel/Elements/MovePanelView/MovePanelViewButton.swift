@@ -21,15 +21,20 @@ struct MovePanelViewButton: View {
         }, label: {
             Image(systemName: imageName())
                 .resizable()
+                .foregroundStyle(buttonColor())
                 .aspectRatio(contentMode: .fit)
         })
     }
     func move() {
-        Task {
-            let playerPosition = calculateCoordinate()
-            let x = playerPosition.x
-            let y = playerPosition.y
-            await UpdateToFirestore.updatePosition(x: x, y: y)
+        let isDecided = playerDataStore.player.isDecided
+        let isCaptured = playerDataStore.player.isCaptured
+        if !isDecided && !isCaptured {
+            Task {
+                let playerPosition = calculateCoordinate()
+                let x = playerPosition.x
+                let y = playerPosition.y
+                await UpdateToFirestore.updatePosition(x: x, y: y)
+            }
         }
     }
     func imageName() -> String {
@@ -176,6 +181,19 @@ struct MovePanelViewButton: View {
             y += 1
         }
         return PlayerPosition(x: x, y: y)
+    }
+    func buttonColor() -> Color {
+        let isDecided = playerDataStore.player.isDecided
+        let isCaptured = playerDataStore.player.isCaptured
+        if isCaptured {
+            return .gray
+        } else {
+            if isDecided {
+                return .gray
+            } else {
+                return .accentColor
+            }
+        }
     }
 }
 

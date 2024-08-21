@@ -12,6 +12,8 @@ struct GameView: View {
     @ObservedObject var playerDataStore: PlayerDataStore
     @ObservedObject var pathDataStore: PathDataStore
     
+    @State private var isShowWasCapturedAlert = false
+    
     var body: some View {
         VStack {
             FieldMapView(userDataStore: userDataStore, playerDataStore: playerDataStore)
@@ -19,6 +21,7 @@ struct GameView: View {
             VStack {
                 SelectionView(userDataStore: userDataStore, playerDataStore: playerDataStore)
                 ControlPanelCoordination(userDataStore: userDataStore, playerDataStore: playerDataStore)
+                    .frame(height: UIScreen.main.bounds.height * 0.25)
                 Spacer(minLength: 20)
             }
             .frame(height: UIScreen.main.bounds.height * 0.35)
@@ -38,13 +41,16 @@ struct GameView: View {
                 }
             })
         }
+        .onChange(of: playerDataStore.playingRoom.isEnd) {
+            pathDataStore.navigatetionPath.append(.result)
+        }
         .navigationBarBackButtonHidden()
         .onAppear() {
             Task {
-                let roomId = playerDataStore.playingRoom.roomId.uuidString
-                ObserveToFirestore.observeRoomField(roomId: roomId)
+                ObserveToFirestore.observeRoomField()
                 ObserveToFirestore.observeIsDecided()
-                await ReadToFirestore.getPlayers(roomId: roomId)
+                ObserveToFirestore.observeMyIsDecided()
+                await ReadToFirestore.getAlivePlayers()
             }
         }
     }

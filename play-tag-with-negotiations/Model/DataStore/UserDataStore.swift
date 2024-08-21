@@ -13,7 +13,7 @@ class UserDataStore: ObservableObject {
     @Published var userResult: Result<User?, Error>? = nil
     @Published var signInUser: User? = nil
     @Published var displayControlPanel: controlPanelMode = .movement
-    
+    @Published var noticeArray: [Notice] = []
     enum controlPanelMode {
         case movement, negotiation
     }

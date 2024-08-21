@@ -160,9 +160,8 @@ struct WaitingRoomView: View {
         }
     }
     func onAppear() {
-        let roomId = playerDataStore.playingRoom.roomId.uuidString
         ObserveToFirestore.observePlayers()
-        ObserveToFirestore.observeRoomField(roomId: roomId)
+        ObserveToFirestore.observeRoomField()
         Task {
             await UpdateToFirestore.randomInitialPosition()
         }

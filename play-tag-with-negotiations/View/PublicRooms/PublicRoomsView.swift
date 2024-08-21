@@ -15,7 +15,6 @@ struct PublicRoomsView: View {
     @State private var isShowEnterRoomAlert = false
     @State private var isShowNotThereRoomAlert = false
     @State private var isShowOverPlayerAlert = false
-    @State private var isNavigationToInvited = false
     @State private var roomId = ""
     
     var body: some View {
@@ -28,6 +27,8 @@ struct PublicRoomsView: View {
                     switch path {
                     case .roomSetting:
                         RoomSettingView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                    case .notification:
+                        NoticeView(userDataStore: userDataStore)
                     case .myPage:
                         MyPageView(userDataStore: userDataStore, pathDataStore: pathDataStore)
                     case .friend:
@@ -39,20 +40,30 @@ struct PublicRoomsView: View {
                     case .game:
                         GameView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
                     case .result:
-                        EmptyView()
+                        ResultView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
                     }
                 }
-                Button(action: {
-                    isShowEnterRoomAlert = true
-                }, label: {
+                Menu {
+                    Button(action: {
+                        pathDataStore.navigatetionPath.append(.roomSetting)
+                    }, label: {
+                        Label("ルーム作成", systemImage: "plus")
+                    })
+                    Button(action: {
+                        isShowEnterRoomAlert = true
+                    }, label: {
+                        Label("ルームに参加", systemImage: "arrow.right.to.line.compact")
+                    })
+                } label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 25)
                             .frame(width: 75, height: 75)
-                        Image(systemName: "arrow.right.to.line.compact")
+                        Image(systemName: "figure.run")
                             .font(.system(size: 30))
                             .foregroundStyle(Color.primary)
                     }
-                })
+                }
+                .menuOrder(.fixed)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                 .padding(.trailing, 35)
                 .padding(.bottom, 35)
@@ -63,7 +74,7 @@ struct PublicRoomsView: View {
                 ToolbarItem(placement: .topBarTrailing, content: {
                     HStack {
                         Button(action: {
-                            isNavigationToInvited = true
+                            pathDataStore.navigatetionPath.append(.notification)
                         }, label: {
                             Image(systemName: "envelope")
                         })
@@ -71,9 +82,6 @@ struct PublicRoomsView: View {
                     }
                 })
             }
-            .navigationDestination(isPresented: $isNavigationToInvited, destination: {
-                
-            })
             .alert("参加するルームID", isPresented: $isShowEnterRoomAlert, actions: {
                 TextField("ルームID", text: $roomId)
                 Button("キャンセル", role: .cancel, action: {})
@@ -117,11 +125,6 @@ struct PublicRoomsView: View {
     func toolBarMenu() -> some View {
         Menu {
             Button(action: {
-                pathDataStore.navigatetionPath.append(.roomSetting)
-            }, label: {
-                Label("ルーム作成", systemImage: "plus")
-            })
-            Button(action: {
                 pathDataStore.navigatetionPath.append(.myPage)
             }, label: {
                 Label("マイページ", systemImage: "person.circle")
@@ -158,7 +161,9 @@ struct PublicRoomsView: View {
                 let playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
                 playerDataStore.playingRoom = playingRoom
                 if playingRoom.isPlaying {
-                    pathDataStore.navigatetionPath.append(.game)
+                    if !playingRoom.isEnd {
+                        pathDataStore.navigatetionPath.append(.game)
+                    }
                 } else {
                     pathDataStore.navigatetionPath.append(.waitingRoom)
                 }

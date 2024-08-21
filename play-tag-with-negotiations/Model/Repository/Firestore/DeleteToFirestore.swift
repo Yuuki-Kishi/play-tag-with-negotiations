@@ -45,4 +45,13 @@ class DeleteToFirestore {
             print(error)
         }
     }
+    
+    static func endGame() async {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        do {
+            try await Firestore.firestore().collection("Users").document(userId).updateData(["beingRoomId": FieldValue.delete()])
+        } catch {
+            print(error)
+        }
+    }
 }

@@ -28,20 +28,44 @@ class ObserveToFirestore {
         }
     }
     
-    static func observeRoomField(roomId: String) {
+    static func observeRoomField() {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         Firestore.firestore().collection("PlayTagRooms").document(roomId).addSnapshotListener { DocumentSnapshot, error in
-            DispatchQueue.main.async {
-                do {
-                    guard let playingRoom = try DocumentSnapshot?.data(as: PlayTagRoom.self) else { return }
-                    if PlayerDataStore.shared.playingRoom.phaseNow < playingRoom.phaseNow {
-                        Task {
-                            await UpdateToFirestore.isDecidedToFalse()
-                            await ReadToFirestore.getPlayers(roomId: playingRoom.roomId.uuidString)
-                        }
+            do {
+                guard let playingRoom = try DocumentSnapshot?.data(as: PlayTagRoom.self) else { return }
+                if PlayerDataStore.shared.playingRoom.phaseNow < playingRoom.phaseNow {
+                    Task {
+                        await UpdateToFirestore.isDecidedToFalse()
+                        await ReadToFirestore.getAlivePlayers()
                     }
+                }
+                DispatchQueue.main.async {
                     PlayerDataStore.shared.playingRoom = playingRoom
-                } catch {
-                    print(error)
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    static func observeNotice() {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+        Firestore.firestore().collection("PlayTagRooms").document(myUserId).collection("Notice").addSnapshotListener { querySnapshot, error in
+            guard let documents = querySnapshot?.documents else { return }
+            DispatchQueue.main.async {
+                UserDataStore.shared.noticeArray = []
+            }
+            Task {
+                for document in documents {
+                    do {
+                        let noticeId = try document.data(as: Notice.self).noticeId.uuidString
+                        guard let notice = await ReadToFirestore.getNotice(noticeId: noticeId) else { return }
+                        DispatchQueue.main.async {
+                            UserDataStore.shared.noticeArray.append(notice)
+                        }
+                    } catch {
+                        print(error)
+                    }
                 }
             }
         }
@@ -55,7 +79,6 @@ class ObserveToFirestore {
                 DispatchQueue.main.async {
                     PlayerDataStore.shared.guestUserArray = []
                     PlayerDataStore.shared.guestPlayerArray = []
-                    PlayerDataStore.shared.userArray = []
                     PlayerDataStore.shared.playerArray = []
                 }
                 for document in documents {
@@ -63,12 +86,6 @@ class ObserveToFirestore {
                         do {
                             let player = try document.data(as: Player.self)
                             guard let user = await ReadToFirestore.getUserData(userId: player.userId) else { return }
-                            guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
-                            if player.userId == myUserId {
-                                DispatchQueue.main.async {
-                                    PlayerDataStore.shared.player = player
-                                }
-                            }
                             if player.isHost {
                                 DispatchQueue.main.async {
                                     PlayerDataStore.shared.hostUser = user
@@ -81,7 +98,6 @@ class ObserveToFirestore {
                                 }
                             }
                             DispatchQueue.main.async {
-                                PlayerDataStore.shared.userArray.append(ifNoOverlap: user)
                                 PlayerDataStore.shared.playerArray.append(ifNoOverlap: player)
                             }
                         } catch {
@@ -93,29 +109,44 @@ class ObserveToFirestore {
         }
     }
     
-    static func observeIsDecided() {
+    static func observeMyIsDecided() {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-        Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").addSnapshotListener { QuerySnapshot, error in
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+        Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(myUserId).addSnapshotListener { DocumentSnapshot, error in
             do {
-                guard let documents = QuerySnapshot?.documents else { return }
-                var players: [Player] = []
-                for document in documents {
-                    let player = try document.data(as: Player.self)
-                    players.append(player)
-                }
-                let decidedPlayerCount = players.filter { $0.isDecided }.count
-                let playerCount = players.count
-                if decidedPlayerCount == playerCount {
-                    Task {
-                        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
-                        let hostUserId = PlayerDataStore.shared.playingRoom.hostUserId
-                        if myUserId == hostUserId {
-                            await UpdateToFirestore.moveToNextPhase()
-                        }
-                    }
+                guard let myIsDecided = try DocumentSnapshot?.data(as: Player.self).isDecided else { return }
+                DispatchQueue.main.async {
+                    PlayerDataStore.shared.player.isDecided = myIsDecided
                 }
             } catch {
                 print(error)
+            }
+        }
+    }
+    
+    static func observeIsDecided() {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+        let hostUserId = PlayerDataStore.shared.playingRoom.hostUserId
+        if myUserId == hostUserId {
+            let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+            Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").addSnapshotListener { QuerySnapshot, error in
+                do {
+                    guard let documents = QuerySnapshot?.documents else { return }
+                    var players: [Player] = []
+                    for document in documents {
+                        let player = try document.data(as: Player.self)
+                        players.append(player)
+                    }
+                    let decidedPlayerCount = players.filter { $0.isDecided }.count
+                    let playerCount = players.count
+                    if decidedPlayerCount == playerCount {
+                        Task {
+                            await UpdateToFirestore.moveToNextPhase()
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
             }
         }
     }

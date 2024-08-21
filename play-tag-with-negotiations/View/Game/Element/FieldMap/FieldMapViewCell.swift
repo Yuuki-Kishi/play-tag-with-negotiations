@@ -136,15 +136,13 @@ struct FieldMapViewCell: View {
     func numToPlayers(num: Int) -> [Player] {
         let x = num % playerDataStore.playingRoom.horizontalCount
         let y = num / playerDataStore.playingRoom.horizontalCount
+        let phaseNow = playerDataStore.playingRoom.phaseNow
         let playerPosition = PlayerPosition(x: x, y: y)
-        let players = playerDataStore.playerArray.filter { $0.move.last == playerPosition }
+        let players = playerDataStore.playerArray.filter { $0.move.last == playerPosition && !$0.isCaptured }
         return players
     }
     func numToPlayerCount(num: Int) -> Int {
-        let x = num % playerDataStore.playingRoom.horizontalCount
-        let y = num / playerDataStore.playingRoom.horizontalCount
-        let playerPosition = PlayerPosition(x: x, y: y)
-        let players = playerDataStore.playerArray.filter { $0.move.last == playerPosition }
+        let players = numToPlayers(num: num)
         return players.count
     }
 }

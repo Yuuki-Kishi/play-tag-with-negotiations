@@ -58,44 +58,93 @@ class ReadToFirestore {
             }
         } catch {
             print(error)
+        }
+        return nil
+    }
+    
+    static func getNotice(noticeId: String) async -> Notice? {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return nil }
+        do {
+            let document = try await Firestore.firestore().collection("Users").document(myUserId).collection("Notice").document(noticeId).getDocument()
+            var notice = try document.data(as: Notice.self)
+            guard let sendUser = await getUserData(userId: notice.userId) else { return nil }
+            notice.sendUser = sendUser
+            return notice
+        } catch {
+            print(error)
+        }
+        return nil
+    }
+        
+    static func getPlayer(userId: String) async -> Player? {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        do {
+            let document = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).getDocument()
+            let player = try document.data(as: Player.self)
+            return player
+        } catch {
+            print(error)
             return nil
         }
     }
     
-    static func getPlayers(roomId: String) async {
+    static func getAllPlayers() async -> [Player] {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         do {
-            let documents = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").getDocuments()
+            let documents = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").whereField("isCaptured", isEqualTo: false).getDocuments().documents
+            var players: [Player] = []
+            for document in documents {
+                let player = try document.data(as: Player.self)
+                players.append(ifNoOverlap: player)
+            }
+            return players
+        } catch {
+            print(error)
+            return []
+        }
+    }
+    
+    static func getAlivePlayers() async {
+        do {
+            let players = await getAllPlayers()
+            let alivePlayers = OperationPlayers.getAlivePlayers(players: players)
+            let isAlive = OperationPlayers.isAlive(players: players)
+            guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+            guard var myPlayerData = await getPlayer(userId: myUserId) else { return }
+            if !isAlive {
+                myPlayerData.isCaptured = true
+                await UpdateToFirestore.wasCaptured()
+            }
             DispatchQueue.main.async {
+                PlayerDataStore.shared.player = myPlayerData
+                
                 PlayerDataStore.shared.guestUserArray = []
                 PlayerDataStore.shared.guestPlayerArray = []
                 PlayerDataStore.shared.userArray = []
                 PlayerDataStore.shared.playerArray = []
             }
-            for document in documents.documents {
-                Task {
-                    let player = try document.data(as: Player.self)
-                    guard let user = await getUserData(userId: player.userId) else { return }
-                    guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
-                    if player.userId == myUserId {
-                        DispatchQueue.main.async {
-                            PlayerDataStore.shared.player = player
-                        }
-                    }
-                    if player.isHost {
-                        DispatchQueue.main.async {
-                            PlayerDataStore.shared.hostUser = user
-                            PlayerDataStore.shared.hostPlayer = player
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            PlayerDataStore.shared.guestUserArray.append(ifNoOverlap: user)
-                            PlayerDataStore.shared.guestPlayerArray.append(ifNoOverlap: player)
-                        }
-                    }
+            for alivePlayer in alivePlayers {
+                guard let user = await ReadToFirestore.getUserData(userId: alivePlayer.userId) else { return }
+                if alivePlayer.isHost {
                     DispatchQueue.main.async {
-                        PlayerDataStore.shared.userArray.append(ifNoOverlap: user)
-                        PlayerDataStore.shared.playerArray.append(ifNoOverlap: player)
+                        PlayerDataStore.shared.hostUser = user
+                        PlayerDataStore.shared.hostPlayer = alivePlayer
                     }
+                } else {
+                    DispatchQueue.main.async {
+                        PlayerDataStore.shared.guestUserArray.append(ifNoOverlap: user)
+                        PlayerDataStore.shared.guestPlayerArray.append(ifNoOverlap: alivePlayer)
+                    }
+                }
+                DispatchQueue.main.async {
+                    PlayerDataStore.shared.userArray.append(ifNoOverlap: user)
+                    PlayerDataStore.shared.playerArray.append(ifNoOverlap: alivePlayer)
+                }
+            }
+            if PlayerDataStore.shared.player.isHost {
+                let aliveFugitiveCount = OperationPlayers.getAliveFugitives(players: players).count
+                if aliveFugitiveCount == 0 {
+                    await UpdateToFirestore.gameEnd()
                 }
             }
         } catch {
@@ -140,5 +189,20 @@ class ReadToFirestore {
             print(error)
         }
         return PlayTagRoom()
+    }
+    
+    static func getResult() async {
+        let allPlayers = await getAllPlayers()
+        var allUsers: [User] = []
+        for player in allPlayers {
+            guard let user = await getUserData(userId: player.userId) else { return }
+            allUsers.append(ifNoOverlap: user)
+        }
+        DispatchQueue.main.async {
+            PlayerDataStore.shared.userArray = []
+            PlayerDataStore.shared.playerArray = []
+            PlayerDataStore.shared.userArray = allUsers
+            PlayerDataStore.shared.playerArray = allPlayers
+        }
     }
 }
