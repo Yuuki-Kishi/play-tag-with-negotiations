@@ -142,6 +142,10 @@ struct RoomSettingViewCell: View {
                     playerDataStore.playingRoom.chaserNumber = checkTextIsNumber(before: playerDataStore.playingRoom.chaserNumber, after: text)
                 case .fugitiveNumber:
                     playerDataStore.playingRoom.fugitiveNumber = checkTextIsNumber(before: playerDataStore.playingRoom.chaserNumber, after: text)
+                case .horizontalCount:
+                    playerDataStore.playingRoom.horizontalCount = checkTextIsNumber(before: playerDataStore.playingRoom.horizontalCount, after: text)
+                case .verticalCount:
+                    playerDataStore.playingRoom.verticalCount = checkTextIsNumber(before: playerDataStore.playingRoom.verticalCount, after: text)
                 default:
                     break
                 }

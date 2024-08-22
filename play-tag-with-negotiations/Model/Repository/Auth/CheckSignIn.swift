@@ -16,6 +16,11 @@ class CheckSignIn {
                 UserDataStore.shared.userResult = .success(user)
                 UserDataStore.shared.signInUser = user
             }
+        } else {
+            DispatchQueue.main.async {
+                UserDataStore.shared.userResult = .success(nil)
+                UserDataStore.shared.signInUser = nil
+            }
         }
     }
 }

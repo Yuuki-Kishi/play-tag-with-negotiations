@@ -20,7 +20,7 @@ struct GameView: View {
             Text(displayPhase())
             VStack {
                 SelectionView(userDataStore: userDataStore, playerDataStore: playerDataStore)
-                ControlPanelCoordination(userDataStore: userDataStore, playerDataStore: playerDataStore)
+                ControlPanelCoordination(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
                     .frame(height: UIScreen.main.bounds.height * 0.25)
                 Spacer(minLength: 20)
             }

@@ -19,6 +19,7 @@ struct SelectionView: View {
             }, label: {
                 Image(systemName: "square.grid.3x3.fill")
                     .font(.system(size: 25))
+                    .foregroundStyle(iconColor(panelMode: .movement))
             })
             Spacer()
             Button(action: {
@@ -26,6 +27,7 @@ struct SelectionView: View {
             }, label: {
                 Image(systemName: "bubble.left.and.bubble.right.fill")
                     .font(.system(size: 25))
+                    .foregroundStyle(iconColor(panelMode: .negotiation))
             })
 //            Spacer()
 //            Button(action: {
@@ -44,6 +46,14 @@ struct SelectionView: View {
             Spacer()
         }
         .background(Color(UIColor.systemGray5))
+    }
+    func iconColor(panelMode: UserDataStore.controlPanelMode) -> Color {
+        let nowPanelMode = userDataStore.displayControlPanel
+        if nowPanelMode == panelMode {
+            return Color.accentColor
+        } else {
+            return Color.gray
+        }
     }
 }
 

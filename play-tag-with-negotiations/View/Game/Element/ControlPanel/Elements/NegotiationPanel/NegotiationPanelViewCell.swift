@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct NegotiationPanelViewCell: View {
+    @ObservedObject var pathDataStore: PathDataStore
     @Binding var user: User
     
     var body: some View {
@@ -34,6 +35,9 @@ struct NegotiationPanelViewCell: View {
                     .font(.system(size: 15))
             }
         }
+//        .onTapGesture {
+//            pathDataStore.navigatetionPath.append(.negotiation)
+//        }
     }
     func getIconImage() -> UIImage? {
         if let iconData = user.iconData {

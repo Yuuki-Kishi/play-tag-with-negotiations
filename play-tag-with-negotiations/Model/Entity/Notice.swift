@@ -1,5 +1,5 @@
 //
-//  Notification.swift
+//  Notice.swift
 //  play-tag-with-negotiations
 //
 //  Created by 岸　優樹 on 2024/08/21.
@@ -79,6 +79,6 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
         self.userId = "unknownUserId"
         self.sendUser = User()
         self.sendTime = Date()
-        self.noticeType = .invite
+        self.noticeType = .unknown
     }
 }

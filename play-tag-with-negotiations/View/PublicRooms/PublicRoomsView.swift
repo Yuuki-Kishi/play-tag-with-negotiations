@@ -39,6 +39,8 @@ struct PublicRoomsView: View {
                         RoomInfomationView(playerDataStore: playerDataStore)
                     case .game:
                         GameView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                    case .negotiation:
+                        EmptyView()
                     case .result:
                         ResultView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
                     }
@@ -166,6 +168,9 @@ struct PublicRoomsView: View {
                     }
                 } else {
                     pathDataStore.navigatetionPath.append(.waitingRoom)
+                }
+                if playingRoom.isEnd {
+                    await DeleteToFirestore.endGame()
                 }
             } else {
                 ObserveToFirestore.observePublicRooms()

@@ -37,24 +37,24 @@ struct WaitingRoomViewCell: View {
                     .lineLimit(1)
                     .font(.system(size: 15))
             }
-            if user.userId != userDataStore.signInUser?.userId {
-                Button(action: {
-                    Task {
-                        await CreateToFirestore.sendRequestOfFriend(to: user.userId)
-                        isShowAlert = true
-                    }
-                }, label: {
-                    Image(systemName: "paperplane.fill")
-                })
-                .buttonStyle(.plain)
-                .frame(width: 30, height: 40)
-                .foregroundStyle(Color.accentColor)
-                .alert("フレンド申請を送信しました", isPresented: $isShowAlert, actions: {
-                    Button(action: {}, label: {
-                        Text("OK")
-                    })
-                })
-            }
+//            if user.userId != userDataStore.signInUser?.userId {
+//                Button(action: {
+//                    Task {
+//                        await CreateToFirestore.sendRequestOfFriend(to: user.userId)
+//                        isShowAlert = true
+//                    }
+//                }, label: {
+//                    Image(systemName: "paperplane.fill")
+//                })
+//                .buttonStyle(.plain)
+//                .frame(width: 30, height: 40)
+//                .foregroundStyle(Color.accentColor)
+//                .alert("フレンド申請を送信しました", isPresented: $isShowAlert, actions: {
+//                    Button(action: {}, label: {
+//                        Text("OK")
+//                    })
+//                })
+//            }
         }
     }
     func userNameColor() -> Color {

@@ -35,7 +35,6 @@ class ObserveToFirestore {
                 guard let playingRoom = try DocumentSnapshot?.data(as: PlayTagRoom.self) else { return }
                 if PlayerDataStore.shared.playingRoom.phaseNow < playingRoom.phaseNow {
                     Task {
-                        await UpdateToFirestore.isDecidedToFalse()
                         await ReadToFirestore.getAlivePlayers()
                     }
                 }

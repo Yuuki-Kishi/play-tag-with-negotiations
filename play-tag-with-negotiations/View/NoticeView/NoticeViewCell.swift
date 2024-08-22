@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NoticeViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
-    @State var notice: Notice = Notice()
+    @Binding var notice: Notice
     
     var body: some View {
         HStack {
@@ -27,22 +27,43 @@ struct NoticeViewCell: View {
             }
             VStack {
                 Text(notice.sendUser.userName)
-                    .foregroundStyle(userNameColor())
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.system(size: 25))
-                Text(dateToString(date: notice.sendTime))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .lineLimit(1)
-                    .font(.system(size: 15))
+                HStack {
+                    Text(dateToString())
+                        .frame(width: .infinity, alignment: .leading)
+                        .lineLimit(1)
+                        .font(.system(size: 15))
+                    Spacer()
+                    Text(noticeType())
+                        .foregroundStyle(noticeTypeColor())
+                        .frame(alignment: .trailing)
+                        .lineLimit(1)
+                        .font(.system(size: 15))
+                    Spacer()
+                }
             }
         }
     }
-    func userNameColor() -> Color {
-        var color = Color.green
-        if notice.noticeType == .friend {
-            color = Color.orange
+    func noticeType() -> String {
+        switch notice.noticeType {
+        case .friend:
+            return "フレンド申請"
+        case .invite:
+            return "ルームへの招待"
+        case .unknown:
+            return "不明"
         }
-        return color
+    }
+    func noticeTypeColor() -> Color {
+        switch notice.noticeType {
+        case .friend:
+            return Color.red
+        case .invite:
+            return Color.teal
+        case .unknown:
+            return Color.gray
+        }
     }
     func getIconImage() -> UIImage? {
         guard let user = userDataStore.signInUser else { return nil }
@@ -52,13 +73,13 @@ struct NoticeViewCell: View {
             return nil
         }
     }
-    func dateToString(date: Date) -> String {
+    func dateToString() -> String {
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
-        return dateformatter.string(from: date)
+        return dateformatter.string(from: notice.sendTime)
     }
 }
 
-#Preview {
-    NoticeViewCell(userDataStore: UserDataStore.shared)
-}
+//#Preview {
+//    NoticeViewCell(userDataStore: UserDataStore.shared)
+//}

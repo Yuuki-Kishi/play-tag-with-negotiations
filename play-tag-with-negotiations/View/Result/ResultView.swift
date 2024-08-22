@@ -20,7 +20,7 @@ struct ResultView: View {
                 .font(.system(size: 150))
                 .frame(height: UIScreen.main.bounds.height * 0.2)
             List($playerDataStore.playerArray) { player in
-                ResultViewCell(userDataStore: userDataStore, rankText: playerRankText(player: player.wrappedValue), rankTextColor: playerRankTextColor(player: player.wrappedValue), user: playerToUser(player: player.wrappedValue), player: player)
+                ResultViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, player: player)
             }
         }
         .toolbar {
@@ -72,10 +72,6 @@ struct ResultView: View {
         default:
             return Color.indigo
         }
-    }
-    func playerToUser(player: Player) -> User {
-        guard let user = playerDataStore.userArray.first(where: { $0.userId == player.userId }) else { return User() }
-        return user
     }
 }
 

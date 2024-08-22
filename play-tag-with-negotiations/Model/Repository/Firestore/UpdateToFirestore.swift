@@ -114,14 +114,16 @@ class UpdateToFirestore {
     }
     
     static func isDecidedToFalse() async {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-        let myIsDecided = PlayerDataStore.shared.player.isDecided
-        if myIsDecided {
-            do {
-                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": false])
-            } catch {
-                print(error)
+        if !PlayerDataStore.shared.player.isCaptured {
+            let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+            guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+            let myIsDecided = PlayerDataStore.shared.player.isDecided
+            if myIsDecided {
+                do {
+                    try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": false])
+                } catch {
+                    print(error)
+                }
             }
         }
     }
