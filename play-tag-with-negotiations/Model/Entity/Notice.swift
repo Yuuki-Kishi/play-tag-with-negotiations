@@ -16,22 +16,29 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
     var userId: String
     var sendUser: User
     var sendTime: Date
+    var roomId: String
+    var isChecked: Bool
     var noticeType: NoticeType
     
     enum NoticeType: String {
-        case friend = "friend"
-        case invite = "invite"
-        case unknown = "unknown"
+        case friend
+        case invite
+        case unknown
     }
     
     enum CodingKeys: String, CodingKey {
-        case noticeId, userId, sendTime, noticeType
+        case noticeId, userId, sendTime, roomId, isChecked, noticeType
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = UUID()
-        self.noticeId = try container.decode(UUID.self, forKey: .noticeId)
+        let noticeIdString = try container.decode(String.self, forKey: .noticeId)
+        if let noticeId = UUID(uuidString: noticeIdString) {
+            self.noticeId = noticeId
+        } else {
+            throw DecodingError.dataCorruptedError(forKey: .noticeId, in: container, debugDescription: "Failed to decode noticeId.")
+        }
         self.userId = try container.decode(String.self, forKey: .userId)
         self.sendUser = User()
         let formatter = ISO8601DateFormatter()
@@ -41,6 +48,8 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
         } else {
             throw DecodingError.dataCorruptedError(forKey: .sendTime, in: container, debugDescription: "Failed to decode creationDate.")
         }
+        self.roomId = try container.decode(String.self, forKey: .roomId)
+        self.isChecked = try container.decode(Bool.self, forKey: .isChecked)
         let type = try container.decode(String.self, forKey: .noticeType)
         self.noticeType = NoticeType(rawValue: type) ?? .unknown
     }
@@ -52,15 +61,19 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
         let formatter = ISO8601DateFormatter()
         let dateString = formatter.string(from: sendTime)
         try container.encode(dateString, forKey: .sendTime)
+        try container.encode(self.roomId, forKey: .roomId)
+        try container.encode(self.isChecked, forKey: .isChecked)
         try container.encode(self.noticeType.rawValue, forKey: .noticeType)
     }
     
-    init(noticeId: UUID, userId: String, user: User, sendTime: Date, noticeType: NoticeType) {
+    init(noticeId: UUID, userId: String, user: User, sendTime: Date, roomId: String, isChecked: Bool, noticeType: NoticeType) {
         self.id = UUID()
         self.noticeId = noticeId
         self.userId = userId
         self.sendUser = user
         self.sendTime = sendTime
+        self.roomId = roomId
+        self.isChecked = isChecked
         self.noticeType = noticeType
     }
     
@@ -70,6 +83,19 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
         self.userId = userId
         self.sendUser = User()
         self.sendTime = Date()
+        self.roomId = ""
+        self.isChecked = false
+        self.noticeType = .friend
+    }
+    
+    init(userId: String, roomId: String) {
+        self.id = UUID()
+        self.noticeId = UUID()
+        self.userId = userId
+        self.sendUser = User()
+        self.sendTime = Date()
+        self.roomId = roomId
+        self.isChecked = false
         self.noticeType = .invite
     }
     
@@ -79,6 +105,8 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
         self.userId = "unknownUserId"
         self.sendUser = User()
         self.sendTime = Date()
+        self.roomId = ""
+        self.isChecked = false
         self.noticeType = .unknown
     }
 }

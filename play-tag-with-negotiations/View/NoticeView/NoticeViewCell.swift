@@ -9,6 +9,8 @@ import SwiftUI
 
 struct NoticeViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
+    @ObservedObject var playerDataStore: PlayerDataStore
+    @ObservedObject var pathDataStore: PathDataStore
     @Binding var notice: Notice
     
     var body: some View {
@@ -26,14 +28,10 @@ struct NoticeViewCell: View {
                     .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
             }
             VStack {
-                Text(notice.sendUser.userName)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.system(size: 25))
                 HStack {
-                    Text(dateToString())
-                        .frame(width: .infinity, alignment: .leading)
-                        .lineLimit(1)
-                        .font(.system(size: 15))
+                    Text(notice.sendUser.userName)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.system(size: 25))
                     Spacer()
                     Text(noticeType())
                         .foregroundStyle(noticeTypeColor())
@@ -42,6 +40,23 @@ struct NoticeViewCell: View {
                         .font(.system(size: 15))
                     Spacer()
                 }
+                HStack {
+                    Text(dateToString())
+                        .frame(alignment: .leading)
+                        .lineLimit(1)
+                        .font(.system(size: 15))
+                    Spacer()
+                }
+            }
+        }
+        .onTapGesture {
+            switch notice.noticeType {
+            case .friend:
+                pathDataStore.navigatetionPath.append(.friend)
+            case .invite:
+                joinRoom()
+            case .unknown:
+                break
             }
         }
     }
@@ -77,6 +92,16 @@ struct NoticeViewCell: View {
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
         return dateformatter.string(from: notice.sendTime)
+    }
+    func joinRoom() {
+        let roomId = notice.roomId
+        Task {
+            if await ReadToFirestore.checkIsThereRoom(roomId: roomId) {
+                playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
+                await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
+                pathDataStore.navigatetionPath.append(.waitingRoom)
+            }
+        }
     }
 }
 

@@ -11,6 +11,7 @@ struct ResultViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     @Binding var player: Player
+    @State private var isShowAlert = false
     
     var body: some View {
         HStack {
@@ -24,11 +25,37 @@ struct ResultViewCell: View {
                 .foregroundStyle(userNameColor())
             Spacer()
             Image(systemName: isChaserIcon())
+                .foregroundStyle(iconColor())
                 .font(.system(size: 25))
             Text(String(player.point) + "pt")
                 .font(.system(size: 25))
                 .frame(width: 60)
                 .foregroundStyle(Color.primary)
+            if isDisplayButton() {
+                Button(action: {
+                    Task {
+                        await CreateToFirestore.sendFriendRequest(to: playerToUser().userId)
+                        isShowAlert = true
+                    }
+                }, label: {
+                    Image(systemName: "paperplane.fill")
+                })
+                .buttonStyle(.plain)
+                .frame(width: 30)
+                .foregroundStyle(Color.accentColor)
+                .alert("フレンド申請を送信しました", isPresented: $isShowAlert, actions: {
+                    Button(action: {}, label: {
+                        Text("OK")
+                    })
+                })
+            } else {
+                Button(action: {}, label: {
+                    Image(systemName: "paperplane.fill")
+                })
+                .buttonStyle(.plain)
+                .frame(width: 30)
+                .foregroundStyle(Color.clear)
+            }
         }
     }
     func playerRank() -> Int {
@@ -68,7 +95,7 @@ struct ResultViewCell: View {
     func userNameColor() -> Color {
         var color = Color.primary
         if playerToUser().userId == userDataStore.signInUser?.userId {
-            color = Color.green
+            color = .green
         }
         return color
     }
@@ -78,6 +105,22 @@ struct ResultViewCell: View {
         } else {
             return "figure.walk.circle"
         }
+    }
+    func iconColor() -> Color {
+        if player.isChaser {
+            return .red
+        } else {
+            return .blue
+        }
+    }
+    func isDisplayButton() -> Bool {
+        let user = playerToUser()
+        guard let myFriendsId = userDataStore.signInUser?.friendsId else { return false }
+        let isFriend = myFriendsId.contains(where: { $0 == user.userId })
+        if user.userId != userDataStore.signInUser?.userId && !isFriend {
+            return true
+        }
+        return false
     }
 }
 

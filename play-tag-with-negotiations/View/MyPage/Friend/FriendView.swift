@@ -25,7 +25,7 @@ struct FriendView: View {
         }
     }
     
-    @State private var isFriend: picker = .friend
+    @State var isFriend: FriendView.picker
     
     var body: some View {
         VStack {
@@ -64,5 +64,5 @@ struct FriendView: View {
 }
 
 #Preview {
-    FriendView(friendDataStore: FriendDataStore.shared)
+    FriendView(friendDataStore: FriendDataStore.shared, isFriend: .friend)
 }

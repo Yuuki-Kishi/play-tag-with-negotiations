@@ -49,7 +49,7 @@ class ObserveToFirestore {
     
     static func observeNotice() {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
-        Firestore.firestore().collection("PlayTagRooms").document(myUserId).collection("Notice").addSnapshotListener { querySnapshot, error in
+        Firestore.firestore().collection("Users").document(myUserId).collection("Notices").addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot?.documents else { return }
             DispatchQueue.main.async {
                 UserDataStore.shared.noticeArray = []
@@ -60,7 +60,7 @@ class ObserveToFirestore {
                         let noticeId = try document.data(as: Notice.self).noticeId.uuidString
                         guard let notice = await ReadToFirestore.getNotice(noticeId: noticeId) else { return }
                         DispatchQueue.main.async {
-                            UserDataStore.shared.noticeArray.append(notice)
+                            UserDataStore.shared.noticeArray.append(ifNoOverlap: notice)
                         }
                     } catch {
                         print(error)
@@ -170,8 +170,10 @@ class ObserveToFirestore {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         Firestore.firestore().collection("Users").document(userId).collection("Friends").addSnapshotListener { QuerySnapshot, error in
             guard let documents = QuerySnapshot?.documents else { return }
-            FriendDataStore.shared.friendArray = []
-            FriendDataStore.shared.requestUserArray = []
+            DispatchQueue.main.async {
+                FriendDataStore.shared.friendArray = []
+                FriendDataStore.shared.requestUserArray = []
+            }
             for document in documents {
                 Task {
                     do {

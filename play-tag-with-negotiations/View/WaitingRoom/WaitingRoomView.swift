@@ -118,6 +118,11 @@ struct WaitingRoomView: View {
             }, label: {
                 Label("ルール", systemImage: "info.circle")
             })
+            Button(action: {
+                pathDataStore.navigatetionPath.append(.invite)
+            }, label: {
+                Label("フレンドを招待", systemImage: "paperplane.fill")
+            })
             Divider()
             Button(role: .destructive, action: {
                 guard let userId = userDataStore.signInUser?.userId else { return }

@@ -9,18 +9,23 @@ import SwiftUI
 
 struct NoticeView: View {
     @ObservedObject var userDataStore: UserDataStore
+    @ObservedObject var playerDataStore: PlayerDataStore
+    @ObservedObject var pathDataStore: PathDataStore
     
     var body: some View {
         List($userDataStore.noticeArray) { notice in
-            NoticeViewCell(userDataStore: userDataStore, notice: notice)
+            NoticeViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore, notice: notice)
         }
         .navigationTitle("通知")
         .onAppear() {
+            Task {
+                await UpdateToFirestore.noticeCheck()
+            }
             ObserveToFirestore.observeNotice()
         }
     }
 }
 
 #Preview {
-    NoticeView(userDataStore: UserDataStore.shared)
+    NoticeView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared, pathDataStore: PathDataStore.shared)
 }

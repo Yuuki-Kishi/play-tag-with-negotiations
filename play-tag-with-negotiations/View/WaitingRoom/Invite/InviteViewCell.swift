@@ -1,17 +1,14 @@
 //
-//  WaitingRoomCellView.swift
+//  InviteViewCell.swift
 //  play-tag-with-negotiations
 //
-//  Created by 岸　優樹 on 2024/06/17.
+//  Created by 岸　優樹 on 2024/08/24.
 //
 
 import SwiftUI
 
-struct WaitingRoomViewCell: View {
-    @ObservedObject var userDataStore: UserDataStore
-    @ObservedObject var playerDataStore: PlayerDataStore
-    @Binding var user: User
-    @State private var isShowAlert = false
+struct InviteViewCell: View {
+    @Binding var friend: User
     
     var body: some View {
         HStack {
@@ -28,26 +25,18 @@ struct WaitingRoomViewCell: View {
                     .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
             }
             VStack {
-                Text(user.userName)
-                    .foregroundStyle(userNameColor())
+                Text(friend.userName)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.system(size: 25))
-                Text(user.pronoun)
+                Text(friend.pronoun)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(1)
                     .font(.system(size: 15))
             }
         }
     }
-    func userNameColor() -> Color {
-        var color = Color.primary
-        if user.userId == userDataStore.signInUser?.userId {
-            color = Color.green
-        }
-        return color
-    }
     func getIconImage() -> UIImage? {
-        if let iconData = user.iconData {
+        if let iconData = friend.iconData {
             return UIImage(data: iconData)
         } else {
             return nil
@@ -56,5 +45,5 @@ struct WaitingRoomViewCell: View {
 }
 
 //#Preview {
-//    WaitingRoomViewCell(user: User())
+//    InviteViewCell()
 //}

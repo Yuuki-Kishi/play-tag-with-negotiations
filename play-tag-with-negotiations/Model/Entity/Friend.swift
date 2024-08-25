@@ -9,22 +9,22 @@ import Foundation
 
 struct Friend: Codable, Hashable, Identifiable, Equatable {
     static func == (lhs: Friend, rhs: Friend) -> Bool {
-        return lhs.userId == rhs.userId
+        return lhs.pertnerUserId == rhs.pertnerUserId
     }
     
     var id = UUID()
-    var userId: String
+    var pertnerUserId: String
     var editedTime: Date
     var isFriend: Bool
     
     enum CodingKeys: String, CodingKey {
-        case userId, editedTime, isFriend
+        case pertnerUserId, editedTime, isFriend
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = UUID()
-        self.userId = try container.decode(String.self, forKey: .userId)
+        self.pertnerUserId = try container.decode(String.self, forKey: .pertnerUserId)
         let formatter = ISO8601DateFormatter()
         let dateString = try container.decode(String.self, forKey: .editedTime)
         if let date = formatter.date(from: dateString) {
@@ -37,30 +37,30 @@ struct Friend: Codable, Hashable, Identifiable, Equatable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.userId, forKey: .userId)
+        try container.encode(self.pertnerUserId, forKey: .pertnerUserId)
         let formatter = ISO8601DateFormatter()
         let dateString = formatter.string(from: editedTime)
         try container.encode(dateString, forKey: .editedTime)
         try container.encode(self.isFriend, forKey: .isFriend)
     }
     
-    init(userId: String, editedTime: Date, isFriend: Bool) {
+    init(pertnerUserId: String, editedTime: Date, isFriend: Bool) {
         self.id = UUID()
-        self.userId = userId
+        self.pertnerUserId = pertnerUserId
         self.editedTime = editedTime
         self.isFriend = isFriend
     }
     
-    init(userId: String) {
+    init(pertnerUserId: String) {
         self.id = UUID()
-        self.userId = userId
+        self.pertnerUserId = pertnerUserId
         self.editedTime = Date()
         self.isFriend = false
     }
     
     init() {
         self.id = UUID()
-        self.userId = "unknownUserId"
+        self.pertnerUserId = "unknownUserId"
         self.editedTime = Date()
         self.isFriend = false
     }

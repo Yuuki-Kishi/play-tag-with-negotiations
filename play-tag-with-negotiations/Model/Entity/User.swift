@@ -18,10 +18,11 @@ struct User: Codable, Hashable, Identifiable, Equatable {
     var creationDate: Date
     var iconUrl: String
     var iconData: Data?
+    var friendsId: [String]
     var pronoun: String
     
     enum CodingKeys: String, CodingKey {
-        case userId, userName, creationDate, iconUrl, iconData, pronoun
+        case userId, userName, creationDate, iconUrl, iconData, friendsId, pronoun
     }
     
     init(from decoder: Decoder) throws {
@@ -38,6 +39,7 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         }
         self.iconUrl = try container.decode(String.self, forKey: .iconUrl)
         self.iconData = nil
+        self.friendsId = []
         self.pronoun = try container.decode(String.self, forKey: .pronoun)
     }
     
@@ -49,16 +51,18 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         let dateString = formatter.string(from: creationDate)
         try container.encode(dateString, forKey: .creationDate)
         try container.encode(iconUrl, forKey: .iconUrl)
+        try container.encode(friendsId, forKey: .friendsId)
         try container.encode(pronoun, forKey: .pronoun)
     }
     
-    init(userId: String, userName: String, creationDate: Date, iconUrl: String, iconData: Data?, pronoun: String) {
+    init(userId: String, userName: String, creationDate: Date, iconUrl: String, iconData: Data?, friendsId: [String], pronoun: String) {
         self.id = UUID()
         self.userId = userId
         self.userName = userName
         self.creationDate = creationDate
         self.iconUrl = iconUrl
         self.iconData = iconData
+        self.friendsId = friendsId
         self.pronoun = pronoun
     }
     
@@ -69,6 +73,7 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         self.creationDate = creationDate
         self.iconUrl = "default"
         self.iconData = nil
+        self.friendsId = []
         self.pronoun = "未設定"
     }
     
@@ -79,6 +84,7 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         self.creationDate = Date()
         self.iconUrl = "default"
         self.iconData = nil
+        self.friendsId = []
         self.pronoun = "Who am I?"
     }
 }

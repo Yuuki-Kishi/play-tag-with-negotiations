@@ -40,7 +40,7 @@ struct NotFriendViewCell: View {
             Button(action: {
                 isShowDeleteFirendAlert = true
             }, label: {
-                Text("解消")
+                Text("削除")
             })
         }
         .tint(Color.red)

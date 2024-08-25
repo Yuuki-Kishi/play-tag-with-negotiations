@@ -41,6 +41,7 @@ class DeleteToFirestore {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
             try await Firestore.firestore().collection("Users").document(userId).collection("Friends").document(friendUserId).delete()
+            try await Firestore.firestore().collection("Users").document(friendUserId).collection("Friends").document(userId).delete()
         } catch {
             print(error)
         }

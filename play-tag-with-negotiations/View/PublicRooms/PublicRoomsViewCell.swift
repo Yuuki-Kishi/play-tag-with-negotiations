@@ -15,7 +15,7 @@ struct PublicRoomsViewCell: View {
     var body: some View {
         Section {
             Button(action: {
-                pathDataStore.navigatetionPath.append(.waitingRoom)
+                joinRoom()
             }, label: {
                 VStack {
                     Text(playTagRoom.playTagName)
@@ -27,17 +27,17 @@ struct PublicRoomsViewCell: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .contentShape(Rectangle())
-                .onTapGesture {
-                    let roomId = playTagRoom.roomId.uuidString
-                    Task {
-                        if await ReadToFirestore.checkIsThereRoom(roomId: roomId) {
-                            playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
-                            await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
-                            pathDataStore.navigatetionPath.append(.waitingRoom)
-                        }
-                    }
-                }
             })
+        }
+    }
+    func joinRoom() {
+        let roomId = playTagRoom.roomId.uuidString
+        Task {
+            if await ReadToFirestore.checkIsThereRoom(roomId: roomId) {
+                playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
+                await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
+                pathDataStore.navigatetionPath.append(.waitingRoom)
+            }
         }
     }
     func playTagRoomPhase() -> String {

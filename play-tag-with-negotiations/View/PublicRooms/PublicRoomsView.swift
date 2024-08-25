@@ -27,16 +27,22 @@ struct PublicRoomsView: View {
                     switch path {
                     case .roomSetting:
                         RoomSettingView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                    case .notification:
-                        NoticeView(userDataStore: userDataStore)
+                    case .notice:
+                        NoticeView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
                     case .myPage:
                         MyPageView(userDataStore: userDataStore, pathDataStore: pathDataStore)
                     case .friend:
-                        FriendView()
+                        if pathDataStore.navigatetionPath[pathDataStore.navigatetionPath.count - 2] == .notice {
+                            FriendView(isFriend: .notFriend)
+                        } else {
+                            FriendView(isFriend: .friend)
+                        }
                     case .waitingRoom:
                         WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
                     case .roomInfo:
                         RoomInfomationView(playerDataStore: playerDataStore)
+                    case .invite:
+                        InviteView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
                     case .game:
                         GameView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
                     case .negotiation:
@@ -76,9 +82,9 @@ struct PublicRoomsView: View {
                 ToolbarItem(placement: .topBarTrailing, content: {
                     HStack {
                         Button(action: {
-                            pathDataStore.navigatetionPath.append(.notification)
+                            pathDataStore.navigatetionPath.append(.notice)
                         }, label: {
-                            Image(systemName: "envelope")
+                            Image(systemName: noticeButtonIcon())
                         })
                         toolBarMenu()
                     }
@@ -124,6 +130,13 @@ struct PublicRoomsView: View {
             }
         }
     }
+    func noticeButtonIcon() -> String {
+        let noticeCount = userDataStore.noticeArray.filter { !$0.isChecked }.count
+        if noticeCount > 0 {
+            return "envelope.fill"
+        }
+        return "envelope"
+    }
     func toolBarMenu() -> some View {
         Menu {
             Button(action: {
@@ -156,6 +169,7 @@ struct PublicRoomsView: View {
         } label: {
             Image(systemName: "ellipsis.circle")
         }
+        
     }
     func onAppear() {
         Task {
@@ -174,6 +188,7 @@ struct PublicRoomsView: View {
                 }
             } else {
                 ObserveToFirestore.observePublicRooms()
+                ObserveToFirestore.observeNotice()
             }
         }
     }

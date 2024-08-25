@@ -46,11 +46,12 @@ class UpdateToFirestore {
     }
     
     static func becomeFriend(friendUserId: String) async {
-        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
         let formatter = ISO8601DateFormatter()
         let time = formatter.string(from: Date())
         do {
-            try await Firestore.firestore().collection("Users").document(userId).collection("Friends").document(friendUserId).updateData(["isFriend": true, "editedTime": time])
+            try await Firestore.firestore().collection("Users").document(myUserId).collection("Friends").document(friendUserId).updateData(["isFriend": true, "editedTime": time])
+            try await Firestore.firestore().collection("Users").document(friendUserId).collection("Friends").document(myUserId).updateData(["isFriend": true, "editedTime": time])
         } catch {
             print(error)
         }
@@ -146,6 +147,18 @@ class UpdateToFirestore {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isCaptured": true])
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func noticeCheck() async {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        let notices = await ReadToFirestore.getNonCheckedNotice()
+        do {
+            for notice in notices {
+                try await Firestore.firestore().collection("Users").document(userId).collection("Notices").document(notice.noticeId.uuidString).updateData(["isChecked": true])
+            }
         } catch {
             print(error)
         }

@@ -49,9 +49,16 @@ class ReadToFirestore {
     static func getUserData(userId: String) async -> User? {
         do {
             let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
+            let friendsDocuments = try await Firestore.firestore().collection("Users").document(userId).collection("Friends").whereField("isFriend", isEqualTo: true).getDocuments().documents
             if document.exists {
+                var friendsId: [String] = []
+                for friendsDocument in friendsDocuments {
+                    friendsId.append(friendsDocument.documentID)
+                }
+                let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
                 var user = try document.data(as: User.self)
                 user.iconData = await ReadToStorage.getIconImage(iconUrl: user.iconUrl)
+                user.friendsId = friendsId
                 return user
             } else {
                 return nil
@@ -65,7 +72,7 @@ class ReadToFirestore {
     static func getNotice(noticeId: String) async -> Notice? {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return nil }
         do {
-            let document = try await Firestore.firestore().collection("Users").document(myUserId).collection("Notice").document(noticeId).getDocument()
+            let document = try await Firestore.firestore().collection("Users").document(myUserId).collection("Notices").document(noticeId).getDocument()
             var notice = try document.data(as: Notice.self)
             guard let sendUser = await getUserData(userId: notice.userId) else { return nil }
             notice.sendUser = sendUser
@@ -74,6 +81,35 @@ class ReadToFirestore {
             print(error)
         }
         return nil
+    }
+    
+    static func getNonCheckedNotice() async -> [Notice] {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
+        do {
+            let documents = try await Firestore.firestore().collection("Users").document(myUserId).collection("Notices").whereField("isChecked", isEqualTo: false).getDocuments().documents
+            var notices: [Notice] = []
+            for document in documents {
+                guard let notice = await getNotice(noticeId: document.documentID) else { return [] }
+                notices.append(notice)
+            }
+            return notices
+        } catch {
+            print(error)
+        }
+        return []
+    }
+    
+    static func isRecieveRequest(from: String) async -> Bool {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return false }
+        do {
+            let document = try await Firestore.firestore().collection("Users").document(myUserId).collection("Friends").whereField("pertnerUserId", isEqualTo: from).getDocuments().documents
+            if !document.isEmpty {
+                return true
+            }
+        } catch {
+            print(error)
+        }
+        return false
     }
         
     static func getPlayer(userId: String) async -> Player? {

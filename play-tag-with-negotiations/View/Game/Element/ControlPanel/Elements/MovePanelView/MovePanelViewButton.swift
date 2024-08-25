@@ -28,7 +28,7 @@ struct MovePanelViewButton: View {
     func move() {
         let isDecided = playerDataStore.player.isDecided
         let isCaptured = playerDataStore.player.isCaptured
-        if !isDecided && !isCaptured {
+        if !isDecided && !isCaptured && isCanDisplay() {
             Task {
                 let playerPosition = calculateCoordinate()
                 let x = playerPosition.x
@@ -40,59 +40,23 @@ struct MovePanelViewButton: View {
     func imageName() -> String {
         switch direction {
         case .leftUp:
-            if isCanDisplay() {
-                return "arrow.up.left.square.fill"
-            } else {
-                return ""
-            }
+            return "arrow.up.left.square.fill"
         case .up:
-            if isCanDisplay() {
-                return "arrow.up.square.fill"
-            } else {
-                return ""
-            }
+            return "arrow.up.square.fill"
         case .rightUp:
-            if isCanDisplay() {
-                return "arrow.up.right.square.fill"
-            } else {
-                return ""
-            }
+            return "arrow.up.right.square.fill"
         case .left:
-            if isCanDisplay() {
-                return "arrow.left.square.fill"
-            } else {
-                return ""
-            }
+            return "arrow.left.square.fill"
         case .stay:
-            if isCanDisplay() {
-                return "octagon.fill"
-            } else {
-                return ""
-            }
+            return "octagon.fill"
         case .right:
-            if isCanDisplay() {
-                return "arrow.right.square.fill"
-            } else {
-                return ""
-            }
+            return "arrow.right.square.fill"
         case .leftDowm:
-            if isCanDisplay() {
-                return "arrow.down.left.square.fill"
-            } else {
-                return ""
-            }
+            return "arrow.down.left.square.fill"
         case .dowm:
-            if isCanDisplay() {
-                return "arrow.down.square.fill"
-            } else {
-                return ""
-            }
+            return "arrow.down.square.fill"
         case .rightDown:
-            if isCanDisplay() {
-                return "arrow.down.right.square.fill"
-            } else {
-                return ""
-            }
+            return "arrow.down.right.square.fill"
         }
     }
     func isCanDisplay() -> Bool {
@@ -183,17 +147,20 @@ struct MovePanelViewButton: View {
         return PlayerPosition(x: x, y: y)
     }
     func buttonColor() -> Color {
-        let isDecided = playerDataStore.player.isDecided
-        let isCaptured = playerDataStore.player.isCaptured
-        if isCaptured {
-            return .gray
-        } else {
-            if isDecided {
+        if isCanDisplay() {
+            let isDecided = playerDataStore.player.isDecided
+            let isCaptured = playerDataStore.player.isCaptured
+            if isCaptured {
                 return .gray
             } else {
-                return .accentColor
+                if isDecided {
+                    return .gray
+                } else {
+                    return .accentColor
+                }
             }
         }
+        return Color.clear
     }
 }
 
