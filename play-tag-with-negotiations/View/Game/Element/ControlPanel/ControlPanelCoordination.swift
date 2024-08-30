@@ -18,6 +18,8 @@ struct ControlPanelCoordination: View {
             MovePanelView(userDataStore: userDataStore, playerDataStore: playerDataStore)
         case .negotiation:
             NegotiationPanelView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+        case .target:
+            NegotiationTargetView(playerDataStore: playerDataStore)
         }
     }
 }

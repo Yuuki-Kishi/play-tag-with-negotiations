@@ -61,6 +61,7 @@ class ObserveToFirestore {
                         guard let notice = await ReadToFirestore.getNotice(noticeId: noticeId) else { return }
                         DispatchQueue.main.async {
                             UserDataStore.shared.noticeArray.append(ifNoOverlap: notice)
+                            UserDataStore.shared.noticeArray.sort { $0.sendTime > $1.sendTime }
                         }
                     } catch {
                         print(error)
@@ -168,12 +169,12 @@ class ObserveToFirestore {
     
     static func observeFriend() {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        DispatchQueue.main.async {
+            FriendDataStore.shared.friendArray = []
+            FriendDataStore.shared.requestUserArray = []
+        }
         Firestore.firestore().collection("Users").document(userId).collection("Friends").addSnapshotListener { QuerySnapshot, error in
             guard let documents = QuerySnapshot?.documents else { return }
-            DispatchQueue.main.async {
-                FriendDataStore.shared.friendArray = []
-                FriendDataStore.shared.requestUserArray = []
-            }
             for document in documents {
                 Task {
                     do {
@@ -196,17 +197,48 @@ class ObserveToFirestore {
         }
     }
     
-//    static func observePlayer() {
-//        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-//        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-//        Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).addSnapshotListener { documentSnapshot, error in
-//            do {
-//                guard let player = try documentSnapshot?.data(as: Player.self) else { return }
-//                PlayerDataStore.shared.player = player
-//            } catch {
-//                print(error)
-//            }
-//            
-//        }
-//    }
+    static func observeNegotiations() {
+        guard let version = Double(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String) else { return }
+        DispatchQueue.main.async {
+            PlayerDataStore.shared.negotiationArray = []
+        }
+        Firestore.firestore().collection("Negotiations").whereField("version", isLessThanOrEqualTo: version).addSnapshotListener { QuerySnapshot, error in
+            guard let documents = QuerySnapshot?.documents else { return }
+            for document in documents {
+                do {
+                    let negotiation = try document.data(as: Negotiation.self)
+                    DispatchQueue.main.async {
+                        PlayerDataStore.shared.negotiationArray.append(ifNoOverlap: negotiation)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    static func getDeals() async {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        DispatchQueue.main.async {
+            PlayerDataStore.shared.dealArray = []
+        }
+        do {
+            let documents = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(myUserId).collection("Deals").getDocuments().documents
+            for document in documents {
+                var deal = try document.data(as: Deal.self)
+                guard let negotiation = await getNegotiation(negotiationId: deal.negotiationId) else { return }
+                guard let proposer = await getUserData(userId: deal.proposerUserId) else { return }
+                guard let target = await getUserData(userId: deal.targetUserId) else { return }
+                deal.negotiation = negotiation
+                deal.proposer = proposer
+                deal.target = target
+                DispatchQueue.main.async {
+                    PlayerDataStore.shared.dealArray.append(ifNoOverlap: deal)
+                }
+            }
+        } catch {
+            print(error)
+        }
+    }
 }

@@ -39,3 +39,25 @@ extension Array where Element == Notice {
         }
     }
 }
+
+extension Array where Element == Negotiation {
+    mutating func append(ifNoOverlap item: Element) {
+        if !self.contains(where: { $0.negotiationId == item.negotiationId }) {
+            self.append(item)
+        } else {
+            guard let index = self.firstIndex(where: { $0.negotiationId == item.negotiationId }) else { return }
+            self[index] = item
+        }
+    }
+}
+
+extension Array where Element == Deal {
+    mutating func append(ifNoOverlap item: Element) {
+        if !self.contains(where: { $0.dealId == item.dealId }) {
+            self.append(item)
+        } else {
+            guard let index = self.firstIndex(where: { $0.dealId == item.dealId }) else { return }
+            self[index] = item
+        }
+    }
+}

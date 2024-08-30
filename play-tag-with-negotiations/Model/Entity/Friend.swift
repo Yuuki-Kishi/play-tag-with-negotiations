@@ -30,7 +30,7 @@ struct Friend: Codable, Hashable, Identifiable, Equatable {
         if let date = formatter.date(from: dateString) {
             self.editedTime = date
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .editedTime, in: container, debugDescription: "Failed to decode creationDate.")
+            throw DecodingError.dataCorruptedError(forKey: .editedTime, in: container, debugDescription: "Failed to decode editedTime.")
         }
         self.isFriend = try container.decode(Bool.self, forKey: .isFriend)
     }

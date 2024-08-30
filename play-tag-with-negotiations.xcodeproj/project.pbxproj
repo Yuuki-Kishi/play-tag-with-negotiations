@@ -27,6 +27,10 @@
 		DEAB38752C205FA8007639F6 /* PublicRoomsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB38742C205FA8007639F6 /* PublicRoomsViewCell.swift */; };
 		DEAB38782C2060D3007639F6 /* MyPageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB38772C2060D3007639F6 /* MyPageListView.swift */; };
 		DEAB387B2C2061C2007639F6 /* WaitingRoomViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB387A2C2061C2007639F6 /* WaitingRoomViewCell.swift */; };
+		DECFBB232C7ACA1700093544 /* NegotiationTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB222C7ACA1700093544 /* NegotiationTargetView.swift */; };
+		DECFBB252C7ACA2300093544 /* NegotiationTargetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB242C7ACA2300093544 /* NegotiationTargetViewCell.swift */; };
+		DECFBB272C7ADF7000093544 /* Negotiation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB262C7ADF7000093544 /* Negotiation.swift */; };
+		DECFBB292C81F17900093544 /* Deal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB282C81F17900093544 /* Deal.swift */; };
 		DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB913B2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift */; };
 		DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB913D2C17343500A8DA37 /* ContentView.swift */; };
 		DEDB91402C17343600A8DA37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEDB913F2C17343600A8DA37 /* Assets.xcassets */; };
@@ -91,6 +95,10 @@
 		DEAB38742C205FA8007639F6 /* PublicRoomsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRoomsViewCell.swift; sourceTree = "<group>"; };
 		DEAB38772C2060D3007639F6 /* MyPageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageListView.swift; sourceTree = "<group>"; };
 		DEAB387A2C2061C2007639F6 /* WaitingRoomViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomViewCell.swift; sourceTree = "<group>"; };
+		DECFBB222C7ACA1700093544 /* NegotiationTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegotiationTargetView.swift; sourceTree = "<group>"; };
+		DECFBB242C7ACA2300093544 /* NegotiationTargetViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegotiationTargetViewCell.swift; sourceTree = "<group>"; };
+		DECFBB262C7ADF7000093544 /* Negotiation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Negotiation.swift; sourceTree = "<group>"; };
+		DECFBB282C81F17900093544 /* Deal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deal.swift; sourceTree = "<group>"; };
 		DEDB91382C17343500A8DA37 /* play-tag-with-negotiations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "play-tag-with-negotiations.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEDB913B2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = play_tag_with_negotiationsApp.swift; sourceTree = "<group>"; };
 		DEDB913D2C17343500A8DA37 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -278,6 +286,15 @@
 			path = WaitingRoom;
 			sourceTree = "<group>";
 		};
+		DECFBB212C7ACA0600093544 /* NegotiationTarget */ = {
+			isa = PBXGroup;
+			children = (
+				DECFBB222C7ACA1700093544 /* NegotiationTargetView.swift */,
+				DECFBB242C7ACA2300093544 /* NegotiationTargetViewCell.swift */,
+			);
+			path = NegotiationTarget;
+			sourceTree = "<group>";
+		};
 		DEDB912F2C17343500A8DA37 = {
 			isa = PBXGroup;
 			children = (
@@ -326,6 +343,8 @@
 				DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */,
 				DEDB914D2C173A2400A8DA37 /* PlayTagRoom.swift */,
 				DE12A75D2C75883B00F7B0DF /* Notice.swift */,
+				DECFBB262C7ADF7000093544 /* Negotiation.swift */,
+				DECFBB282C81F17900093544 /* Deal.swift */,
 				DEFA551A2C43A07D00CF6BD1 /* ArrayExtension.swift */,
 			);
 			path = Entity;
@@ -403,6 +422,7 @@
 			children = (
 				DE12A7482C553F3800F7B0DF /* MovePanelView */,
 				DEFA55082C414A9F00CF6BD1 /* NegotiationPanel */,
+				DECFBB212C7ACA0600093544 /* NegotiationTarget */,
 			);
 			path = Elements;
 			sourceTree = "<group>";
@@ -526,7 +546,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DECFBB252C7ACA2300093544 /* NegotiationTargetViewCell.swift in Sources */,
 				DEAB38752C205FA8007639F6 /* PublicRoomsViewCell.swift in Sources */,
+				DECFBB232C7ACA1700093544 /* NegotiationTargetView.swift in Sources */,
 				DEDEF6EC2C23322D00A01FFF /* ReadFirestore.swift in Sources */,
 				DEDEF6EA2C23303600A01FFF /* SignOut.swift in Sources */,
 				DE12A7612C758E8900F7B0DF /* NoticeView.swift in Sources */,
@@ -551,6 +573,7 @@
 				DEDEF6F52C23C9BB00A01FFF /* FieldMapView.swift in Sources */,
 				DEFA551B2C43A07D00CF6BD1 /* ArrayExtension.swift in Sources */,
 				DE12A7682C7A243300F7B0DF /* InviteViewCell.swift in Sources */,
+				DECFBB272C7ADF7000093544 /* Negotiation.swift in Sources */,
 				DEFA54D52C3674EE00CF6BD1 /* DeleteToFirestore.swift in Sources */,
 				DEFA551D2C4798B200CF6BD1 /* ObserveToFirestore.swift in Sources */,
 				DEDB914E2C173A2400A8DA37 /* PlayTagRoom.swift in Sources */,
@@ -573,6 +596,7 @@
 				DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */,
 				DEFA550A2C414AC500CF6BD1 /* NegotiationPanelViewCell.swift in Sources */,
 				DEFA55132C426CD200CF6BD1 /* FriendViewCell.swift in Sources */,
+				DECFBB292C81F17900093544 /* Deal.swift in Sources */,
 				DEDB91532C17417700A8DA37 /* PublicRoomsView.swift in Sources */,
 				DEFA55002C401D6200CF6BD1 /* Friend.swift in Sources */,
 				DEFA54D02C246E2300CF6BD1 /* PlayerPosition.swift in Sources */,

@@ -41,7 +41,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         if let date = formatter.date(from: dateString) {
             self.enteredTime = date
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .enteredTime, in: container, debugDescription: "Failed to decode creationDate.")
+            throw DecodingError.dataCorruptedError(forKey: .enteredTime, in: container, debugDescription: "Failed to decode enteredTIme.")
         }
         self.isChaser = try container.decode(Bool.self, forKey: .isChaser)
         self.isDecided = try container.decode(Bool.self, forKey: .isDecided)

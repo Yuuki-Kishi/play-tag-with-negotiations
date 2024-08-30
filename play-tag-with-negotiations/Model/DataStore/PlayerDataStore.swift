@@ -17,4 +17,8 @@ class PlayerDataStore: ObservableObject {
     @Published var guestPlayerArray: [Player] = []
     @Published var userArray: [User] = []
     @Published var playerArray: [Player] = []
+    @Published var negitiationTarget: Player = Player()
+    @Published var negotiationArray: [Negotiation] = []
+    @Published var proposedDealArray: [Deal] = []
+    @Published var targetDealArray: [Deal] = []
 }

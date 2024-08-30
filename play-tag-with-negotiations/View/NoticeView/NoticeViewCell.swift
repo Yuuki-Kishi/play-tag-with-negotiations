@@ -31,7 +31,7 @@ struct NoticeViewCell: View {
                 HStack {
                     Text(notice.sendUser.userName)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 25))
+                        .font(.system(size: 20))
                     Spacer()
                     Text(noticeType())
                         .foregroundStyle(noticeTypeColor())
@@ -48,6 +48,8 @@ struct NoticeViewCell: View {
                     Spacer()
                 }
             }
+            Image(systemName: "circle.fill")
+                .foregroundStyle(isNewNotice())
         }
         .onTapGesture {
             switch notice.noticeType {
@@ -81,8 +83,7 @@ struct NoticeViewCell: View {
         }
     }
     func getIconImage() -> UIImage? {
-        guard let user = userDataStore.signInUser else { return nil }
-        if let iconData = user.iconData {
+        if let iconData = notice.sendUser.iconData {
             return UIImage(data: iconData)
         } else {
             return nil
@@ -92,6 +93,12 @@ struct NoticeViewCell: View {
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
         return dateformatter.string(from: notice.sendTime)
+    }
+    func isNewNotice() -> Color {
+        if notice.isChecked {
+            return .clear
+        }
+        return .red
     }
     func joinRoom() {
         let roomId = notice.roomId

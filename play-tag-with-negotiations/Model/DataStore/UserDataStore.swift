@@ -15,6 +15,6 @@ class UserDataStore: ObservableObject {
     @Published var displayControlPanel: controlPanelMode = .movement
     @Published var noticeArray: [Notice] = []
     enum controlPanelMode {
-        case movement, negotiation
+        case movement, negotiation, target
     }
 }

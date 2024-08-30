@@ -9,11 +9,11 @@ import Foundation
 
 struct Notice: Codable, Hashable, Identifiable, Equatable {
     static func == (lhs: Notice, rhs: Notice) -> Bool {
-        return lhs.userId == rhs.userId
+        return lhs.senderUserId == rhs.senderUserId
     }
     var id = UUID()
     var noticeId: UUID
-    var userId: String
+    var senderUserId: String
     var sendUser: User
     var sendTime: Date
     var roomId: String
@@ -27,7 +27,7 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case noticeId, userId, sendTime, roomId, isChecked, noticeType
+        case noticeId, senderUserId, sendTime, roomId, isChecked, noticeType
     }
     
     init(from decoder: Decoder) throws {
@@ -39,14 +39,14 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
         } else {
             throw DecodingError.dataCorruptedError(forKey: .noticeId, in: container, debugDescription: "Failed to decode noticeId.")
         }
-        self.userId = try container.decode(String.self, forKey: .userId)
+        self.senderUserId = try container.decode(String.self, forKey: .senderUserId)
         self.sendUser = User()
         let formatter = ISO8601DateFormatter()
         let dateString = try container.decode(String.self, forKey: .sendTime)
         if let date = formatter.date(from: dateString) {
             self.sendTime = date
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .sendTime, in: container, debugDescription: "Failed to decode creationDate.")
+            throw DecodingError.dataCorruptedError(forKey: .sendTime, in: container, debugDescription: "Failed to decode sendTime.")
         }
         self.roomId = try container.decode(String.self, forKey: .roomId)
         self.isChecked = try container.decode(Bool.self, forKey: .isChecked)
@@ -57,7 +57,7 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.noticeId, forKey: .noticeId)
-        try container.encode(self.userId, forKey: .userId)
+        try container.encode(self.senderUserId, forKey: .senderUserId)
         let formatter = ISO8601DateFormatter()
         let dateString = formatter.string(from: sendTime)
         try container.encode(dateString, forKey: .sendTime)
@@ -66,10 +66,10 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
         try container.encode(self.noticeType.rawValue, forKey: .noticeType)
     }
     
-    init(noticeId: UUID, userId: String, user: User, sendTime: Date, roomId: String, isChecked: Bool, noticeType: NoticeType) {
+    init(noticeId: UUID, senderUserId: String, user: User, sendTime: Date, roomId: String, isChecked: Bool, noticeType: NoticeType) {
         self.id = UUID()
         self.noticeId = noticeId
-        self.userId = userId
+        self.senderUserId = senderUserId
         self.sendUser = user
         self.sendTime = sendTime
         self.roomId = roomId
@@ -77,10 +77,10 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
         self.noticeType = noticeType
     }
     
-    init(userId: String) {
+    init(senderUserId: String) {
         self.id = UUID()
         self.noticeId = UUID()
-        self.userId = userId
+        self.senderUserId = senderUserId
         self.sendUser = User()
         self.sendTime = Date()
         self.roomId = ""
@@ -88,10 +88,10 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
         self.noticeType = .friend
     }
     
-    init(userId: String, roomId: String) {
+    init(senderUserId: String, roomId: String) {
         self.id = UUID()
         self.noticeId = UUID()
-        self.userId = userId
+        self.senderUserId = senderUserId
         self.sendUser = User()
         self.sendTime = Date()
         self.roomId = roomId
@@ -102,7 +102,7 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
     init() {
         self.id = UUID()
         self.noticeId = UUID()
-        self.userId = "unknownUserId"
+        self.senderUserId = "unknownUserId"
         self.sendUser = User()
         self.sendTime = Date()
         self.roomId = ""
