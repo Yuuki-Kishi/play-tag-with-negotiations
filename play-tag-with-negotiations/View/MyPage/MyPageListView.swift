@@ -41,7 +41,7 @@ struct MyPageListView: View {
                 })
                 Button("変更", action: {
                     Task {
-                        await UpdateToFirestore.updateUserName(newName: text)
+                        await Update.updateUserName(newName: text)
                     }
                 })
             })
@@ -101,7 +101,7 @@ struct MyPageListView: View {
                 })
                 Button("変更", action: {
                     Task {
-                        await UpdateToFirestore.updatePronoun(newPronoun: text)
+                        await Update.updatePronoun(newPronoun: text)
                     }
                 })
             }, message: {

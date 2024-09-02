@@ -57,7 +57,7 @@ struct FriendView: View {
         }
         .navigationTitle("フレンド")
         .onAppear() {
-            ObserveToFirestore.observeFriend()
+            Observe.observeFriend()
         }
         .background(Color(UIColor.systemGray6))
     }

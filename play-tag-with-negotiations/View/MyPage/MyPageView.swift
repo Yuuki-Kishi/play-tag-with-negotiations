@@ -31,7 +31,7 @@ struct MyPageView: View {
             .frame(width: UIScreen.main.bounds.width * 0.6, height: UIScreen.main.bounds.width * 0.6, alignment: .center)
             .onChange(of: selectedImage, {
                 Task {
-                    await UploadToStorage.uploadIconImage(selectedItem: selectedImage)
+                    await Upload.uploadIconImage(selectedItem: selectedImage)
                 }
             })
             MyPageListView(userDataStore: userDataStore)
@@ -45,7 +45,7 @@ struct MyPageView: View {
         .background(Color(UIColor.systemGray6))
         .navigationTitle("マイページ")
         .onAppear() {
-            ObserveToFirestore.observeUserData()
+            Observe.observeUserData()
         }
     }
     func toolBarMenu() -> some View {

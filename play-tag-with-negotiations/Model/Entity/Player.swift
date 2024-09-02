@@ -9,11 +9,12 @@ import Foundation
 
 struct Player: Codable, Hashable, Identifiable, Equatable {
     static func == (lhs: Player, rhs: Player) -> Bool {
-        return lhs.userId == rhs.userId
+        return lhs.playerUserId == rhs.playerUserId
     }
     
     var id = UUID()
-    var userId: String
+    var playerUserId: String
+    var player: User
     var isHost: Bool
     var point: Int
     var enteredTime: Date
@@ -23,17 +24,14 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
     var move: [PlayerPosition]
     
     enum CodingKeys: String, CodingKey {
-        case userId, isHost, point, enteredTime, isChaser, isDecided, isCaptured, move
-    }
-    
-    enum PlayerPositionKeys: String, CodingKey {
-        case x, y
+        case playerUserId, isHost, point, enteredTime, isChaser, isDecided, isCaptured, move
     }
         
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = UUID()
-        self.userId = try container.decode(String.self, forKey: .userId)
+        self.playerUserId = try container.decode(String.self, forKey: .playerUserId)
+        self.player = User()
         self.isHost = try container.decode(Bool.self, forKey: .isHost)
         self.point = try container.decode(Int.self, forKey: .point)
         let formatter = ISO8601DateFormatter()
@@ -51,7 +49,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.userId, forKey: .userId)
+        try container.encode(self.playerUserId, forKey: .playerUserId)
         try container.encode(self.isHost, forKey: .isHost)
         try container.encode(self.point, forKey: .point)
         let formatter = ISO8601DateFormatter()
@@ -63,9 +61,10 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         try container.encode(self.move, forKey: .move)
     }
     
-    init(userId: String, isHost: Bool, point: Int, enteredTime: Date, isChaser: Bool, isDecided: Bool, isCaptured: Bool, move: [PlayerPosition]) {
+    init(playerUserId: String, player: User, isHost: Bool, point: Int, enteredTime: Date, isChaser: Bool, isDecided: Bool, isCaptured: Bool, move: [PlayerPosition]) {
         self.id = UUID()
-        self.userId = userId
+        self.playerUserId = playerUserId
+        self.player = User()
         self.isHost = isHost
         self.point = point
         self.enteredTime = enteredTime
@@ -75,9 +74,10 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.move = move
     }
     
-    init(userId: String, isHost: Bool) {
+    init(playerUserId: String, isHost: Bool) {
         self.id = UUID()
-        self.userId = userId
+        self.playerUserId = playerUserId
+        self.player = User()
         self.isHost = isHost
         self.point = 0
         self.enteredTime = Date()
@@ -89,7 +89,8 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
     
     init() {
         self.id = UUID()
-        self.userId = "unknownUserId"
+        self.playerUserId = "unknownUserId"
+        self.player = User()
         self.isHost = false
         self.point = 0
         self.enteredTime = Date()

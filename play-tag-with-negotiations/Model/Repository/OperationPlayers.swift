@@ -25,7 +25,7 @@ class OperationPlayers {
         for fugitive in fugitives {
             let isContain = chasers.contains(where: { $0.move.last == fugitive.move.last })
             if !isContain {
-                aliveFugitives.append(ifNoOverlap: fugitive)
+                aliveFugitives.append(noDuplicate: fugitive)
             }
         }
         return aliveFugitives
@@ -40,7 +40,7 @@ class OperationPlayers {
     static func isAlive(players: [Player]) -> Bool {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return false }
         let alivePlayers = getAlivePlayers(players: players)
-        let isAlive = alivePlayers.contains(where: { $0.userId == myUserId })
+        let isAlive = alivePlayers.contains(where: { $0.playerUserId == myUserId })
         return isAlive
     }
 }

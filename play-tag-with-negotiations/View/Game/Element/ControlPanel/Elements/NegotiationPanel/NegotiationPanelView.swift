@@ -13,8 +13,8 @@ struct NegotiationPanelView: View {
     @ObservedObject var pathDataStore: PathDataStore
     
     var body: some View {
-        List($playerDataStore.userArray) { user in
-            if user.wrappedValue.userId != userDataStore.signInUser?.userId {
+        List(playerDataStore.playerArray.users) { user in
+            if user.userId != userDataStore.signInUser?.userId {
                 NegotiationPanelViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: user)
             }
         }

@@ -9,7 +9,7 @@ import Foundation
 import FirebaseCore
 import FirebaseStorage
 
-class ReadToStorage {
+class Download {
     static func getIconImage(iconUrl: String) async -> Data? {
         if iconUrl == "default" {
             return nil

@@ -49,7 +49,7 @@ struct FriendViewCell: View {
             })
             Button(role: .destructive, action: {
                 Task {
-                    await DeleteToFirestore.deleteFriend(friendUserId: friend.userId)
+                    await Delete.deleteFriend(friendUserId: friend.userId)
                 }
             }, label: {
                 Text("解消")
@@ -62,7 +62,7 @@ struct FriendViewCell: View {
     func getIcon() {
         if friend.iconUrl != "default" {
             Task {
-                guard let imageData = await ReadToStorage.getIconImage(iconUrl: friend.iconUrl) else { return }
+                guard let imageData = await Download.getIconImage(iconUrl: friend.iconUrl) else { return }
                 icon = UIImage(data: imageData)
             }
         }

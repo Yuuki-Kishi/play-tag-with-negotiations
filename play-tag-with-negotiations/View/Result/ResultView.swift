@@ -15,8 +15,8 @@ struct ResultView: View {
     var body: some View {
         VStack {
             Spacer()
-            Text(playerRankText(player: playerDataStore.player))
-                .foregroundStyle(playerRankTextColor(player: playerDataStore.player))
+            Text(playerRankText(player: playerDataStore.playerArray.me))
+                .foregroundStyle(playerRankTextColor(player: playerDataStore.playerArray.me))
                 .font(.system(size: 150))
                 .frame(height: UIScreen.main.bounds.height * 0.2)
             List($playerDataStore.playerArray) { player in
@@ -27,7 +27,7 @@ struct ResultView: View {
             ToolbarItem(placement: .topBarTrailing, content: {
                 Button(action: {
                     Task {
-                        await DeleteToFirestore.endGame()
+                        await Delete.endGame()
                     }
                     pathDataStore.navigatetionPath.removeAll()
                 }, label: {
@@ -37,14 +37,14 @@ struct ResultView: View {
         }
         .onAppear() {
             Task {
-                await ReadToFirestore.getResult()
+                await Get.getResult()
             }
         }
         .navigationTitle("結果")
         .navigationBarBackButtonHidden()
     }
     func playerRank(player: Player) -> Int {
-        guard let index = playerDataStore.playerArray.firstIndex(where: { $0.userId == player.userId }) else { return playerDataStore.playerArray.count }
+        guard let index = playerDataStore.playerArray.firstIndex(where: { $0.playerUserId == player.playerUserId }) else { return playerDataStore.playerArray.count }
         return index + 1
     }
     func playerRankText(player: Player) -> String {

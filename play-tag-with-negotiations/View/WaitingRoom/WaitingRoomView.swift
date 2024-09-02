@@ -14,19 +14,18 @@ struct WaitingRoomView: View {
     @State private var isShowExitAlert = false
     @State private var isShowHostAlert = false
     @State private var isShowLastUserAlert = false
-    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         ZStack {
             List {
                 Section(content: {
-                    WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: $playerDataStore.hostUser)
+                    WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, userId: Binding(get: { playerDataStore.playerArray.host.playerUserId }, set: {_ in}))
                 }, header: {
                     Text("ホスト")
                 })
                 Section(content: {
-                    ForEach($playerDataStore.guestUserArray, id: \.userId) { user in
-                        WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: user)
+                    ForEach(playerDataStore.playerArray.guestUsers, id: \.userId) { user in
+                        WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, userId: Binding(get: { user.userId }, set: {_ in}))
                     }
                 }, header: {
                     Text("ゲスト")
@@ -35,7 +34,7 @@ struct WaitingRoomView: View {
             if userDataStore.signInUser?.userId == playerDataStore.playingRoom.hostUserId {
                 Button(action: {
                     Task {
-                        await UpdateToFirestore.gameStart()
+                        await Update.gameStart()
                     }
                 }, label: {
                     ZStack {
@@ -59,8 +58,8 @@ struct WaitingRoomView: View {
                 let hostUserId = playerDataStore.playingRoom.hostUserId
                 if myUserId == hostUserId {
                     Task {
-                        await UpdateToFirestore.appointmentChaser()
-                        await UpdateToFirestore.moveToNextPhase()
+                        await Update.appointmentChaser()
+                        await Update.moveToNextPhase()
                     }
                 }
                 pathDataStore.navigatetionPath.append(.game)
@@ -110,6 +109,9 @@ struct WaitingRoomView: View {
         .onAppear() {
             onAppear()
         }
+        .onDisappear() {
+            onDisappear()
+        }
     }
     func toolBarMenu() -> some View {
         Menu {
@@ -127,7 +129,7 @@ struct WaitingRoomView: View {
             Button(role: .destructive, action: {
                 guard let userId = userDataStore.signInUser?.userId else { return }
                 let hostUserId = playerDataStore.playingRoom.hostUserId
-                if playerDataStore.guestUserArray.count == 0 {
+                if playerDataStore.playerArray.guestUsers.count == 0 {
                     isShowLastUserAlert = true
                 } else {
                     if userId == hostUserId {
@@ -146,30 +148,36 @@ struct WaitingRoomView: View {
     func lastExit() {
         Task {
             let roomId = playerDataStore.playingRoom.roomId.uuidString
-            await DeleteToFirestore.deleteRoom(roomId: roomId)
+            await Delete.deleteRoom(roomId: roomId)
             pathDataStore.navigatetionPath.removeAll()
         }
     }
     func hostExit() {
         Task {
             let roomId = playerDataStore.playingRoom.roomId.uuidString
-            await DeleteToFirestore.hostExitRoom(roomId: roomId)
+            await Delete.hostExitRoom(roomId: roomId)
             pathDataStore.navigatetionPath.removeAll()
         }
     }
     func exit() {
         Task {
             let roomId = playerDataStore.playingRoom.roomId.uuidString
-            await DeleteToFirestore.exitRoom(roomId: roomId)
+            await Delete.exitRoom(roomId: roomId)
             pathDataStore.navigatetionPath.removeAll()
         }
     }
     func onAppear() {
-        ObserveToFirestore.observePlayers()
-        ObserveToFirestore.observeRoomField()
+        Observe.observeRoomField()
+        Observe.observePlayers()
         Task {
-            await UpdateToFirestore.randomInitialPosition()
+            await Update.randomInitialPosition()
         }
+    }
+    func onDisappear() {
+        userDataStore.listeners[.roomField]?.remove()
+        userDataStore.listeners.removeValue(forKey: .roomField)
+        userDataStore.listeners[.players]?.remove()
+        userDataStore.listeners.removeValue(forKey: .players)
     }
 }
 

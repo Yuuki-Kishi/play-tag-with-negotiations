@@ -26,14 +26,14 @@ struct MovePanelViewButton: View {
         })
     }
     func move() {
-        let isDecided = playerDataStore.player.isDecided
-        let isCaptured = playerDataStore.player.isCaptured
+        let isDecided = playerDataStore.playerArray.me.isDecided
+        let isCaptured = playerDataStore.playerArray.me.isCaptured
         if !isDecided && !isCaptured && isCanDisplay() {
             Task {
                 let playerPosition = calculateCoordinate()
                 let x = playerPosition.x
                 let y = playerPosition.y
-                await UpdateToFirestore.updatePosition(x: x, y: y)
+                await Update.updatePosition(x: x, y: y)
             }
         }
     }
@@ -60,8 +60,8 @@ struct MovePanelViewButton: View {
         }
     }
     func isCanDisplay() -> Bool {
-        guard let x = playerDataStore.player.move.last?.x else { return false }
-        guard let y = playerDataStore.player.move.last?.y else { return false }
+        guard let x = playerDataStore.playerArray.me.move.last?.x else { return false }
+        guard let y = playerDataStore.playerArray.me.move.last?.y else { return false }
         let horizontalCount = playerDataStore.playingRoom.horizontalCount
         let verticalCount = playerDataStore.playingRoom.verticalCount
         switch direction {
@@ -118,8 +118,8 @@ struct MovePanelViewButton: View {
         }
     }
     func calculateCoordinate() -> PlayerPosition {
-        guard var x = playerDataStore.player.move.last?.x else { return PlayerPosition() }
-        guard var y = playerDataStore.player.move.last?.y else { return PlayerPosition() }
+        guard var x = playerDataStore.playerArray.me.move.last?.x else { return PlayerPosition() }
+        guard var y = playerDataStore.playerArray.me.move.last?.y else { return PlayerPosition() }
         switch direction {
         case .leftUp:
             x -= 1
@@ -148,8 +148,8 @@ struct MovePanelViewButton: View {
     }
     func buttonColor() -> Color {
         if isCanDisplay() {
-            let isDecided = playerDataStore.player.isDecided
-            let isCaptured = playerDataStore.player.isCaptured
+            let isDecided = playerDataStore.playerArray.me.isDecided
+            let isCaptured = playerDataStore.playerArray.me.isCaptured
             if isCaptured {
                 return .gray
             } else {

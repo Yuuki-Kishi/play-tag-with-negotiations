@@ -10,9 +10,6 @@
 		DE12A74A2C553F6D00F7B0DF /* MovePanelViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7492C553F6D00F7B0DF /* MovePanelViewButton.swift */; };
 		DE12A74F2C66722C00F7B0DF /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A74E2C66722C00F7B0DF /* ResultView.swift */; };
 		DE12A7532C6672CD00F7B0DF /* ResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7522C6672CD00F7B0DF /* ResultViewCell.swift */; };
-		DE12A7562C6F03E600F7B0DF /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DE12A7552C6F03E600F7B0DF /* FirebaseAuth */; };
-		DE12A7582C6F03E600F7B0DF /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DE12A7572C6F03E600F7B0DF /* FirebaseFirestore */; };
-		DE12A75A2C6F03E600F7B0DF /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DE12A7592C6F03E600F7B0DF /* FirebaseStorage */; };
 		DE12A75C2C6FD0D800F7B0DF /* OperationPlayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A75B2C6FD0D800F7B0DF /* OperationPlayers.swift */; };
 		DE12A75E2C75883B00F7B0DF /* Notice.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A75D2C75883B00F7B0DF /* Notice.swift */; };
 		DE12A7612C758E8900F7B0DF /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7602C758E8900F7B0DF /* NoticeView.swift */; };
@@ -31,6 +28,12 @@
 		DECFBB252C7ACA2300093544 /* NegotiationTargetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB242C7ACA2300093544 /* NegotiationTargetViewCell.swift */; };
 		DECFBB272C7ADF7000093544 /* Negotiation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB262C7ADF7000093544 /* Negotiation.swift */; };
 		DECFBB292C81F17900093544 /* Deal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB282C81F17900093544 /* Deal.swift */; };
+		DECFBB2D2C8387EC00093544 /* Get.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB2C2C8387EC00093544 /* Get.swift */; };
+		DECFBB332C844CA000093544 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DECFBB322C844CA000093544 /* FirebaseAuth */; };
+		DECFBB352C844CA000093544 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DECFBB342C844CA000093544 /* FirebaseFirestore */; };
+		DECFBB372C844CA000093544 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DECFBB362C844CA000093544 /* FirebaseStorage */; };
+		DECFBB3A2C844CAB00093544 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = DECFBB392C844CAB00093544 /* GoogleSignIn */; };
+		DECFBB3C2C844CAC00093544 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DECFBB3B2C844CAC00093544 /* GoogleSignInSwift */; };
 		DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB913B2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift */; };
 		DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB913D2C17343500A8DA37 /* ContentView.swift */; };
 		DEDB91402C17343600A8DA37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEDB913F2C17343600A8DA37 /* Assets.xcassets */; };
@@ -41,22 +44,20 @@
 		DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91542C18890400A8DA37 /* RoomSettingView.swift */; };
 		DEDB91582C189BCB00A8DA37 /* RoomSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91572C189BCB00A8DA37 /* RoomSettingViewCell.swift */; };
 		DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91592C1B378900A8DA37 /* MyPageView.swift */; };
-		DEDEF6D42C21BA1800A01FFF /* CreateToFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6D32C21BA1800A01FFF /* CreateToFirestore.swift */; };
-		DEDEF6E82C23283200A01FFF /* UpdateToFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6E72C23283200A01FFF /* UpdateToFirestore.swift */; };
+		DEDEF6D42C21BA1800A01FFF /* Create.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6D32C21BA1800A01FFF /* Create.swift */; };
+		DEDEF6E82C23283200A01FFF /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6E72C23283200A01FFF /* Update.swift */; };
 		DEDEF6EA2C23303600A01FFF /* SignOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6E92C23303600A01FFF /* SignOut.swift */; };
-		DEDEF6EC2C23322D00A01FFF /* ReadFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6EB2C23322D00A01FFF /* ReadFirestore.swift */; };
+		DEDEF6EC2C23322D00A01FFF /* Check.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6EB2C23322D00A01FFF /* Check.swift */; };
 		DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6EE2C2341D600A01FFF /* Apple.swift */; };
 		DEDEF6F32C23C9AF00A01FFF /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F22C23C9AF00A01FFF /* GameView.swift */; };
 		DEDEF6F52C23C9BB00A01FFF /* FieldMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */; };
 		DEFA54D02C246E2300CF6BD1 /* PlayerPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */; };
 		DEFA54D22C3103D100CF6BD1 /* PlayerDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54D12C3103D100CF6BD1 /* PlayerDataStore.swift */; };
-		DEFA54D52C3674EE00CF6BD1 /* DeleteToFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54D42C3674EE00CF6BD1 /* DeleteToFirestore.swift */; };
+		DEFA54D52C3674EE00CF6BD1 /* Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54D42C3674EE00CF6BD1 /* Delete.swift */; };
 		DEFA54DA2C39076C00CF6BD1 /* RoomInfomationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54D92C39076C00CF6BD1 /* RoomInfomationView.swift */; };
 		DEFA54DC2C3907D800CF6BD1 /* RoomInfomationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54DB2C3907D800CF6BD1 /* RoomInfomationViewCell.swift */; };
-		DEFA54DF2C3989FC00CF6BD1 /* UploadToStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54DE2C3989FC00CF6BD1 /* UploadToStorage.swift */; };
-		DEFA54E12C39955200CF6BD1 /* ReadToStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54E02C39955200CF6BD1 /* ReadToStorage.swift */; };
-		DEFA54ED2C39A03F00CF6BD1 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = DEFA54EC2C39A03F00CF6BD1 /* GoogleSignIn */; };
-		DEFA54EF2C39A03F00CF6BD1 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DEFA54EE2C39A03F00CF6BD1 /* GoogleSignInSwift */; };
+		DEFA54DF2C3989FC00CF6BD1 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54DE2C3989FC00CF6BD1 /* Upload.swift */; };
+		DEFA54E12C39955200CF6BD1 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54E02C39955200CF6BD1 /* Download.swift */; };
 		DEFA54F22C3D4E6400CF6BD1 /* CheckSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54F12C3D4E6400CF6BD1 /* CheckSignIn.swift */; };
 		DEFA54F42C3D5C6700CF6BD1 /* RoomDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54F32C3D5C6700CF6BD1 /* RoomDataStore.swift */; };
 		DEFA54F72C3E9EB800CF6BD1 /* PathDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54F62C3E9EB800CF6BD1 /* PathDataStore.swift */; };
@@ -71,7 +72,7 @@
 		DEFA55132C426CD200CF6BD1 /* FriendViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55122C426CD200CF6BD1 /* FriendViewCell.swift */; };
 		DEFA55162C42BDF800CF6BD1 /* NotFriendViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55152C42BDF800CF6BD1 /* NotFriendViewCell.swift */; };
 		DEFA551B2C43A07D00CF6BD1 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA551A2C43A07D00CF6BD1 /* ArrayExtension.swift */; };
-		DEFA551D2C4798B200CF6BD1 /* ObserveToFirestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA551C2C4798B200CF6BD1 /* ObserveToFirestore.swift */; };
+		DEFA551D2C4798B200CF6BD1 /* Observe.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA551C2C4798B200CF6BD1 /* Observe.swift */; };
 		DEFA55222C4C1FB200CF6BD1 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55212C4C1FB200CF6BD1 /* SignInView.swift */; };
 		DEFA55262C4EA1B300CF6BD1 /* FieldMapViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55252C4EA1B300CF6BD1 /* FieldMapViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -99,6 +100,7 @@
 		DECFBB242C7ACA2300093544 /* NegotiationTargetViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegotiationTargetViewCell.swift; sourceTree = "<group>"; };
 		DECFBB262C7ADF7000093544 /* Negotiation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Negotiation.swift; sourceTree = "<group>"; };
 		DECFBB282C81F17900093544 /* Deal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deal.swift; sourceTree = "<group>"; };
+		DECFBB2C2C8387EC00093544 /* Get.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Get.swift; sourceTree = "<group>"; };
 		DEDB91382C17343500A8DA37 /* play-tag-with-negotiations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "play-tag-with-negotiations.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEDB913B2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = play_tag_with_negotiationsApp.swift; sourceTree = "<group>"; };
 		DEDB913D2C17343500A8DA37 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -110,21 +112,21 @@
 		DEDB91542C18890400A8DA37 /* RoomSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSettingView.swift; sourceTree = "<group>"; };
 		DEDB91572C189BCB00A8DA37 /* RoomSettingViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSettingViewCell.swift; sourceTree = "<group>"; };
 		DEDB91592C1B378900A8DA37 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
-		DEDEF6D32C21BA1800A01FFF /* CreateToFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateToFirestore.swift; sourceTree = "<group>"; };
-		DEDEF6E72C23283200A01FFF /* UpdateToFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateToFirestore.swift; sourceTree = "<group>"; };
+		DEDEF6D32C21BA1800A01FFF /* Create.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Create.swift; sourceTree = "<group>"; };
+		DEDEF6E72C23283200A01FFF /* Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Update.swift; sourceTree = "<group>"; };
 		DEDEF6E92C23303600A01FFF /* SignOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOut.swift; sourceTree = "<group>"; };
-		DEDEF6EB2C23322D00A01FFF /* ReadFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadFirestore.swift; sourceTree = "<group>"; };
+		DEDEF6EB2C23322D00A01FFF /* Check.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Check.swift; sourceTree = "<group>"; };
 		DEDEF6ED2C233C5B00A01FFF /* play-tag-with-negotiations.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "play-tag-with-negotiations.entitlements"; sourceTree = "<group>"; };
 		DEDEF6EE2C2341D600A01FFF /* Apple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apple.swift; sourceTree = "<group>"; };
 		DEDEF6F22C23C9AF00A01FFF /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldMapView.swift; sourceTree = "<group>"; };
 		DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPosition.swift; sourceTree = "<group>"; };
 		DEFA54D12C3103D100CF6BD1 /* PlayerDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDataStore.swift; sourceTree = "<group>"; };
-		DEFA54D42C3674EE00CF6BD1 /* DeleteToFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteToFirestore.swift; sourceTree = "<group>"; };
+		DEFA54D42C3674EE00CF6BD1 /* Delete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delete.swift; sourceTree = "<group>"; };
 		DEFA54D92C39076C00CF6BD1 /* RoomInfomationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfomationView.swift; sourceTree = "<group>"; };
 		DEFA54DB2C3907D800CF6BD1 /* RoomInfomationViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfomationViewCell.swift; sourceTree = "<group>"; };
-		DEFA54DE2C3989FC00CF6BD1 /* UploadToStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadToStorage.swift; sourceTree = "<group>"; };
-		DEFA54E02C39955200CF6BD1 /* ReadToStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadToStorage.swift; sourceTree = "<group>"; };
+		DEFA54DE2C3989FC00CF6BD1 /* Upload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
+		DEFA54E02C39955200CF6BD1 /* Download.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
 		DEFA54F12C3D4E6400CF6BD1 /* CheckSignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSignIn.swift; sourceTree = "<group>"; };
 		DEFA54F32C3D5C6700CF6BD1 /* RoomDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDataStore.swift; sourceTree = "<group>"; };
 		DEFA54F62C3E9EB800CF6BD1 /* PathDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathDataStore.swift; sourceTree = "<group>"; };
@@ -139,7 +141,7 @@
 		DEFA55122C426CD200CF6BD1 /* FriendViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendViewCell.swift; sourceTree = "<group>"; };
 		DEFA55152C42BDF800CF6BD1 /* NotFriendViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFriendViewCell.swift; sourceTree = "<group>"; };
 		DEFA551A2C43A07D00CF6BD1 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
-		DEFA551C2C4798B200CF6BD1 /* ObserveToFirestore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserveToFirestore.swift; sourceTree = "<group>"; };
+		DEFA551C2C4798B200CF6BD1 /* Observe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observe.swift; sourceTree = "<group>"; };
 		DEFA55212C4C1FB200CF6BD1 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		DEFA55252C4EA1B300CF6BD1 /* FieldMapViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldMapViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -149,11 +151,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DEFA54ED2C39A03F00CF6BD1 /* GoogleSignIn in Frameworks */,
-				DE12A7582C6F03E600F7B0DF /* FirebaseFirestore in Frameworks */,
-				DE12A7562C6F03E600F7B0DF /* FirebaseAuth in Frameworks */,
-				DE12A75A2C6F03E600F7B0DF /* FirebaseStorage in Frameworks */,
-				DEFA54EF2C39A03F00CF6BD1 /* GoogleSignInSwift in Frameworks */,
+				DECFBB3C2C844CAC00093544 /* GoogleSignInSwift in Frameworks */,
+				DECFBB332C844CA000093544 /* FirebaseAuth in Frameworks */,
+				DECFBB3A2C844CAB00093544 /* GoogleSignIn in Frameworks */,
+				DECFBB352C844CA000093544 /* FirebaseFirestore in Frameworks */,
+				DECFBB372C844CA000093544 /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +297,47 @@
 			path = NegotiationTarget;
 			sourceTree = "<group>";
 		};
+		DECFBB2A2C836BF000093544 /* Create */ = {
+			isa = PBXGroup;
+			children = (
+				DEDEF6D32C21BA1800A01FFF /* Create.swift */,
+			);
+			path = Create;
+			sourceTree = "<group>";
+		};
+		DECFBB2B2C83874700093544 /* Read */ = {
+			isa = PBXGroup;
+			children = (
+				DEDEF6EB2C23322D00A01FFF /* Check.swift */,
+				DECFBB2C2C8387EC00093544 /* Get.swift */,
+			);
+			path = Read;
+			sourceTree = "<group>";
+		};
+		DECFBB2E2C8388BB00093544 /* Update */ = {
+			isa = PBXGroup;
+			children = (
+				DEDEF6E72C23283200A01FFF /* Update.swift */,
+			);
+			path = Update;
+			sourceTree = "<group>";
+		};
+		DECFBB2F2C838A4700093544 /* Delete */ = {
+			isa = PBXGroup;
+			children = (
+				DEFA54D42C3674EE00CF6BD1 /* Delete.swift */,
+			);
+			path = Delete;
+			sourceTree = "<group>";
+		};
+		DECFBB302C838A4E00093544 /* Observe */ = {
+			isa = PBXGroup;
+			children = (
+				DEFA551C2C4798B200CF6BD1 /* Observe.swift */,
+			);
+			path = Observe;
+			sourceTree = "<group>";
+		};
 		DEDB912F2C17343500A8DA37 = {
 			isa = PBXGroup;
 			children = (
@@ -339,8 +382,8 @@
 			children = (
 				DEAB386E2C1EB32E007639F6 /* User.swift */,
 				DEDB914F2C173F7C00A8DA37 /* Player.swift */,
-				DEFA54FF2C401D6200CF6BD1 /* Friend.swift */,
 				DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */,
+				DEFA54FF2C401D6200CF6BD1 /* Friend.swift */,
 				DEDB914D2C173A2400A8DA37 /* PlayTagRoom.swift */,
 				DE12A75D2C75883B00F7B0DF /* Notice.swift */,
 				DECFBB262C7ADF7000093544 /* Negotiation.swift */,
@@ -362,11 +405,11 @@
 		DEDEF6D02C21B97800A01FFF /* Firestore */ = {
 			isa = PBXGroup;
 			children = (
-				DEDEF6D32C21BA1800A01FFF /* CreateToFirestore.swift */,
-				DEDEF6EB2C23322D00A01FFF /* ReadFirestore.swift */,
-				DEDEF6E72C23283200A01FFF /* UpdateToFirestore.swift */,
-				DEFA54D42C3674EE00CF6BD1 /* DeleteToFirestore.swift */,
-				DEFA551C2C4798B200CF6BD1 /* ObserveToFirestore.swift */,
+				DECFBB2A2C836BF000093544 /* Create */,
+				DECFBB2B2C83874700093544 /* Read */,
+				DECFBB2E2C8388BB00093544 /* Update */,
+				DECFBB2F2C838A4700093544 /* Delete */,
+				DECFBB302C838A4E00093544 /* Observe */,
 			);
 			path = Firestore;
 			sourceTree = "<group>";
@@ -392,8 +435,8 @@
 		DEFA54DD2C3989D500CF6BD1 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
-				DEFA54DE2C3989FC00CF6BD1 /* UploadToStorage.swift */,
-				DEFA54E02C39955200CF6BD1 /* ReadToStorage.swift */,
+				DEFA54DE2C3989FC00CF6BD1 /* Upload.swift */,
+				DEFA54E02C39955200CF6BD1 /* Download.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -480,11 +523,11 @@
 			);
 			name = "play-tag-with-negotiations";
 			packageProductDependencies = (
-				DEFA54EC2C39A03F00CF6BD1 /* GoogleSignIn */,
-				DEFA54EE2C39A03F00CF6BD1 /* GoogleSignInSwift */,
-				DE12A7552C6F03E600F7B0DF /* FirebaseAuth */,
-				DE12A7572C6F03E600F7B0DF /* FirebaseFirestore */,
-				DE12A7592C6F03E600F7B0DF /* FirebaseStorage */,
+				DECFBB322C844CA000093544 /* FirebaseAuth */,
+				DECFBB342C844CA000093544 /* FirebaseFirestore */,
+				DECFBB362C844CA000093544 /* FirebaseStorage */,
+				DECFBB392C844CAB00093544 /* GoogleSignIn */,
+				DECFBB3B2C844CAC00093544 /* GoogleSignInSwift */,
 			);
 			productName = "play-tag-with-negotiations";
 			productReference = DEDB91382C17343500A8DA37 /* play-tag-with-negotiations.app */;
@@ -516,8 +559,8 @@
 			);
 			mainGroup = DEDB912F2C17343500A8DA37;
 			packageReferences = (
-				DEFA54EB2C39A03F00CF6BD1 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
-				DE12A7542C6F03E600F7B0DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				DECFBB312C844CA000093544 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				DECFBB382C844CAB00093544 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = DEDB91392C17343500A8DA37 /* Products */;
 			projectDirPath = "";
@@ -549,20 +592,20 @@
 				DECFBB252C7ACA2300093544 /* NegotiationTargetViewCell.swift in Sources */,
 				DEAB38752C205FA8007639F6 /* PublicRoomsViewCell.swift in Sources */,
 				DECFBB232C7ACA1700093544 /* NegotiationTargetView.swift in Sources */,
-				DEDEF6EC2C23322D00A01FFF /* ReadFirestore.swift in Sources */,
+				DEDEF6EC2C23322D00A01FFF /* Check.swift in Sources */,
 				DEDEF6EA2C23303600A01FFF /* SignOut.swift in Sources */,
 				DE12A7612C758E8900F7B0DF /* NoticeView.swift in Sources */,
 				DE12A7532C6672CD00F7B0DF /* ResultViewCell.swift in Sources */,
-				DEDEF6D42C21BA1800A01FFF /* CreateToFirestore.swift in Sources */,
+				DEDEF6D42C21BA1800A01FFF /* Create.swift in Sources */,
 				DE12A74A2C553F6D00F7B0DF /* MovePanelViewButton.swift in Sources */,
 				DE12A74F2C66722C00F7B0DF /* ResultView.swift in Sources */,
 				DEFA54DC2C3907D800CF6BD1 /* RoomInfomationViewCell.swift in Sources */,
 				DEAB38622C1EA178007639F6 /* Google.swift in Sources */,
-				DEDEF6E82C23283200A01FFF /* UpdateToFirestore.swift in Sources */,
+				DEDEF6E82C23283200A01FFF /* Update.swift in Sources */,
 				DEDB91582C189BCB00A8DA37 /* RoomSettingViewCell.swift in Sources */,
 				DEFA55072C4149A100CF6BD1 /* NegotiationPanelView.swift in Sources */,
 				DEFA55222C4C1FB200CF6BD1 /* SignInView.swift in Sources */,
-				DEFA54DF2C3989FC00CF6BD1 /* UploadToStorage.swift in Sources */,
+				DEFA54DF2C3989FC00CF6BD1 /* Upload.swift in Sources */,
 				DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */,
 				DE12A7632C75999700F7B0DF /* NoticeViewCell.swift in Sources */,
 				DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */,
@@ -574,15 +617,15 @@
 				DEFA551B2C43A07D00CF6BD1 /* ArrayExtension.swift in Sources */,
 				DE12A7682C7A243300F7B0DF /* InviteViewCell.swift in Sources */,
 				DECFBB272C7ADF7000093544 /* Negotiation.swift in Sources */,
-				DEFA54D52C3674EE00CF6BD1 /* DeleteToFirestore.swift in Sources */,
-				DEFA551D2C4798B200CF6BD1 /* ObserveToFirestore.swift in Sources */,
+				DEFA54D52C3674EE00CF6BD1 /* Delete.swift in Sources */,
+				DEFA551D2C4798B200CF6BD1 /* Observe.swift in Sources */,
 				DEDB914E2C173A2400A8DA37 /* PlayTagRoom.swift in Sources */,
 				DEAB386C2C1EAAA6007639F6 /* UserDataStore.swift in Sources */,
 				DEAB38782C2060D3007639F6 /* MyPageListView.swift in Sources */,
 				DEFA55032C40204500CF6BD1 /* SelectionView.swift in Sources */,
 				DEFA54F42C3D5C6700CF6BD1 /* RoomDataStore.swift in Sources */,
 				DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */,
-				DEFA54E12C39955200CF6BD1 /* ReadToStorage.swift in Sources */,
+				DEFA54E12C39955200CF6BD1 /* Download.swift in Sources */,
 				DEFA55112C42669500CF6BD1 /* FriendDataStore.swift in Sources */,
 				DEFA54F22C3D4E6400CF6BD1 /* CheckSignIn.swift in Sources */,
 				DEAB387B2C2061C2007639F6 /* WaitingRoomViewCell.swift in Sources */,
@@ -590,6 +633,7 @@
 				DEFA55162C42BDF800CF6BD1 /* NotFriendViewCell.swift in Sources */,
 				DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */,
 				DEAB386F2C1EB32E007639F6 /* User.swift in Sources */,
+				DECFBB2D2C8387EC00093544 /* Get.swift in Sources */,
 				DEFA54D22C3103D100CF6BD1 /* PlayerDataStore.swift in Sources */,
 				DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */,
 				DE12A75C2C6FD0D800F7B0DF /* OperationPlayers.swift in Sources */,
@@ -816,48 +860,48 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		DE12A7542C6F03E600F7B0DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		DECFBB312C844CA000093544 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 11.0.0;
+				minimumVersion = 11.1.0;
 			};
 		};
-		DEFA54EB2C39A03F00CF6BD1 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+		DECFBB382C844CAB00093544 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 7.1.0;
+				minimumVersion = 8.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		DE12A7552C6F03E600F7B0DF /* FirebaseAuth */ = {
+		DECFBB322C844CA000093544 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = DE12A7542C6F03E600F7B0DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = DECFBB312C844CA000093544 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		DE12A7572C6F03E600F7B0DF /* FirebaseFirestore */ = {
+		DECFBB342C844CA000093544 /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = DE12A7542C6F03E600F7B0DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = DECFBB312C844CA000093544 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
 		};
-		DE12A7592C6F03E600F7B0DF /* FirebaseStorage */ = {
+		DECFBB362C844CA000093544 /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = DE12A7542C6F03E600F7B0DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = DECFBB312C844CA000093544 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
 		};
-		DEFA54EC2C39A03F00CF6BD1 /* GoogleSignIn */ = {
+		DECFBB392C844CAB00093544 /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = DEFA54EB2C39A03F00CF6BD1 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			package = DECFBB382C844CAB00093544 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignIn;
 		};
-		DEFA54EE2C39A03F00CF6BD1 /* GoogleSignInSwift */ = {
+		DECFBB3B2C844CAC00093544 /* GoogleSignInSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = DEFA54EB2C39A03F00CF6BD1 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			package = DECFBB382C844CAB00093544 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
 		};
 /* End XCSwiftPackageProductDependency section */

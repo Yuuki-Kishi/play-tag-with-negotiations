@@ -16,7 +16,7 @@ struct NegotiationTargetView: View {
         }
         .onAppear() {
             Task {
-                await ReadToFirestore.getNegotiations()
+                await Get.getNegotiations()
             }
         }
     }

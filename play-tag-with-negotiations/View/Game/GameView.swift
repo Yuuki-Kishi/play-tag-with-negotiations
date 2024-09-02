@@ -47,10 +47,10 @@ struct GameView: View {
         .navigationBarBackButtonHidden()
         .onAppear() {
             Task {
-                ObserveToFirestore.observeRoomField()
-                ObserveToFirestore.observeIsDecided()
-                ObserveToFirestore.observeMyIsDecided()
-                await ReadToFirestore.getAlivePlayers()
+                Observe.observeRoomField()
+                Observe.observeIsDecided()
+                Observe.observeMyIsDecided()
+                await Get.getAlivePlayers()
             }
         }
     }

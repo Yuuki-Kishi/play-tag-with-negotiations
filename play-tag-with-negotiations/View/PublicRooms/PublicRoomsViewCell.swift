@@ -33,9 +33,12 @@ struct PublicRoomsViewCell: View {
     func joinRoom() {
         let roomId = playTagRoom.roomId.uuidString
         Task {
-            if await ReadToFirestore.checkIsThereRoom(roomId: roomId) {
-                playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
-                await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
+            if await Check.checkIsThereRoom(roomId: roomId) {
+                guard let playingRoom = await Get.getRoomData(roomId: roomId) else { return }
+                DispatchQueue.main.async {
+                    playerDataStore.playingRoom = playingRoom
+                }
+                await Create.enterRoom(roomId: roomId, isHost: false)
                 pathDataStore.navigatetionPath.append(.waitingRoom)
             }
         }

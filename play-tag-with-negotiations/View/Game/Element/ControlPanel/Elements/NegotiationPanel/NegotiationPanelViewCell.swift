@@ -10,7 +10,7 @@ import SwiftUI
 struct NegotiationPanelViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
-    @Binding var user: User
+    @State var user: User
     
     var body: some View {
         HStack {
@@ -36,10 +36,13 @@ struct NegotiationPanelViewCell: View {
                     .font(.system(size: 15))
             }
         }
+        .contentShape(Rectangle())
         .onTapGesture {
-            guard let player = playerDataStore.playerArray.first(where: { $0.userId == user.userId }) else { return }
+            guard let player = playerDataStore.playerArray.first(where: { $0.playerUserId == user.userId }) else { return }
             playerDataStore.negitiationTarget = player
-            userDataStore.displayControlPanel = .target
+            withAnimation {
+                userDataStore.displayControlPanel = .target
+            }
         }
     }
     func getIconImage() -> UIImage? {

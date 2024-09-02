@@ -19,7 +19,7 @@ struct ResultViewCell: View {
                 .font(.system(size: 25))
                 .frame(width: 50)
                 .foregroundStyle(playerRankTextColor())
-            Text(playerToUser().userName)
+            Text(player.player.userName)
                 .frame(alignment: .leading)
                 .font(.system(size: 20))
                 .foregroundStyle(userNameColor())
@@ -34,7 +34,7 @@ struct ResultViewCell: View {
             if isDisplayButton() {
                 Button(action: {
                     Task {
-                        await CreateToFirestore.sendFriendRequest(to: playerToUser().userId)
+                        await Create.sendFriendRequest(to: player.player.userId)
                         isShowAlert = true
                     }
                 }, label: {
@@ -59,7 +59,7 @@ struct ResultViewCell: View {
         }
     }
     func playerRank() -> Int {
-        guard let index = playerDataStore.playerArray.firstIndex(where: { $0.userId == player.userId }) else { return playerDataStore.playerArray.count }
+        guard let index = playerDataStore.playerArray.firstIndex(where: { $0.playerUserId == player.playerUserId }) else { return playerDataStore.playerArray.count }
         return index + 1
     }
     func playerRankText() -> String {
@@ -88,13 +88,9 @@ struct ResultViewCell: View {
             return Color.indigo
         }
     }
-    func playerToUser() -> User {
-        guard let user = playerDataStore.userArray.first(where: { $0.userId == player.userId }) else { return User() }
-        return user
-    }
     func userNameColor() -> Color {
         var color = Color.primary
-        if playerToUser().userId == userDataStore.signInUser?.userId {
+        if player.player.userId == userDataStore.signInUser?.userId {
             color = .green
         }
         return color
@@ -114,10 +110,9 @@ struct ResultViewCell: View {
         }
     }
     func isDisplayButton() -> Bool {
-        let user = playerToUser()
-        guard let myFriendsId = userDataStore.signInUser?.friendsId else { return false }
-        let isFriend = myFriendsId.contains(where: { $0 == user.userId })
-        if user.userId != userDataStore.signInUser?.userId && !isFriend {
+        guard let myFriendsId = userDataStore.signInUser?.friendsUserId else { return false }
+        let isFriend = myFriendsId.contains(where: { $0 == player.player.userId })
+        if player.player.userId != userDataStore.signInUser?.userId && !isFriend {
             return true
         }
         return false

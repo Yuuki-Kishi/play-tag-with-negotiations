@@ -10,7 +10,7 @@ import SwiftUI
 struct WaitingRoomViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
-    @Binding var user: User
+    @Binding var userId: String
     @State private var isShowAlert = false
     
     var body: some View {
@@ -28,11 +28,11 @@ struct WaitingRoomViewCell: View {
                     .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
             }
             VStack {
-                Text(user.userName)
+                Text(user().userName)
                     .foregroundStyle(userNameColor())
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.system(size: 25))
-                Text(user.pronoun)
+                Text(user().pronoun)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(1)
                     .font(.system(size: 15))
@@ -41,17 +41,21 @@ struct WaitingRoomViewCell: View {
     }
     func userNameColor() -> Color {
         var color = Color.primary
-        if user.userId == userDataStore.signInUser?.userId {
+        if user().userId == userDataStore.signInUser?.userId {
             color = Color.green
         }
         return color
     }
     func getIconImage() -> UIImage? {
-        if let iconData = user.iconData {
+        if let iconData = user().iconData {
             return UIImage(data: iconData)
         } else {
             return nil
         }
+    }
+    func user() -> User {
+        guard let user = playerDataStore.playerArray.users.first(where: { $0.userId == userId }) else { return User() }
+        return user
     }
 }
 

@@ -35,7 +35,7 @@ struct RoomSettingView: View {
                 })
                 Button(action: {
                     Task {
-                        await CreateToFirestore.createPlayTagRoom(playTagRoom: playerDataStore.playingRoom)
+                        await Create.createPlayTagRoom(playTagRoom: playerDataStore.playingRoom)
                         pathDataStore.navigatetionPath.append(.waitingRoom)
                     }
                 }, label: {
@@ -46,7 +46,9 @@ struct RoomSettingView: View {
             })
             .navigationTitle("ルーム作成")
             .onAppear() {
-                playerDataStore.playingRoom = PlayTagRoom(playTagName: "鬼ごっこ")
+                DispatchQueue.main.async {
+                    playerDataStore.playingRoom = PlayTagRoom(playTagName: "鬼ごっこ")
+                }
             }
         }
     }

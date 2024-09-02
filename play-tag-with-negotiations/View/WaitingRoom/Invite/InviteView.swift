@@ -40,7 +40,7 @@ struct InviteView: View {
                     })
                     Button(action: {
                         Task {
-                            await CreateToFirestore.sendInviteNotice(users: selectionValue, roomId: playerDataStore.playingRoom.roomId.uuidString)
+                            await Create.sendInviteNotice(users: selectionValue, roomId: playerDataStore.playingRoom.roomId.uuidString)
                             pathDataStore.navigatetionPath.removeLast()
                         }
                     }, label: {
@@ -51,10 +51,10 @@ struct InviteView: View {
         }
         .onAppear() {
             Task {
-                guard let friends = userDataStore.signInUser?.friendsId else { return }
+                guard let friends = userDataStore.signInUser?.friendsUserId else { return }
                 for friend in friends {
-                    guard let user = await ReadToFirestore.getUserData(userId: friend) else { return }
-                    friendsArray.append(ifNoOverlap: user)
+                    guard let user = await Get.getUserData(userId: friend) else { return }
+                    friendsArray.append(noDuplicate: user)
                 }
             }
         }

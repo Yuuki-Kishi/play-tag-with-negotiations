@@ -90,8 +90,8 @@ class Apple {
                         guard let userId = result?.user.uid else { return }
                         guard let creationDate = result?.user.metadata.creationDate else { return }
                         let user = User(userId: userId, creationDate: creationDate)
-                        if await !ReadToFirestore.isWroteUser(userId: userId) {
-                            await CreateToFirestore.createUser(user: user)
+                        if await !Check.isWroteUser(userId: userId) {
+                            await Create.createUser(user: user)
                         }
                         UserDataStore.shared.signInUser = user
                     }

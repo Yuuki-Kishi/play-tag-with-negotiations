@@ -20,6 +20,7 @@ struct ControlPanelCoordination: View {
             NegotiationPanelView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
         case .target:
             NegotiationTargetView(playerDataStore: playerDataStore)
+                .transition(.move(edge: .trailing))
         }
     }
 }

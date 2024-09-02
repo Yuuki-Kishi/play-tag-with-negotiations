@@ -53,7 +53,7 @@ struct NotFriendViewCell: View {
             })
             Button(action: {
                 Task {
-                    await UpdateToFirestore.becomeFriend(friendUserId: friend.userId)
+                    await Update.becomeFriend(friendUserId: friend.userId)
                 }
             }, label: {
                 Text("承認")
@@ -65,7 +65,7 @@ struct NotFriendViewCell: View {
             })
             Button(role: .destructive, action: {
                 Task {
-                    await DeleteToFirestore.deleteFriend(friendUserId: friend.userId)
+                    await Delete.deleteFriend(friendUserId: friend.userId)
                 }
             }, label: {
                 Text("削除")
@@ -78,7 +78,7 @@ struct NotFriendViewCell: View {
     func getIcon() {
         if friend.iconUrl != "default" {
             Task {
-                guard let imageData = await ReadToStorage.getIconImage(iconUrl: friend.iconUrl) else { return }
+                guard let imageData = await Download.getIconImage(iconUrl: friend.iconUrl) else { return }
                 icon = UIImage(data: imageData)
             }
         }

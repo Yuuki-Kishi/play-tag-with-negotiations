@@ -49,8 +49,7 @@ struct PlayTagRoom: Codable, Hashable, Identifiable, Equatable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case roomId, hostUserId, playTagName, creationDate, isPlaying, isEnd, phaseNow, phaseMax, chaserNumber, fugitiveNumber, horizontalCount,
-             verticalCount, isPublic, isCanJoinAfter, isNegotiate, isCanDoQuest, isCanUseItem
+        case roomId, hostUserId, playTagName, creationDate, isPlaying, isEnd, phaseNow, phaseMax, chaserNumber, fugitiveNumber, horizontalCount, verticalCount, isPublic, isCanJoinAfter, isNegotiate, isCanDoQuest, isCanUseItem
     }
     
     init(from decoder: Decoder) throws {

@@ -12,7 +12,7 @@ struct MovePanelView: View {
     @ObservedObject var playerDataStore: PlayerDataStore
     
     var body: some View {
-        if playerDataStore.player.isCaptured {
+        if playerDataStore.playerArray.me.isCaptured {
             Image(systemName: "lock.fill")
                 .resizable()
                 .scaledToFit()

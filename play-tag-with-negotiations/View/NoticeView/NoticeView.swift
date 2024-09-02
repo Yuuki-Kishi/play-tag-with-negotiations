@@ -18,11 +18,11 @@ struct NoticeView: View {
         }
         .navigationTitle("通知")
         .onAppear() {
-            ObserveToFirestore.observeNotice()
+            Observe.observeNotice()
         }
         .onDisappear() {
             Task {
-                await UpdateToFirestore.noticeCheck()
+                await Update.checkNotices()
             }
         }
     }

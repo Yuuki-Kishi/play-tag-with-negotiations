@@ -11,7 +11,7 @@ import PhotosUI
 import FirebaseCore
 import FirebaseStorage
 
-class UploadToStorage {
+class Upload {
     static func uploadIconImage(selectedItem: PhotosPickerItem?) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         guard let data = try? await selectedItem?.loadTransferable(type: Data.self) else { return }
@@ -24,7 +24,7 @@ class UploadToStorage {
                 storageRef.downloadURL { (url, error) in
                     Task {
                         guard let iconUrl = url?.absoluteString else { return }
-                        await UpdateToFirestore.updateIconUrl(iconUrl: iconUrl)
+                        await Update.updateIconUrl(iconUrl: iconUrl)
                     }
                 }
             }

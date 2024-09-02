@@ -110,16 +110,22 @@ struct PublicRoomsView: View {
             .onAppear() {
                 onAppear()
             }
+            .onDisappear() {
+                onDisappear()
+            }
         }
     }
     func enterRoom() {
         Task {
-            let isThereRoom = await ReadToFirestore.checkIsThereRoom(roomId: roomId)
-            let isNotOverPlayer = await ReadToFirestore.isNotOverPlayer(roomId: roomId)
+            let isThereRoom = await Check.checkIsThereRoom(roomId: roomId)
+            let isNotOverPlayer = await Check.checkNotOverPlayerCount(roomId: roomId)
             if isThereRoom {
                 if isNotOverPlayer {
-                    playerDataStore.playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
-                    await CreateToFirestore.enterRoom(roomId: roomId, isHost: false)
+                    guard let playingRoom = await Get.getRoomData(roomId: roomId) else { return }
+                    DispatchQueue.main.async {
+                        playerDataStore.playingRoom = playingRoom
+                    }
+                    await Create.enterRoom(roomId: roomId, isHost: false)
                     roomId = ""
                     pathDataStore.navigatetionPath.append(.waitingRoom)
                 } else {
@@ -173,8 +179,8 @@ struct PublicRoomsView: View {
     }
     func onAppear() {
         Task {
-            if let roomId = await ReadToFirestore.getBeingRoomId() {
-                let playingRoom = await ReadToFirestore.getRoomData(roomId: roomId)
+            if let roomId = await Get.getBeingRoomId() {
+                guard let playingRoom = await Get.getRoomData(roomId: roomId) else { return }
                 playerDataStore.playingRoom = playingRoom
                 if playingRoom.isPlaying {
                     if !playingRoom.isEnd {
@@ -184,13 +190,19 @@ struct PublicRoomsView: View {
                     pathDataStore.navigatetionPath.append(.waitingRoom)
                 }
                 if playingRoom.isEnd {
-                    await DeleteToFirestore.endGame()
+                    await Delete.endGame()
                 }
             } else {
-                ObserveToFirestore.observePublicRooms()
-                ObserveToFirestore.observeNotice()
+                Observe.observePublicRooms()
+                Observe.observeNotice()
             }
         }
+    }
+    func onDisappear() {
+        userDataStore.listeners[.publicRooms]?.remove()
+        userDataStore.listeners.removeValue(forKey: .publicRooms)
+        userDataStore.listeners[.notice]?.remove()
+        userDataStore.listeners.removeValue(forKey: .notice)
     }
 }
 

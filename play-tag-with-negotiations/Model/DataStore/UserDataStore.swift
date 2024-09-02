@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import FirebaseAuth
+import FirebaseFirestore
 
 class UserDataStore: ObservableObject {
     static let shared = UserDataStore()
@@ -14,7 +14,11 @@ class UserDataStore: ObservableObject {
     @Published var signInUser: User? = nil
     @Published var displayControlPanel: controlPanelMode = .movement
     @Published var noticeArray: [Notice] = []
+    @Published var listeners: [listenerType: ListenerRegistration] = [:]
     enum controlPanelMode {
         case movement, negotiation, target
+    }
+    enum listenerType {
+        case userData, roomField, notice, players, myIsDecided, isDecided, publicRooms, friend, negotiations, propose, target
     }
 }

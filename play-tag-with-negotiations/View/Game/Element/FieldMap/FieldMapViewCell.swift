@@ -46,7 +46,7 @@ struct FieldMapViewCell: View {
         }
     }
     func singleChaserIcon(player: Player) -> some View {
-        if player.userId == userDataStore.signInUser?.userId {
+        if player.playerUserId == userDataStore.signInUser?.userId {
             return Image(systemName: "figure.run.circle.fill")
                 .resizable()
                 .resizable()
@@ -63,7 +63,7 @@ struct FieldMapViewCell: View {
         }
     }
     func singlefugitiverIcon(player: Player) -> some View {
-        if player.userId == userDataStore.signInUser?.userId {
+        if player.playerUserId == userDataStore.signInUser?.userId {
             return Image(systemName: "figure.walk.circle.fill")
                 .resizable()
                 .foregroundStyle(Color.blue)
@@ -81,7 +81,7 @@ struct FieldMapViewCell: View {
         let chasers = numToPlayers(num: num).filter({ $0.isChaser })
         let fugitives = numToPlayers(num: num).filter({ !$0.isChaser })
         if chasers.isEmpty && !fugitives.isEmpty {
-            if fugitives.contains(where: { $0.userId == userDataStore.signInUser?.userId }) {
+            if fugitives.contains(where: { $0.playerUserId == userDataStore.signInUser?.userId }) {
                 return Image(systemName: "person.2.circle.fill")
                     .resizable()
                     .foregroundStyle(Color.blue)
@@ -95,7 +95,7 @@ struct FieldMapViewCell: View {
                     .background(Rectangle().foregroundStyle(Color(UIColor.systemGray5)))
             }
         } else if fugitives.isEmpty && !chasers.isEmpty {
-            if fugitives.contains(where: { $0.userId == userDataStore.signInUser?.userId }) {
+            if fugitives.contains(where: { $0.playerUserId == userDataStore.signInUser?.userId }) {
                 return Image(systemName: "person.2.circle.fill")
                     .resizable()
                     .foregroundStyle(Color.red)
@@ -109,7 +109,7 @@ struct FieldMapViewCell: View {
                     .background(Rectangle().foregroundStyle(Color(UIColor.systemGray5)))
             }
         } else {
-            if fugitives.contains(where: { $0.userId == userDataStore.signInUser?.userId }) {
+            if fugitives.contains(where: { $0.playerUserId == userDataStore.signInUser?.userId }) {
                 return Image(systemName: "person.2.circle.fill")
                     .resizable()
                     .foregroundStyle(Color.purple)
@@ -136,7 +136,6 @@ struct FieldMapViewCell: View {
     func numToPlayers(num: Int) -> [Player] {
         let x = num % playerDataStore.playingRoom.horizontalCount
         let y = num / playerDataStore.playingRoom.horizontalCount
-        let phaseNow = playerDataStore.playingRoom.phaseNow
         let playerPosition = PlayerPosition(x: x, y: y)
         let players = playerDataStore.playerArray.filter { $0.move.last == playerPosition && !$0.isCaptured }
         return players

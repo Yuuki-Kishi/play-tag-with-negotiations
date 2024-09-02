@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-class UpdateToFirestore {
+class Update {
     static func updateUserName(newName: String) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
@@ -106,7 +106,6 @@ class UpdateToFirestore {
     
     static func gameEnd() async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-        let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["isEnd": true])
         } catch {
@@ -115,17 +114,15 @@ class UpdateToFirestore {
     }
     
     static func isDecidedToFalse() async {
-        if !PlayerDataStore.shared.player.isCaptured {
+        if !PlayerDataStore.shared.playerArray.me.isCaptured {
             let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
             guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-            let myIsDecided = PlayerDataStore.shared.player.isDecided
-            if myIsDecided {
-                do {
-                    try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": false])
-                } catch {
-                    print(error)
-                }
+            do {
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": false])
+            } catch {
+                print(error)
             }
+            await grantMePoint(howMany: 10)
         }
     }
     
@@ -135,7 +132,7 @@ class UpdateToFirestore {
         let chasers = PlayerDataStore.shared.playerArray.shuffled().prefix(chaserNumber)
         for chaser in chasers {
             do {
-                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(chaser.userId).updateData(["isChaser": true])
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(chaser.playerUserId).updateData(["isChaser": true])
             } catch {
                 print(error)
             }
@@ -152,13 +149,27 @@ class UpdateToFirestore {
         }
     }
     
-    static func noticeCheck() async {
+    static func checkNotices() async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-        let notices = await ReadToFirestore.getNonCheckedNotice()
+        let notices = await Get.getNonCheckedNotice()
         do {
             for notice in notices {
                 try await Firestore.firestore().collection("Users").document(userId).collection("Notices").document(notice.noticeId.uuidString).updateData(["isChecked": true])
             }
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func grantMePoint(howMany: Int) async {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        await grantPoint(userId: userId, howMany: howMany)
+    }
+    
+    static func grantPoint(userId: String, howMany: Int) async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        do {
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["point": howMany])
         } catch {
             print(error)
         }
