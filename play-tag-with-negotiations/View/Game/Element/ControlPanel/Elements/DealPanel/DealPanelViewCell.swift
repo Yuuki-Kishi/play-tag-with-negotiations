@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NegotiationPanelViewCell: View {
+struct DealPanelViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     @State var user: User
@@ -41,7 +41,7 @@ struct NegotiationPanelViewCell: View {
             guard let player = playerDataStore.playerArray.first(where: { $0.playerUserId == user.userId }) else { return }
             playerDataStore.negitiationTarget = player
             withAnimation {
-                userDataStore.displayControlPanel = .target
+                userDataStore.displayControlPanel = .deal(.target)
             }
         }
     }

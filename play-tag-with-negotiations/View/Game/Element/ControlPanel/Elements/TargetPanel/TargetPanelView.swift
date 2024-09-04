@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct NegotiationTargetView: View {
+struct TargetPanelView: View {
     @ObservedObject var playerDataStore: PlayerDataStore
     
     var body: some View {
         List($playerDataStore.negotiationArray) { negotiation in
-            NegotiationTargetViewCell(negotiation: negotiation)
+            TargetPanelViewCell(negotiation: negotiation)
         }
         .onAppear() {
             Task {
@@ -23,5 +23,5 @@ struct NegotiationTargetView: View {
 }
 
 #Preview {
-    NegotiationTargetView(playerDataStore: PlayerDataStore.shared)
+    TargetPanelView(playerDataStore: PlayerDataStore.shared)
 }

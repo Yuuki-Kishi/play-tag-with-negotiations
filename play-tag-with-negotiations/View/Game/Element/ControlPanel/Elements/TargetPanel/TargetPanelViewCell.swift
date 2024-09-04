@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct NegotiationTargetViewCell: View {
+struct TargetPanelViewCell: View {
     @Binding var negotiation: Negotiation
+    @State private var isShowDealedAlert = false
     
     var body: some View {
         HStack {
@@ -25,6 +26,17 @@ struct NegotiationTargetViewCell: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
+        .onTapGesture {
+            Task {
+                await Create.proposeDeal(negotiation: negotiation)
+                isShowDealedAlert = true
+            }
+        }
+        .alert("取引を提案しました", isPresented: $isShowDealedAlert, actions: {
+            Button(action: {}, label: {
+                Text("OK")
+            })
+        })
     }
 }
 

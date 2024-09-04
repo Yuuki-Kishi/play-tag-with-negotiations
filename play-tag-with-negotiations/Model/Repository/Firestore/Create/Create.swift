@@ -72,14 +72,29 @@ class Create {
     }
     
     static func sendInviteNotice(users: Set<User>, roomId: String) async {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
         do {
-            guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
             for user in users {
                 let notice = Notice(senderUserId: myUserId, roomId: roomId)
                 let encoded = try! JSONEncoder().encode(notice)
                 guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
                 try await Firestore.firestore().collection("Users").document(user.userId).collection("Notices").document(notice.noticeId.uuidString).setData(jsonObject)
             }
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func proposeDeal(negotiation: Negotiation) async {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        guard let proposer = PlayerDataStore.shared.playerArray.users.first(where: { $0.userId == myUserId }) else { return }
+        guard let target = PlayerDataStore.shared.playerArray.users.first(where: { $0.userId == PlayerDataStore.shared.negitiationTarget.playerUserId }) else { return }
+        let deal = Deal(negotiation: negotiation, proposer: proposer, target: target)
+        let encoded = try! JSONEncoder().encode(deal)
+        do {
+            guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Deals").document(deal.dealId.uuidString).setData(jsonObject)
         } catch {
             print(error)
         }

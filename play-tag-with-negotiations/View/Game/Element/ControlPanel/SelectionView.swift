@@ -23,11 +23,11 @@ struct SelectionView: View {
             })
             Spacer()
             Button(action: {
-                userDataStore.displayControlPanel = .negotiation
+                userDataStore.displayControlPanel = .deal(.negotiation)
             }, label: {
                 Image(systemName: "bubble.left.and.bubble.right.fill")
                     .font(.system(size: 25))
-                    .foregroundStyle(iconColor(panelMode: .negotiation))
+                    .foregroundStyle(iconColor(panelMode: .deal(.negotiation)))
             })
 //            Spacer()
 //            Button(action: {
@@ -48,11 +48,21 @@ struct SelectionView: View {
         .background(Color(UIColor.systemGray5))
     }
     func iconColor(panelMode: UserDataStore.controlPanelMode) -> Color {
-        let nowPanelMode = userDataStore.displayControlPanel
-        if nowPanelMode == panelMode {
-            return Color.accentColor
-        } else {
-            return Color.gray
+        switch userDataStore.displayControlPanel {
+        case .movement:
+            switch panelMode {
+            case .movement:
+                return .accentColor
+            case .deal:
+                return .gray
+            }
+        case .deal:
+            switch panelMode {
+            case .movement:
+                return .gray
+            case .deal:
+                return .accentColor
+            }
         }
     }
 }

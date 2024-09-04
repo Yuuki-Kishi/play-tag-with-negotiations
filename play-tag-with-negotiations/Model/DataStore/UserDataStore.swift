@@ -16,7 +16,13 @@ class UserDataStore: ObservableObject {
     @Published var noticeArray: [Notice] = []
     @Published var listeners: [listenerType: ListenerRegistration] = [:]
     enum controlPanelMode {
-        case movement, negotiation, target
+        case movement
+        case deal(Deal)
+//        case quest
+//        case item
+        enum Deal {
+            case target, negotiation
+        }
     }
     enum listenerType {
         case userData, roomField, notice, players, myIsDecided, isDecided, publicRooms, friend, negotiations, propose, target

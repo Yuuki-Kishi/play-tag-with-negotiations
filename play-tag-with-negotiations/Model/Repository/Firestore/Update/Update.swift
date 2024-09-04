@@ -122,7 +122,7 @@ class Update {
             } catch {
                 print(error)
             }
-            await grantMePoint(howMany: 10)
+            await grantMePoint(howMany: 20)
         }
     }
     
