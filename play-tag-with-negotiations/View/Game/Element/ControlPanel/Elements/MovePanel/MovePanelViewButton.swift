@@ -33,7 +33,7 @@ struct MovePanelViewButton: View {
                 let playerPosition = calculateCoordinate()
                 let x = playerPosition.x
                 let y = playerPosition.y
-                await Update.updatePosition(x: x, y: y)
+                await Update.updateMyPosition(x: x, y: y)
             }
         }
     }

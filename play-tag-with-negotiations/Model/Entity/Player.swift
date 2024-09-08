@@ -22,9 +22,10 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
     var isDecided: Bool
     var isCaptured: Bool
     var move: [PlayerPosition]
+    var isCanCapture: Bool
     
     enum CodingKeys: String, CodingKey {
-        case playerUserId, isHost, point, enteredTime, isChaser, isDecided, isCaptured, move
+        case playerUserId, isHost, point, enteredTime, isChaser, isDecided, isCaptured, move, isCanCapture
     }
         
     init(from decoder: Decoder) throws {
@@ -45,6 +46,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.isDecided = try container.decode(Bool.self, forKey: .isDecided)
         self.isCaptured = try container.decode(Bool.self, forKey: .isCaptured)
         self.move = try container.decode([PlayerPosition].self, forKey: .move)
+        self.isCanCapture = try container.decode(Bool.self, forKey: .isCanCapture)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -59,9 +61,10 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         try container.encode(self.isDecided, forKey: .isDecided)
         try container.encode(self.isCaptured, forKey: .isCaptured)
         try container.encode(self.move, forKey: .move)
+        try container.encode(self.isCanCapture, forKey: .isCanCapture)
     }
     
-    init(playerUserId: String, player: User, isHost: Bool, point: Int, enteredTime: Date, isChaser: Bool, isDecided: Bool, isCaptured: Bool, move: [PlayerPosition]) {
+    init(playerUserId: String, player: User, isHost: Bool, point: Int, enteredTime: Date, isChaser: Bool, isDecided: Bool, isCaptured: Bool, move: [PlayerPosition], isCanCapture: Bool) {
         self.id = UUID()
         self.playerUserId = playerUserId
         self.player = User()
@@ -72,6 +75,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.isDecided = isDecided
         self.isCaptured = isCaptured
         self.move = move
+        self.isCanCapture = isCanCapture
     }
     
     init(playerUserId: String, isHost: Bool) {
@@ -85,6 +89,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.isDecided = false
         self.isCaptured = false
         self.move = []
+        self.isCanCapture = true
     }
     
     init() {
@@ -98,5 +103,6 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.isDecided = true
         self.isCaptured = false
         self.move = []
+        self.isCanCapture = true
     }
 }

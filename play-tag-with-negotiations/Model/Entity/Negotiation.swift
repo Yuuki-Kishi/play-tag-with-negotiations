@@ -8,6 +8,9 @@
 import Foundation
 
 struct Negotiation: Codable, Hashable, Identifiable, Equatable {
+    static func == (lhs: Negotiation, rhs: Negotiation) -> Bool {
+        return lhs.negotiationId == rhs.negotiationId
+    }
     
     var id = UUID()
     var negotiationId: UUID
@@ -18,7 +21,7 @@ struct Negotiation: Codable, Hashable, Identifiable, Equatable {
     var version: Double
     
     enum Name: String {
-        case positionChange, unknown
+        case missOnce, unknown
     }
     
     enum CodingKeys: String, CodingKey {

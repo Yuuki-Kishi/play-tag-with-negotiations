@@ -1,15 +1,15 @@
 //
-//  NegotiationTargetViewCell.swift
+//  Negotiation.swift
 //  play-tag-with-negotiations
 //
-//  Created by 岸　優樹 on 2024/08/25.
+//  Created by 岸　優樹 on 2024/09/08.
 //
 
 import SwiftUI
 
-struct TargetPanelViewCell: View {
+struct DealPanelViewNegotiationCell: View {
     @Binding var negotiation: Negotiation
-    @State private var isShowDealedAlert = false
+    @State private var isShowAlert = false
     
     var body: some View {
         HStack {
@@ -29,10 +29,10 @@ struct TargetPanelViewCell: View {
         .onTapGesture {
             Task {
                 await Create.proposeDeal(negotiation: negotiation)
-                isShowDealedAlert = true
+                isShowAlert = true
             }
         }
-        .alert("取引を提案しました", isPresented: $isShowDealedAlert, actions: {
+        .alert("取引を提案しました", isPresented: $isShowAlert, actions: {
             Button(action: {}, label: {
                 Text("OK")
             })
@@ -41,5 +41,5 @@ struct TargetPanelViewCell: View {
 }
 
 //#Preview {
-//    NegotiationTargetViewCell()
+//    DealPanelViewNegotiationCell()
 //}

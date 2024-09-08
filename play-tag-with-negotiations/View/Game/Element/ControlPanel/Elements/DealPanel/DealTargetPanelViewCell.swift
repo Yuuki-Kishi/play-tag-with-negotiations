@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DealPanelViewCell: View {
+struct DealTargetPanelViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     @State var user: User
@@ -39,7 +39,7 @@ struct DealPanelViewCell: View {
         .contentShape(Rectangle())
         .onTapGesture {
             guard let player = playerDataStore.playerArray.first(where: { $0.playerUserId == user.userId }) else { return }
-            playerDataStore.negitiationTarget = player
+            playerDataStore.dealTarget = player
             withAnimation {
                 userDataStore.displayControlPanel = .deal(.target)
             }

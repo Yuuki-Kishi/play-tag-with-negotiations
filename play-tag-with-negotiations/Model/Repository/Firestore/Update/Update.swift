@@ -80,9 +80,13 @@ class Update {
         }
     }
     
-    static func updatePosition(x: Int, y: Int) async {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+    static func updateMyPosition(x: Int, y: Int) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        await updatePosition(userId: userId, x: x, y: y)
+    }
+    
+    static func updatePosition(userId: String, x: Int, y: Int) async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["move": FieldValue.arrayUnion([["x": x, "y": y]]), "isDecided": true])
         } catch {
@@ -118,7 +122,7 @@ class Update {
             let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
             guard let userId = UserDataStore.shared.signInUser?.userId else { return }
             do {
-                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": false])
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": false, "isCanCapture": true])
             } catch {
                 print(error)
             }
@@ -132,7 +136,7 @@ class Update {
         let chasers = PlayerDataStore.shared.playerArray.shuffled().prefix(chaserNumber)
         for chaser in chasers {
             do {
-                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(chaser.playerUserId).updateData(["isChaser": true])
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(chaser.playerUserId).updateData(["isChaser": true, "isCanCapture": false])
             } catch {
                 print(error)
             }
@@ -168,8 +172,24 @@ class Update {
     
     static func grantPoint(userId: String, howMany: Int) async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        guard let nowPoint = PlayerDataStore.shared.playerArray.first(where: { $0.playerUserId == userId })?.point else { return }
         do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["point": howMany])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["point": nowPoint + howMany])
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func confiscateMePoint(howMany: Int) async {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        await confiscatePoint(userId: userId, howMany: howMany)
+    }
+    
+    static func confiscatePoint(userId: String, howMany: Int) async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        guard let nowPoint = PlayerDataStore.shared.playerArray.first(where: { $0.playerUserId == userId })?.point else { return }
+        do {
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["point": nowPoint - howMany])
         } catch {
             print(error)
         }

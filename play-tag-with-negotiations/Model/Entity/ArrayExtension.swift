@@ -19,8 +19,12 @@ extension Array where Element == User {
 
 extension Array where Element == Player {
     var me: Element {
-        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return Player() }
-        guard let me = self.first(where: { $0.playerUserId == myUserId }) else { return Player() }
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else {
+            return Player()
+        }
+        guard let me = self.first(where: { $0.playerUserId == myUserId }) else {
+            return Player()
+        }
         return me
     }
     
@@ -70,6 +74,12 @@ extension Array where Element == Notice {
 }
 
 extension Array where Element == Negotiation {
+    var canPropose: [Element] {
+        let proposingDeals = PlayerDataStore.shared.dealArray.proposing + PlayerDataStore.shared.dealArray.proposed
+        let negotiations = proposingDeals.map { $0.negotiation }
+        return self.filter { !negotiations.contains($0) }
+    }
+    
     mutating func append(noDuplicate item: Element) {
         if !self.contains(where: { $0.negotiationId == item.negotiationId }) {
             self.append(item)
@@ -81,6 +91,36 @@ extension Array where Element == Negotiation {
 }
 
 extension Array where Element == Deal {
+    var success: [Element] {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
+        let successDeals = self.filter { $0.condition == .success }
+        return successDeals.filter { $0.proposerUserId == myUserId || $0.targetUserId == myUserId }
+    }
+    
+    var proposing: [Element] {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
+        let proposingDeals = self.filter { $0.condition == .proposing }
+        return proposingDeals.filter { $0.proposerUserId == myUserId }
+    }
+    
+    var proposed: [Element] {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
+        let proposingDeals = self.filter { $0.condition == .proposing }
+        return proposingDeals.filter { $0.targetUserId == myUserId }
+    }
+    
+    var fulfilled: [Element] {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
+        let fulfilledDeals = self.filter { $0.condition == .fulfilled }
+        return fulfilledDeals.filter { $0.proposerUserId == myUserId || $0.targetUserId == myUserId }
+    }
+    
+    var failured: [Element] {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
+        let failuredDeals = self.filter { $0.condition == .failure }
+        return failuredDeals.filter { $0.proposerUserId == myUserId || $0.targetUserId == myUserId }
+    }
+    
     mutating func append(noDuplicate item: Element) {
         if !self.contains(where: { $0.dealId == item.dealId }) {
             self.append(item)

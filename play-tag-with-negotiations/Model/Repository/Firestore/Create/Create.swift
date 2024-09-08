@@ -89,7 +89,8 @@ class Create {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         guard let proposer = PlayerDataStore.shared.playerArray.users.first(where: { $0.userId == myUserId }) else { return }
-        guard let target = PlayerDataStore.shared.playerArray.users.first(where: { $0.userId == PlayerDataStore.shared.negitiationTarget.playerUserId }) else { return }
+        let targetUserId = PlayerDataStore.shared.dealTarget.playerUserId
+        guard let target = PlayerDataStore.shared.playerArray.users.first(where: { $0.userId == targetUserId }) else { return }
         let deal = Deal(negotiation: negotiation, proposer: proposer, target: target)
         let encoded = try! JSONEncoder().encode(deal)
         do {

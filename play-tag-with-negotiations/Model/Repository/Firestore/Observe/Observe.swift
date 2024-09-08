@@ -124,7 +124,8 @@ class Observe {
     }
     
     static func observeIsDecided() {
-        if PlayerDataStore.shared.playerArray.isHost {
+        print(PlayerDataStore.shared.playerArray.me)
+        if PlayerDataStore.shared.playerArray.me.isHost {
             let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
             let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").addSnapshotListener { QuerySnapshot, error in
                 Task {
@@ -139,6 +140,7 @@ class Observe {
                         }
                         let decidedPlayerCount = players.filter { $0.isDecided }.count
                         let playerCount = players.count
+                        print(decidedPlayerCount, playerCount)
                         if decidedPlayerCount == playerCount {
                             await Update.moveToNextPhase()
                         }
@@ -226,17 +228,17 @@ class Observe {
             }
         }
         DispatchQueue.main.async {
-            UserDataStore.shared.listeners[UserDataStore.listenerType.negotiations] = listener
+            UserDataStore.shared.listeners[UserDataStore.listenerType.negotiation] = listener
         }
     }
     
-    static func getDeals(pertonerUserId: String) async {
+    static func observeDeals() {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-        DispatchQueue.main.async {
-            PlayerDataStore.shared.dealArray = []
-        }
-        let proposeListener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Deals").whereField("proposerUserId", isEqualTo: myUserId).whereField("targetUserId", isEqualTo: pertonerUserId).addSnapshotListener { QuerySnapshot, error in
+        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Deals").whereField("condition", isNotEqualTo: "fulfilled").addSnapshotListener { QuerySnapshot, error in
+            DispatchQueue.main.async {
+                PlayerDataStore.shared.dealArray = []
+            }
             guard let documents = QuerySnapshot?.documents else { return }
             for document in documents {
                 Task {
@@ -248,29 +250,10 @@ class Observe {
                         deal.negotiation = negotiation
                         deal.proposer = proposer
                         deal.target = target
-                        DispatchQueue.main.async {
-                            PlayerDataStore.shared.dealArray.append(ifNoOverlap: deal)
-                        }
-                    } catch {
-                        print(error)
-                    }
-                }
-            }
-        }
-        let targetListener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Deals").whereField("proposerUserId", isEqualTo: pertonerUserId).whereField("targetUserId", isEqualTo: myUserId).addSnapshotListener { QuerySnapshot, error in
-            guard let documents = QuerySnapshot?.documents else { return }
-            for document in documents {
-                Task {
-                    do {
-                        var deal = try document.data(as: Deal.self)
-                        guard let negotiation = await Get.getNegotiation(negotiationId: deal.negotiationId) else { return }
-                        guard let proposer = await Get.getUserData(userId: deal.proposerUserId) else { return }
-                        guard let target = await Get.getUserData(userId: deal.targetUserId) else { return }
-                        deal.negotiation = negotiation
-                        deal.proposer = proposer
-                        deal.target = target
-                        DispatchQueue.main.async {
-                            PlayerDataStore.shared.dealArray.append(ifNoOverlap: deal)
+                        if deal.proposerUserId == myUserId || deal.targetUserId == myUserId {
+                            DispatchQueue.main.async {
+                                PlayerDataStore.shared.dealArray.append(deal)
+                            }
                         }
                     } catch {
                         print(error)
@@ -279,8 +262,7 @@ class Observe {
             }
         }
         DispatchQueue.main.async {
-            UserDataStore.shared.listeners[UserDataStore.listenerType.propose] = proposeListener
-            UserDataStore.shared.listeners[UserDataStore.listenerType.target] = targetListener
+            UserDataStore.shared.listeners[UserDataStore.listenerType.deal] = listener
         }
     }
 }

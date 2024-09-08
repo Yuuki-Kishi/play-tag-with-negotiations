@@ -11,7 +11,7 @@ class PlayerDataStore: ObservableObject {
     static let shared = PlayerDataStore()
     @Published var playingRoom: PlayTagRoom = PlayTagRoom()
     @Published var playerArray: [Player] = []
-    @Published var negitiationTarget: Player = Player()
+    @Published var dealTarget: Player = Player()
     @Published var negotiationArray: [Negotiation] = []
     @Published var dealArray: [Deal] = []
 }

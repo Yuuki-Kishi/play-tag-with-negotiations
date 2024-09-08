@@ -17,9 +17,9 @@ struct ControlPanelCoordination: View {
         case .movement:
             MovePanelView(userDataStore: userDataStore, playerDataStore: playerDataStore)
         case .deal(.negotiation):
-            DealPanelView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+            DealTargetPanelView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
         case .deal(.target):
-            TargetPanelView(playerDataStore: playerDataStore)
+            DealPanelView(playerDataStore: playerDataStore)
                 .transition(.move(edge: .trailing))
         }
     }

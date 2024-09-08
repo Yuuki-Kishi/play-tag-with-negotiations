@@ -24,7 +24,7 @@ struct Deal: Codable, Hashable, Identifiable, Equatable {
     var proposeDate: Date
     
     enum dealCondition: String {
-        case success, failure, proposing, unknown
+        case success, failure, fulfilled, proposing, unknown
     }
     
     enum CodingKeys: String, CodingKey {

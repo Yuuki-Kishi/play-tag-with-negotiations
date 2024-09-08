@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DealPanelView: View {
+struct DealTargetPanelView: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     @ObservedObject var pathDataStore: PathDataStore
@@ -15,12 +15,12 @@ struct DealPanelView: View {
     var body: some View {
         List(playerDataStore.playerArray.users) { user in
             if user.userId != userDataStore.signInUser?.userId {
-                DealPanelViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: user)
+                DealTargetPanelViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: user)
             }
         }
     }
 }
 
 #Preview {
-    DealPanelView(userDataStore: UserDataStore.shared,  playerDataStore: PlayerDataStore.shared, pathDataStore: PathDataStore.shared)
+    DealTargetPanelView(userDataStore: UserDataStore.shared,  playerDataStore: PlayerDataStore.shared, pathDataStore: PathDataStore.shared)
 }

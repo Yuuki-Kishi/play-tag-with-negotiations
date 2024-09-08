@@ -23,6 +23,10 @@ class OperationPlayers {
         let fugitives = getFugitives(players: players)
         var aliveFugitives: [Player] = []
         for fugitive in fugitives {
+            if !fugitive.isCanCapture {
+                aliveFugitives.append(noDuplicate: fugitive)
+                continue
+            }
             let isContain = chasers.contains(where: { $0.move.last == fugitive.move.last })
             if !isContain {
                 aliveFugitives.append(noDuplicate: fugitive)

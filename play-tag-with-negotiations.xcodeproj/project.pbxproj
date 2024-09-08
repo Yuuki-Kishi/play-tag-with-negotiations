@@ -24,8 +24,8 @@
 		DEAB38752C205FA8007639F6 /* PublicRoomsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB38742C205FA8007639F6 /* PublicRoomsViewCell.swift */; };
 		DEAB38782C2060D3007639F6 /* MyPageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB38772C2060D3007639F6 /* MyPageListView.swift */; };
 		DEAB387B2C2061C2007639F6 /* WaitingRoomViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB387A2C2061C2007639F6 /* WaitingRoomViewCell.swift */; };
-		DECFBB232C7ACA1700093544 /* TargetPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB222C7ACA1700093544 /* TargetPanelView.swift */; };
-		DECFBB252C7ACA2300093544 /* TargetPanelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB242C7ACA2300093544 /* TargetPanelViewCell.swift */; };
+		DECFBB232C7ACA1700093544 /* DealPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB222C7ACA1700093544 /* DealPanelView.swift */; };
+		DECFBB252C7ACA2300093544 /* DealPanelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB242C7ACA2300093544 /* DealPanelViewCell.swift */; };
 		DECFBB272C7ADF7000093544 /* Negotiation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB262C7ADF7000093544 /* Negotiation.swift */; };
 		DECFBB292C81F17900093544 /* Deal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB282C81F17900093544 /* Deal.swift */; };
 		DECFBB2D2C8387EC00093544 /* Get.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB2C2C8387EC00093544 /* Get.swift */; };
@@ -51,6 +51,9 @@
 		DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6EE2C2341D600A01FFF /* Apple.swift */; };
 		DEDEF6F32C23C9AF00A01FFF /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F22C23C9AF00A01FFF /* GameView.swift */; };
 		DEDEF6F52C23C9BB00A01FFF /* FieldMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */; };
+		DEFA1C1F2C8C976400CB4458 /* Fulfill.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C1E2C8C976400CB4458 /* Fulfill.swift */; };
+		DEFA1C212C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C202C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift */; };
+		DEFA1C232C8CC43C00CB4458 /* DealUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C222C8CC43C00CB4458 /* DealUpdate.swift */; };
 		DEFA54D02C246E2300CF6BD1 /* PlayerPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */; };
 		DEFA54D22C3103D100CF6BD1 /* PlayerDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54D12C3103D100CF6BD1 /* PlayerDataStore.swift */; };
 		DEFA54D52C3674EE00CF6BD1 /* Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54D42C3674EE00CF6BD1 /* Delete.swift */; };
@@ -64,8 +67,8 @@
 		DEFA55002C401D6200CF6BD1 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54FF2C401D6200CF6BD1 /* Friend.swift */; };
 		DEFA55032C40204500CF6BD1 /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55022C40204500CF6BD1 /* SelectionView.swift */; };
 		DEFA55052C402DB700CF6BD1 /* MovePanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55042C402DB700CF6BD1 /* MovePanelView.swift */; };
-		DEFA55072C4149A100CF6BD1 /* DealPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55062C4149A100CF6BD1 /* DealPanelView.swift */; };
-		DEFA550A2C414AC500CF6BD1 /* DealPanelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55092C414AC500CF6BD1 /* DealPanelViewCell.swift */; };
+		DEFA55072C4149A100CF6BD1 /* DealTargetPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55062C4149A100CF6BD1 /* DealTargetPanelView.swift */; };
+		DEFA550A2C414AC500CF6BD1 /* DealTargetPanelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55092C414AC500CF6BD1 /* DealTargetPanelViewCell.swift */; };
 		DEFA550C2C416F8700CF6BD1 /* ControlPanelCoordination.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA550B2C416F8700CF6BD1 /* ControlPanelCoordination.swift */; };
 		DEFA550F2C4265A500CF6BD1 /* FriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA550E2C4265A500CF6BD1 /* FriendView.swift */; };
 		DEFA55112C42669500CF6BD1 /* FriendDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA55102C42669500CF6BD1 /* FriendDataStore.swift */; };
@@ -96,8 +99,8 @@
 		DEAB38742C205FA8007639F6 /* PublicRoomsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRoomsViewCell.swift; sourceTree = "<group>"; };
 		DEAB38772C2060D3007639F6 /* MyPageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageListView.swift; sourceTree = "<group>"; };
 		DEAB387A2C2061C2007639F6 /* WaitingRoomViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomViewCell.swift; sourceTree = "<group>"; };
-		DECFBB222C7ACA1700093544 /* TargetPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetPanelView.swift; sourceTree = "<group>"; };
-		DECFBB242C7ACA2300093544 /* TargetPanelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetPanelViewCell.swift; sourceTree = "<group>"; };
+		DECFBB222C7ACA1700093544 /* DealPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealPanelView.swift; sourceTree = "<group>"; };
+		DECFBB242C7ACA2300093544 /* DealPanelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealPanelViewCell.swift; sourceTree = "<group>"; };
 		DECFBB262C7ADF7000093544 /* Negotiation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Negotiation.swift; sourceTree = "<group>"; };
 		DECFBB282C81F17900093544 /* Deal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deal.swift; sourceTree = "<group>"; };
 		DECFBB2C2C8387EC00093544 /* Get.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Get.swift; sourceTree = "<group>"; };
@@ -120,6 +123,9 @@
 		DEDEF6EE2C2341D600A01FFF /* Apple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apple.swift; sourceTree = "<group>"; };
 		DEDEF6F22C23C9AF00A01FFF /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldMapView.swift; sourceTree = "<group>"; };
+		DEFA1C1E2C8C976400CB4458 /* Fulfill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fulfill.swift; sourceTree = "<group>"; };
+		DEFA1C202C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealPanelViewNegotiationCell.swift; sourceTree = "<group>"; };
+		DEFA1C222C8CC43C00CB4458 /* DealUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealUpdate.swift; sourceTree = "<group>"; };
 		DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPosition.swift; sourceTree = "<group>"; };
 		DEFA54D12C3103D100CF6BD1 /* PlayerDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDataStore.swift; sourceTree = "<group>"; };
 		DEFA54D42C3674EE00CF6BD1 /* Delete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delete.swift; sourceTree = "<group>"; };
@@ -133,8 +139,8 @@
 		DEFA54FF2C401D6200CF6BD1 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		DEFA55022C40204500CF6BD1 /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
 		DEFA55042C402DB700CF6BD1 /* MovePanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovePanelView.swift; sourceTree = "<group>"; };
-		DEFA55062C4149A100CF6BD1 /* DealPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealPanelView.swift; sourceTree = "<group>"; };
-		DEFA55092C414AC500CF6BD1 /* DealPanelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealPanelViewCell.swift; sourceTree = "<group>"; };
+		DEFA55062C4149A100CF6BD1 /* DealTargetPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealTargetPanelView.swift; sourceTree = "<group>"; };
+		DEFA55092C414AC500CF6BD1 /* DealTargetPanelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealTargetPanelViewCell.swift; sourceTree = "<group>"; };
 		DEFA550B2C416F8700CF6BD1 /* ControlPanelCoordination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelCoordination.swift; sourceTree = "<group>"; };
 		DEFA550E2C4265A500CF6BD1 /* FriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendView.swift; sourceTree = "<group>"; };
 		DEFA55102C42669500CF6BD1 /* FriendDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendDataStore.swift; sourceTree = "<group>"; };
@@ -254,6 +260,7 @@
 				DEDEF6D02C21B97800A01FFF /* Firestore */,
 				DEFA54DD2C3989D500CF6BD1 /* Storage */,
 				DE12A75B2C6FD0D800F7B0DF /* OperationPlayers.swift */,
+				DEFA1C1D2C8C971C00CB4458 /* Deal */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -291,8 +298,9 @@
 		DECFBB212C7ACA0600093544 /* TargetPanel */ = {
 			isa = PBXGroup;
 			children = (
-				DECFBB222C7ACA1700093544 /* TargetPanelView.swift */,
-				DECFBB242C7ACA2300093544 /* TargetPanelViewCell.swift */,
+				DECFBB222C7ACA1700093544 /* DealPanelView.swift */,
+				DECFBB242C7ACA2300093544 /* DealPanelViewCell.swift */,
+				DEFA1C202C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift */,
 			);
 			path = TargetPanel;
 			sourceTree = "<group>";
@@ -318,6 +326,7 @@
 			isa = PBXGroup;
 			children = (
 				DEDEF6E72C23283200A01FFF /* Update.swift */,
+				DEFA1C222C8CC43C00CB4458 /* DealUpdate.swift */,
 			);
 			path = Update;
 			sourceTree = "<group>";
@@ -432,6 +441,14 @@
 			path = Element;
 			sourceTree = "<group>";
 		};
+		DEFA1C1D2C8C971C00CB4458 /* Deal */ = {
+			isa = PBXGroup;
+			children = (
+				DEFA1C1E2C8C976400CB4458 /* Fulfill.swift */,
+			);
+			path = Deal;
+			sourceTree = "<group>";
+		};
 		DEFA54DD2C3989D500CF6BD1 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
@@ -473,8 +490,8 @@
 		DEFA55082C414A9F00CF6BD1 /* DealPanel */ = {
 			isa = PBXGroup;
 			children = (
-				DEFA55062C4149A100CF6BD1 /* DealPanelView.swift */,
-				DEFA55092C414AC500CF6BD1 /* DealPanelViewCell.swift */,
+				DEFA55062C4149A100CF6BD1 /* DealTargetPanelView.swift */,
+				DEFA55092C414AC500CF6BD1 /* DealTargetPanelViewCell.swift */,
 			);
 			path = DealPanel;
 			sourceTree = "<group>";
@@ -589,9 +606,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DECFBB252C7ACA2300093544 /* TargetPanelViewCell.swift in Sources */,
+				DECFBB252C7ACA2300093544 /* DealPanelViewCell.swift in Sources */,
 				DEAB38752C205FA8007639F6 /* PublicRoomsViewCell.swift in Sources */,
-				DECFBB232C7ACA1700093544 /* TargetPanelView.swift in Sources */,
+				DECFBB232C7ACA1700093544 /* DealPanelView.swift in Sources */,
 				DEDEF6EC2C23322D00A01FFF /* Check.swift in Sources */,
 				DEDEF6EA2C23303600A01FFF /* SignOut.swift in Sources */,
 				DE12A7612C758E8900F7B0DF /* NoticeView.swift in Sources */,
@@ -602,10 +619,12 @@
 				DEFA54DC2C3907D800CF6BD1 /* RoomInfomationViewCell.swift in Sources */,
 				DEAB38622C1EA178007639F6 /* Google.swift in Sources */,
 				DEDEF6E82C23283200A01FFF /* Update.swift in Sources */,
+				DEFA1C232C8CC43C00CB4458 /* DealUpdate.swift in Sources */,
 				DEDB91582C189BCB00A8DA37 /* RoomSettingViewCell.swift in Sources */,
-				DEFA55072C4149A100CF6BD1 /* DealPanelView.swift in Sources */,
+				DEFA55072C4149A100CF6BD1 /* DealTargetPanelView.swift in Sources */,
 				DEFA55222C4C1FB200CF6BD1 /* SignInView.swift in Sources */,
 				DEFA54DF2C3989FC00CF6BD1 /* Upload.swift in Sources */,
+				DEFA1C212C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift in Sources */,
 				DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */,
 				DE12A7632C75999700F7B0DF /* NoticeViewCell.swift in Sources */,
 				DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */,
@@ -631,6 +650,7 @@
 				DEAB387B2C2061C2007639F6 /* WaitingRoomViewCell.swift in Sources */,
 				DEFA55052C402DB700CF6BD1 /* MovePanelView.swift in Sources */,
 				DEFA55162C42BDF800CF6BD1 /* NotFriendViewCell.swift in Sources */,
+				DEFA1C1F2C8C976400CB4458 /* Fulfill.swift in Sources */,
 				DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */,
 				DEAB386F2C1EB32E007639F6 /* User.swift in Sources */,
 				DECFBB2D2C8387EC00093544 /* Get.swift in Sources */,
@@ -638,7 +658,7 @@
 				DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */,
 				DE12A75C2C6FD0D800F7B0DF /* OperationPlayers.swift in Sources */,
 				DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */,
-				DEFA550A2C414AC500CF6BD1 /* DealPanelViewCell.swift in Sources */,
+				DEFA550A2C414AC500CF6BD1 /* DealTargetPanelViewCell.swift in Sources */,
 				DEFA55132C426CD200CF6BD1 /* FriendViewCell.swift in Sources */,
 				DECFBB292C81F17900093544 /* Deal.swift in Sources */,
 				DEDB91532C17417700A8DA37 /* PublicRoomsView.swift in Sources */,
