@@ -32,6 +32,7 @@ class DealUpdate {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isCanCapture": false])
+            //ああああああああああああああああ
         } catch {
             print(error)
         }
