@@ -58,6 +58,7 @@ struct InviteView: View {
                 }
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

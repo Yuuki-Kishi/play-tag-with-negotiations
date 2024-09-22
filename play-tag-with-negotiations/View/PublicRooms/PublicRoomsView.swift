@@ -181,7 +181,9 @@ struct PublicRoomsView: View {
         Task {
             if let roomId = await Get.getBeingRoomId() {
                 guard let playingRoom = await Get.getRoomData(roomId: roomId) else { return }
-                playerDataStore.playingRoom = playingRoom
+                DispatchQueue.main.async {
+                    playerDataStore.playingRoom = playingRoom
+                }
                 if playingRoom.isPlaying {
                     if !playingRoom.isEnd {
                         pathDataStore.navigatetionPath.append(.game)

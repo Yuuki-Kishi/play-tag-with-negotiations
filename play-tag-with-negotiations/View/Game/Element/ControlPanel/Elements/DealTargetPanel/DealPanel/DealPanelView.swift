@@ -15,7 +15,7 @@ struct DealPanelView: View {
             if !playerDataStore.dealArray.proposed.isEmpty {
                 Section(content: {
                     ForEach(playerDataStore.dealArray.proposed, id: \.self) { deal in
-                        DealPanelViewCell(deal: Binding(get: { deal }, set: {_ in}), dealType: .proposed)
+                        DealPanelViewCell(playerDataStore: playerDataStore, deal: Binding(get: { deal }, set: {_ in}), dealType: .proposed)
                     }
                 }, header: {
                     Text("提案された取引")
@@ -24,7 +24,7 @@ struct DealPanelView: View {
             if !playerDataStore.dealArray.success.isEmpty {
                 Section(content: {
                     ForEach(playerDataStore.dealArray.success, id: \.self) { deal in
-                        DealPanelViewCell(deal: Binding(get: { deal }, set: {_ in}), dealType: .success)
+                        DealPanelViewCell(playerDataStore: playerDataStore, deal: Binding(get: { deal }, set: {_ in}), dealType: .success)
                     }
                 }, header: {
                     Text("履行間近の取引")
@@ -42,7 +42,7 @@ struct DealPanelView: View {
             if !playerDataStore.dealArray.proposing.isEmpty {
                 Section(content: {
                     ForEach(playerDataStore.dealArray.proposing, id: \.self) { deal in
-                        DealPanelViewCell(deal: Binding(get: { deal }, set: {_ in}), dealType: .proposing)
+                        DealPanelViewCell(playerDataStore: playerDataStore, deal: Binding(get: { deal }, set: {_ in}), dealType: .proposing)
                     }
                 }, header: {
                     Text("提案中の取引")
@@ -51,7 +51,7 @@ struct DealPanelView: View {
             if !playerDataStore.dealArray.fulfilled.isEmpty {
                 Section(content: {
                     ForEach(playerDataStore.dealArray.fulfilled, id: \.self) { deal in
-                        DealPanelViewCell(deal: Binding(get: { deal }, set: {_ in}), dealType: .fulfilled)
+                        DealPanelViewCell(playerDataStore: playerDataStore, deal: Binding(get: { deal }, set: {_ in}), dealType: .fulfilled)
                     }
                 }, header: {
                     Text("履行した取引")
@@ -60,16 +60,13 @@ struct DealPanelView: View {
             if !playerDataStore.dealArray.failured.isEmpty {
                 Section(content: {
                     ForEach(playerDataStore.dealArray.failured, id: \.self) { deal in
-                        DealPanelViewCell(deal: Binding(get: { deal }, set: {_ in}), dealType: .failure)
+                        DealPanelViewCell(playerDataStore: playerDataStore, deal: Binding(get: { deal }, set: {_ in}), dealType: .failure)
                     }
                 }, header: {
                     Text("失敗した取引")
                 })
             }
         }
-//        List($playerDataStore.negotiationArray) { negotiation in
-//            TargetPanelViewCell(negotiation: negotiation)
-//        }
         .onAppear() {
             Observe.observeDeals()
             Task {

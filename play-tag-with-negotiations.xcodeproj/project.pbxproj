@@ -51,9 +51,16 @@
 		DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6EE2C2341D600A01FFF /* Apple.swift */; };
 		DEDEF6F32C23C9AF00A01FFF /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F22C23C9AF00A01FFF /* GameView.swift */; };
 		DEDEF6F52C23C9BB00A01FFF /* FieldMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */; };
-		DEFA1C1F2C8C976400CB4458 /* Fulfill.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C1E2C8C976400CB4458 /* Fulfill.swift */; };
+		DEFA1C1F2C8C976400CB4458 /* Success.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C1E2C8C976400CB4458 /* Success.swift */; };
 		DEFA1C212C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C202C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift */; };
 		DEFA1C232C8CC43C00CB4458 /* DealUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C222C8CC43C00CB4458 /* DealUpdate.swift */; };
+		DEFA1C252C8DB0FF00CB4458 /* Fulfill.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C242C8DB0FF00CB4458 /* Fulfill.swift */; };
+		DEFA1C272C941D9D00CB4458 /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C262C941D9D00CB4458 /* Mission.swift */; };
+		DEFA1C292C950EDD00CB4458 /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C282C950EDD00CB4458 /* Quest.swift */; };
+		DEFA1C2C2C951A0800CB4458 /* QuestTargetPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C2B2C951A0800CB4458 /* QuestTargetPanelView.swift */; };
+		DEFA1C2E2C953A4B00CB4458 /* QuestTargetPanelVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C2D2C953A4B00CB4458 /* QuestTargetPanelVIewCell.swift */; };
+		DEFA1C312C953BAF00CB4458 /* QuestPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C302C953BAF00CB4458 /* QuestPanelView.swift */; };
+		DEFA1C332C953DA800CB4458 /* QuestPanelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C322C953DA800CB4458 /* QuestPanelViewCell.swift */; };
 		DEFA54D02C246E2300CF6BD1 /* PlayerPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */; };
 		DEFA54D22C3103D100CF6BD1 /* PlayerDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54D12C3103D100CF6BD1 /* PlayerDataStore.swift */; };
 		DEFA54D52C3674EE00CF6BD1 /* Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54D42C3674EE00CF6BD1 /* Delete.swift */; };
@@ -123,9 +130,16 @@
 		DEDEF6EE2C2341D600A01FFF /* Apple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apple.swift; sourceTree = "<group>"; };
 		DEDEF6F22C23C9AF00A01FFF /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldMapView.swift; sourceTree = "<group>"; };
-		DEFA1C1E2C8C976400CB4458 /* Fulfill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fulfill.swift; sourceTree = "<group>"; };
+		DEFA1C1E2C8C976400CB4458 /* Success.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Success.swift; sourceTree = "<group>"; };
 		DEFA1C202C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealPanelViewNegotiationCell.swift; sourceTree = "<group>"; };
 		DEFA1C222C8CC43C00CB4458 /* DealUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealUpdate.swift; sourceTree = "<group>"; };
+		DEFA1C242C8DB0FF00CB4458 /* Fulfill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fulfill.swift; sourceTree = "<group>"; };
+		DEFA1C262C941D9D00CB4458 /* Mission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
+		DEFA1C282C950EDD00CB4458 /* Quest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quest.swift; sourceTree = "<group>"; };
+		DEFA1C2B2C951A0800CB4458 /* QuestTargetPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestTargetPanelView.swift; sourceTree = "<group>"; };
+		DEFA1C2D2C953A4B00CB4458 /* QuestTargetPanelVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestTargetPanelVIewCell.swift; sourceTree = "<group>"; };
+		DEFA1C302C953BAF00CB4458 /* QuestPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestPanelView.swift; sourceTree = "<group>"; };
+		DEFA1C322C953DA800CB4458 /* QuestPanelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestPanelViewCell.swift; sourceTree = "<group>"; };
 		DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPosition.swift; sourceTree = "<group>"; };
 		DEFA54D12C3103D100CF6BD1 /* PlayerDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDataStore.swift; sourceTree = "<group>"; };
 		DEFA54D42C3674EE00CF6BD1 /* Delete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delete.swift; sourceTree = "<group>"; };
@@ -295,14 +309,14 @@
 			path = WaitingRoom;
 			sourceTree = "<group>";
 		};
-		DECFBB212C7ACA0600093544 /* TargetPanel */ = {
+		DECFBB212C7ACA0600093544 /* DealTargetPanel */ = {
 			isa = PBXGroup;
 			children = (
-				DECFBB222C7ACA1700093544 /* DealPanelView.swift */,
-				DECFBB242C7ACA2300093544 /* DealPanelViewCell.swift */,
-				DEFA1C202C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift */,
+				DEFA55062C4149A100CF6BD1 /* DealTargetPanelView.swift */,
+				DEFA55092C414AC500CF6BD1 /* DealTargetPanelViewCell.swift */,
+				DEFA55082C414A9F00CF6BD1 /* DealPanel */,
 			);
-			path = TargetPanel;
+			path = DealTargetPanel;
 			sourceTree = "<group>";
 		};
 		DECFBB2A2C836BF000093544 /* Create */ = {
@@ -397,6 +411,8 @@
 				DE12A75D2C75883B00F7B0DF /* Notice.swift */,
 				DECFBB262C7ADF7000093544 /* Negotiation.swift */,
 				DECFBB282C81F17900093544 /* Deal.swift */,
+				DEFA1C262C941D9D00CB4458 /* Mission.swift */,
+				DEFA1C282C950EDD00CB4458 /* Quest.swift */,
 				DEFA551A2C43A07D00CF6BD1 /* ArrayExtension.swift */,
 			);
 			path = Entity;
@@ -444,9 +460,29 @@
 		DEFA1C1D2C8C971C00CB4458 /* Deal */ = {
 			isa = PBXGroup;
 			children = (
-				DEFA1C1E2C8C976400CB4458 /* Fulfill.swift */,
+				DEFA1C1E2C8C976400CB4458 /* Success.swift */,
+				DEFA1C242C8DB0FF00CB4458 /* Fulfill.swift */,
 			);
 			path = Deal;
+			sourceTree = "<group>";
+		};
+		DEFA1C2A2C9519E500CB4458 /* QuestTargetPanel */ = {
+			isa = PBXGroup;
+			children = (
+				DEFA1C2B2C951A0800CB4458 /* QuestTargetPanelView.swift */,
+				DEFA1C2D2C953A4B00CB4458 /* QuestTargetPanelVIewCell.swift */,
+				DEFA1C2F2C953B5800CB4458 /* QuestPanelView */,
+			);
+			path = QuestTargetPanel;
+			sourceTree = "<group>";
+		};
+		DEFA1C2F2C953B5800CB4458 /* QuestPanelView */ = {
+			isa = PBXGroup;
+			children = (
+				DEFA1C302C953BAF00CB4458 /* QuestPanelView.swift */,
+				DEFA1C322C953DA800CB4458 /* QuestPanelViewCell.swift */,
+			);
+			path = QuestPanelView;
 			sourceTree = "<group>";
 		};
 		DEFA54DD2C3989D500CF6BD1 /* Storage */ = {
@@ -481,8 +517,8 @@
 			isa = PBXGroup;
 			children = (
 				DE12A7482C553F3800F7B0DF /* MovePanel */,
-				DEFA55082C414A9F00CF6BD1 /* DealPanel */,
-				DECFBB212C7ACA0600093544 /* TargetPanel */,
+				DECFBB212C7ACA0600093544 /* DealTargetPanel */,
+				DEFA1C2A2C9519E500CB4458 /* QuestTargetPanel */,
 			);
 			path = Elements;
 			sourceTree = "<group>";
@@ -490,8 +526,9 @@
 		DEFA55082C414A9F00CF6BD1 /* DealPanel */ = {
 			isa = PBXGroup;
 			children = (
-				DEFA55062C4149A100CF6BD1 /* DealTargetPanelView.swift */,
-				DEFA55092C414AC500CF6BD1 /* DealTargetPanelViewCell.swift */,
+				DECFBB222C7ACA1700093544 /* DealPanelView.swift */,
+				DECFBB242C7ACA2300093544 /* DealPanelViewCell.swift */,
+				DEFA1C202C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift */,
 			);
 			path = DealPanel;
 			sourceTree = "<group>";
@@ -607,13 +644,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				DECFBB252C7ACA2300093544 /* DealPanelViewCell.swift in Sources */,
+				DEFA1C2E2C953A4B00CB4458 /* QuestTargetPanelVIewCell.swift in Sources */,
 				DEAB38752C205FA8007639F6 /* PublicRoomsViewCell.swift in Sources */,
 				DECFBB232C7ACA1700093544 /* DealPanelView.swift in Sources */,
+				DEFA1C312C953BAF00CB4458 /* QuestPanelView.swift in Sources */,
 				DEDEF6EC2C23322D00A01FFF /* Check.swift in Sources */,
 				DEDEF6EA2C23303600A01FFF /* SignOut.swift in Sources */,
 				DE12A7612C758E8900F7B0DF /* NoticeView.swift in Sources */,
 				DE12A7532C6672CD00F7B0DF /* ResultViewCell.swift in Sources */,
 				DEDEF6D42C21BA1800A01FFF /* Create.swift in Sources */,
+				DEFA1C272C941D9D00CB4458 /* Mission.swift in Sources */,
 				DE12A74A2C553F6D00F7B0DF /* MovePanelViewButton.swift in Sources */,
 				DE12A74F2C66722C00F7B0DF /* ResultView.swift in Sources */,
 				DEFA54DC2C3907D800CF6BD1 /* RoomInfomationViewCell.swift in Sources */,
@@ -633,6 +673,7 @@
 				DEDB91502C173F7C00A8DA37 /* Player.swift in Sources */,
 				DEFA54DA2C39076C00CF6BD1 /* RoomInfomationView.swift in Sources */,
 				DEDEF6F52C23C9BB00A01FFF /* FieldMapView.swift in Sources */,
+				DEFA1C292C950EDD00CB4458 /* Quest.swift in Sources */,
 				DEFA551B2C43A07D00CF6BD1 /* ArrayExtension.swift in Sources */,
 				DE12A7682C7A243300F7B0DF /* InviteViewCell.swift in Sources */,
 				DECFBB272C7ADF7000093544 /* Negotiation.swift in Sources */,
@@ -641,6 +682,7 @@
 				DEDB914E2C173A2400A8DA37 /* PlayTagRoom.swift in Sources */,
 				DEAB386C2C1EAAA6007639F6 /* UserDataStore.swift in Sources */,
 				DEAB38782C2060D3007639F6 /* MyPageListView.swift in Sources */,
+				DEFA1C2C2C951A0800CB4458 /* QuestTargetPanelView.swift in Sources */,
 				DEFA55032C40204500CF6BD1 /* SelectionView.swift in Sources */,
 				DEFA54F42C3D5C6700CF6BD1 /* RoomDataStore.swift in Sources */,
 				DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */,
@@ -650,16 +692,18 @@
 				DEAB387B2C2061C2007639F6 /* WaitingRoomViewCell.swift in Sources */,
 				DEFA55052C402DB700CF6BD1 /* MovePanelView.swift in Sources */,
 				DEFA55162C42BDF800CF6BD1 /* NotFriendViewCell.swift in Sources */,
-				DEFA1C1F2C8C976400CB4458 /* Fulfill.swift in Sources */,
+				DEFA1C1F2C8C976400CB4458 /* Success.swift in Sources */,
 				DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */,
 				DEAB386F2C1EB32E007639F6 /* User.swift in Sources */,
 				DECFBB2D2C8387EC00093544 /* Get.swift in Sources */,
 				DEFA54D22C3103D100CF6BD1 /* PlayerDataStore.swift in Sources */,
+				DEFA1C332C953DA800CB4458 /* QuestPanelViewCell.swift in Sources */,
 				DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */,
 				DE12A75C2C6FD0D800F7B0DF /* OperationPlayers.swift in Sources */,
 				DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */,
 				DEFA550A2C414AC500CF6BD1 /* DealTargetPanelViewCell.swift in Sources */,
 				DEFA55132C426CD200CF6BD1 /* FriendViewCell.swift in Sources */,
+				DEFA1C252C8DB0FF00CB4458 /* Fulfill.swift in Sources */,
 				DECFBB292C81F17900093544 /* Deal.swift in Sources */,
 				DEDB91532C17417700A8DA37 /* PublicRoomsView.swift in Sources */,
 				DEFA55002C401D6200CF6BD1 /* Friend.swift in Sources */,
@@ -807,6 +851,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "play-tag-with-negotiations/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Catch or Trade";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -838,6 +883,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "play-tag-with-negotiations/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Catch or Trade";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

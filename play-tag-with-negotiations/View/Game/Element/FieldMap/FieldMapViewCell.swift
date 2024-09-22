@@ -11,13 +11,22 @@ struct FieldMapViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     @State var num: Int
+    @State private var isShowAlert = false
     
     var body: some View {
-        switch numToPlayerCount(num: num) {
+        switch numToPlayers().count {
         case 0:
             noIcon()
         case 1:
             singleIcon()
+                .onTapGesture {
+                    isShowAlert = true
+                }
+                .alert(userName(), isPresented: $isShowAlert, actions: {
+                    Button(action: {}) {
+                        Text("OK")
+                    }
+                })
         default :
             multiIcon()
         }
@@ -29,7 +38,7 @@ struct FieldMapViewCell: View {
     }
     func singleIcon() -> some View {
         Group {
-            if let player = numToPlayers(num: num).first {
+            if let player = numToPlayers().first {
                 if player.isChaser {
                     singleChaserIcon(player: player)
                 } else {
@@ -37,7 +46,6 @@ struct FieldMapViewCell: View {
                 }
             } else {
                 Image(systemName: "person.crop.circle.badge.questionmark")
-                    .resizable()
                     .resizable()
                     .foregroundStyle(Color.red)
                     .frame(width: squareSize(), height: squareSize())
@@ -49,13 +57,11 @@ struct FieldMapViewCell: View {
         if player.playerUserId == userDataStore.signInUser?.userId {
             return Image(systemName: "figure.run.circle.fill")
                 .resizable()
-                .resizable()
                 .foregroundStyle(Color.red)
                 .frame(width: squareSize(), height: squareSize())
                 .background(Rectangle().foregroundStyle(Color(UIColor.systemGray5)))
         } else {
             return Image(systemName: "figure.run.circle")
-                .resizable()
                 .resizable()
                 .foregroundStyle(Color.red)
                 .frame(width: squareSize(), height: squareSize())
@@ -78,8 +84,8 @@ struct FieldMapViewCell: View {
         }
     }
     func multiIcon() -> some View {
-        let chasers = numToPlayers(num: num).filter({ $0.isChaser })
-        let fugitives = numToPlayers(num: num).filter({ !$0.isChaser })
+        let chasers = numToPlayers().filter({ $0.isChaser })
+        let fugitives = numToPlayers().filter({ !$0.isChaser })
         if chasers.isEmpty && !fugitives.isEmpty {
             if fugitives.contains(where: { $0.playerUserId == userDataStore.signInUser?.userId }) {
                 return Image(systemName: "person.2.circle.fill")
@@ -133,16 +139,22 @@ struct FieldMapViewCell: View {
             return width * 0.8 / CGFloat(playerDataStore.playingRoom.horizontalCount)
         }
     }
-    func numToPlayers(num: Int) -> [Player] {
+    func numToPlayers() -> [Player] {
         let x = num % playerDataStore.playingRoom.horizontalCount
         let y = num / playerDataStore.playingRoom.horizontalCount
         let playerPosition = PlayerPosition(x: x, y: y)
-        let players = playerDataStore.playerArray.filter { $0.move.last == playerPosition && !$0.isCaptured }
+        var players: [Player] = []
+        let phaseNow = playerDataStore.playingRoom.phaseNow
+        for player in playerDataStore.playerArray {
+            guard let position = player.move.first(where: { $0.phase == phaseNow }) else { return [] }
+            if position == playerPosition { players.append(player) }
+        }
         return players
     }
-    func numToPlayerCount(num: Int) -> Int {
-        let players = numToPlayers(num: num)
-        return players.count
+    func userName() -> String {
+        guard let playerUserId = numToPlayers().first?.playerUserId else { return "" }
+        guard let user = playerDataStore.userArray.first(where: { $0.userId == playerUserId }) else { return "" }
+        return user.userName
     }
 }
 

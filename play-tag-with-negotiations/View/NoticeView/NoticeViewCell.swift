@@ -52,13 +52,16 @@ struct NoticeViewCell: View {
                 .foregroundStyle(isNewNotice())
         }
         .onTapGesture {
-            switch notice.noticeType {
-            case .friend:
-                pathDataStore.navigatetionPath.append(.friend)
-            case .invite:
-                joinRoom()
-            case .unknown:
-                break
+            Task {
+                await Update.checkNotice(noticeId: notice.noticeId.uuidString)
+                switch notice.noticeType {
+                case .friend:
+                    pathDataStore.navigatetionPath.append(.friend)
+                case .invite:
+                    joinRoom()
+                case .unknown:
+                    break
+                }
             }
         }
     }

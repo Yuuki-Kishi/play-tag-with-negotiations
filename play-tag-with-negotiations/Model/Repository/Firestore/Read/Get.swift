@@ -81,9 +81,7 @@ class Get {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         do {
             let document = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).getDocument()
-            var player = try document.data(as: Player.self)
-            guard let user = await getUserData(userId: player.playerUserId) else { return nil }
-            player.player = user
+            let player = try document.data(as: Player.self)
             return player
         } catch {
             print(error)
@@ -97,9 +95,7 @@ class Get {
             let documents = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").getDocuments().documents
             var players: [Player] = []
             for document in documents {
-                var player = try document.data(as: Player.self)
-                guard let user = await getUserData(userId: player.playerUserId) else { return [] }
-                player.player = user
+                let player = try document.data(as: Player.self)
                 players.append(noDuplicate: player)
             }
             return players
@@ -122,13 +118,10 @@ class Get {
                 PlayerDataStore.shared.playerArray.append(noDuplicate: alivePlayer)
             }
         }
-        if PlayerDataStore.shared.playerArray.me.isHost {
-            let aliveFugitiveCount = OperationPlayers.getAliveFugitives(players: players).count
-            if aliveFugitiveCount == 0 {
-                await Update.gameEnd()
-            }
+        let aliveFugitiveCount = OperationPlayers.getAliveFugitives(players: players).count
+        if aliveFugitiveCount == 0 {
+            await Update.gameEnd()
         }
-        await Update.isDecidedToFalse()
     }
     
     static func getRoomData(roomId: String) async -> PlayTagRoom? {

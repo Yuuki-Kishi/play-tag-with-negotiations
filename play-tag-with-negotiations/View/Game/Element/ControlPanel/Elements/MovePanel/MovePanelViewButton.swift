@@ -33,9 +33,12 @@ struct MovePanelViewButton: View {
                 let playerPosition = calculateCoordinate()
                 let x = playerPosition.x
                 let y = playerPosition.y
-                await Update.updateMyPosition(x: x, y: y)
+                let phase = playerPosition.phase
+                await Update.grantMePoint(howMany: 20)
+                await Update.updateMyPosition(phase: phase, x: x, y: y)
             }
         }
+        playerDataStore.currentPhaseOptimistic += 1
     }
     func imageName() -> String {
         switch direction {
@@ -120,6 +123,7 @@ struct MovePanelViewButton: View {
     func calculateCoordinate() -> PlayerPosition {
         guard var x = playerDataStore.playerArray.me.move.last?.x else { return PlayerPosition() }
         guard var y = playerDataStore.playerArray.me.move.last?.y else { return PlayerPosition() }
+        let phaseNow = playerDataStore.playingRoom.phaseNow
         switch direction {
         case .leftUp:
             x -= 1
@@ -144,7 +148,7 @@ struct MovePanelViewButton: View {
             x += 1
             y += 1
         }
-        return PlayerPosition(x: x, y: y)
+        return PlayerPosition(phase: phaseNow + 1, x: x, y: y)
     }
     func buttonColor() -> Color {
         if isCanDisplay() {

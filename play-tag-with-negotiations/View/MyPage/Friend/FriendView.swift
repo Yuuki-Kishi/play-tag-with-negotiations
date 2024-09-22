@@ -56,6 +56,7 @@ struct FriendView: View {
             }
         }
         .navigationTitle("フレンド")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
             Observe.observeFriend()
         }

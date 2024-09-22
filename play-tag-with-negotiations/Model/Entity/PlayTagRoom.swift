@@ -23,6 +23,7 @@ struct PlayTagRoom: Codable, Hashable, Identifiable, Equatable {
     var phaseMax: Int
     var chaserNumber: Int
     var fugitiveNumber: Int
+    var playerNumber: Int
     var horizontalCount: Int
     var verticalCount: Int
     var isPublic: Bool {
@@ -49,7 +50,7 @@ struct PlayTagRoom: Codable, Hashable, Identifiable, Equatable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case roomId, hostUserId, playTagName, creationDate, isPlaying, isEnd, phaseNow, phaseMax, chaserNumber, fugitiveNumber, horizontalCount, verticalCount, isPublic, isCanJoinAfter, isNegotiate, isCanDoQuest, isCanUseItem
+        case roomId, hostUserId, playTagName, creationDate, isPlaying, isEnd, phaseNow, phaseMax, chaserNumber, fugitiveNumber, playerNumber, horizontalCount, verticalCount, isPublic, isCanJoinAfter, isNegotiate, isCanDoQuest, isCanUseItem
     }
     
     init(from decoder: Decoder) throws {
@@ -71,6 +72,7 @@ struct PlayTagRoom: Codable, Hashable, Identifiable, Equatable {
         self.phaseMax = try container.decode(Int.self, forKey: .phaseMax)
         self.chaserNumber = try container.decode(Int.self, forKey: .chaserNumber)
         self.fugitiveNumber = try container.decode(Int.self, forKey: .fugitiveNumber)
+        self.playerNumber = try container.decode(Int.self, forKey: .playerNumber)
         self.horizontalCount = try container.decode(Int.self, forKey: .horizontalCount)
         self.verticalCount = try container.decode(Int.self, forKey: .verticalCount)
         self.isPublic = try container.decode(Bool.self, forKey: .isPublic)
@@ -94,6 +96,7 @@ struct PlayTagRoom: Codable, Hashable, Identifiable, Equatable {
         try container.encode(phaseMax, forKey: .phaseMax)
         try container.encode(chaserNumber, forKey: .chaserNumber)
         try container.encode(fugitiveNumber, forKey: .fugitiveNumber)
+        try container.encode(playerNumber, forKey: .playerNumber)
         try container.encode(horizontalCount, forKey: .horizontalCount)
         try container.encode(verticalCount, forKey: .verticalCount)
         try container.encode(isPublic, forKey: .isPublic)
@@ -103,7 +106,7 @@ struct PlayTagRoom: Codable, Hashable, Identifiable, Equatable {
         try container.encode(isCanUseItem, forKey: .isCanUseItem)
     }
     
-    init(roomId: UUID, hostUserId: String, playTagName: String, creationDate: Date, isPlaying: Bool, isEnd: Bool, phaseNow: Int, phaseMax: Int, chaserNumber: Int, fugitiveNumber: Int, horizontalCount: Int, verticalCount: Int, isPublic: Bool, isCanJoinAfter: Bool, isNegotiate: Bool, isCanDoQuest: Bool, isCanUseItem: Bool) {
+    init(roomId: UUID, hostUserId: String, playTagName: String, creationDate: Date, isPlaying: Bool, isEnd: Bool, phaseNow: Int, phaseMax: Int, chaserNumber: Int, fugitiveNumber: Int, horizontalCount: Int, playerNumber: Int, verticalCount: Int, isPublic: Bool, isCanJoinAfter: Bool, isNegotiate: Bool, isCanDoQuest: Bool, isCanUseItem: Bool) {
         self.roomId = roomId
         self.hostUserId = hostUserId
         self.playTagName = playTagName
@@ -114,6 +117,7 @@ struct PlayTagRoom: Codable, Hashable, Identifiable, Equatable {
         self.phaseMax = phaseMax
         self.chaserNumber = chaserNumber
         self.fugitiveNumber = fugitiveNumber
+        self.playerNumber = playerNumber
         self.horizontalCount = horizontalCount
         self.verticalCount = verticalCount
         self.isPublic = isPublic
@@ -134,6 +138,7 @@ struct PlayTagRoom: Codable, Hashable, Identifiable, Equatable {
         self.phaseMax = 10
         self.chaserNumber = 1
         self.fugitiveNumber = 3
+        self.playerNumber = 0
         self.horizontalCount = 5
         self.verticalCount = 5
         self.isPublic = false
@@ -154,6 +159,7 @@ struct PlayTagRoom: Codable, Hashable, Identifiable, Equatable {
         self.phaseMax = 0
         self.chaserNumber = 0
         self.fugitiveNumber = 0
+        self.playerNumber = 0
         self.horizontalCount = 0
         self.verticalCount = 0
         self.isPublic = false

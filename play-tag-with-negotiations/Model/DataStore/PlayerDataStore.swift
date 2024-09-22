@@ -10,8 +10,12 @@ import Foundation
 class PlayerDataStore: ObservableObject {
     static let shared = PlayerDataStore()
     @Published var playingRoom: PlayTagRoom = PlayTagRoom()
+    @Published var userArray: [User] = []
     @Published var playerArray: [Player] = []
     @Published var dealTarget: Player = Player()
     @Published var negotiationArray: [Negotiation] = []
     @Published var dealArray: [Deal] = []
+    @Published var missionArray: [Mission] = []
+    @Published var questArray: [Quest] = []
+    @Published var currentPhaseOptimistic: Int = 0
 }

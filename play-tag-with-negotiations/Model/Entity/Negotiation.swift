@@ -31,12 +31,7 @@ struct Negotiation: Codable, Hashable, Identifiable, Equatable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = UUID()
-        let negotiationIdString = try container.decode(String.self, forKey: .negotiationId)
-        if let negotiationId = UUID(uuidString: negotiationIdString) {
-            self.negotiationId = negotiationId
-        } else {
-            self.negotiationId = UUID()
-        }
+        self.negotiationId = try container.decode(UUID.self, forKey: .negotiationId)
         let name = try container.decode(String.self, forKey: .negotiationName)
         self.negotiationName = Name(rawValue: name) ?? .unknown
         self.displayName = try container.decode(String.self, forKey: .displayName)

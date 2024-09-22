@@ -44,6 +44,7 @@ struct MyPageView: View {
         }
         .background(Color(UIColor.systemGray6))
         .navigationTitle("マイページ")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
             Observe.observeUserData()
         }

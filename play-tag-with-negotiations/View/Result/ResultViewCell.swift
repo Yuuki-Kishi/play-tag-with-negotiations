@@ -19,7 +19,7 @@ struct ResultViewCell: View {
                 .font(.system(size: 25))
                 .frame(width: 50)
                 .foregroundStyle(playerRankTextColor())
-            Text(player.player.userName)
+            Text(user().userName)
                 .frame(alignment: .leading)
                 .font(.system(size: 20))
                 .foregroundStyle(userNameColor())
@@ -29,12 +29,11 @@ struct ResultViewCell: View {
                 .font(.system(size: 25))
             Text(String(player.point) + "pt")
                 .font(.system(size: 25))
-                .frame(width: 60)
                 .foregroundStyle(Color.primary)
             if isDisplayButton() {
                 Button(action: {
                     Task {
-                        await Create.sendFriendRequest(to: player.player.userId)
+                        await Create.sendFriendRequest(to: player.playerUserId)
                         isShowAlert = true
                     }
                 }, label: {
@@ -90,7 +89,7 @@ struct ResultViewCell: View {
     }
     func userNameColor() -> Color {
         var color = Color.primary
-        if player.player.userId == userDataStore.signInUser?.userId {
+        if player.playerUserId == userDataStore.signInUser?.userId {
             color = .green
         }
         return color
@@ -111,14 +110,18 @@ struct ResultViewCell: View {
     }
     func isDisplayButton() -> Bool {
         guard let myFriendsId = userDataStore.signInUser?.friendsUserId else { return false }
-        let isFriend = myFriendsId.contains(where: { $0 == player.player.userId })
-        if player.player.userId != userDataStore.signInUser?.userId && !isFriend {
+        let isFriend = myFriendsId.contains(where: { $0 == player.playerUserId })
+        if player.playerUserId != userDataStore.signInUser?.userId && !isFriend {
             return true
         }
         return false
     }
+    func user() -> User {
+        guard let user = playerDataStore.userArray.first(where: { $0.userId == player.playerUserId }) else { return User() }
+        return user
+    }
 }
 
 //#Preview {
-//    ResultViewCell(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
+//    ResultViewCell(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared, player: Player())
 //}

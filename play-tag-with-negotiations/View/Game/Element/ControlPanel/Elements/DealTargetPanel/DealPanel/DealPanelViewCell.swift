@@ -8,25 +8,22 @@
 import SwiftUI
 
 struct DealPanelViewCell: View {
+    @ObservedObject var playerDataStore: PlayerDataStore
     @Binding var deal: Deal
-    @State var dealType: dealCondition
+    @State var dealType: Deal.dealCondition
     @State private var isShowAlert = false
-    
-    enum dealCondition: String {
-        case success, failure, fulfilled, proposing, proposed, canPropose
-    }
     
     var body: some View {
         HStack {
-            Image(systemName: deal.negotiation.imageName)
+            Image(systemName: negotiation().imageName)
                 .font(.system(size: 25))
                 .frame(width: 50)
                 .foregroundStyle(Color.accentColor)
             VStack {
-                Text(deal.negotiation.displayName)
+                Text(negotiation().displayName)
                     .font(.system(size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Text(String(deal.negotiation.consumption) + "pt")
+                Text("消費" + String(negotiation().consumption) + "pt")
                     .font(.system(size: 15))
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -46,13 +43,16 @@ struct DealPanelViewCell: View {
                 Text("拒否")
             })
             Button(action: {
-                Task { await Fulfill.fulfillDeal(deal: deal) }
+                Task { await Success.successDeal(deal: deal) }
             }, label: {
                 Text("承諾")
             })
         }, message: {
             Text("承諾しなかった場合、取引は失敗となります。")
         })
+    }
+    func negotiation() -> Negotiation {
+        return playerDataStore.negotiationArray.negotiation(negotiationId: deal.negotiationId)
     }
 }
 

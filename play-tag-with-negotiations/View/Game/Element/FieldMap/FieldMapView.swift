@@ -23,9 +23,6 @@ struct FieldMapView: View {
             .padding()
         }
         .background(Color.clear)
-//        .onAppear() {
-//            print(playerDataStore.playingRoom.horizontalCount, playerDataStore.playingRoom.verticalCount)
-//        }
     }
 }
 

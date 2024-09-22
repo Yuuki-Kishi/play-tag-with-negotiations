@@ -17,6 +17,7 @@ struct RoomInfomationView: View {
             }
         }
         .navigationTitle("ルール")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

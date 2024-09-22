@@ -85,13 +85,12 @@ class Create {
         }
     }
     
-    static func proposeDeal(negotiation: Negotiation) async {
+    static func proposeDeal(negotiationId: String) async {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-        guard let proposer = PlayerDataStore.shared.playerArray.users.first(where: { $0.userId == myUserId }) else { return }
         let targetUserId = PlayerDataStore.shared.dealTarget.playerUserId
-        guard let target = PlayerDataStore.shared.playerArray.users.first(where: { $0.userId == targetUserId }) else { return }
-        let deal = Deal(negotiation: negotiation, proposer: proposer, target: target)
+        let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
+        let deal = Deal(negotiationId: negotiationId, proposerUserId: myUserId, targetUserId: targetUserId, expiredPhase: phaseNow + 2)
         let encoded = try! JSONEncoder().encode(deal)
         do {
             guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }

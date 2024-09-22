@@ -29,6 +29,8 @@ struct ResultView: View {
                     Task {
                         await Delete.endGame()
                     }
+                    playerDataStore.userArray.removeAll()
+                    playerDataStore.playerArray.removeAll()
                     pathDataStore.navigatetionPath.removeAll()
                 }, label: {
                     Text("確認")
@@ -41,6 +43,7 @@ struct ResultView: View {
             }
         }
         .navigationTitle("結果")
+        .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
     }
     func playerRank(player: Player) -> Int {

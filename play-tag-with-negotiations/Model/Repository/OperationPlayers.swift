@@ -21,16 +21,17 @@ class OperationPlayers {
     static func getAliveFugitives(players: [Player]) -> [Player] {
         let chasers = getChasers(players: players)
         let fugitives = getFugitives(players: players)
+        let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
         var aliveFugitives: [Player] = []
         for fugitive in fugitives {
             if !fugitive.isCanCapture {
                 aliveFugitives.append(noDuplicate: fugitive)
                 continue
             }
-            let isContain = chasers.contains(where: { $0.move.last == fugitive.move.last })
-            if !isContain {
-                aliveFugitives.append(noDuplicate: fugitive)
-            }
+            let chasersPosition = chasers.map { $0.move.first { $0.phase == phaseNow }}
+            let isContain = chasersPosition.contains(where: { $0 == fugitive.move.first { $0.phase == phaseNow } })
+            if isContain { continue }
+            aliveFugitives.append(noDuplicate: fugitive)
         }
         return aliveFugitives
     }

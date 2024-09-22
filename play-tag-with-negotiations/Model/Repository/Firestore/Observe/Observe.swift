@@ -35,11 +35,15 @@ class Observe {
         let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).addSnapshotListener { DocumentSnapshot, error in
             do {
                 guard let playingRoom = try DocumentSnapshot?.data(as: PlayTagRoom.self) else { return }
+                if PlayerDataStore.shared.playingRoom.phaseNow < playingRoom.phaseNow {
+                    Task {
+                        await Check.checkDeals()
+                        await Update.isDecidedToFalse()
+                        await Get.getAlivePlayers()
+                    }
+                }
                 DispatchQueue.main.async {
                     PlayerDataStore.shared.playingRoom = playingRoom
-                }
-                if PlayerDataStore.shared.playingRoom.phaseNow < playingRoom.phaseNow {
-                    Task { await Get.getAlivePlayers() }
                 }
             } catch {
                 print(error)
@@ -79,23 +83,34 @@ class Observe {
     
     static func observePlayers() {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-        DispatchQueue.main.async {
-            PlayerDataStore.shared.playerArray = []
-        }
         let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot?.documents else { return }
-            for document in documents {
-                Task {
-                    do {
-                        var player = try document.data(as: Player.self)
-                        guard let user = await Get.getUserData(userId: player.playerUserId) else { return }
-                        player.player = user
+            guard let documentChanges = querySnapshot?.documentChanges else { return }
+            for documentChange in documentChanges {
+                do {
+                    let addedDocument = documentChange.document
+                    let player = try addedDocument.data(as: Player.self)
+                    switch documentChange.type {
+                    case .added:
+                        Task {
+                            guard let user = await Get.getUserData(userId: addedDocument.documentID) else { return }
+                            DispatchQueue.main.async {
+                                PlayerDataStore.shared.userArray.append(noDuplicate: user)
+                                PlayerDataStore.shared.playerArray.append(noDuplicate: player)
+                            }
+                        }
+                    case .modified:
                         DispatchQueue.main.async {
                             PlayerDataStore.shared.playerArray.append(noDuplicate: player)
                         }
-                    } catch {
-                        print(error)
+                    case .removed:
+                        DispatchQueue.main.async {
+                            PlayerDataStore.shared.userArray.delete(userId: player.playerUserId)
+                            PlayerDataStore.shared.playerArray.delete(userId: player.playerUserId)
+                        }
                     }
+                } catch {
+                    print(error)
                 }
             }
         }
@@ -124,29 +139,13 @@ class Observe {
     }
     
     static func observeIsDecided() {
-        print(PlayerDataStore.shared.playerArray.me)
         if PlayerDataStore.shared.playerArray.me.isHost {
             let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-            let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").addSnapshotListener { QuerySnapshot, error in
-                Task {
-                    do {
-                        guard let documents = QuerySnapshot?.documents else { return }
-                        var players: [Player] = []
-                        for document in documents {
-                            var player = try document.data(as: Player.self)
-                            guard let user = await Get.getUserData(userId: player.playerUserId) else { return }
-                            player.player = user
-                            players.append(player)
-                        }
-                        let decidedPlayerCount = players.filter { $0.isDecided }.count
-                        let playerCount = players.count
-                        print(decidedPlayerCount, playerCount)
-                        if decidedPlayerCount == playerCount {
-                            await Update.moveToNextPhase()
-                        }
-                    } catch {
-                        print(error)
-                    }
+            let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").whereField("isDecided", isEqualTo: true).addSnapshotListener { QuerySnapshot, error in
+                guard let documents = QuerySnapshot?.documents else { return }
+                let playerCount = PlayerDataStore.shared.playerArray.count
+                if playerCount <= documents.count {
+                    Task { await Update.moveToNextPhase() }
                 }
             }
             DispatchQueue.main.async {
@@ -243,16 +242,10 @@ class Observe {
             for document in documents {
                 Task {
                     do {
-                        var deal = try document.data(as: Deal.self)
-                        guard let negotiation = await Get.getNegotiation(negotiationId: deal.negotiationId) else { return }
-                        guard let proposer = await Get.getUserData(userId: deal.proposerUserId) else { return }
-                        guard let target = await Get.getUserData(userId: deal.targetUserId) else { return }
-                        deal.negotiation = negotiation
-                        deal.proposer = proposer
-                        deal.target = target
+                        let deal = try document.data(as: Deal.self)
                         if deal.proposerUserId == myUserId || deal.targetUserId == myUserId {
                             DispatchQueue.main.async {
-                                PlayerDataStore.shared.dealArray.append(deal)
+                                PlayerDataStore.shared.dealArray.append(noDuplicate: deal)
                             }
                         }
                     } catch {

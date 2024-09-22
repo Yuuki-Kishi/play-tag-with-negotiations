@@ -21,7 +21,8 @@ struct FriendViewCell: View {
                     .clipShape(Circle())
                     .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
             } else {
-                Image(systemName: "person")
+                Image(systemName: "person.circle")
+                    .foregroundStyle(Color.accentColor)
                     .font(.system(size: 50.0))
                     .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
             }

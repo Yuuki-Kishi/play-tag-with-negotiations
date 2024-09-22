@@ -65,4 +65,28 @@ class Check {
         }
         return false
     }
+    
+    static func checkDeals() async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+        do {
+            let documents = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Deals").whereField("condition", isNotEqualTo: "fulfill").getDocuments().documents
+            var deals: [Deal] = []
+            for document in documents {
+                let deal = try document.data(as: Deal.self)
+                deals.append(deal)
+            }
+            let myDeals = deals.filter { $0.proposerUserId == myUserId }
+            let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
+            for myDeal in myDeals {
+                if myDeal.expiredPhase <= phaseNow {
+                    await Fulfill.fulfillDeal(deal: myDeal)
+                    await DealUpdate.canCapturePlayer(userId: myDeal.proposerUserId)
+                }
+            }
+            
+        } catch {
+            print(error)
+        }
+    }
 }

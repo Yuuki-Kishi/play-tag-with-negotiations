@@ -23,20 +23,33 @@ struct DealPanelViewNegotiationCell: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Text(String(negotiation.consumption) + "pt")
                     .font(.system(size: 15))
+                    .foregroundStyle(pointColor())
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .onTapGesture {
-            Task {
-                await Create.proposeDeal(negotiation: negotiation)
+            let point = PlayerDataStore.shared.playerArray.me.point
+            print(point)
+            if point < negotiation.consumption {
                 isShowAlert = true
+            } else {
+                Task {
+                    await Create.proposeDeal(negotiationId: negotiation.negotiationId.uuidString)
+                }
             }
         }
-        .alert("取引を提案しました", isPresented: $isShowAlert, actions: {
+        .alert("ポイントが不足しています", isPresented: $isShowAlert, actions: {
             Button(action: {}, label: {
                 Text("OK")
             })
         })
+    }
+    func pointColor() -> Color {
+        let point = PlayerDataStore.shared.playerArray.me.point
+        if point < negotiation.consumption {
+            return .red
+        }
+        return .primary
     }
 }
 

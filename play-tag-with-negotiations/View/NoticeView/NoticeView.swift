@@ -17,13 +17,9 @@ struct NoticeView: View {
             NoticeViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore, notice: notice)
         }
         .navigationTitle("通知")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
             Observe.observeNotice()
-        }
-        .onDisappear() {
-            Task {
-                await Update.checkNotices()
-            }
         }
     }
 }

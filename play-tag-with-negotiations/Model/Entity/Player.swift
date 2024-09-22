@@ -14,7 +14,6 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
     
     var id = UUID()
     var playerUserId: String
-    var player: User
     var isHost: Bool
     var point: Int
     var enteredTime: Date
@@ -32,7 +31,6 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = UUID()
         self.playerUserId = try container.decode(String.self, forKey: .playerUserId)
-        self.player = User()
         self.isHost = try container.decode(Bool.self, forKey: .isHost)
         self.point = try container.decode(Int.self, forKey: .point)
         let formatter = ISO8601DateFormatter()
@@ -64,10 +62,9 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         try container.encode(self.isCanCapture, forKey: .isCanCapture)
     }
     
-    init(playerUserId: String, player: User, isHost: Bool, point: Int, enteredTime: Date, isChaser: Bool, isDecided: Bool, isCaptured: Bool, move: [PlayerPosition], isCanCapture: Bool) {
+    init(playerUserId: String, isHost: Bool, point: Int, enteredTime: Date, isChaser: Bool, isDecided: Bool, isCaptured: Bool, move: [PlayerPosition], isCanCapture: Bool) {
         self.id = UUID()
         self.playerUserId = playerUserId
-        self.player = User()
         self.isHost = isHost
         self.point = point
         self.enteredTime = enteredTime
@@ -81,9 +78,8 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
     init(playerUserId: String, isHost: Bool) {
         self.id = UUID()
         self.playerUserId = playerUserId
-        self.player = User()
         self.isHost = isHost
-        self.point = 0
+        self.point = 20
         self.enteredTime = Date()
         self.isChaser = false
         self.isDecided = false
@@ -95,7 +91,6 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
     init() {
         self.id = UUID()
         self.playerUserId = "unknownUserId"
-        self.player = User()
         self.isHost = false
         self.point = 0
         self.enteredTime = Date()

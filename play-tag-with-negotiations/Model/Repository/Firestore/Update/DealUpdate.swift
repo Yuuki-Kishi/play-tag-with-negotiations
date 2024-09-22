@@ -27,12 +27,44 @@ class DealUpdate {
         }
     }
     
-    static func cannotCapturePlayer() async {
+    static func fulfillDeal(deal: Deal) async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        do {
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Deals").document(deal.dealId.uuidString)
+                .updateData(["condition": Deal.dealCondition.fulfilled.rawValue])
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func confiscateMePoint(howMany: Int) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        await confiscatePoint(userId: userId, howMany: howMany)
+    }
+    
+    static func confiscatePoint(userId: String, howMany: Int) async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        guard let nowPoint = PlayerDataStore.shared.playerArray.first(where: { $0.playerUserId == userId })?.point else { return }
+        do {
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["point": nowPoint - howMany])
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func cannotCapturePlayer(userId: String) async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isCanCapture": false])
-            //ああああああああああああああああ
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func canCapturePlayer(userId: String) async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        do {
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isCanCapture": true])
         } catch {
             print(error)
         }

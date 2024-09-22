@@ -23,19 +23,20 @@ struct SelectionView: View {
             })
             Spacer()
             Button(action: {
-                userDataStore.displayControlPanel = .deal(.negotiation)
+                userDataStore.displayControlPanel = .deal(.target)
             }, label: {
                 Image(systemName: "bubble.left.and.bubble.right.fill")
                     .font(.system(size: 25))
-                    .foregroundStyle(iconColor(panelMode: .deal(.negotiation)))
+                    .foregroundStyle(iconColor(panelMode: .deal(.target)))
             })
-//            Spacer()
-//            Button(action: {
-//                
-//            }, label: {
-//                Image(systemName: "q.circle.fill")
-//                    .font(.system(size: 25))
-//            })
+            Spacer()
+            Button(action: {
+                userDataStore.displayControlPanel = .quest(.target)
+            }, label: {
+                Image(systemName: "shield.fill")
+                    .font(.system(size: 25))
+                    .foregroundStyle(iconColor(panelMode: .quest(.target)))
+            })
 //            Spacer()
 //            Button(action: {
 //                
@@ -55,12 +56,25 @@ struct SelectionView: View {
                 return .accentColor
             case .deal:
                 return .gray
+            case .quest:
+                return .gray
             }
         case .deal:
             switch panelMode {
             case .movement:
                 return .gray
             case .deal:
+                return .accentColor
+            case .quest:
+                return .gray
+            }
+        case .quest:
+            switch panelMode {
+            case .movement:
+                return .gray
+            case .deal:
+                return .gray
+            case .quest:
                 return .accentColor
             }
         }

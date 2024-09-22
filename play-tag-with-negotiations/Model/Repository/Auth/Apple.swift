@@ -93,7 +93,9 @@ class Apple {
                         if await !Check.isWroteUser(userId: userId) {
                             await Create.createUser(user: user)
                         }
-                        UserDataStore.shared.signInUser = user
+                        DispatchQueue.main.async {
+                            UserDataStore.shared.signInUser = user
+                        }
                     }
                 }
             }

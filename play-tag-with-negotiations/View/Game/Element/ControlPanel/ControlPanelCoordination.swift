@@ -16,11 +16,15 @@ struct ControlPanelCoordination: View {
         switch userDataStore.displayControlPanel {
         case .movement:
             MovePanelView(userDataStore: userDataStore, playerDataStore: playerDataStore)
-        case .deal(.negotiation):
-            DealTargetPanelView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
         case .deal(.target):
+            DealTargetPanelView(userDataStore: userDataStore, playerDataStore: playerDataStore)
+        case .deal(.negotiation):
             DealPanelView(playerDataStore: playerDataStore)
                 .transition(.move(edge: .trailing))
+        case .quest(.target):
+            QuestTargetPanelView(userDataStore: userDataStore, playerDataStore: playerDataStore)
+        case .quest(.mission):
+            QuestPanelView(userDataStore: userDataStore, playerDataStore: playerDataStore)
         }
     }
 }

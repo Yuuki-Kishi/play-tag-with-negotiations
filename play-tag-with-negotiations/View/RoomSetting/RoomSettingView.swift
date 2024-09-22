@@ -45,6 +45,7 @@ struct RoomSettingView: View {
                 Text("あとから設定を変更することはできません。")
             })
             .navigationTitle("ルーム作成")
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear() {
                 DispatchQueue.main.async {
                     playerDataStore.playingRoom = PlayTagRoom(playTagName: "鬼ごっこ")

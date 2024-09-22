@@ -59,8 +59,9 @@ class Update {
     
     static func gameStart() async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let playerNumber = PlayerDataStore.shared.playerArray.count
         do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["isPlaying": true])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["playerNumber": playerNumber, "isPlaying": true])
         } catch {
             print(error)
         }
@@ -74,37 +75,38 @@ class Update {
         let initialX = Int.random(in: 0 ..< horizontalCount)
         let initialY = Int.random(in: 0 ..< verticalCount)
         do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["move": FieldValue.arrayUnion([["x": initialX, "y": initialY]])])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["move": [["phase": 1, "x": initialX, "y": initialY]]])
         } catch {
             print(error)
         }
     }
     
-    static func updateMyPosition(x: Int, y: Int) async {
+    static func updateMyPosition(phase: Int, x: Int, y: Int) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-        await updatePosition(userId: userId, x: x, y: y)
+        await updatePosition(phase: phase, userId: userId, x: x, y: y)
     }
     
-    static func updatePosition(userId: String, x: Int, y: Int) async {
+    static func updatePosition(phase: Int, userId: String, x: Int, y: Int) async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["move": FieldValue.arrayUnion([["x": x, "y": y]]), "isDecided": true])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["move": FieldValue.arrayUnion([["phase": phase, "x": x, "y": y]]), "isDecided": true])
         } catch {
             print(error)
         }
     }
     
     static func moveToNextPhase() async {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         let phaseMax = PlayerDataStore.shared.playingRoom.phaseMax
         let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
-        do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["phaseNow": phaseNow + 1])
-            if phaseNow == phaseMax {
-                await gameEnd()
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        if phaseNow < phaseMax {
+            do {
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["phaseNow": /*PlayerDataStore.shared.currentPhaseOptimistic*/phaseNow + 1])
+            } catch {
+                print(error)
             }
-        } catch {
-            print(error)
+        } else {
+            await gameEnd()
         }
     }
     
@@ -122,11 +124,10 @@ class Update {
             let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
             guard let userId = UserDataStore.shared.signInUser?.userId else { return }
             do {
-                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": false, "isCanCapture": true])
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": false])
             } catch {
                 print(error)
             }
-            await grantMePoint(howMany: 20)
         }
     }
     
@@ -153,13 +154,11 @@ class Update {
         }
     }
     
-    static func checkNotices() async {
+    static func checkNotice(noticeId: String) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         let notices = await Get.getNonCheckedNotice()
         do {
-            for notice in notices {
-                try await Firestore.firestore().collection("Users").document(userId).collection("Notices").document(notice.noticeId.uuidString).updateData(["isChecked": true])
-            }
+                try await Firestore.firestore().collection("Users").document(userId).collection("Notices").document(noticeId).updateData(["isChecked": true])
         } catch {
             print(error)
         }
@@ -175,21 +174,6 @@ class Update {
         guard let nowPoint = PlayerDataStore.shared.playerArray.first(where: { $0.playerUserId == userId })?.point else { return }
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["point": nowPoint + howMany])
-        } catch {
-            print(error)
-        }
-    }
-    
-    static func confiscateMePoint(howMany: Int) async {
-        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-        await confiscatePoint(userId: userId, howMany: howMany)
-    }
-    
-    static func confiscatePoint(userId: String, howMany: Int) async {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-        guard let nowPoint = PlayerDataStore.shared.playerArray.first(where: { $0.playerUserId == userId })?.point else { return }
-        do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["point": nowPoint - howMany])
         } catch {
             print(error)
         }

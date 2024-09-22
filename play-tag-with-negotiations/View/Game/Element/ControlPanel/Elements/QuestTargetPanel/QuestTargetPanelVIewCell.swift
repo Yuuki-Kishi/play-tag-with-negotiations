@@ -1,13 +1,13 @@
 //
-//  NegotiationPanelViewCell.swift
+//  QuestTargetPanelVIewCell.swift
 //  play-tag-with-negotiations
 //
-//  Created by 岸　優樹 on 2024/07/12.
+//  Created by 岸　優樹 on 2024/09/14.
 //
 
 import SwiftUI
 
-struct DealTargetPanelViewCell: View {
+struct QuestTargetPanelVIewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     @State var user: User
@@ -41,7 +41,7 @@ struct DealTargetPanelViewCell: View {
             guard let player = playerDataStore.playerArray.first(where: { $0.playerUserId == user.userId }) else { return }
             playerDataStore.dealTarget = player
             withAnimation {
-                userDataStore.displayControlPanel = .deal(.target)
+                userDataStore.displayControlPanel = .quest(.mission)
             }
         }
     }
@@ -55,5 +55,5 @@ struct DealTargetPanelViewCell: View {
 }
 
 //#Preview {
-//    NegotiationPanelViewCell(user: User())
+//    QuestTargetPanelVIewCell()
 //}

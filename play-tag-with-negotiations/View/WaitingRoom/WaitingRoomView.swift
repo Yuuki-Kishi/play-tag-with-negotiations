@@ -24,8 +24,8 @@ struct WaitingRoomView: View {
                     Text("ホスト")
                 })
                 Section(content: {
-                    ForEach(playerDataStore.playerArray.guestUsers, id: \.userId) { user in
-                        WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, userId: Binding(get: { user.userId }, set: {_ in}))
+                    ForEach(playerDataStore.playerArray.guests, id: \.playerUserId) { player in
+                        WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, userId: Binding(get: { player.playerUserId }, set: {_ in}))
                     }
                 }, header: {
                     Text("ゲスト")
@@ -34,6 +34,8 @@ struct WaitingRoomView: View {
             if userDataStore.signInUser?.userId == playerDataStore.playingRoom.hostUserId {
                 Button(action: {
                     Task {
+                        await Update.appointmentChaser()
+                        await Update.moveToNextPhase()
                         await Update.gameStart()
                     }
                 }, label: {
@@ -51,17 +53,19 @@ struct WaitingRoomView: View {
             }
         }
         .navigationTitle("待合室")
+        .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .onChange(of: playerDataStore.playingRoom.isPlaying) {
             if playerDataStore.playingRoom.isPlaying {
-                guard let myUserId = userDataStore.signInUser?.userId else { return }
-                let hostUserId = playerDataStore.playingRoom.hostUserId
-                if myUserId == hostUserId {
-                    Task {
-                        await Update.appointmentChaser()
-                        await Update.moveToNextPhase()
-                    }
-                }
+//                if playerDataStore.playerArray.me.isHost {
+//                    Task {
+//                        
+//                        DispatchQueue.main.async {
+//                            playerDataStore.currentPhaseOptimistic += 1
+//                        }
+//                        
+//                    }
+//                }
                 pathDataStore.navigatetionPath.append(.game)
             }
         }

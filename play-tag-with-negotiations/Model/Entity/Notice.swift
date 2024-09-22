@@ -33,12 +33,7 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = UUID()
-        let noticeIdString = try container.decode(String.self, forKey: .noticeId)
-        if let noticeId = UUID(uuidString: noticeIdString) {
-            self.noticeId = noticeId
-        } else {
-            throw DecodingError.dataCorruptedError(forKey: .noticeId, in: container, debugDescription: "Failed to decode noticeId.")
-        }
+        self.noticeId = try container.decode(UUID.self, forKey: .noticeId)
         self.senderUserId = try container.decode(String.self, forKey: .senderUserId)
         self.sendUser = User()
         let formatter = ISO8601DateFormatter()

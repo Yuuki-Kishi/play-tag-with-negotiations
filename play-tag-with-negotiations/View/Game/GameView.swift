@@ -17,7 +17,13 @@ struct GameView: View {
     var body: some View {
         VStack {
             FieldMapView(userDataStore: userDataStore, playerDataStore: playerDataStore)
-            Text(displayPhase())
+            HStack {
+                Text(displayPhase())
+                    .padding(.leading)
+                Spacer()
+                Text(point())
+                    .padding(.trailing)
+            }
             VStack {
                 SelectionView(userDataStore: userDataStore, playerDataStore: playerDataStore)
                 ControlPanelCoordination(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
@@ -45,6 +51,7 @@ struct GameView: View {
             pathDataStore.navigatetionPath.append(.result)
         }
         .navigationBarBackButtonHidden()
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
             Task {
                 Observe.observeRoomField()
@@ -59,6 +66,10 @@ struct GameView: View {
         let phaseMax = String(playerDataStore.playingRoom.phaseMax)
         let text = phaseNow + "フェーズ / " + phaseMax + "フェーズ"
         return text
+    }
+    func point() -> String {
+        let point = playerDataStore.playerArray.me.point
+        return "所持ポイント : " + String(point) + "pt"
     }
 }
 
