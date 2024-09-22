@@ -52,7 +52,8 @@ struct DealPanelViewCell: View {
         })
     }
     func negotiation() -> Negotiation {
-        return playerDataStore.negotiationArray.negotiation(negotiationId: deal.negotiationId)
+        guard let negotiation = playerDataStore.negotiationArray.first(where: { $0.negotiationId.uuidString == deal.negotiationId }) else { return Negotiation() }
+        return negotiation
     }
 }
 
