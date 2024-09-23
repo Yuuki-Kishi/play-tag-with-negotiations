@@ -27,7 +27,7 @@ struct DealPanelView: View {
                         DealPanelViewCell(playerDataStore: playerDataStore, deal: Binding(get: { deal }, set: {_ in}), dealType: .success)
                     }
                 }, header: {
-                    Text("履行間近の取引")
+                    Text("履行中の取引")
                 })
             }
             if !playerDataStore.negotiationArray.canPropose.isEmpty {

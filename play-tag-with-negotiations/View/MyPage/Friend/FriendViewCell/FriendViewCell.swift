@@ -9,12 +9,11 @@ import SwiftUI
 
 struct FriendViewCell: View {
     @Binding var friend: User
-    @State private var icon: UIImage? = nil
     @State private var isShowAlert = false
     
     var body: some View {
         HStack {
-            if let iconImage = icon {
+            if let iconImage = iconImage() {
                 Image(uiImage: iconImage)
                     .resizable()
                     .scaledToFill()
@@ -56,17 +55,10 @@ struct FriendViewCell: View {
                 Text("解消")
             })
         })
-        .onAppear() {
-            getIcon()
-        }
     }
-    func getIcon() {
-        if friend.iconUrl != "default" {
-            Task {
-                guard let imageData = await Download.getIconImage(iconUrl: friend.iconUrl) else { return }
-                icon = UIImage(data: imageData)
-            }
-        }
+    func iconImage() -> UIImage? {
+        guard let iconData = friend.iconData else { return nil }
+        return UIImage(data: iconData)
     }
 }
 

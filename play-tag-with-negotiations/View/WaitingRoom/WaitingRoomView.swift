@@ -111,10 +111,15 @@ struct WaitingRoomView: View {
             Text("非公開ルームの場合、再入室するにはルームIDが必要です。")
         })
         .onAppear() {
-            onAppear()
+            Observe.observeRoomField()
+            Observe.observePlayers()
+            Task {
+                await Update.randomInitialPosition()
+            }
         }
         .onDisappear() {
-            onDisappear()
+            userDataStore.listeners[.players]?.remove()
+            userDataStore.listeners.removeValue(forKey: .players)
         }
     }
     func toolBarMenu() -> some View {
@@ -169,19 +174,6 @@ struct WaitingRoomView: View {
             await Delete.exitRoom(roomId: roomId)
             pathDataStore.navigatetionPath.removeAll()
         }
-    }
-    func onAppear() {
-        Observe.observeRoomField()
-        Observe.observePlayers()
-        Task {
-            await Update.randomInitialPosition()
-        }
-    }
-    func onDisappear() {
-        userDataStore.listeners[.roomField]?.remove()
-        userDataStore.listeners.removeValue(forKey: .roomField)
-        userDataStore.listeners[.players]?.remove()
-        userDataStore.listeners.removeValue(forKey: .players)
     }
 }
 

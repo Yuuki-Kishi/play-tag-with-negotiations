@@ -9,20 +9,20 @@ import SwiftUI
 
 struct NotFriendViewCell: View {
     @Binding var friend: User
-    @State private var icon: UIImage? = nil
     @State private var isShowBeFriendAlert = false
     @State private var isShowDeleteFirendAlert = false
     
     var body: some View {
         HStack {
-            if let iconImage = icon {
+            if let iconImage = iconImage() {
                 Image(uiImage: iconImage)
                     .resizable()
                     .scaledToFill()
                     .clipShape(Circle())
                     .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
             } else {
-                Image(systemName: "person")
+                Image(systemName: "person.circle")
+                    .foregroundStyle(Color.accentColor)
                     .font(.system(size: 50.0))
                     .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
             }
@@ -71,17 +71,10 @@ struct NotFriendViewCell: View {
                 Text("削除")
             })
         })
-        .onAppear() {
-            getIcon()
-        }
     }
-    func getIcon() {
-        if friend.iconUrl != "default" {
-            Task {
-                guard let imageData = await Download.getIconImage(iconUrl: friend.iconUrl) else { return }
-                icon = UIImage(data: imageData)
-            }
-        }
+    func iconImage() -> UIImage? {
+        guard let iconData = friend.iconData else { return nil }
+        return UIImage(data: iconData)
     }
 }
 

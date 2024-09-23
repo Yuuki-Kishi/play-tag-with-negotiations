@@ -15,9 +15,15 @@ class Observe {
             Task {
                 do {
                     guard let user = try documentSnapshot?.data(as: User.self) else { return }
+                    let friendsDocuments = try await Firestore.firestore().collection("Users").document(userId).collection("Friends").whereField("isFriend", isEqualTo: true).getDocuments().documents
+                    var friendsUserId: [String] = []
+                    for friendsDocument in friendsDocuments {
+                        friendsUserId.append(friendsDocument.documentID)
+                    }
                     let iconData = await Download.getIconImage(iconUrl: user.iconUrl)
                     DispatchQueue.main.async {
                         UserDataStore.shared.signInUser = user
+                        UserDataStore.shared.signInUser?.friendsUserId = friendsUserId
                         UserDataStore.shared.signInUser?.iconData = iconData
                     }
                 } catch {
@@ -84,7 +90,6 @@ class Observe {
     static func observePlayers() {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").addSnapshotListener { querySnapshot, error in
-            guard let documents = querySnapshot?.documents else { return }
             guard let documentChanges = querySnapshot?.documentChanges else { return }
             for documentChange in documentChanges {
                 do {
@@ -176,29 +181,41 @@ class Observe {
     }
     
     static func observeFriend() {
-        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-        DispatchQueue.main.async {
-            FriendDataStore.shared.friendArray = []
-            FriendDataStore.shared.requestUserArray = []
-        }
-        let listener = Firestore.firestore().collection("Users").document(userId).collection("Friends").addSnapshotListener { QuerySnapshot, error in
-            guard let documents = QuerySnapshot?.documents else { return }
-            for document in documents {
+        guard let user = UserDataStore.shared.signInUser else { return }
+        let listener = Firestore.firestore().collection("Users").document(user.userId).collection("Friends").addSnapshotListener { QuerySnapshot, error in
+            guard let documentChanges = QuerySnapshot?.documentChanges else { return }
+            for documentChange in documentChanges {
                 Task {
-                    do {
-                        let friend = try document.data(as: Friend.self)
-                        guard let friendUser = await Get.getUserData(userId: document.documentID) else { return }
-                        if friend.isFriend {
-                            DispatchQueue.main.async {
-                                FriendDataStore.shared.friendArray.append(friendUser)
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                FriendDataStore.shared.requestUserArray.append(friendUser)
+                    let document = documentChange.document
+                    guard let friendUser = await Get.getUserData(userId: document.documentID) else { return }
+                    let isFriend = user.friendsUserId.contains(document.documentID)
+                    switch documentChange.type {
+                    case .added:
+                        DispatchQueue.main.async {
+                            if isFriend {
+                                FriendDataStore.shared.friendArray.append(noDuplicate: friendUser)
+                            } else {
+                                FriendDataStore.shared.requestUserArray.append(noDuplicate: friendUser)
                             }
                         }
-                    } catch {
-                        print(error)
+                    case .modified:
+                        DispatchQueue.main.async {
+                            if isFriend {
+                                FriendDataStore.shared.friendArray.append(noDuplicate: friendUser)
+                            } else {
+                                FriendDataStore.shared.requestUserArray.append(noDuplicate: friendUser)
+                            }
+                        }
+                    case .removed:
+                        DispatchQueue.main.async {
+                            if isFriend {
+                                guard let index = FriendDataStore.shared.friendArray.firstIndex(of: friendUser) else { return }
+                                FriendDataStore.shared.friendArray.remove(at: index)
+                            } else {
+                                guard let index = FriendDataStore.shared.requestUserArray.firstIndex(of: friendUser) else { return }
+                                FriendDataStore.shared.requestUserArray.remove(at: index)
+                            }
+                        }
                     }
                 }
             }

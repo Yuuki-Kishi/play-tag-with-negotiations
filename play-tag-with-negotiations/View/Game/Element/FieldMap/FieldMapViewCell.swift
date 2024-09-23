@@ -86,8 +86,10 @@ struct FieldMapViewCell: View {
     func multiIcon() -> some View {
         let chasers = numToPlayers().filter({ $0.isChaser })
         let fugitives = numToPlayers().filter({ !$0.isChaser })
+        let isContainFugitive = fugitives.contains(where: { $0.playerUserId == userDataStore.signInUser?.userId })
+        let isContainChaser = chasers.contains(where: { $0.playerUserId == userDataStore.signInUser?.userId })
         if chasers.isEmpty && !fugitives.isEmpty {
-            if fugitives.contains(where: { $0.playerUserId == userDataStore.signInUser?.userId }) {
+            if isContainFugitive {
                 return Image(systemName: "person.2.circle.fill")
                     .resizable()
                     .foregroundStyle(Color.blue)
@@ -101,7 +103,7 @@ struct FieldMapViewCell: View {
                     .background(Rectangle().foregroundStyle(Color(UIColor.systemGray5)))
             }
         } else if fugitives.isEmpty && !chasers.isEmpty {
-            if fugitives.contains(where: { $0.playerUserId == userDataStore.signInUser?.userId }) {
+            if isContainChaser {
                 return Image(systemName: "person.2.circle.fill")
                     .resizable()
                     .foregroundStyle(Color.red)
@@ -115,7 +117,7 @@ struct FieldMapViewCell: View {
                     .background(Rectangle().foregroundStyle(Color(UIColor.systemGray5)))
             }
         } else {
-            if fugitives.contains(where: { $0.playerUserId == userDataStore.signInUser?.userId }) {
+            if isContainFugitive || isContainChaser {
                 return Image(systemName: "person.2.circle.fill")
                     .resizable()
                     .foregroundStyle(Color.purple)

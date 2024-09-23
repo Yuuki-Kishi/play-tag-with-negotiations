@@ -54,11 +54,18 @@ struct GameView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
             Task {
-                Observe.observeRoomField()
                 Observe.observeIsDecided()
                 Observe.observeMyIsDecided()
                 await Get.getAlivePlayers()
             }
+        }
+        .onDisappear() {
+            userDataStore.listeners[.roomField]?.remove()
+            userDataStore.listeners.removeValue(forKey: .roomField)
+            userDataStore.listeners[.isDecided]?.remove()
+            userDataStore.listeners.removeValue(forKey: .isDecided)
+            userDataStore.listeners[.myIsDecided]?.remove()
+            userDataStore.listeners.removeValue(forKey: .myIsDecided)
         }
     }
     func displayPhase() -> String {

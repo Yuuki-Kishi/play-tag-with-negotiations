@@ -21,7 +21,7 @@ struct DealPanelViewNegotiationCell: View {
                 Text(negotiation.displayName)
                     .font(.system(size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Text(String(negotiation.consumption) + "pt")
+                Text("消費" + String(negotiation.consumption) + "pt")
                     .font(.system(size: 15))
                     .foregroundStyle(pointColor())
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -29,7 +29,6 @@ struct DealPanelViewNegotiationCell: View {
         }
         .onTapGesture {
             let point = PlayerDataStore.shared.playerArray.me.point
-            print(point)
             if point < negotiation.consumption {
                 isShowAlert = true
             } else {

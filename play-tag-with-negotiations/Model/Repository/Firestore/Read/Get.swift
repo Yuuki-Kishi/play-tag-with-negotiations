@@ -165,12 +165,23 @@ class Get {
     }
     
     static func getResult() async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         DispatchQueue.main.async {
             PlayerDataStore.shared.playerArray = []
         }
-        let players = await getAllPlayers()
-        DispatchQueue.main.async {
-            PlayerDataStore.shared.playerArray = players
+        do {
+            let documents = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").getDocuments().documents
+            for document in documents {
+                let player = try document.data(as: Player.self)
+                DispatchQueue.main.async {
+                    PlayerDataStore.shared.playerArray.append(noDuplicate: player)
+                }
+            }
+            DispatchQueue.main.async {
+                PlayerDataStore.shared.playerArray.sort { $0.point > $1.point }
+            }
+        } catch {
+            print(error)
         }
     }
 }
