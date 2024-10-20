@@ -45,6 +45,12 @@ class DealUpdate {
     static func confiscatePoint(userId: String, howMany: Int) async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         guard let nowPoint = PlayerDataStore.shared.playerArray.first(where: { $0.playerUserId == userId })?.point else { return }
+        DispatchQueue.main.async {
+            guard var proposer = PlayerDataStore.shared.playerArray.first(where: { $0.playerUserId == userId }) else { return }
+            proposer.point = nowPoint - howMany
+            PlayerDataStore.shared.playerArray.append(noDuplicate: proposer)
+            print("別途参照", PlayerDataStore.shared.playerArray.me.point)
+        }
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["point": nowPoint - howMany])
         } catch {

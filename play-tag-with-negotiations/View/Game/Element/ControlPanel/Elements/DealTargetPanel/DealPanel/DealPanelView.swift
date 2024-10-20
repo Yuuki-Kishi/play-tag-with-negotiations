@@ -68,7 +68,6 @@ struct DealPanelView: View {
             }
         }
         .onAppear() {
-            Observe.observeDeals()
             Task {
                 await Get.getNegotiations()
             }
