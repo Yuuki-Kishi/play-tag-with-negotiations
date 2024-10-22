@@ -275,4 +275,24 @@ class Observe {
             UserDataStore.shared.listeners[UserDataStore.listenerType.deal] = listener
         }
     }
+    
+    static func observeMyPoint() {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(myUserId).addSnapshotListener { snapshot, error in
+            do {
+                guard let player = try snapshot?.data(as: Player.self) else { return }
+                var me = PlayerDataStore.shared.playerArray.me
+                me.point = player.point
+                DispatchQueue.main.async {
+                    PlayerDataStore.shared.playerArray.append(noDuplicate: me)
+                }
+            } catch {
+                print(error)
+            }
+        }
+        DispatchQueue.main.async {
+            UserDataStore.shared.listeners[UserDataStore.listenerType.myPoint] = listener
+        }
+    }
 }

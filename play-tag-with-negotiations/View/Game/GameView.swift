@@ -21,7 +21,7 @@ struct GameView: View {
                 Text(displayPhase())
                     .padding(.leading)
                 Spacer()
-                Text(String(playerDataStore.playerArray.me.point))
+                Text(point())
                     .padding(.trailing)
             }
             VStack {
@@ -57,6 +57,7 @@ struct GameView: View {
                 Observe.observeIsDecided()
                 Observe.observeMyIsDecided()
                 Observe.observeDeals()
+                Observe.observeMyPoint()
                 await Get.getAlivePlayers()
             }
         }

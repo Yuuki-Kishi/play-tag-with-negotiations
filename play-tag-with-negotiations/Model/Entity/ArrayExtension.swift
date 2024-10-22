@@ -68,7 +68,6 @@ extension Array where Element == Player {
     mutating func append(noDuplicate item: Element) {
         if let index = self.firstIndex(where: { $0.playerUserId == item.playerUserId }) {
             self[index] = item
-            print("魔改造append", self[index].point)
         } else {
             self.append(item)
         }
