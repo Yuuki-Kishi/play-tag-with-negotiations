@@ -33,7 +33,7 @@ struct DealPanelViewNegotiationCell: View {
                 isShowAlert = true
             } else {
                 Task {
-                    await Create.proposeDeal(negotiationId: negotiation.negotiationId.uuidString)
+                    await Propose.proposeDeal(negotiation: negotiation)
                 }
             }
         }

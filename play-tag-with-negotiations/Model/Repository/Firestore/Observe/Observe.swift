@@ -43,7 +43,7 @@ class Observe {
                 guard let playingRoom = try DocumentSnapshot?.data(as: PlayTagRoom.self) else { return }
                 if PlayerDataStore.shared.playingRoom.phaseNow < playingRoom.phaseNow {
                     Task {
-                        await Check.checkDeals()
+                        await Check.checkDeals(phaseNow: playingRoom.phaseNow)
                         await Update.isDecidedToFalse()
                         await Get.getAlivePlayers()
                     }
@@ -124,38 +124,38 @@ class Observe {
         }
     }
     
-    static func observeMyIsDecided() {
+    static func observeMyPropaty() {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
         let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(myUserId).addSnapshotListener { DocumentSnapshot, error in
             do {
-                guard let myIsDecided = try DocumentSnapshot?.data(as: Player.self).isDecided else { return }
-                guard let index = PlayerDataStore.shared.playerArray.firstIndex(where: { $0 == PlayerDataStore.shared.playerArray.me }) else { return }
+                guard let player = try DocumentSnapshot?.data(as: Player.self) else { return }
+                var me = PlayerDataStore.shared.playerArray.me
+                me.point = player.point
+                me.isDecided = player.isDecided
                 DispatchQueue.main.async {
-                    PlayerDataStore.shared.playerArray[index].isDecided = myIsDecided
+                    PlayerDataStore.shared.playerArray.append(noDuplicate: me)
                 }
             } catch {
                 print(error)
             }
         }
         DispatchQueue.main.async {
-            UserDataStore.shared.listeners[UserDataStore.listenerType.myIsDecided] = listener
+            UserDataStore.shared.listeners[UserDataStore.listenerType.myPropaty] = listener
         }
     }
     
     static func observeIsDecided() {
-        if PlayerDataStore.shared.playerArray.me.isHost {
-            let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-            let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").whereField("isDecided", isEqualTo: true).addSnapshotListener { QuerySnapshot, error in
-                guard let documents = QuerySnapshot?.documents else { return }
-                let playerCount = PlayerDataStore.shared.playerArray.count
-                if playerCount <= documents.count {
-                    Task { await Update.moveToNextPhase() }
-                }
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").whereField("isDecided", isEqualTo: true).addSnapshotListener { QuerySnapshot, error in
+            guard let documents = QuerySnapshot?.documents else { return }
+            let playerCount = PlayerDataStore.shared.playerArray.count
+            if playerCount <= documents.count {
+                Task { await Update.moveToNextPhase() }
             }
-            DispatchQueue.main.async {
-                UserDataStore.shared.listeners[UserDataStore.listenerType.isDecided] = listener
-            }
+        }
+        DispatchQueue.main.async {
+            UserDataStore.shared.listeners[UserDataStore.listenerType.isDecided] = listener
         }
     }
     
@@ -273,26 +273,6 @@ class Observe {
         }
         DispatchQueue.main.async {
             UserDataStore.shared.listeners[UserDataStore.listenerType.deal] = listener
-        }
-    }
-    
-    static func observeMyPoint() {
-        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(myUserId).addSnapshotListener { snapshot, error in
-            do {
-                guard let player = try snapshot?.data(as: Player.self) else { return }
-                var me = PlayerDataStore.shared.playerArray.me
-                me.point = player.point
-                DispatchQueue.main.async {
-                    PlayerDataStore.shared.playerArray.append(noDuplicate: me)
-                }
-            } catch {
-                print(error)
-            }
-        }
-        DispatchQueue.main.async {
-            UserDataStore.shared.listeners[UserDataStore.listenerType.myPoint] = listener
         }
     }
 }

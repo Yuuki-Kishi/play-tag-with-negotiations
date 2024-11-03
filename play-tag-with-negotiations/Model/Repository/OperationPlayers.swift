@@ -28,7 +28,11 @@ class OperationPlayers {
                 aliveFugitives.append(noDuplicate: fugitive)
                 continue
             }
-            let chasersPosition = chasers.map { $0.move.first { $0.phase == phaseNow }}
+            var chasersPosition: [PlayerPosition] = []
+            for chaser in chasers {
+                guard let chaserPosition = chaser.move.first(where: { $0.phase == phaseNow }) else { return [] }
+                chasersPosition.append(chaserPosition)
+            }
             let isContain = chasersPosition.contains(where: { $0 == fugitive.move.first { $0.phase == phaseNow } })
             if isContain { continue }
             aliveFugitives.append(noDuplicate: fugitive)

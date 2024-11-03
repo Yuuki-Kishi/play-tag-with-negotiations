@@ -16,6 +16,8 @@
 		DE12A7632C75999700F7B0DF /* NoticeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7622C75999700F7B0DF /* NoticeViewCell.swift */; };
 		DE12A7662C7A242900F7B0DF /* InviteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7652C7A242900F7B0DF /* InviteView.swift */; };
 		DE12A7682C7A243300F7B0DF /* InviteViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7672C7A243300F7B0DF /* InviteViewCell.swift */; };
+		DEA9AF502CCD231B005CFF6D /* DealCreate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9AF4F2CCD2314005CFF6D /* DealCreate.swift */; };
+		DEA9AF522CCD23C3005CFF6D /* Propose.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9AF512CCD23C1005CFF6D /* Propose.swift */; };
 		DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB384D2C1DC27D007639F6 /* WaitingRoomView.swift */; };
 		DEAB385B2C1E9165007639F6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEAB385A2C1E9165007639F6 /* GoogleService-Info.plist */; };
 		DEAB38622C1EA178007639F6 /* Google.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB38612C1EA178007639F6 /* Google.swift */; };
@@ -97,6 +99,8 @@
 		DE12A7622C75999700F7B0DF /* NoticeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewCell.swift; sourceTree = "<group>"; };
 		DE12A7652C7A242900F7B0DF /* InviteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteView.swift; sourceTree = "<group>"; };
 		DE12A7672C7A243300F7B0DF /* InviteViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewCell.swift; sourceTree = "<group>"; };
+		DEA9AF4F2CCD2314005CFF6D /* DealCreate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealCreate.swift; sourceTree = "<group>"; };
+		DEA9AF512CCD23C1005CFF6D /* Propose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Propose.swift; sourceTree = "<group>"; };
 		DEAB384D2C1DC27D007639F6 /* WaitingRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomView.swift; sourceTree = "<group>"; };
 		DEAB385A2C1E9165007639F6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DEAB38612C1EA178007639F6 /* Google.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Google.swift; sourceTree = "<group>"; };
@@ -323,6 +327,7 @@
 			isa = PBXGroup;
 			children = (
 				DEDEF6D32C21BA1800A01FFF /* Create.swift */,
+				DEA9AF4F2CCD2314005CFF6D /* DealCreate.swift */,
 			);
 			path = Create;
 			sourceTree = "<group>";
@@ -460,6 +465,7 @@
 		DEFA1C1D2C8C971C00CB4458 /* Deal */ = {
 			isa = PBXGroup;
 			children = (
+				DEA9AF512CCD23C1005CFF6D /* Propose.swift */,
 				DEFA1C1E2C8C976400CB4458 /* Success.swift */,
 				DEFA1C242C8DB0FF00CB4458 /* Fulfill.swift */,
 			);
@@ -667,7 +673,9 @@
 				DEFA1C212C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift in Sources */,
 				DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */,
 				DE12A7632C75999700F7B0DF /* NoticeViewCell.swift in Sources */,
+				DEA9AF522CCD23C3005CFF6D /* Propose.swift in Sources */,
 				DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */,
+				DEA9AF502CCD231B005CFF6D /* DealCreate.swift in Sources */,
 				DEFA54F72C3E9EB800CF6BD1 /* PathDataStore.swift in Sources */,
 				DEFA550C2C416F8700CF6BD1 /* ControlPanelCoordination.swift in Sources */,
 				DEDB91502C173F7C00A8DA37 /* Player.swift in Sources */,

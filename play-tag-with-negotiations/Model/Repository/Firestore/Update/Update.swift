@@ -101,7 +101,7 @@ class Update {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
         if phaseNow < phaseMax {
             do {
-                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["phaseNow": /*PlayerDataStore.shared.currentPhaseOptimistic*/phaseNow + 1])
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["phaseNow": phaseNow + 1])
             } catch {
                 print(error)
             }
