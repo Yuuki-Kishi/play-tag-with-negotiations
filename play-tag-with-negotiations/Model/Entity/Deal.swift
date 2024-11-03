@@ -50,7 +50,6 @@ struct Deal: Codable, Hashable, Identifiable, Equatable {
         try container.encode(self.targetUserId, forKey: .targetUserId)
         try container.encode(self.targetUserId, forKey: .targetUserId)
         try container.encode(self.condition.rawValue, forKey: .condition)
-        let formatter = ISO8601DateFormatter()
         try container.encode(self.proposePhase, forKey: .proposePhase)
         try container.encode(self.expiredPhase, forKey: .expiredPhase)
     }

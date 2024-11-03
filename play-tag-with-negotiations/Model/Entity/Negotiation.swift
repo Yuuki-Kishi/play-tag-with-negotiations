@@ -18,14 +18,19 @@ struct Negotiation: Codable, Hashable, Identifiable, Equatable {
     var displayName: String
     var consumption: Int
     var imageName: String
+    var target: Target
     var version: Double
+    
+    enum Target: String {
+        case chaser, fugitive, both, unknown
+    }
     
     enum Name: String {
         case missOnce, unknown
     }
     
     enum CodingKeys: String, CodingKey {
-        case negotiationId, negotiationName, displayName, consumption, imageName, version
+        case negotiationId, negotiationName, displayName, consumption, imageName, target, version
     }
     
     init(from decoder: Decoder) throws {
@@ -37,6 +42,8 @@ struct Negotiation: Codable, Hashable, Identifiable, Equatable {
         self.displayName = try container.decode(String.self, forKey: .displayName)
         self.consumption = try container.decode(Int.self, forKey: .consumption)
         self.imageName = try container.decode(String.self, forKey: .imageName)
+        let target = try container.decode(String.self, forKey: .target)
+        self.target = Target(rawValue: target) ?? .unknown
         self.version = try container.decode(Double.self, forKey: .version)
     }
     
@@ -47,16 +54,18 @@ struct Negotiation: Codable, Hashable, Identifiable, Equatable {
         try container.encode(self.displayName, forKey: .displayName)
         try container.encode(self.consumption, forKey: .consumption)
         try container.encode(self.imageName, forKey: .imageName)
+        try container.encode(self.target.rawValue, forKey: .target)
         try container.encode(self.version, forKey: .version)
     }
     
-    init(negotiationId: UUID, negotiationName: Name, displayName: String, consumption: Int, imageName: String, version: Double) {
+    init(negotiationId: UUID, negotiationName: Name, displayName: String, consumption: Int, imageName: String, target: Target, version: Double) {
         self.id = UUID()
         self.negotiationId = negotiationId
         self.negotiationName = negotiationName
         self.displayName = displayName
         self.consumption = consumption
         self.imageName = imageName
+        self.target = target
         self.version = version
     }
     
@@ -67,6 +76,7 @@ struct Negotiation: Codable, Hashable, Identifiable, Equatable {
         self.displayName = "unknown"
         self.consumption = 666
         self.imageName = "questionmark"
+        self.target = .unknown
         self.version = 1.0
     }
 }

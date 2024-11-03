@@ -59,7 +59,9 @@ struct GameView: View {
                 }
                 Observe.observeMyPropaty()
                 Observe.observeDeals()
+                await Get.getUsers()
                 await Get.getAlivePlayers()
+                await Get.getNegotiations()
             }
         }
         .onDisappear() {

@@ -46,7 +46,6 @@ struct Quest: Codable, Hashable, Identifiable, Equatable {
         try container.encode(self.missionId, forKey: .missionId)
         try container.encode(self.contractorUserId, forKey: .contractorUserId)
         try container.encode(self.condition.rawValue, forKey: .condition)
-        let formatter = ISO8601DateFormatter()
         try container.encode(acceptPhase, forKey: .acceptPhase)
         try container.encode(deadlinePhase, forKey: .deadlinePhase)
     }

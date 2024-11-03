@@ -47,6 +47,16 @@ class Get {
         return nil
     }
     
+    static func getUsers() async {
+        let players = await getAllPlayers()
+        for player in players {
+            guard let user = await getUserData(userId: player.playerUserId) else { return }
+            DispatchQueue.main.async {
+                PlayerDataStore.shared.userArray.append(noDuplicate: user)
+            }
+        }
+    }
+    
     static func getNotice(noticeId: String) async -> Notice? {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return nil }
         do {
@@ -155,6 +165,11 @@ class Get {
             }
             for document in documents {
                 let negotiation = try document.data(as: Negotiation.self)
+                if PlayerDataStore.shared.playerArray.me.isChaser {
+                    if negotiation.target == .fugitive { continue }
+                } else {
+                    if negotiation.target == .chaser { continue }
+                }
                 DispatchQueue.main.async {
                     PlayerDataStore.shared.negotiationArray.append(noDuplicate: negotiation)
                 }
@@ -166,9 +181,6 @@ class Get {
     
     static func getResult() async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-        DispatchQueue.main.async {
-            PlayerDataStore.shared.playerArray = []
-        }
         do {
             let documents = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").getDocuments().documents
             for document in documents {

@@ -156,9 +156,8 @@ class Update {
     
     static func checkNotice(noticeId: String) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-        let notices = await Get.getNonCheckedNotice()
         do {
-                try await Firestore.firestore().collection("Users").document(userId).collection("Notices").document(noticeId).updateData(["isChecked": true])
+            try await Firestore.firestore().collection("Users").document(userId).collection("Notices").document(noticeId).updateData(["isChecked": true])
         } catch {
             print(error)
         }

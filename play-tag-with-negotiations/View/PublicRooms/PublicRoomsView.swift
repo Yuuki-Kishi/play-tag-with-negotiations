@@ -183,13 +183,13 @@ struct PublicRoomsView: View {
                 guard let playingRoom = await Get.getRoomData(roomId: roomId) else { return }
                 DispatchQueue.main.async {
                     playerDataStore.playingRoom = playingRoom
-                }
-                if playingRoom.isPlaying {
-                    if !playingRoom.isEnd {
-                        pathDataStore.navigatetionPath.append(.game)
+                    if playingRoom.isPlaying {
+                        if !playingRoom.isEnd {
+                            pathDataStore.navigatetionPath.append(.game)
+                        }
+                    } else {
+                        pathDataStore.navigatetionPath.append(.waitingRoom)
                     }
-                } else {
-                    pathDataStore.navigatetionPath.append(.waitingRoom)
                 }
                 if playingRoom.isEnd {
                     await Delete.endGame()
