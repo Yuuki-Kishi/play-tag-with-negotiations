@@ -111,10 +111,10 @@ struct WaitingRoomView: View {
             Text("非公開ルームの場合、再入室するにはルームIDが必要です。")
         })
         .onAppear() {
-            Observe.observeRoomField()
-            Observe.observePlayers()
+            PlayTagRoomRepository.observeRoomField()
+            PlayerRepository.observePlayers()
             Task {
-                await Update.randomInitialPosition()
+                await PlayerPositionRepository.randomInitialPosition()
             }
         }
         .onDisappear() {

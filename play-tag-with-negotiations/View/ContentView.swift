@@ -16,7 +16,17 @@ struct ContentView: View {
     var body: some View {
         Group {
             if userDataStore.userResult == nil {
-                Text("読み込み中...")
+                let iconHeight = UIScreen.main.bounds.height / 4
+                VStack {
+                    Spacer()
+                    Image("Icon")
+                        .resizable()
+                        .frame(width: iconHeight, height: iconHeight)
+                        .clipShape(RoundedRectangle(cornerRadius: iconHeight * 0.1675))
+                    Spacer()
+                    Text("ログインデータを確認中...")
+                    Spacer()
+                }
             } else {
                 if userDataStore.signInUser == nil {
                     SignInView()

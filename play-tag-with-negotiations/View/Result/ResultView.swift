@@ -38,8 +38,9 @@ struct ResultView: View {
             })
         }
         .onAppear() {
+            print("result", playerDataStore.playerArray)
             Task {
-                await Get.getResult()
+//                await Get.getResult()
             }
         }
         .navigationTitle("結果")

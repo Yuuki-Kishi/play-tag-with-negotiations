@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE06B9762CFC38B900CB4AEA /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE06B9752CFC38B900CB4AEA /* UserRepository.swift */; };
+		DE06B97A2CFC431400CB4AEA /* PlayerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE06B9792CFC431400CB4AEA /* PlayerRepository.swift */; };
 		DE12A74A2C553F6D00F7B0DF /* MovePanelViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7492C553F6D00F7B0DF /* MovePanelViewButton.swift */; };
 		DE12A74F2C66722C00F7B0DF /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A74E2C66722C00F7B0DF /* ResultView.swift */; };
 		DE12A7532C6672CD00F7B0DF /* ResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7522C6672CD00F7B0DF /* ResultViewCell.swift */; };
@@ -46,6 +48,14 @@
 		DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91542C18890400A8DA37 /* RoomSettingView.swift */; };
 		DEDB91582C189BCB00A8DA37 /* RoomSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91572C189BCB00A8DA37 /* RoomSettingViewCell.swift */; };
 		DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB91592C1B378900A8DA37 /* MyPageView.swift */; };
+		DEDD96B42D06D99E008BAAF7 /* IsCatchableStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDD96B32D06D99E008BAAF7 /* IsCatchableStatus.swift */; };
+		DEDD96B62D06E49A008BAAF7 /* NoticeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDD96B52D06E49A008BAAF7 /* NoticeRepository.swift */; };
+		DEDD96B82D06EAC0008BAAF7 /* FriendRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDD96B72D06EAC0008BAAF7 /* FriendRepository.swift */; };
+		DEDD96BA2D06F922008BAAF7 /* PlayTagRoomRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDD96B92D06F922008BAAF7 /* PlayTagRoomRepository.swift */; };
+		DEDD96BC2D070D15008BAAF7 /* PlayerPositionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDD96BB2D070D15008BAAF7 /* PlayerPositionRepository.swift */; };
+		DEDD96BE2D0711E5008BAAF7 /* NegotiationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDD96BD2D0711E5008BAAF7 /* NegotiationRepository.swift */; };
+		DEDD96C02D071381008BAAF7 /* DealRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDD96BF2D071381008BAAF7 /* DealRepository.swift */; };
+		DEDD96C32D072D1D008BAAF7 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = DEDD96C22D072D1D008BAAF7 /* Algorithms */; };
 		DEDEF6D42C21BA1800A01FFF /* Create.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6D32C21BA1800A01FFF /* Create.swift */; };
 		DEDEF6E82C23283200A01FFF /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6E72C23283200A01FFF /* Update.swift */; };
 		DEDEF6EA2C23303600A01FFF /* SignOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6E92C23303600A01FFF /* SignOut.swift */; };
@@ -90,6 +100,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DE06B9752CFC38B900CB4AEA /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
+		DE06B9792CFC431400CB4AEA /* PlayerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRepository.swift; sourceTree = "<group>"; };
 		DE12A7492C553F6D00F7B0DF /* MovePanelViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovePanelViewButton.swift; sourceTree = "<group>"; };
 		DE12A74E2C66722C00F7B0DF /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		DE12A7522C6672CD00F7B0DF /* ResultViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewCell.swift; sourceTree = "<group>"; };
@@ -126,6 +138,13 @@
 		DEDB91542C18890400A8DA37 /* RoomSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSettingView.swift; sourceTree = "<group>"; };
 		DEDB91572C189BCB00A8DA37 /* RoomSettingViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSettingViewCell.swift; sourceTree = "<group>"; };
 		DEDB91592C1B378900A8DA37 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
+		DEDD96B32D06D99E008BAAF7 /* IsCatchableStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsCatchableStatus.swift; sourceTree = "<group>"; };
+		DEDD96B52D06E49A008BAAF7 /* NoticeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeRepository.swift; sourceTree = "<group>"; };
+		DEDD96B72D06EAC0008BAAF7 /* FriendRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRepository.swift; sourceTree = "<group>"; };
+		DEDD96B92D06F922008BAAF7 /* PlayTagRoomRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayTagRoomRepository.swift; sourceTree = "<group>"; };
+		DEDD96BB2D070D15008BAAF7 /* PlayerPositionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPositionRepository.swift; sourceTree = "<group>"; };
+		DEDD96BD2D0711E5008BAAF7 /* NegotiationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegotiationRepository.swift; sourceTree = "<group>"; };
+		DEDD96BF2D071381008BAAF7 /* DealRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealRepository.swift; sourceTree = "<group>"; };
 		DEDEF6D32C21BA1800A01FFF /* Create.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Create.swift; sourceTree = "<group>"; };
 		DEDEF6E72C23283200A01FFF /* Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Update.swift; sourceTree = "<group>"; };
 		DEDEF6E92C23303600A01FFF /* SignOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOut.swift; sourceTree = "<group>"; };
@@ -175,6 +194,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEDD96C32D072D1D008BAAF7 /* Algorithms in Frameworks */,
 				DECFBB3C2C844CAC00093544 /* GoogleSignInSwift in Frameworks */,
 				DECFBB332C844CA000093544 /* FirebaseAuth in Frameworks */,
 				DECFBB3A2C844CAB00093544 /* GoogleSignIn in Frameworks */,
@@ -274,6 +294,14 @@
 		DEAB38722C1F0D9A007639F6 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				DE06B9752CFC38B900CB4AEA /* UserRepository.swift */,
+				DEDD96B52D06E49A008BAAF7 /* NoticeRepository.swift */,
+				DEDD96B72D06EAC0008BAAF7 /* FriendRepository.swift */,
+				DEDD96B92D06F922008BAAF7 /* PlayTagRoomRepository.swift */,
+				DE06B9792CFC431400CB4AEA /* PlayerRepository.swift */,
+				DEDD96BB2D070D15008BAAF7 /* PlayerPositionRepository.swift */,
+				DEDD96BD2D0711E5008BAAF7 /* NegotiationRepository.swift */,
+				DEDD96BF2D071381008BAAF7 /* DealRepository.swift */,
 				DEAB38692C1EAA7F007639F6 /* Auth */,
 				DEDEF6D02C21B97800A01FFF /* Firestore */,
 				DEFA54DD2C3989D500CF6BD1 /* Storage */,
@@ -409,11 +437,12 @@
 			isa = PBXGroup;
 			children = (
 				DEAB386E2C1EB32E007639F6 /* User.swift */,
-				DEDB914F2C173F7C00A8DA37 /* Player.swift */,
-				DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */,
+				DE12A75D2C75883B00F7B0DF /* Notice.swift */,
 				DEFA54FF2C401D6200CF6BD1 /* Friend.swift */,
 				DEDB914D2C173A2400A8DA37 /* PlayTagRoom.swift */,
-				DE12A75D2C75883B00F7B0DF /* Notice.swift */,
+				DEDB914F2C173F7C00A8DA37 /* Player.swift */,
+				DEFA54CF2C246E2300CF6BD1 /* PlayerPosition.swift */,
+				DEDD96B32D06D99E008BAAF7 /* IsCatchableStatus.swift */,
 				DECFBB262C7ADF7000093544 /* Negotiation.swift */,
 				DECFBB282C81F17900093544 /* Deal.swift */,
 				DEFA1C262C941D9D00CB4458 /* Mission.swift */,
@@ -588,6 +617,7 @@
 				DECFBB362C844CA000093544 /* FirebaseStorage */,
 				DECFBB392C844CAB00093544 /* GoogleSignIn */,
 				DECFBB3B2C844CAC00093544 /* GoogleSignInSwift */,
+				DEDD96C22D072D1D008BAAF7 /* Algorithms */,
 			);
 			productName = "play-tag-with-negotiations";
 			productReference = DEDB91382C17343500A8DA37 /* play-tag-with-negotiations.app */;
@@ -621,6 +651,7 @@
 			packageReferences = (
 				DECFBB312C844CA000093544 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				DECFBB382C844CAB00093544 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				DEDD96C12D072D1D008BAAF7 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
 			);
 			productRefGroup = DEDB91392C17343500A8DA37 /* Products */;
 			projectDirPath = "";
@@ -651,6 +682,7 @@
 			files = (
 				DECFBB252C7ACA2300093544 /* DealPanelViewCell.swift in Sources */,
 				DEFA1C2E2C953A4B00CB4458 /* QuestTargetPanelVIewCell.swift in Sources */,
+				DEDD96B82D06EAC0008BAAF7 /* FriendRepository.swift in Sources */,
 				DEAB38752C205FA8007639F6 /* PublicRoomsViewCell.swift in Sources */,
 				DECFBB232C7ACA1700093544 /* DealPanelView.swift in Sources */,
 				DEFA1C312C953BAF00CB4458 /* QuestPanelView.swift in Sources */,
@@ -661,9 +693,11 @@
 				DEDEF6D42C21BA1800A01FFF /* Create.swift in Sources */,
 				DEFA1C272C941D9D00CB4458 /* Mission.swift in Sources */,
 				DE12A74A2C553F6D00F7B0DF /* MovePanelViewButton.swift in Sources */,
+				DEDD96BA2D06F922008BAAF7 /* PlayTagRoomRepository.swift in Sources */,
 				DE12A74F2C66722C00F7B0DF /* ResultView.swift in Sources */,
 				DEFA54DC2C3907D800CF6BD1 /* RoomInfomationViewCell.swift in Sources */,
 				DEAB38622C1EA178007639F6 /* Google.swift in Sources */,
+				DEDD96BC2D070D15008BAAF7 /* PlayerPositionRepository.swift in Sources */,
 				DEDEF6E82C23283200A01FFF /* Update.swift in Sources */,
 				DEFA1C232C8CC43C00CB4458 /* DealUpdate.swift in Sources */,
 				DEDB91582C189BCB00A8DA37 /* RoomSettingViewCell.swift in Sources */,
@@ -680,11 +714,13 @@
 				DEFA550C2C416F8700CF6BD1 /* ControlPanelCoordination.swift in Sources */,
 				DEDB91502C173F7C00A8DA37 /* Player.swift in Sources */,
 				DEFA54DA2C39076C00CF6BD1 /* RoomInfomationView.swift in Sources */,
+				DEDD96B62D06E49A008BAAF7 /* NoticeRepository.swift in Sources */,
 				DEDEF6F52C23C9BB00A01FFF /* FieldMapView.swift in Sources */,
 				DEFA1C292C950EDD00CB4458 /* Quest.swift in Sources */,
 				DEFA551B2C43A07D00CF6BD1 /* ArrayExtension.swift in Sources */,
 				DE12A7682C7A243300F7B0DF /* InviteViewCell.swift in Sources */,
 				DECFBB272C7ADF7000093544 /* Negotiation.swift in Sources */,
+				DE06B9762CFC38B900CB4AEA /* UserRepository.swift in Sources */,
 				DEFA54D52C3674EE00CF6BD1 /* Delete.swift in Sources */,
 				DEFA551D2C4798B200CF6BD1 /* Observe.swift in Sources */,
 				DEDB914E2C173A2400A8DA37 /* PlayTagRoom.swift in Sources */,
@@ -696,12 +732,16 @@
 				DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */,
 				DEFA54E12C39955200CF6BD1 /* Download.swift in Sources */,
 				DEFA55112C42669500CF6BD1 /* FriendDataStore.swift in Sources */,
+				DEDD96C02D071381008BAAF7 /* DealRepository.swift in Sources */,
 				DEFA54F22C3D4E6400CF6BD1 /* CheckSignIn.swift in Sources */,
 				DEAB387B2C2061C2007639F6 /* WaitingRoomViewCell.swift in Sources */,
 				DEFA55052C402DB700CF6BD1 /* MovePanelView.swift in Sources */,
+				DEDD96BE2D0711E5008BAAF7 /* NegotiationRepository.swift in Sources */,
 				DEFA55162C42BDF800CF6BD1 /* NotFriendViewCell.swift in Sources */,
 				DEFA1C1F2C8C976400CB4458 /* Success.swift in Sources */,
+				DEDD96B42D06D99E008BAAF7 /* IsCatchableStatus.swift in Sources */,
 				DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */,
+				DE06B97A2CFC431400CB4AEA /* PlayerRepository.swift in Sources */,
 				DEAB386F2C1EB32E007639F6 /* User.swift in Sources */,
 				DECFBB2D2C8387EC00093544 /* Get.swift in Sources */,
 				DEFA54D22C3103D100CF6BD1 /* PlayerDataStore.swift in Sources */,
@@ -950,6 +990,14 @@
 				minimumVersion = 8.0.0;
 			};
 		};
+		DEDD96C12D072D1D008BAAF7 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -977,6 +1025,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DECFBB382C844CAB00093544 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		DEDD96C22D072D1D008BAAF7 /* Algorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEDD96C12D072D1D008BAAF7 /* XCRemoteSwiftPackageReference "swift-algorithms" */;
+			productName = Algorithms;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

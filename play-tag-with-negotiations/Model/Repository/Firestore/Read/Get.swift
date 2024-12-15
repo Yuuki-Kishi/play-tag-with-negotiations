@@ -118,14 +118,19 @@ class Get {
     static func getAlivePlayers() async {
         let players = await getAllPlayers().filter { $0.isCaptured == false }
         let alivePlayers = OperationPlayers.getAlivePlayers(players: players)
-        let isAlive = OperationPlayers.isAlive(players: players)
-        if !isAlive { await Update.wasCaptured() }
+        let isAliveMe = OperationPlayers.isAliveMe(players: players)
+        if !isAliveMe { await Update.wasCaptured() }
         DispatchQueue.main.async {
             PlayerDataStore.shared.playerArray = []
         }
-        for alivePlayer in alivePlayers {
+        for player in players {
+            let isAlive = alivePlayers.contains { $0.playerUserId == player.playerUserId }
+            if !isAlive {
+                var newPlayer = player
+                newPlayer.isCaptured = true
+            }
             DispatchQueue.main.async {
-                PlayerDataStore.shared.playerArray.append(noDuplicate: alivePlayer)
+                PlayerDataStore.shared.playerArray.append(noDuplicate: player)
             }
         }
         let aliveFugitiveCount = OperationPlayers.getAliveFugitives(players: players).count
@@ -165,11 +170,6 @@ class Get {
             }
             for document in documents {
                 let negotiation = try document.data(as: Negotiation.self)
-                if PlayerDataStore.shared.playerArray.me.isChaser {
-                    if negotiation.target == .fugitive { continue }
-                } else {
-                    if negotiation.target == .chaser { continue }
-                }
                 DispatchQueue.main.async {
                     PlayerDataStore.shared.negotiationArray.append(noDuplicate: negotiation)
                 }
@@ -191,9 +191,49 @@ class Get {
             }
             DispatchQueue.main.async {
                 PlayerDataStore.shared.playerArray.sort { $0.point > $1.point }
+                print("resultPlayers", PlayerDataStore.shared.playerArray)
             }
         } catch {
             print(error)
         }
     }
 }
+
+//[
+//    play_tag_with_negotiations.Player(
+//        id: 8C3DE80C-55BC-4C8A-A7BA-44A06715DD0B,
+//        playerUserId: "RV7fobdWpWZ8AjOSPEMyH1oHRhw1",
+//        isHost: false,
+//        point: 150,
+//        enteredTime: 2024-12-01 午前3:28:29 +0000,
+//        isChaser: true,
+//        isDecided: false,
+//        isCaptured: false,
+//        move: [
+//            play_tag_with_negotiations.PlayerPosition(phase: 1, x: 0, y: 3),
+//            play_tag_with_negotiations.PlayerPosition(phase: 2, x: 1, y: 2),
+//            play_tag_with_negotiations.PlayerPosition(phase: 3, x: 2, y: 2),
+//            play_tag_with_negotiations.PlayerPosition(phase: 4, x: 2, y: 3),
+//            play_tag_with_negotiations.PlayerPosition(phase: 5, x: 2, y: 2)
+//        ],
+//        isCanCapture: false
+//    ),
+//    play_tag_with_negotiations.Player(
+//        id: 53F43EA4-58D8-443D-AA75-DBCE8BFFA7A3,
+//        playerUserId: "YSqQ4MXT10g5Cgzu4qRTUWpB5wH3",
+//        isHost: true,
+//        point: 50,
+//        enteredTime: 2024-12-01 午前3:28:25 +0000,
+//        isChaser: false,
+//        isDecided: false,
+//        isCaptured: false,
+//        move: [
+//            play_tag_with_negotiations.PlayerPosition(phase: 1, x: 0, y: 0),
+//            play_tag_with_negotiations.PlayerPosition(phase: 2, x: 1, y: 1),
+//            play_tag_with_negotiations.PlayerPosition(phase: 3, x: 2, y: 1),
+//            play_tag_with_negotiations.PlayerPosition(phase: 4, x: 2, y: 1),
+//            play_tag_with_negotiations.PlayerPosition(phase: 5, x: 2, y: 2)
+//        ],
+//        isCanCapture: true
+//    )
+//]

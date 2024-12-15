@@ -55,22 +55,19 @@ struct GameView: View {
         .onAppear() {
             Task {
                 if playerDataStore.playerArray.me.isHost {
-                    Observe.observeIsDecided()
+                    PlayTagRoomRepository.observeIsDecided()
                 }
-                Observe.observeMyPropaty()
-                Observe.observeDeals()
-                await Get.getUsers()
-                await Get.getAlivePlayers()
-                await Get.getNegotiations()
+                PlayerRepository.observeMyPropaty()
+                DealRepository.observeDeals()
+//                await Get.getUsers()
+                await PlayerRepository.getAlivePlayers()
+                await NegotiationRepository.getNegotiations()
             }
         }
         .onDisappear() {
-            userDataStore.listeners[.roomField]?.remove()
-            userDataStore.listeners.removeValue(forKey: .roomField)
-            userDataStore.listeners[.isDecided]?.remove()
-            userDataStore.listeners.removeValue(forKey: .isDecided)
-            userDataStore.listeners[.myPropaty]?.remove()
-            userDataStore.listeners.removeValue(forKey: .myPropaty)
+            userDataStore.listeners.remove(listenerType: .roomField)
+            userDataStore.listeners.remove(listenerType: .isDecided)
+            userDataStore.listeners.remove(listenerType: .myPropaty)
         }
     }
     func displayPhase() -> String {

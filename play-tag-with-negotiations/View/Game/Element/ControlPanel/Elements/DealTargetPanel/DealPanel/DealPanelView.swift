@@ -11,7 +11,7 @@ struct DealPanelView: View {
     @ObservedObject var playerDataStore: PlayerDataStore
     
     var body: some View {
-        if playerDataStore.negotiationArray.isEmpty {
+        if negotiationIsEmpty() && playerDataStore.dealArray.isEmpty {
             Text("可能な取引がありません")
                 .frame(alignment: .center)
         } else {
@@ -34,14 +34,26 @@ struct DealPanelView: View {
                         Text("履行中の取引")
                     })
                 }
-                if !playerDataStore.negotiationArray.canPropose.isEmpty {
-                    Section(content: {
-                        ForEach(playerDataStore.negotiationArray.canPropose, id: \.self) { negotiation in
-                            DealPanelViewNegotiationCell(negotiation: Binding(get: { negotiation }, set: {_ in}))
-                        }
-                    }, header: {
-                        Text("提案できる取引")
-                    })
+                if playerDataStore.playerArray.me.isChaser {
+                    if !playerDataStore.negotiationArray.filter({ $0.target == .chaser }).canPropose.isEmpty {
+                        Section(content: {
+                            ForEach(playerDataStore.negotiationArray.filter({ $0.target == .chaser }).canPropose, id: \.self) { negotiation in
+                                DealPanelViewNegotiationCell(negotiation: Binding(get: { negotiation }, set: {_ in}))
+                            }
+                        }, header: {
+                            Text("提案できる取引")
+                        })
+                    }
+                } else {
+                    if !playerDataStore.negotiationArray.filter({ $0.target == .fugitive }).canPropose.isEmpty {
+                        Section(content: {
+                            ForEach(playerDataStore.negotiationArray.filter({ $0.target == .fugitive }).canPropose, id: \.self) { negotiation in
+                                DealPanelViewNegotiationCell(negotiation: Binding(get: { negotiation }, set: {_ in}))
+                            }
+                        }, header: {
+                            Text("提案できる取引")
+                        })
+                    }
                 }
                 if !playerDataStore.dealArray.proposing.isEmpty {
                     Section(content: {
@@ -71,6 +83,13 @@ struct DealPanelView: View {
                     })
                 }
             }
+        }
+    }
+    func negotiationIsEmpty() -> Bool {
+        if playerDataStore.playerArray.me.isChaser {
+            return playerDataStore.negotiationArray.filter { $0.target == .chaser }.isEmpty
+        } else {
+            return playerDataStore.negotiationArray.filter { $0.target == .fugitive }.isEmpty
         }
     }
 }

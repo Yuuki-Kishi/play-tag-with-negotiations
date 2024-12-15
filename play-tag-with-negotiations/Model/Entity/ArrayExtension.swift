@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 extension Array where Element == User {
     mutating func append(noDuplicate item: Element) {
@@ -155,6 +156,17 @@ extension Array where Element == Deal {
         if !self.contains(where: { $0.dealId == item.dealId }) {
             self.append(item)
         }
+    }
+    mutating func delete(deal: Element) {
+        guard let index = self.firstIndex(where: { $0 == deal }) else { return }
+        self.remove(at: index)
+    }
+}
+
+extension Dictionary where Element == (key: UserDataStore.listenerType, value: ListenerRegistration) {
+    mutating func remove(listenerType: UserDataStore.listenerType) {
+        UserDataStore.shared.listeners[listenerType]?.remove()
+        UserDataStore.shared.listeners.removeValue(forKey: listenerType)
     }
 }
 

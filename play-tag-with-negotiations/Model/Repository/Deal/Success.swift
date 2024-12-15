@@ -20,6 +20,7 @@ class Success {
     
     static func missOnce(deal: Deal) async {
         await DealUpdate.confiscatePoint(userId: deal.proposerUserId, howMany: 50)
+        await Update.grantPoint(userId: deal.targetUserId, howMany: 50)
         await DealUpdate.cannotCapturePlayer(userId: deal.proposerUserId)
         await DealUpdate.dealSuccess(deal: deal)
     }

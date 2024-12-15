@@ -14,9 +14,10 @@ struct SignInView: View {
     var body: some View {
         VStack {
             Spacer(minLength: 50)
-            RoundedRectangle(cornerRadius: 50)
-                .foregroundStyle(Color.accentColor)
+            Image("Icon")
+                .resizable()
                 .frame(width: UIScreen.main.bounds.height / 4, height: UIScreen.main.bounds.height / 4)
+                .clipShape(RoundedRectangle(cornerRadius: 50))
             Spacer(minLength: UIScreen.main.bounds.height / 4)
             GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .light, style: .wide, state: .normal), action: Google.handleSignInButton)
                 .frame(width: UIScreen.main.bounds.width / 1.5)
