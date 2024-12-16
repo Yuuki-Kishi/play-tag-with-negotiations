@@ -57,15 +57,7 @@ struct WaitingRoomView: View {
         .navigationBarBackButtonHidden(true)
         .onChange(of: playerDataStore.playingRoom.isPlaying) {
             if playerDataStore.playingRoom.isPlaying {
-//                if playerDataStore.playerArray.me.isHost {
-//                    Task {
-//                        
-//                        DispatchQueue.main.async {
-//                            playerDataStore.currentPhaseOptimistic += 1
-//                        }
-//                        
-//                    }
-//                }
+                Task { await PlayerRepository.writeIsCatchable() }
                 pathDataStore.navigatetionPath.append(.game)
             }
         }

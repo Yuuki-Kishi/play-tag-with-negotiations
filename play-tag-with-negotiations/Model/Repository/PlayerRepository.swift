@@ -26,6 +26,20 @@ class PlayerRepository {
         }
     }
     
+    static func writeIsCatchable() async {
+        let players = PlayerDataStore.shared.playerArray
+        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+        for player in players {
+            if player.playerUserId == myUserId { continue }
+            do {
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(player.playerUserId).updateData(["isCatchable": [["chaserUserId": myUserId, "isCatchable": true]]])
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
 //    check
     
 //    get
@@ -60,8 +74,8 @@ class PlayerRepository {
     static func getAlivePlayers() async {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
         let players = await getAllPlayers().filter { $0.isCaptured == false }
-        let alivePlayers = OperationPlayers.getAlivePlayers(players: players)
-        let isAliveMe = alivePlayers.contains(where: { $0.playerUserId == myUserId })
+        let alivePlayers = OperationPlayers.getSuvivors(players: players)
+        let isAliveMe = OperationPlayers.nextPhaseSuviveFugitives(players: players).contains(where: { $0.playerUserId == myUserId })
         if !isAliveMe { await Update.wasCaptured() }
         DispatchQueue.main.async {
             PlayerDataStore.shared.playerArray = []
@@ -76,7 +90,7 @@ class PlayerRepository {
                 PlayerDataStore.shared.playerArray.append(noDuplicate: player)
             }
         }
-        let aliveFugitiveCount = OperationPlayers.getAliveFugitives(players: players).count
+        let aliveFugitiveCount = OperationPlayers.nextPhaseSuviveFugitives(players: players).count
         if aliveFugitiveCount == 0 {
             await Update.gameEnd()
         }

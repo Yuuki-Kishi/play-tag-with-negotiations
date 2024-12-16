@@ -44,7 +44,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.isDecided = try container.decode(Bool.self, forKey: .isDecided)
         self.isCaptured = try container.decode(Bool.self, forKey: .isCaptured)
         self.move = try container.decode([PlayerPosition].self, forKey: .move)
-        self.isCatchable = try container.decode([IsCatchableStatus].self, forKey: .isCatchable)
+        self.isCatchable = try container.decodeIfPresent([IsCatchableStatus].self, forKey: .isCatchable) ?? []
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -59,7 +59,9 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         try container.encode(self.isDecided, forKey: .isDecided)
         try container.encode(self.isCaptured, forKey: .isCaptured)
         try container.encode(self.move, forKey: .move)
-        try container.encode(self.isCatchable, forKey: .isCatchable)
+        if !self.isCatchable.isEmpty {
+            try container.encode(self.isCatchable, forKey: .isCatchable)
+        }
     }
     
     init(playerUserId: String, isHost: Bool, point: Int, enteredTime: Date, isChaser: Bool, isDecided: Bool, isCaptured: Bool, move: [PlayerPosition], isCatchable: [IsCatchableStatus]) {

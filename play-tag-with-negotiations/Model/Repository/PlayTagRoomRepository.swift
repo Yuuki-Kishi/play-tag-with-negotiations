@@ -11,17 +11,17 @@ import FirebaseFirestore
 
 class PlayTagRoomRepository {
     //    create
-//    static func createPlayTagRoom(playTagRoom: PlayTagRoom) async {
-//        let encoded = try! JSONEncoder().encode(playTagRoom)
-//        let roomId = playTagRoom.roomId.uuidString
-//        do {
-//            guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
-//            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).setData(jsonObject)
-//            await enterRoom(roomId: roomId, isHost: true)
-//        } catch {
-//            print(error)
-//        }
-//    }
+    static func createPlayTagRoom(playTagRoom: PlayTagRoom) async {
+        let encoded = try! JSONEncoder().encode(playTagRoom)
+        let roomId = playTagRoom.roomId.uuidString
+        do {
+            guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).setData(jsonObject)
+            await PlayerRepository.enterRoom(roomId: roomId, isHost: true)
+        } catch {
+            print(error)
+        }
+    }
     
     //    check
     static func checkIsThereRoom(roomId: String) async -> Bool {

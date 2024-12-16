@@ -51,4 +51,32 @@ class OperationPlayers {
     static func updateCapture(player: Player) {
         
     }
+    
+    static func nextPhaseSuviveFugitives(players: [Player]) -> [Player] {
+        let fugitives = players.filter { !$0.isChaser }
+        let chasers = players.filter { $0.isChaser }
+        let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
+        var survivors: [Player] = []
+        fugitiveLoop: for fugitive in fugitives {
+            guard let fugitivePosition = fugitive.move.first(where: { $0.phase == phaseNow }) else { return [] }
+            for chaser in chasers {
+                guard let chaserPosition = chaser.move.first(where: { $0.phase == phaseNow }) else { return [] }
+                print("fugitivePosition:", fugitivePosition)
+                print("chaserPosition:", chaserPosition)
+                if fugitivePosition == chaserPosition {
+                    guard let isCatchable = chaser.isCatchable.first(where: { $0.chaserUserId == chaser.playerUserId }) else { return [] }
+                    print("isCatchable:", isCatchable)
+                    if isCatchable.isCatchable { continue fugitiveLoop }
+                }
+                survivors.append(noDuplicate: fugitive)
+            }
+        }
+        return survivors
+    }
+    
+    static func getSuvivors(players: [Player]) -> [Player] {
+        let suviveFugitives = nextPhaseSuviveFugitives(players: players)
+        let chasers = PlayerDataStore.shared.playerArray.filter { $0.isChaser }
+        return chasers + suviveFugitives
+    }
 }
