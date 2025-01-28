@@ -31,14 +31,13 @@ struct PublicRoomsViewCell: View {
         }
     }
     func joinRoom() {
-        let roomId = playTagRoom.roomId.uuidString
         Task {
-            if await Check.checkIsThereRoom(roomId: roomId) {
-                guard let playingRoom = await Get.getRoomData(roomId: roomId) else { return }
+            if await PlayTagRoomRepository.isExists(roomId: playTagRoom.roomId) {
+                guard let playingRoom = await PlayTagRoomRepository.getRoomData(roomId: playTagRoom.roomId) else { return }
                 DispatchQueue.main.async {
                     playerDataStore.playingRoom = playingRoom
                 }
-                await Create.enterRoom(roomId: roomId, isHost: false)
+                await PlayerRepository.enterRoom(roomId: playTagRoom.roomId, isHost: false)
                 pathDataStore.navigatetionPath.append(.waitingRoom)
             }
         }

@@ -34,11 +34,10 @@ struct MovePanelViewButton: View {
                 let x = playerPosition.x
                 let y = playerPosition.y
                 let phase = playerPosition.phase
-                await Update.grantMePoint(howMany: 20)
-                await Update.updateMyPosition(phase: phase, x: x, y: y)
+                await PlayerRepository.grantMePoint(howMany: 20)
+                await PlayerPositionRepository.updateMyPosition(phase: phase, x: x, y: y)
             }
         }
-        playerDataStore.currentPhaseOptimistic += 1
     }
     func imageName() -> String {
         switch direction {

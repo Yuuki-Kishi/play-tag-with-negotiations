@@ -15,15 +15,13 @@ struct RoomInfomationViewCell: View {
     var body: some View {
         switch itemType {
         case .roomId:
-            uuidCell(item: "ルームID", data: playTagRoom.roomId.uuidString)
+            uuidCell(item: "ルームID", data: playTagRoom.roomId)
         case .hostUserId:
             stringCell(item: "ホストユーザーID", data: playTagRoom.hostUserId)
         case .playTagName:
             stringCell(item: "鬼ごっこ名", data: playTagRoom.playTagName)
         case .creationDate:
             dateCell(item: "作成日時", data: playTagRoom.creationDate)
-        case .phaseNow:
-            intCell(item: "現在のフェーズ", data: playTagRoom.phaseNow)
         case .phaseMax:
             intCell(item: "最大フェーズ", data: playTagRoom.phaseMax)
         case .chaserNumber:
@@ -38,12 +36,8 @@ struct RoomInfomationViewCell: View {
             boolCell(item: "公開", data: playTagRoom.isPublic)
         case .isCanJoinAfter:
             boolCell(item: "途中参加", data: playTagRoom.isCanJoinAfter)
-        case .isNegotiate:
-            boolCell(item: "交渉", data: playTagRoom.isNegotiate)
-        case .isCanDoQuest:
-            boolCell(item: "クエスト", data: playTagRoom.isCanDoQuest)
-        case .isCanUseItem:
-            boolCell(item: "アイテム", data: playTagRoom.isCanUseItem)
+        case .isDeal:
+            boolCell(item: "交渉", data: playTagRoom.isDeal)
         }
     }
     func uuidCell(item: String, data: String) -> some View {

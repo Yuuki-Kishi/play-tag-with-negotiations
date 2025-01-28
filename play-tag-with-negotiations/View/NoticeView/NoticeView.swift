@@ -19,7 +19,10 @@ struct NoticeView: View {
         .navigationTitle("通知")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
-            Observe.observeNotice()
+            NoticeRepository.observeNotice()
+        }
+        .onDisappear() {
+            userDataStore.listeners.remove(listenerType: .notice)
         }
     }
 }

@@ -18,11 +18,11 @@ struct User: Codable, Hashable, Identifiable, Equatable {
     var creationDate: Date
     var iconUrl: String
     var iconData: Data?
-    var friendsUserId: [String]
-    var pronoun: String
+    var friendShips: [String]
+    var profile: String
     
     enum CodingKeys: String, CodingKey {
-        case userId, userName, creationDate, iconUrl, iconData, friendsUserId, pronoun
+        case userId, userName, creationDate, iconUrl, iconData, friendShips, profile
     }
     
     init(from decoder: Decoder) throws {
@@ -39,8 +39,8 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         }
         self.iconUrl = try container.decode(String.self, forKey: .iconUrl)
         self.iconData = nil
-        self.friendsUserId = []
-        self.pronoun = try container.decode(String.self, forKey: .pronoun)
+        self.friendShips = try container.decodeIfPresent([String].self, forKey: .friendShips) ?? []
+        self.profile = try container.decode(String.self, forKey: .profile)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -51,19 +51,19 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         let dateString = formatter.string(from: creationDate)
         try container.encode(dateString, forKey: .creationDate)
         try container.encode(self.iconUrl, forKey: .iconUrl)
-        try container.encode(self.friendsUserId, forKey: .friendsUserId)
-        try container.encode(self.pronoun, forKey: .pronoun)
+        try container.encode(self.friendShips, forKey: .friendShips)
+        try container.encode(self.profile, forKey: .profile)
     }
     
-    init(userId: String, userName: String, creationDate: Date, iconUrl: String, iconData: Data?, friendsUserId: [String], pronoun: String) {
+    init(userId: String, userName: String, creationDate: Date, iconUrl: String, iconData: Data?, friendShips: [String], profile: String) {
         self.id = UUID()
         self.userId = userId
         self.userName = userName
         self.creationDate = creationDate
         self.iconUrl = iconUrl
         self.iconData = iconData
-        self.friendsUserId = friendsUserId
-        self.pronoun = pronoun
+        self.friendShips = friendShips
+        self.profile = profile
     }
     
     init(userId: String, creationDate: Date) {
@@ -73,8 +73,8 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         self.creationDate = creationDate
         self.iconUrl = "default"
         self.iconData = nil
-        self.friendsUserId = []
-        self.pronoun = "未設定"
+        self.friendShips = []
+        self.profile = "未設定"
     }
     
     init() {
@@ -84,7 +84,7 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         self.creationDate = Date()
         self.iconUrl = "default"
         self.iconData = nil
-        self.friendsUserId = []
-        self.pronoun = "Who am I?"
+        self.friendShips = []
+        self.profile = "Who am I?"
     }
 }

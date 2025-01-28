@@ -30,10 +30,10 @@ struct ResultViewCell: View {
             Text(String(player.point) + "pt")
                 .font(.system(size: 25))
                 .foregroundStyle(Color.primary)
-            if isDisplayButton() {
+            if FriendShipRepository.isExists(pertnerUserId: player.playerUserId) {
                 Button(action: {
                     Task {
-                        await Create.sendFriendRequest(to: player.playerUserId)
+                        await FriendShipRepository.sendFriendRequest(consenter: player.playerUserId)
                         isShowAlert = true
                     }
                 }, label: {
@@ -107,14 +107,6 @@ struct ResultViewCell: View {
         } else {
             return .blue
         }
-    }
-    func isDisplayButton() -> Bool {
-        guard let myFriendsId = userDataStore.signInUser?.friendsUserId else { return false }
-        let isFriend = myFriendsId.contains(where: { $0 == player.playerUserId })
-        if player.playerUserId != userDataStore.signInUser?.userId && !isFriend {
-            return true
-        }
-        return false
     }
     func user() -> User {
         guard let user = playerDataStore.userArray.first(where: { $0.userId == player.playerUserId }) else { return User() }

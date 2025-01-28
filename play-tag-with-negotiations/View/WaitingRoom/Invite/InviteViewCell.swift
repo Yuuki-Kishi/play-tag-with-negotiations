@@ -28,7 +28,7 @@ struct InviteViewCell: View {
                 Text(friend.userName)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.system(size: 25))
-                Text(friend.pronoun)
+                Text(friend.profile)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(1)
                     .font(.system(size: 15))

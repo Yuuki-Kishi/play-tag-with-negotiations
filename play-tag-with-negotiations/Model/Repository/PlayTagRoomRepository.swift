@@ -11,20 +11,20 @@ import FirebaseFirestore
 
 class PlayTagRoomRepository {
     //    create
-    static func createPlayTagRoom(playTagRoom: PlayTagRoom) async {
+    static func createPlayTagRoom() async {
+        let playTagRoom = PlayerDataStore.shared.playingRoom
         let encoded = try! JSONEncoder().encode(playTagRoom)
-        let roomId = playTagRoom.roomId.uuidString
         do {
             guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).setData(jsonObject)
-            await PlayerRepository.enterRoom(roomId: roomId, isHost: true)
+            try await Firestore.firestore().collection("PlayTagRooms").document(playTagRoom.roomId).setData(jsonObject)
+            await PlayerRepository.enterRoom(roomId: playTagRoom.roomId, isHost: true)
         } catch {
             print(error)
         }
     }
     
     //    check
-    static func checkIsThereRoom(roomId: String) async -> Bool {
+    static func isExists(roomId: String) async -> Bool {
         do {
             let document = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).getDocument()
             if document.exists { return true }
@@ -35,16 +35,9 @@ class PlayTagRoomRepository {
         return false
     }
     
-    static func checkNotOverPlayerCount(roomId: String) async -> Bool {
-        do {
-            let playersCount = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").getDocuments().count
-            guard let playTagRoom = await Get.getRoomData(roomId: roomId) else { return false }
-            let limit = playTagRoom.chaserNumber + playTagRoom.fugitiveNumber
-            if playersCount < limit { return true }
-        } catch {
-            print(error)
-            return false
-        }
+    static func isOverPlayerCount(roomId: String) async -> Bool {
+        guard let playTagRoom = await getRoomData(roomId: roomId) else { return true }
+        if playTagRoom.playerNumber < playTagRoom.chaserNumber + playTagRoom.fugitiveNumber { return false }
         return false
     }
     
@@ -62,22 +55,21 @@ class PlayTagRoomRepository {
     
     //    update
     static func gameStart() async {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-        let playerNumber = PlayerDataStore.shared.playerArray.count
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["playerNumber": playerNumber, "isPlaying": true])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["isPlaying": true])
         } catch {
             print(error)
         }
     }
     
     static func appointmentChaser() async {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         let chaserNumber = PlayerDataStore.shared.playingRoom.chaserNumber
-        let chasers = PlayerDataStore.shared.playerArray.shuffled().prefix(chaserNumber)
-        for chaser in chasers {
+        let chasersId = PlayerDataStore.shared.playerArray.shuffled().prefix(chaserNumber).map { $0.playerUserId }
+        for chaserId in chasersId {
             do {
-                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(chaser.playerUserId).updateData(["isChaser": true, "isCanCapture": false])
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(chaserId).updateData(["isChaser": true])
             } catch {
                 print(error)
             }
@@ -87,7 +79,7 @@ class PlayTagRoomRepository {
     static func moveToNextPhase() async {
         let phaseMax = PlayerDataStore.shared.playingRoom.phaseMax
         let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         if phaseNow < phaseMax {
             do {
                 try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["phaseNow": phaseNow + 1])
@@ -95,22 +87,23 @@ class PlayTagRoomRepository {
                 print(error)
             }
         } else {
-            await gameEnd()
+            await gameFinished()
         }
     }
     
-    static func gameEnd() async {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+    static func gameFinished() async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["isEnd": true])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["isFinished": true])
         } catch {
             print(error)
         }
     }
     
     //    delete
-    static func deleteRoom(roomId: String) async {
+    static func deleteRoom() async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).delete()
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).delete()
@@ -120,26 +113,19 @@ class PlayTagRoomRepository {
         }
     }
     
-    static func endGame() async {
-        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-        do {
-            try await Firestore.firestore().collection("Users").document(userId).updateData(["beingRoomId": FieldValue.delete()])
-        } catch {
-            print(error)
-        }
-    }
+    
     
 //    observe
     static func observeRoomField() {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).addSnapshotListener { DocumentSnapshot, error in
             do {
                 guard let playingRoom = try DocumentSnapshot?.data(as: PlayTagRoom.self) else { return }
                 if PlayerDataStore.shared.playingRoom.phaseNow < playingRoom.phaseNow {
                     Task {
-                        await Check.checkDeals(phaseNow: playingRoom.phaseNow)
-                        await Update.isDecidedToFalse()
-                        await Get.getAlivePlayers()
+                        await DealRepository.isSucceed(phaseNow: playingRoom.phaseNow)
+                        await PlayerRepository.isDecidedToFalse()
+                        await PlayerRepository.getAlivePlayers()
                     }
                 }
                 DispatchQueue.main.async {
@@ -155,12 +141,11 @@ class PlayTagRoomRepository {
     }
     
     static func observeIsDecided() {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").whereField("isDecided", isEqualTo: true).addSnapshotListener { QuerySnapshot, error in
             guard let documents = QuerySnapshot?.documents else { return }
-            let playerCount = PlayerDataStore.shared.playerArray.count
-            if playerCount <= documents.count {
-                Task { await Update.moveToNextPhase() }
+            if PlayerDataStore.shared.playingRoom.playerNumber <= documents.count {
+                Task { await moveToNextPhase() }
             }
         }
         DispatchQueue.main.async {
@@ -175,12 +160,13 @@ class PlayTagRoomRepository {
                 RoomDataStore.shared.publicRoomsArray = []
             }
             for document in documents {
-                Task {
-                    guard let publicRoom = await Get.getRoomData(roomId: document.documentID) else { return }
+                do {
+                    let publicRoom = try document.data(as: PlayTagRoom.self)
                     DispatchQueue.main.async {
                         RoomDataStore.shared.publicRoomsArray.append(publicRoom)
                     }
-                    
+                } catch {
+                    print(error)
                 }
             }
         }

@@ -32,11 +32,7 @@ struct PublicRoomsView: View {
                     case .myPage:
                         MyPageView(userDataStore: userDataStore, pathDataStore: pathDataStore)
                     case .friend:
-                        if pathDataStore.navigatetionPath[pathDataStore.navigatetionPath.count - 2] == .notice {
-                            FriendView(isFriend: .notFriend)
-                        } else {
-                            FriendView(isFriend: .friend)
-                        }
+                        FriendShipView(userDataStore: userDataStore, pickerStatus: .friend)
                     case .waitingRoom:
                         WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
                     case .roomInfo:
@@ -45,8 +41,6 @@ struct PublicRoomsView: View {
                         InviteView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
                     case .game:
                         GameView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                    case .negotiation:
-                        EmptyView()
                     case .result:
                         ResultView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
                     }
@@ -117,15 +111,15 @@ struct PublicRoomsView: View {
     }
     func enterRoom() {
         Task {
-            let isThereRoom = await Check.checkIsThereRoom(roomId: roomId)
-            let isNotOverPlayer = await Check.checkNotOverPlayerCount(roomId: roomId)
+            let isThereRoom = await PlayTagRoomRepository.isExists(roomId: roomId)
+            let isOverPlayer = await PlayTagRoomRepository.isOverPlayerCount(roomId: roomId)
             if isThereRoom {
-                if isNotOverPlayer {
-                    guard let playingRoom = await Get.getRoomData(roomId: roomId) else { return }
+                if !isOverPlayer {
+                    guard let playingRoom = await PlayTagRoomRepository.getRoomData(roomId: roomId) else { return }
                     DispatchQueue.main.async {
                         playerDataStore.playingRoom = playingRoom
                     }
-                    await Create.enterRoom(roomId: roomId, isHost: false)
+                    await PlayerRepository.enterRoom(roomId: roomId, isHost: false)
                     roomId = ""
                     pathDataStore.navigatetionPath.append(.waitingRoom)
                 } else {
@@ -179,32 +173,31 @@ struct PublicRoomsView: View {
     }
     func onAppear() {
         Task {
-            if let roomId = await Get.getBeingRoomId() {
-                guard let playingRoom = await Get.getRoomData(roomId: roomId) else { return }
+            if let roomId = await UserRepository.getBeingRoomId() {
+                guard let playingRoom = await PlayTagRoomRepository.getRoomData(roomId: roomId) else { return }
                 DispatchQueue.main.async {
                     playerDataStore.playingRoom = playingRoom
-                    if playingRoom.isPlaying {
-                        if !playingRoom.isEnd {
+                }
+                if playingRoom.isPlaying {
+                    if playingRoom.isFinished {
+                        await UserRepository.finishGame()
+                    } else {
+                        DispatchQueue.main.async {
                             pathDataStore.navigatetionPath.append(.game)
                         }
-                    } else {
+                    }
+                } else {
+                    DispatchQueue.main.async {
                         pathDataStore.navigatetionPath.append(.waitingRoom)
                     }
                 }
-                if playingRoom.isEnd {
-                    await Delete.endGame()
-                }
             } else {
-                Observe.observePublicRooms()
-                Observe.observeNotice()
+                PlayTagRoomRepository.observePublicRooms()
             }
         }
     }
     func onDisappear() {
-        userDataStore.listeners[.publicRooms]?.remove()
-        userDataStore.listeners.removeValue(forKey: .publicRooms)
-        userDataStore.listeners[.notice]?.remove()
-        userDataStore.listeners.removeValue(forKey: .notice)
+        userDataStore.listeners.remove(listenerType: .publicRooms)
     }
 }
 

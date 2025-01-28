@@ -41,7 +41,7 @@ struct MyPageListView: View {
                 })
                 Button("変更", action: {
                     Task {
-                        await Update.updateUserName(newName: text)
+                        await UserRepository.updateUserName(newName: text)
                     }
                 })
             })
@@ -79,7 +79,7 @@ struct MyPageListView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
                 ScrollView {
-                    Text(userDataStore.signInUser?.pronoun ?? "")
+                    Text(userDataStore.signInUser?.profile ?? "")
                         .foregroundStyle(Color.gray)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -87,8 +87,8 @@ struct MyPageListView: View {
             .contentShape(Rectangle())
             .frame(maxHeight: UIScreen.main.bounds.height / 3)
             .onTapGesture {
-                if userDataStore.signInUser?.pronoun != "未設定" {
-                    text = userDataStore.signInUser?.pronoun ?? ""
+                if userDataStore.signInUser?.profile != "未設定" {
+                    text = userDataStore.signInUser?.profile ?? ""
                 } else {
                     text = ""
                 }
@@ -101,7 +101,7 @@ struct MyPageListView: View {
                 })
                 Button("変更", action: {
                     Task {
-                        await Update.updatePronoun(newPronoun: text)
+                        await UserRepository.updateprofile(newProfile: text)
                     }
                 })
             }, message: {

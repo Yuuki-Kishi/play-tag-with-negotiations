@@ -38,8 +38,8 @@ class Google {
                 guard let userId = authResult?.user.uid else { return }
                 guard let creationDate = authResult?.user.metadata.creationDate else { return }
                 let user = User(userId: userId, creationDate: creationDate)
-                if await !Check.isWroteUser(userId: userId) {
-                    await Create.createUser(user: user)
+                if await !UserRepository.isExists(userId: userId) {
+                    await UserRepository.createUser(user: user)
                 }
                 DispatchQueue.main.async {
                     UserDataStore.shared.userResult = .success(user)

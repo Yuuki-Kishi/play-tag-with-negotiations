@@ -46,7 +46,10 @@ struct MyPageView: View {
         .navigationTitle("マイページ")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
-            Observe.observeUserData()
+            UserRepository.observeUserData()
+        }
+        .onDisappear() {
+            userDataStore.listeners.remove(listenerType: .userData)
         }
     }
     func toolBarMenu() -> some View {

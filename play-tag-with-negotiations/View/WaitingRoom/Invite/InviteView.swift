@@ -40,7 +40,7 @@ struct InviteView: View {
                     })
                     Button(action: {
                         Task {
-                            await Create.sendInviteNotice(users: selectionValue, roomId: playerDataStore.playingRoom.roomId.uuidString)
+                            await NoticeRepository.sendInviteNotice(users: selectionValue, roomId: playerDataStore.playingRoom.roomId)
                             pathDataStore.navigatetionPath.removeLast()
                         }
                     }, label: {
@@ -51,9 +51,9 @@ struct InviteView: View {
         }
         .onAppear() {
             Task {
-                guard let friends = userDataStore.signInUser?.friendsUserId else { return }
+                guard let friends = userDataStore.signInUser?.friendShips else { return }
                 for friend in friends {
-                    guard let user = await Get.getUserData(userId: friend) else { return }
+                    guard let user = await UserRepository.getUserData(userId: friend) else { return }
                     friendsArray.append(noDuplicate: user)
                 }
             }

@@ -1,15 +1,15 @@
 //
-//  NotFriendViewCell.swift
+//  ApplyingViewCell.swift
 //  play-tag-with-negotiations
 //
-//  Created by 岸　優樹 on 2024/07/13.
+//  Created by 岸　優樹 on 2025/01/24.
 //
 
 import SwiftUI
 
-struct NotFriendViewCell: View {
-    @Binding var friend: User
-    @State private var isShowBeFriendAlert = false
+struct ApplyingViewCell: View {
+    @Binding var friendShip: FriendShip
+    @State var friend: User
     @State private var isShowDeleteFirendAlert = false
     
     var body: some View {
@@ -30,7 +30,7 @@ struct NotFriendViewCell: View {
                 Text(friend.userName)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.system(size: 25))
-                Text(friend.pronoun)
+                Text(friend.profile)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(1)
                     .font(.system(size: 15))
@@ -44,28 +44,13 @@ struct NotFriendViewCell: View {
             })
         }
         .tint(Color.red)
-        .onTapGesture {
-            isShowBeFriendAlert = true
-        }
-        .alert("フレンド申請を承認しますか？", isPresented: $isShowBeFriendAlert, actions: {
-            Button(role: .cancel, action: {}, label: {
-                Text("キャンセル")
-            })
-            Button(action: {
-                Task {
-                    await Update.becomeFriend(friendUserId: friend.userId)
-                }
-            }, label: {
-                Text("承認")
-            })
-        })
         .alert("フレンド申請を削除しますか？", isPresented: $isShowDeleteFirendAlert, actions: {
             Button(role: .cancel, action: {}, label: {
                 Text("キャンセル")
             })
             Button(role: .destructive, action: {
                 Task {
-                    await Delete.deleteFriend(friendUserId: friend.userId)
+                    await FriendShipRepository.deleteFriend(friendShipId: friendShip.friendShipId, pertnerUserId: friend.userId)
                 }
             }, label: {
                 Text("削除")
@@ -79,5 +64,5 @@ struct NotFriendViewCell: View {
 }
 
 //#Preview {
-//    NotFriendViewCell(friend: User())
+//    ApplyingViewCell()
 //}

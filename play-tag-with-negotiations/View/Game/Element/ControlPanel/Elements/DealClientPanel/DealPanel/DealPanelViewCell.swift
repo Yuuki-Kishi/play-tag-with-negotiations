@@ -23,9 +23,6 @@ struct DealPanelViewCell: View {
                 Text(negotiation().displayName)
                     .font(.system(size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Text("消費" + String(negotiation().consumption) + "pt")
-                    .font(.system(size: 15))
-                    .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .onTapGesture {
@@ -38,12 +35,12 @@ struct DealPanelViewCell: View {
         }
         .alert("取引を承諾しますか？", isPresented: $isShowAlert, actions: {
             Button(role: .destructive, action: {
-                Task { await DealUpdate.refuseDeal(deal: deal) }
+                Task { await DealRepository.dealRefuse(deal: deal) }
             }, label: {
                 Text("拒否")
             })
             Button(action: {
-                Task { await Success.successDeal(deal: deal) }
+                Task { await DealSuccess.successDeal(deal: deal) }
             }, label: {
                 Text("承諾")
             })
@@ -52,7 +49,7 @@ struct DealPanelViewCell: View {
         })
     }
     func negotiation() -> Negotiation {
-        guard let negotiation = playerDataStore.negotiationArray.first(where: { $0.negotiationId.uuidString == deal.negotiationId }) else { return Negotiation() }
+        guard let negotiation = playerDataStore.negotiationArray.first(where: { $0.negotiationId == deal.negotiationId }) else { return Negotiation() }
         return negotiation
     }
 }

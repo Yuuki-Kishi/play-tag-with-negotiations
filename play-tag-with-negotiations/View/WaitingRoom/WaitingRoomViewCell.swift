@@ -32,7 +32,7 @@ struct WaitingRoomViewCell: View {
                     .foregroundStyle(userNameColor())
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.system(size: 25))
-                Text(user().pronoun)
+                Text(user().profile)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(1)
                     .font(.system(size: 15))
@@ -56,7 +56,6 @@ struct WaitingRoomViewCell: View {
     func user() -> User {
         guard let user = playerDataStore.userArray.first(where: { $0.userId == userId }) else { return User() }
         return user
-//        return playerDataStore.userArray.user(userId: userId)
     }
 }
 

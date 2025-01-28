@@ -24,7 +24,7 @@ class Upload {
                 storageRef.downloadURL { (url, error) in
                     Task {
                         guard let iconUrl = url?.absoluteString else { return }
-                        await Update.updateIconUrl(iconUrl: iconUrl)
+                        await UserRepository.updateIconUrl(iconUrl: iconUrl)
                     }
                 }
             }

@@ -15,7 +15,4 @@ class PlayerDataStore: ObservableObject {
     @Published var dealTarget: Player = Player()
     @Published var negotiationArray: [Negotiation] = []
     @Published var dealArray: [Deal] = []
-    @Published var missionArray: [Mission] = []
-    @Published var questArray: [Quest] = []
-    @Published var currentPhaseOptimistic: Int = 0
 }

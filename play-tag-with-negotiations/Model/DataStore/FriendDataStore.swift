@@ -9,6 +9,5 @@ import Foundation
 
 class FriendDataStore: ObservableObject {
     static let shared = FriendDataStore()
-    @Published var friendArray: [User] = []
-    @Published var requestUserArray: [User] = []
+    @Published var friendShips: [FriendShip] = []
 }

@@ -53,9 +53,9 @@ struct NoticeViewCell: View {
         }
         .onTapGesture {
             Task {
-                await Update.checkNotice(noticeId: notice.noticeId.uuidString)
+                await NoticeRepository.checkNotice(noticeId: notice.noticeId)
                 switch notice.noticeType {
-                case .friend:
+                case .friendShip:
                     pathDataStore.navigatetionPath.append(.friend)
                 case .invite:
                     joinRoom()
@@ -67,7 +67,7 @@ struct NoticeViewCell: View {
     }
     func noticeType() -> String {
         switch notice.noticeType {
-        case .friend:
+        case .friendShip:
             return "フレンド申請"
         case .invite:
             return "ルームへの招待"
@@ -77,7 +77,7 @@ struct NoticeViewCell: View {
     }
     func noticeTypeColor() -> Color {
         switch notice.noticeType {
-        case .friend:
+        case .friendShip:
             return Color.red
         case .invite:
             return Color.teal
@@ -95,7 +95,7 @@ struct NoticeViewCell: View {
     func dateToString() -> String {
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
-        return dateformatter.string(from: notice.sendTime)
+        return dateformatter.string(from: notice.sendDate)
     }
     func isNewNotice() -> Color {
         if notice.isChecked {
@@ -104,14 +104,13 @@ struct NoticeViewCell: View {
         return .red
     }
     func joinRoom() {
-        let roomId = notice.roomId
         Task {
-            if await Check.checkIsThereRoom(roomId: roomId) {
-                guard let playingRoom = await Get.getRoomData(roomId: roomId) else { return }
+            if await PlayTagRoomRepository.isExists(roomId: notice.roomId) {
+                guard let playingRoom = await PlayTagRoomRepository.getRoomData(roomId: notice.roomId) else { return }
                 DispatchQueue.main.async {
                     playerDataStore.playingRoom = playingRoom
                 }
-                await Create.enterRoom(roomId: roomId, isHost: false)
+                await PlayerRepository.enterRoom(roomId: notice.roomId, isHost: false)
                 pathDataStore.navigatetionPath.append(.waitingRoom)
             }
         }

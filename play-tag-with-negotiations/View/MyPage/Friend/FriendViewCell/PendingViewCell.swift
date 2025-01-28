@@ -1,5 +1,5 @@
 //
-//  FriendViewCell.swift
+//  NotFriendViewCell.swift
 //  play-tag-with-negotiations
 //
 //  Created by 岸　優樹 on 2024/07/13.
@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-struct FriendViewCell: View {
+struct PendingViewCell: View {
     @Binding var friendShip: FriendShip
     @State var friend: User
-    @State private var isShowAlert = false
+    @State private var isShowBeFriendAlert = false
+    @State private var isShowDeleteFirendAlert = false
     
     var body: some View {
         HStack {
@@ -38,13 +39,28 @@ struct FriendViewCell: View {
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button(action: {
-                isShowAlert = true
+                isShowDeleteFirendAlert = true
             }, label: {
-                Text("解消")
+                Text("削除")
             })
         }
         .tint(Color.red)
-        .alert("フレンドを解消しますか？", isPresented: $isShowAlert, actions: {
+        .onTapGesture {
+            isShowBeFriendAlert = true
+        }
+        .alert("フレンド申請を承認しますか？", isPresented: $isShowBeFriendAlert, actions: {
+            Button(role: .cancel, action: {}, label: {
+                Text("キャンセル")
+            })
+            Button(action: {
+                Task {
+                    await FriendShipRepository.becomeFriend(consenter: friend.userId)
+                }
+            }, label: {
+                Text("承認")
+            })
+        })
+        .alert("フレンド申請を削除しますか？", isPresented: $isShowDeleteFirendAlert, actions: {
             Button(role: .cancel, action: {}, label: {
                 Text("キャンセル")
             })
@@ -53,7 +69,7 @@ struct FriendViewCell: View {
                     await FriendShipRepository.deleteFriend(friendShipId: friendShip.friendShipId, pertnerUserId: friend.userId)
                 }
             }, label: {
-                Text("解消")
+                Text("削除")
             })
         })
     }
@@ -64,5 +80,5 @@ struct FriendViewCell: View {
 }
 
 //#Preview {
-//    FriendViewCell(friend: User())
+//    NotFriendViewCell(friend: User())
 //}

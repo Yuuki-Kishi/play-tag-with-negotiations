@@ -26,22 +26,16 @@ struct ResultView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing, content: {
                 Button(action: {
-                    Task {
-                        await Delete.endGame()
-                    }
                     playerDataStore.userArray.removeAll()
                     playerDataStore.playerArray.removeAll()
                     pathDataStore.navigatetionPath.removeAll()
+                    Task {
+                        await UserRepository.finishGame()
+                    }
                 }, label: {
                     Text("確認")
                 })
             })
-        }
-        .onAppear() {
-            print("result", playerDataStore.playerArray)
-            Task {
-//                await Get.getResult()
-            }
         }
         .navigationTitle("結果")
         .navigationBarTitleDisplayMode(.inline)

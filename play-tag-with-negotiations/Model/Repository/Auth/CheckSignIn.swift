@@ -11,7 +11,7 @@ import FirebaseAuth
 class CheckSignIn {
     static func isSignIn() async {
         if let currentUser = Auth.auth().currentUser {
-            let user = await Get.getUserData(userId: currentUser.uid)
+            let user = await UserRepository.getUserData(userId: currentUser.uid)
             DispatchQueue.main.async {
                 UserDataStore.shared.userResult = .success(user)
                 UserDataStore.shared.signInUser = user

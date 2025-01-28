@@ -18,15 +18,13 @@ struct RoomSettingViewCell: View {
     var body: some View {
         switch itemType {
         case .roomId:
-            uuidCell(item: "ルームID", data: playerDataStore.playingRoom.roomId.uuidString)
+            uuidCell(item: "ルームID", data: playerDataStore.playingRoom.roomId)
         case .hostUserId:
             hostUserIdCell(item: "ホストユーザーID", data: playerDataStore.playingRoom.hostUserId)
         case .playTagName:
             playTagNameCell(item: "鬼ごっこ名", data: playerDataStore.playingRoom.playTagName)
         case .creationDate:
             dateCell(item: "作成日時", data: playerDataStore.playingRoom.creationDate)
-        case .phaseNow:
-            intCell(item: "現在のフェーズ", data: playerDataStore.playingRoom.phaseNow)
         case .phaseMax:
             intCell(item: "最大フェーズ", data: playerDataStore.playingRoom.phaseMax)
         case .chaserNumber:
@@ -41,12 +39,8 @@ struct RoomSettingViewCell: View {
             Toggle("公開", isOn: $playerDataStore.playingRoom.isPublic)
         case .isCanJoinAfter:
             Toggle("途中参加", isOn: $playerDataStore.playingRoom.isCanJoinAfter)
-        case .isNegotiate:
-            Toggle("交渉", isOn: $playerDataStore.playingRoom.isNegotiate)
-        case .isCanDoQuest:
-            Toggle("クエスト", isOn: $playerDataStore.playingRoom.isCanDoQuest)
-        case .isCanUseItem:
-            Toggle("アイテム", isOn: $playerDataStore.playingRoom.isCanUseItem)
+        case .isDeal:
+            Toggle("交渉", isOn: $playerDataStore.playingRoom.isDeal)
         }
     }
     func uuidCell(item: String, data: String) -> some View {

@@ -34,9 +34,9 @@ struct WaitingRoomView: View {
             if userDataStore.signInUser?.userId == playerDataStore.playingRoom.hostUserId {
                 Button(action: {
                     Task {
-                        await Update.appointmentChaser()
-                        await Update.moveToNextPhase()
-                        await Update.gameStart()
+                        await PlayTagRoomRepository.appointmentChaser()
+                        await PlayTagRoomRepository.moveToNextPhase()
+                        await PlayTagRoomRepository.gameStart()
                     }
                 }, label: {
                     ZStack {
@@ -110,8 +110,7 @@ struct WaitingRoomView: View {
             }
         }
         .onDisappear() {
-            userDataStore.listeners[.players]?.remove()
-            userDataStore.listeners.removeValue(forKey: .players)
+            userDataStore.listeners.remove(listenerType: .players)
         }
     }
     func toolBarMenu() -> some View {
@@ -148,22 +147,21 @@ struct WaitingRoomView: View {
     }
     func lastExit() {
         Task {
-            let roomId = playerDataStore.playingRoom.roomId.uuidString
-            await Delete.deleteRoom(roomId: roomId)
+            await PlayTagRoomRepository.deleteRoom()
             pathDataStore.navigatetionPath.removeAll()
         }
     }
     func hostExit() {
         Task {
-            let roomId = playerDataStore.playingRoom.roomId.uuidString
-            await Delete.hostExitRoom(roomId: roomId)
+            let roomId = playerDataStore.playingRoom.roomId
+            await PlayerRepository.hostExitRoom(roomId: roomId)
             pathDataStore.navigatetionPath.removeAll()
         }
     }
     func exit() {
         Task {
-            let roomId = playerDataStore.playingRoom.roomId.uuidString
-            await Delete.exitRoom(roomId: roomId)
+            let roomId = playerDataStore.playingRoom.roomId
+            await PlayerRepository.exitRoom(roomId: roomId)
             pathDataStore.navigatetionPath.removeAll()
         }
     }

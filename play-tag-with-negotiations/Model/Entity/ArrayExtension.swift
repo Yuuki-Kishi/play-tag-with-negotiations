@@ -22,8 +22,39 @@ extension Array where Element == User {
         return user
     }
     
-    mutating func delete(userId: String) {
+    mutating func remove(userId: String) {
         guard let index = self.firstIndex(where: { $0.userId == userId }) else { return }
+        self.remove(at: index)
+    }
+}
+
+extension Array where Element == FriendShip {
+    var friends: [Element] {
+        return self.filter { $0.isFriend }
+    }
+    
+    var pendings: [Element] {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
+        let notFriends = self.filter { !$0.isFriend }
+        return notFriends.filter { $0.consenterUserId == myUserId }
+    }
+    
+    var applyings: [Element] {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
+        let notFriends = self.filter { !$0.isFriend }
+        return notFriends.filter { $0.proposerUserId == myUserId }
+    }
+    
+    mutating func append(noDuplicate item: Element) {
+        if let index = self.firstIndex(of: item) {
+            self[index] = item
+        } else {
+            self.append(item)
+        }
+    }
+    
+    mutating func remove(friendShip: FriendShip) {
+        guard let index = self.firstIndex(of: friendShip) else { return }
         self.remove(at: index)
     }
 }
@@ -74,7 +105,7 @@ extension Array where Element == Player {
         }
     }
     
-    mutating func delete(userId: String) {
+    mutating func remove(userId: String) {
         guard let index = firstIndex(where: { $0.playerUserId == userId }) else { return }
         self.remove(at: index)
     }
@@ -82,20 +113,28 @@ extension Array where Element == Player {
 
 extension Array where Element == Notice {
     mutating func append(noDuplicate item: Element) {
-        if !self.contains(where: { $0.noticeId == item.noticeId }) {
-            self.append(item)
-        } else {
-            guard let index = self.firstIndex(where: { $0.noticeId == item.noticeId }) else { return }
+        if let index = self.firstIndex(where: { $0.noticeId == item.noticeId }) {
             self[index] = item
+        } else {
+            self.append(item)
         }
     }
 }
 
 extension Array where Element == Negotiation {
     var canPropose: [Element] {
-        let proposingDeals = PlayerDataStore.shared.dealArray.proposing + PlayerDataStore.shared.dealArray.proposed + PlayerDataStore.shared.dealArray.success
+        let proposingDeals = PlayerDataStore.shared.dealArray.proposed + PlayerDataStore.shared.dealArray.success
         let negotiations = proposingDeals.map { $0.negotiationId }
-        return self.filter { !negotiations.contains($0.negotiationId.uuidString) }
+        let forChasers = self.filter { $0.target == .chaser }
+        let forFugitives = self.filter { $0.target == .fugitive }
+        let allPlayers = self.filter { $0.target == .both }
+        var canProposes: [Element] = []
+        if PlayerDataStore.shared.playerArray.me.isChaser {
+            canProposes = forChasers + allPlayers
+        } else {
+            canProposes = forFugitives + allPlayers
+        }
+        return canProposes.filter { !negotiations.contains($0.negotiationId) }
     }
     
     mutating func append(noDuplicate item: Element) {
@@ -108,7 +147,7 @@ extension Array where Element == Negotiation {
     }
     
     mutating func negotiation(negotiationId: String) -> Element {
-        guard let negotiation = PlayerDataStore.shared.negotiationArray.first(where: { $0.negotiationId.uuidString == negotiationId }) else { return Negotiation() }
+        guard let negotiation = self.first(where: { $0.negotiationId == negotiationId }) else { return Negotiation() }
         return negotiation
     }
 }
@@ -116,32 +155,27 @@ extension Array where Element == Negotiation {
 extension Array where Element == Deal {
     var success: [Element] {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
-        let successDeals = self.filter { $0.condition == .success }
-        return successDeals.filter { $0.proposerUserId == myUserId || $0.targetUserId == myUserId }
+        return self.filter { $0.condition == .success && ($0.proposerUserId == myUserId || $0.clientUserId == myUserId) }
     }
-    
+   
     var proposing: [Element] {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
-        let proposingDeals = self.filter { $0.condition == .proposing }
-        return proposingDeals.filter { $0.proposerUserId == myUserId }
+        return self.filter { $0.condition == .proposing && $0.proposerUserId == myUserId }
     }
     
     var proposed: [Element] {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
-        let proposingDeals = self.filter { $0.condition == .proposing }
-        return proposingDeals.filter { $0.targetUserId == myUserId }
+        return self.filter { $0.condition == .proposed && $0.clientUserId == myUserId }
     }
     
     var fulfilled: [Element] {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
-        let fulfilledDeals = self.filter { $0.condition == .fulfilled }
-        return fulfilledDeals.filter { $0.proposerUserId == myUserId || $0.targetUserId == myUserId }
+        return self.filter { $0.condition == .fulfilled && ($0.proposerUserId == myUserId || $0.clientUserId == myUserId) }
     }
     
-    var failured: [Element] {
+    var failure: [Element] {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
-        let failuredDeals = self.filter { $0.condition == .failure }
-        return failuredDeals.filter { $0.proposerUserId == myUserId || $0.targetUserId == myUserId }
+        return self.filter { $0.condition == .failure && ($0.proposerUserId == myUserId || $0.clientUserId == myUserId) }
     }
     
     mutating func append(noDuplicate item: Element) {
@@ -157,7 +191,7 @@ extension Array where Element == Deal {
             self.append(item)
         }
     }
-    mutating func delete(deal: Element) {
+    mutating func remove(deal: Element) {
         guard let index = self.firstIndex(where: { $0 == deal }) else { return }
         self.remove(at: index)
     }
@@ -167,45 +201,5 @@ extension Dictionary where Element == (key: UserDataStore.listenerType, value: L
     mutating func remove(listenerType: UserDataStore.listenerType) {
         UserDataStore.shared.listeners[listenerType]?.remove()
         UserDataStore.shared.listeners.removeValue(forKey: listenerType)
-    }
-}
-
-extension Array where Element == Mission {
-    var canExecute: [Element] {
-        let executingQuest = PlayerDataStore.shared.questArray.filter { $0.condition == .executing }
-        var canExcuteMission: [Mission] = []
-        for mission in PlayerDataStore.shared.missionArray {
-            let isContain = executingQuest.contains { $0.missionId == mission.missionId.uuidString }
-            if !isContain { canExcuteMission.append(noDuplicate: mission) }
-        }
-        return canExcuteMission
-    }
-    
-    mutating func append(noDuplicate item: Element) {
-        if !self.contains(where: { $0.missionId == item.missionId }) {
-            self.append(item)
-        } else {
-            guard let index = self.firstIndex(where: { $0.missionId == item.missionId }) else { return }
-            self[index] = item
-        }
-    }
-    mutating func mission(missionId: String) -> Mission {
-        guard let mission = PlayerDataStore.shared.missionArray.first(where: { $0.missionId.uuidString == missionId }) else {
-            return Mission() }
-        return mission
-    }
-}
-
-extension Array where Element == Quest {
-    var completed: [Element] {
-        return self.filter { $0.condition == .completed }
-    }
-    
-    var executing: [Element] {
-        return self.filter { $0.condition == .executing }
-    }
-    
-    var failured: [Element] {
-        return self.filter { $0.condition == .failured }
     }
 }

@@ -14,7 +14,7 @@ import FirebaseStorage
 
 class UserRepository {
 //    create
-    static func create(user: User) async {
+    static func createUser(user: User) async {
         let encoded = try! JSONEncoder().encode(user)
         do {
             guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
@@ -36,34 +36,30 @@ class UserRepository {
         return false
     }
     
-    static func isBeingRoom(roomId: String) async -> Bool {
-        guard let userId = UserDataStore.shared.signInUser?.userId else { return true }
-        do {
-            let document = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).getDocument()
-            if !document.exists { return false }
-        } catch {
-            print(error)
-        }
+    static func isBeingRoom() async -> Bool {
+        guard let beingRoomId = await getBeingRoomId() else { return false }
         return true
     }
     
 //    get
-    static func get(userId: String) async -> User? {
+    static func getUserData(userId: String) async -> User? {
         do {
             let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
-            let friendsDocuments = try await Firestore.firestore().collection("Users").document(userId).collection("Friends").whereField("isFriend", isEqualTo: true).getDocuments().documents
-            if document.exists {
-                var friendsUserId: [String] = []
-                for friendsDocument in friendsDocuments {
-                    friendsUserId.append(friendsDocument.documentID)
-                }
-                var user = try document.data(as: User.self)
-                user.iconData = await Download.getIconImage(iconUrl: user.iconUrl)
-                user.friendsUserId = friendsUserId
-                return user
-            } else {
-                return nil
-            }
+            var user = try document.data(as: User.self)
+            user.iconData = await Download.getIconImage(iconUrl: user.iconUrl)
+            return user
+        } catch {
+            print(error)
+        }
+        return nil
+    }
+    
+    static func getBeingRoomId() async -> String? {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return nil }
+        do {
+            let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
+            guard let beingRoomId = document.get("beingRoomId") as? String else { return nil }
+            return beingRoomId
         } catch {
             print(error)
         }
@@ -90,10 +86,10 @@ class UserRepository {
         }
     }
     
-    static func updatePronoun(newPronoun: String) async {
+    static func updateprofile(newProfile: String) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
-            try await Firestore.firestore().collection("Users").document(userId).setData(["pronoun": newPronoun], merge: true)
+            try await Firestore.firestore().collection("Users").document(userId).setData(["profile": newProfile], merge: true)
         } catch {
             print(error)
         }
@@ -111,7 +107,7 @@ class UserRepository {
                 storageRef.downloadURL { (url, error) in
                     Task {
                         guard let iconUrl = url?.absoluteString else { return }
-                        await Update.updateIconUrl(iconUrl: iconUrl)
+                        await UserRepository.updateIconUrl(iconUrl: iconUrl)
                     }
                 }
             }
@@ -127,26 +123,25 @@ class UserRepository {
         }
     }
     
+//    delete
+    static func finishGame() async {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        do {
+            try await Firestore.firestore().collection("Users").document(userId).updateData(["beingRoomId": FieldValue.delete()])
+        } catch {
+            print(error)
+        }
+    }
+    
 //    observe
     static func observeUserData() {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         let listener = Firestore.firestore().collection("Users").document(userId).addSnapshotListener { documentSnapshot, error in
             Task {
-                do {
-                    guard let user = try documentSnapshot?.data(as: User.self) else { return }
-                    let friendsDocuments = try await Firestore.firestore().collection("Users").document(userId).collection("Friends").whereField("isFriend", isEqualTo: true).getDocuments().documents
-                    var friendsUserId: [String] = []
-                    for friendsDocument in friendsDocuments {
-                        friendsUserId.append(friendsDocument.documentID)
-                    }
-                    let iconData = await Download.getIconImage(iconUrl: user.iconUrl)
-                    DispatchQueue.main.async {
-                        UserDataStore.shared.signInUser = user
-                        UserDataStore.shared.signInUser?.friendsUserId = friendsUserId
-                        UserDataStore.shared.signInUser?.iconData = iconData
-                    }
-                } catch {
-                    print(error)
+                guard let documentId = documentSnapshot?.documentID else { return }
+                guard let user = await getUserData(userId: documentId) else { return }
+                DispatchQueue.main.async {
+                    UserDataStore.shared.signInUser = user
                 }
             }
         }

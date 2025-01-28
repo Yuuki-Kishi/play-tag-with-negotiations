@@ -18,13 +18,8 @@ class UserDataStore: ObservableObject {
     enum controlPanelMode {
         case movement
         case deal(Deal)
-        case quest(Quest)
-//        case item
         enum Deal {
-            case target, negotiation
-        }
-        enum Quest {
-            case target, mission
+            case client, negotiation
         }
     }
     enum listenerType {

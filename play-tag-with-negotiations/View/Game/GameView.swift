@@ -47,7 +47,7 @@ struct GameView: View {
                 }
             })
         }
-        .onChange(of: playerDataStore.playingRoom.isEnd) {
+        .onChange(of: playerDataStore.playingRoom.isFinished) {
             pathDataStore.navigatetionPath.append(.result)
         }
         .navigationBarBackButtonHidden()
@@ -59,15 +59,16 @@ struct GameView: View {
                 }
                 PlayerRepository.observeMyPropaty()
                 DealRepository.observeDeals()
-//                await Get.getUsers()
                 await PlayerRepository.getAlivePlayers()
                 await NegotiationRepository.getNegotiations()
+                await FriendShipRepository.getAllMyFriendShips()
             }
         }
         .onDisappear() {
             userDataStore.listeners.remove(listenerType: .roomField)
             userDataStore.listeners.remove(listenerType: .isDecided)
             userDataStore.listeners.remove(listenerType: .myPropaty)
+            userDataStore.listeners.remove(listenerType: .deal)
         }
     }
     func displayPhase() -> String {

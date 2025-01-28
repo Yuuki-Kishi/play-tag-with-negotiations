@@ -12,13 +12,15 @@ import FirebaseFirestore
 class PlayerRepository {
 //    create
     static func enterRoom(roomId: String, isHost: Bool) async {
-        if await !Check.isBeingRoom(roomId: roomId) {
+        if await !UserRepository.isBeingRoom() {
             guard let userId = UserDataStore.shared.signInUser?.userId else { return }
             let player = Player(playerUserId: userId, isHost: isHost)
+            guard let playerNumber = await PlayTagRoomRepository.getRoomData(roomId: roomId)?.playerNumber else { return }
             let encoded = try! JSONEncoder().encode(player)
             do {
                 guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
                 try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).setData(jsonObject)
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["playerNumber": playerNumber + 1])
                 try await Firestore.firestore().collection("Users").document(userId).setData(["beingRoomId": roomId], merge: true)
             } catch {
                 print(error)
@@ -27,13 +29,12 @@ class PlayerRepository {
     }
     
     static func writeIsCatchable() async {
-        let players = PlayerDataStore.shared.playerArray
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
-        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
-        for player in players {
-            if player.playerUserId == myUserId { continue }
+        if !PlayerDataStore.shared.playerArray.me.isChaser {
+            let catchers = PlayerDataStore.shared.playerArray.filter { $0.isChaser }.map { $0.playerUserId }
+            let roomId = PlayerDataStore.shared.playingRoom.roomId
+            guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
             do {
-                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(player.playerUserId).updateData(["isCatchable": [["chaserUserId": myUserId, "isCatchable": true]]])
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(myUserId).updateData(["catchers": catchers])
             } catch {
                 print(error)
             }
@@ -44,7 +45,7 @@ class PlayerRepository {
     
 //    get
     static func getPlayer(userId: String) async -> Player? {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         do {
             let document = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).getDocument()
             let player = try document.data(as: Player.self)
@@ -56,7 +57,7 @@ class PlayerRepository {
     }
     
     static func getAllPlayers() async -> [Player] {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         do {
             let documents = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").getDocuments().documents
             var players: [Player] = []
@@ -73,10 +74,10 @@ class PlayerRepository {
     
     static func getAlivePlayers() async {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
-        let players = await getAllPlayers().filter { $0.isCaptured == false }
+        let players = await getAllPlayers().filter { !$0.isCaptured }
         let alivePlayers = OperationPlayers.getSuvivors(players: players)
         let isAliveMe = OperationPlayers.nextPhaseSuviveFugitives(players: players).contains(where: { $0.playerUserId == myUserId })
-        if !isAliveMe { await Update.wasCaptured() }
+        if !isAliveMe { await PlayerRepository.wasCaptured() }
         DispatchQueue.main.async {
             PlayerDataStore.shared.playerArray = []
         }
@@ -92,11 +93,10 @@ class PlayerRepository {
         }
         let aliveFugitiveCount = OperationPlayers.nextPhaseSuviveFugitives(players: players).count
         if aliveFugitiveCount == 0 {
-            await Update.gameEnd()
+            await PlayTagRoomRepository.gameFinished()
         }
     }
 //    update
-    
     static func playerUpToHost(roomId: String, nextHostUserId: String) async {
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(nextHostUserId).updateData(["isHost": true])
@@ -108,7 +108,7 @@ class PlayerRepository {
     
     static func isDecidedToFalse() async {
         if !PlayerDataStore.shared.playerArray.me.isCaptured {
-            let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+            let roomId = PlayerDataStore.shared.playingRoom.roomId
             guard let userId = UserDataStore.shared.signInUser?.userId else { return }
             do {
                 try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": false])
@@ -118,13 +118,23 @@ class PlayerRepository {
         }
     }
     
+    static func wasCaptured() async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        do {
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isCaptured": true])
+        } catch {
+            print(error)
+        }
+    }
+    
     static func grantMePoint(howMany: Int) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         await grantPoint(userId: userId, howMany: howMany)
     }
     
     static func grantPoint(userId: String, howMany: Int) async {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         guard let nowPoint = PlayerDataStore.shared.playerArray.first(where: { $0.playerUserId == userId })?.point else { return }
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["point": nowPoint + howMany])
@@ -139,7 +149,7 @@ class PlayerRepository {
     }
     
     static func confiscatePoint(userId: String, howMany: Int) async {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         guard let nowPoint = PlayerDataStore.shared.playerArray.first(where: { $0.playerUserId == userId })?.point else { return }
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["point": nowPoint - howMany])
@@ -148,19 +158,26 @@ class PlayerRepository {
         }
     }
     
-    static func nonCatchablePlayer(userId: String) async {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+    static func nonCatcher(userId: String) async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+        var catchers = PlayerDataStore.shared.playerArray.me.catchers
+        guard let index = catchers.firstIndex(of: userId) else { return }
+        catchers.remove(at: index)
         do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isCanCapture": false])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(myUserId).updateData(["catchers": catchers])
         } catch {
             print(error)
         }
     }
     
-    static func catchablePlayer(userId: String) async {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+    static func catcher(userId: String) async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+        var catchers = PlayerDataStore.shared.playerArray.me.catchers
+        catchers.append(userId)
         do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isCanCapture": true])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(myUserId).updateData(["catchers": catchers])
         } catch {
             print(error)
         }
@@ -179,23 +196,23 @@ class PlayerRepository {
     
     static func hostExitRoom(roomId: String) async {
         guard let nextHostUserId = PlayerDataStore.shared.playerArray.guests.randomElement() else { return }
-        await Update.playerUpToHost(roomId: roomId, nextHostUserId: nextHostUserId.playerUserId)
+        await playerUpToHost(roomId: roomId, nextHostUserId: nextHostUserId.playerUserId)
         await exitRoom(roomId: roomId)
     }
     
 //    observe
     static func observePlayers() {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").addSnapshotListener { querySnapshot, error in
             guard let documentChanges = querySnapshot?.documentChanges else { return }
             for documentChange in documentChanges {
                 do {
-                    let addedDocument = documentChange.document
-                    let player = try addedDocument.data(as: Player.self)
+                    let document = documentChange.document
+                    let player = try document.data(as: Player.self)
                     switch documentChange.type {
                     case .added:
                         Task {
-                            guard let user = await Get.getUserData(userId: addedDocument.documentID) else { return }
+                            guard let user = await UserRepository.getUserData(userId: document.documentID) else { return }
                             DispatchQueue.main.async {
                                 PlayerDataStore.shared.userArray.append(noDuplicate: user)
                                 PlayerDataStore.shared.playerArray.append(noDuplicate: player)
@@ -207,8 +224,8 @@ class PlayerRepository {
                         }
                     case .removed:
                         DispatchQueue.main.async {
-                            PlayerDataStore.shared.userArray.delete(userId: player.playerUserId)
-                            PlayerDataStore.shared.playerArray.delete(userId: player.playerUserId)
+                            PlayerDataStore.shared.userArray.remove(userId: player.playerUserId)
+                            PlayerDataStore.shared.playerArray.remove(userId: player.playerUserId)
                         }
                     }
                 } catch {
@@ -222,7 +239,7 @@ class PlayerRepository {
     }
     
     static func observeMyPropaty() {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId.uuidString
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
         let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(myUserId).addSnapshotListener { DocumentSnapshot, error in
             do {
