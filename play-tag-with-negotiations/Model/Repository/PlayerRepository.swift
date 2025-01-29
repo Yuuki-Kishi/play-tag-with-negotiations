@@ -74,25 +74,41 @@ class PlayerRepository {
     
     static func getAlivePlayers() async {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+        let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
         let players = await getAllPlayers().filter { !$0.isCaptured }
-        let alivePlayers = OperationPlayers.getSuvivors(players: players)
-        let isAliveMe = OperationPlayers.nextPhaseSuviveFugitives(players: players).contains(where: { $0.playerUserId == myUserId })
-        if !isAliveMe { await PlayerRepository.wasCaptured() }
-        DispatchQueue.main.async {
-            PlayerDataStore.shared.playerArray = []
-        }
-        for playerData in players {
-            var player = playerData
-            let isAlive = alivePlayers.contains { $0.playerUserId == player.playerUserId }
-            if !isAlive {
-                player.isCaptured = true
+        let chasers = players.filter { $0.isChaser }
+        let fugitives = players.filter { !$0.isChaser }
+        var survivors: [Player] = chasers
+        var capturedPlayers: [Player] = []
+        fugitiveLoop: for fugitive in fugitives {
+            guard let fugitivePosition = fugitive.move.first(where: { $0.phase == phaseNow }) else { return }
+            for chaser in chasers {
+                guard let chaserPosition = chaser.move.first(where: { $0.phase == phaseNow }) else { continue }
+                if fugitivePosition == chaserPosition {
+                    let isContain = fugitive.catchers.contains(chaser.playerUserId)
+                    if isContain {
+                        capturedPlayers.append(noDuplicate: fugitive)
+                        continue fugitiveLoop
+                    }
+                }
+                survivors.append(noDuplicate: fugitive)
             }
+        }
+        let isCaptured = capturedPlayers.contains(where: { $0.playerUserId == myUserId })
+        if isCaptured { await PlayerRepository.wasCaptured() }
+        for survivor in survivors {
+            DispatchQueue.main.async {
+                PlayerDataStore.shared.playerArray.append(noDuplicate: survivor)
+            }
+        }
+        for capturedPlayer in capturedPlayers {
+            var player = capturedPlayer
+            player.isCaptured = true
             DispatchQueue.main.async {
                 PlayerDataStore.shared.playerArray.append(noDuplicate: player)
             }
         }
-        let aliveFugitiveCount = OperationPlayers.nextPhaseSuviveFugitives(players: players).count
-        if aliveFugitiveCount == 0 {
+        if survivors.filter({ !$0.isChaser }).isEmpty {
             await PlayTagRoomRepository.gameFinished()
         }
     }

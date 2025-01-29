@@ -12,7 +12,6 @@
 		DE12A74A2C553F6D00F7B0DF /* MovePanelViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7492C553F6D00F7B0DF /* MovePanelViewButton.swift */; };
 		DE12A74F2C66722C00F7B0DF /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A74E2C66722C00F7B0DF /* ResultView.swift */; };
 		DE12A7532C6672CD00F7B0DF /* ResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7522C6672CD00F7B0DF /* ResultViewCell.swift */; };
-		DE12A75C2C6FD0D800F7B0DF /* OperationPlayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A75B2C6FD0D800F7B0DF /* OperationPlayers.swift */; };
 		DE12A75E2C75883B00F7B0DF /* Notice.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A75D2C75883B00F7B0DF /* Notice.swift */; };
 		DE12A7612C758E8900F7B0DF /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7602C758E8900F7B0DF /* NoticeView.swift */; };
 		DE12A7632C75999700F7B0DF /* NoticeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7622C75999700F7B0DF /* NoticeViewCell.swift */; };
@@ -90,7 +89,6 @@
 		DE12A7492C553F6D00F7B0DF /* MovePanelViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovePanelViewButton.swift; sourceTree = "<group>"; };
 		DE12A74E2C66722C00F7B0DF /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		DE12A7522C6672CD00F7B0DF /* ResultViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewCell.swift; sourceTree = "<group>"; };
-		DE12A75B2C6FD0D800F7B0DF /* OperationPlayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationPlayers.swift; sourceTree = "<group>"; };
 		DE12A75D2C75883B00F7B0DF /* Notice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notice.swift; sourceTree = "<group>"; };
 		DE12A7602C758E8900F7B0DF /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
 		DE12A7622C75999700F7B0DF /* NoticeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewCell.swift; sourceTree = "<group>"; };
@@ -271,7 +269,6 @@
 				DE06B9792CFC431400CB4AEA /* PlayerRepository.swift */,
 				DEDD96BB2D070D15008BAAF7 /* PlayerPositionRepository.swift */,
 				DEDD96BD2D0711E5008BAAF7 /* NegotiationRepository.swift */,
-				DE12A75B2C6FD0D800F7B0DF /* OperationPlayers.swift */,
 				DEFA1C1D2C8C971C00CB4458 /* Deal */,
 				DEAB38692C1EAA7F007639F6 /* Auth */,
 				DEFA54DD2C3989D500CF6BD1 /* Storage */,
@@ -623,7 +620,6 @@
 				DEAB386F2C1EB32E007639F6 /* User.swift in Sources */,
 				DEFA54D22C3103D100CF6BD1 /* PlayerDataStore.swift in Sources */,
 				DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */,
-				DE12A75C2C6FD0D800F7B0DF /* OperationPlayers.swift in Sources */,
 				DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */,
 				DEFA550A2C414AC500CF6BD1 /* DealClientPanelViewCell.swift in Sources */,
 				DEFA55132C426CD200CF6BD1 /* FriendViewCell.swift in Sources */,

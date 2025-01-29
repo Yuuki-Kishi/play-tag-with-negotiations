@@ -79,7 +79,7 @@ struct GameView: View {
     }
     func point() -> String {
         let point = playerDataStore.playerArray.me.point
-        return "所持ポイント : " + String(point) + "pt"
+        return "保有ポイント : " + String(point) + "pt"
     }
 }
 

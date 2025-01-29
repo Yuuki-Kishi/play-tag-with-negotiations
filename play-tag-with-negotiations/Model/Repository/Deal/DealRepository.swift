@@ -16,6 +16,7 @@ class DealRepository {
         let roomId = PlayerDataStore.shared.playingRoom.roomId
         let targetUserId = PlayerDataStore.shared.dealTarget.playerUserId
         guard let consideration = Int(point) else { return }
+        if PlayerDataStore.shared.playerArray.me.point < consideration { return }
         let deal = Deal(negotiationId: negotiationId, proposerUserId: myUserId, clientUserId: targetUserId, period: 2, consideration: consideration)
         let encoded = try! JSONEncoder().encode(deal)
         do {

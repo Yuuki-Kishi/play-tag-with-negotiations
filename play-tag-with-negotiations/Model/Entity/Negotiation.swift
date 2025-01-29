@@ -17,7 +17,7 @@ struct Negotiation: Codable, Hashable, Identifiable, Equatable {
     var negotiationName: NegotiationName
     var displayName: String
     var target: Target
-    var imageName: String
+    var iconName: String
     var version: Double
     
     enum Target: String {
@@ -29,7 +29,7 @@ struct Negotiation: Codable, Hashable, Identifiable, Equatable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case negotiationId, negotiationName, displayName, target, imageName, version
+        case negotiationId, negotiationName, displayName, target, iconName, version
     }
     
     init(from decoder: Decoder) throws {
@@ -41,7 +41,7 @@ struct Negotiation: Codable, Hashable, Identifiable, Equatable {
         self.displayName = try container.decode(String.self, forKey: .displayName)
         let target = try container.decode(String.self, forKey: .target)
         self.target = Target(rawValue: target) ?? .unknown
-        self.imageName = try container.decode(String.self, forKey: .imageName)
+        self.iconName = try container.decode(String.self, forKey: .iconName)
         self.version = try container.decode(Double.self, forKey: .version)
     }
     
@@ -51,17 +51,17 @@ struct Negotiation: Codable, Hashable, Identifiable, Equatable {
         try container.encode(self.negotiationName.rawValue, forKey: .negotiationName)
         try container.encode(self.displayName, forKey: .displayName)
         try container.encode(self.target.rawValue, forKey: .target)
-        try container.encode(self.imageName, forKey: .imageName)
+        try container.encode(self.iconName, forKey: .iconName)
         try container.encode(self.version, forKey: .version)
     }
     
-    init(negotiationId: String, negotiationName: NegotiationName, displayName: String, target: Target, imageName: String, version: Double) {
+    init(negotiationId: String, negotiationName: NegotiationName, displayName: String, target: Target, iconName: String, version: Double) {
         self.id = UUID()
         self.negotiationId = negotiationId
         self.negotiationName = negotiationName
         self.displayName = displayName
         self.target = target
-        self.imageName = imageName
+        self.iconName = iconName
         self.version = version
     }
     
@@ -71,7 +71,7 @@ struct Negotiation: Codable, Hashable, Identifiable, Equatable {
         self.negotiationName = .unknown
         self.displayName = "unknown"
         self.target = .unknown
-        self.imageName = "questionmark"
+        self.iconName = "questionmark"
         self.version = 1.0
     }
 }

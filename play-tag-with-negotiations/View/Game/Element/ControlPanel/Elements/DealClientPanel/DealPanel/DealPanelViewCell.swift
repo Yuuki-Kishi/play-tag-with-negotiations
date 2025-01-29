@@ -15,7 +15,7 @@ struct DealPanelViewCell: View {
     
     var body: some View {
         HStack {
-            Image(systemName: negotiation().imageName)
+            Image(systemName: negotiation().iconName)
                 .font(.system(size: 25))
                 .frame(width: 50)
                 .foregroundStyle(Color.accentColor)
