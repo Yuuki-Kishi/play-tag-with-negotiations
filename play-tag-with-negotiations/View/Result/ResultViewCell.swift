@@ -30,7 +30,7 @@ struct ResultViewCell: View {
             Text(String(player.point) + "pt")
                 .font(.system(size: 25))
                 .foregroundStyle(Color.primary)
-            if FriendShipRepository.isExists(pertnerUserId: player.playerUserId) {
+            if !FriendShipRepository.isExists(pertnerUserId: player.playerUserId) {
                 Button(action: {
                     Task {
                         await FriendShipRepository.sendFriendRequest(consenter: player.playerUserId)

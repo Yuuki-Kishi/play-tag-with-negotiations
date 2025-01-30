@@ -149,9 +149,9 @@ struct PlayTagRoom: Codable, Hashable, Identifiable, Equatable {
         self.playerNumber = 0
         self.phaseMax = 10
         self.phaseNow = 0
-        self.horizontalCount = 0
-        self.verticalCount = 0
-        self.chaserNumber = 0
-        self.fugitiveNumber = 0
+        self.horizontalCount = 5
+        self.verticalCount = 5
+        self.chaserNumber = 1
+        self.fugitiveNumber = 4
     }
 }

@@ -17,6 +17,7 @@ class DealRepository {
         let targetUserId = PlayerDataStore.shared.dealTarget.playerUserId
         guard let consideration = Int(point) else { return }
         if PlayerDataStore.shared.playerArray.me.point < consideration { return }
+        await PlayerRepository.confiscatePoint(userId: myUserId, howMany: consideration)
         let deal = Deal(negotiationId: negotiationId, proposerUserId: myUserId, clientUserId: targetUserId, period: 2, consideration: consideration)
         let encoded = try! JSONEncoder().encode(deal)
         do {
@@ -45,6 +46,8 @@ class DealRepository {
         let roomId = PlayerDataStore.shared.playingRoom.roomId
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Deals").document(deal.dealId).updateData(["condition": Deal.dealCondition.success.rawValue])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(deal.proposerUserId).updateData(["deals": FieldValue.arrayUnion([deal.dealId])])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(deal.clientUserId).updateData(["deals": FieldValue.arrayUnion([deal.dealId])])
         } catch {
             print(error)
         }

@@ -19,9 +19,8 @@ class DealSuccess {
     }
     
     static func missOnce(deal: Deal) async {
-        await PlayerRepository.confiscatePoint(userId: deal.proposerUserId, howMany: deal.consideration)
         await PlayerRepository.grantPoint(userId: deal.clientUserId, howMany: deal.consideration)
-        await PlayerRepository.nonCatcher(userId: deal.clientUserId)
+        await PlayerRepository.nonCatcher(userId: deal.proposerUserId)
         await DealRepository.dealSuccess(deal: deal)
     }
 }

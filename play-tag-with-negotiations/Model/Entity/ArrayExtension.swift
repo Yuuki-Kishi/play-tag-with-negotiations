@@ -123,7 +123,7 @@ extension Array where Element == Notice {
 
 extension Array where Element == Negotiation {
     var canPropose: [Element] {
-        let deals = PlayerDataStore.shared.dealArray.proposed + PlayerDataStore.shared.dealArray.success
+        let deals = PlayerDataStore.shared.dealArray.proposing + PlayerDataStore.shared.dealArray.success
         let negotiations = deals.map { $0.negotiationId }
         let forChasers = self.filter { $0.target == .chaser }
         let forFugitives = self.filter { $0.target == .fugitive }
@@ -134,7 +134,8 @@ extension Array where Element == Negotiation {
         } else {
             canProposes = forFugitives + allPlayers
         }
-        return canProposes.filter { !negotiations.contains($0.negotiationId) }
+        let returns = canProposes.filter { !negotiations.contains($0.negotiationId) }
+        return returns
     }
     
     mutating func append(noDuplicate item: Element) {
@@ -160,7 +161,7 @@ extension Array where Element == Deal {
    
     var proposing: [Element] {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
-        return self.filter { $0.condition == .proposing && $0.proposerUserId == myUserId }
+        return self.filter { $0.condition == .proposed && $0.proposerUserId == myUserId }
     }
     
     var proposed: [Element] {

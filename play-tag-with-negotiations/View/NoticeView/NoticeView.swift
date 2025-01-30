@@ -23,6 +23,7 @@ struct NoticeView: View {
         }
         .onDisappear() {
             userDataStore.listeners.remove(listenerType: .notice)
+            userDataStore.noticeArray.removeAll()
         }
     }
 }

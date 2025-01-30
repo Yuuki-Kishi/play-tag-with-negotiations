@@ -177,11 +177,8 @@ class PlayerRepository {
     static func nonCatcher(userId: String) async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
-        var catchers = PlayerDataStore.shared.playerArray.me.catchers
-        guard let index = catchers.firstIndex(of: userId) else { return }
-        catchers.remove(at: index)
         do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(myUserId).updateData(["catchers": catchers])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["catchers": FieldValue.arrayRemove([myUserId])])
         } catch {
             print(error)
         }

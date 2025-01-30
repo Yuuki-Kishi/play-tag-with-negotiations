@@ -26,9 +26,7 @@ struct ResultView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing, content: {
                 Button(action: {
-                    playerDataStore.userArray.removeAll()
-                    playerDataStore.playerArray.removeAll()
-                    pathDataStore.navigatetionPath.removeAll()
+                    clearDataStore()
                     Task {
                         await UserRepository.finishGame()
                     }
@@ -42,6 +40,9 @@ struct ResultView: View {
         .navigationBarBackButtonHidden()
     }
     func playerRank(player: Player) -> Int {
+        DispatchQueue.main.async {
+            playerDataStore.playerArray.sort { $0.point > $1.point }
+        }
         guard let index = playerDataStore.playerArray.firstIndex(where: { $0.playerUserId == player.playerUserId }) else { return playerDataStore.playerArray.count }
         return index + 1
     }
@@ -70,6 +71,15 @@ struct ResultView: View {
         default:
             return Color.indigo
         }
+    }
+    func clearDataStore() {
+        playerDataStore.playingRoom = PlayTagRoom()
+        playerDataStore.dealTarget = Player()
+        playerDataStore.userArray.removeAll()
+        playerDataStore.playerArray.removeAll()
+        playerDataStore.dealArray.removeAll()
+        playerDataStore.negotiationArray.removeAll()
+        pathDataStore.navigatetionPath.removeAll()
     }
 }
 
