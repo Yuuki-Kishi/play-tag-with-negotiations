@@ -15,8 +15,8 @@ struct ResultView: View {
     var body: some View {
         VStack {
             Spacer()
-            Text(playerRankText(player: playerDataStore.playerArray.me))
-                .foregroundStyle(playerRankTextColor(player: playerDataStore.playerArray.me))
+            Text(playerRankText())
+                .foregroundStyle(playerRankTextColor())
                 .font(.system(size: 150))
                 .frame(height: UIScreen.main.bounds.height * 0.2)
             List($playerDataStore.playerArray) { player in
@@ -26,10 +26,8 @@ struct ResultView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing, content: {
                 Button(action: {
-                    clearDataStore()
-                    Task {
-                        await UserRepository.finishGame()
-                    }
+                    Task { await UserRepository.finishGame() }
+                    pathDataStore.navigatetionPath.removeAll()
                 }, label: {
                     Text("確認")
                 })
@@ -38,16 +36,20 @@ struct ResultView: View {
         .navigationTitle("結果")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-    }
-    func playerRank(player: Player) -> Int {
-        DispatchQueue.main.async {
-            playerDataStore.playerArray.sort { $0.point > $1.point }
+        .onDisappear() {
+            clearDataStore()
         }
-        guard let index = playerDataStore.playerArray.firstIndex(where: { $0.playerUserId == player.playerUserId }) else { return playerDataStore.playerArray.count }
+    }
+    func playerRank() -> Int {
+        let me = PlayerDataStore.shared.playerArray.me
+        DispatchQueue.main.async {
+            PlayerDataStore.shared.playerArray.sort { $0.point > $1.point }
+        }
+        guard let index = PlayerDataStore.shared.playerArray.firstIndex(where: { $0.playerUserId == me.playerUserId }) else { return PlayerDataStore.shared.playerArray.count }
         return index + 1
     }
-    func playerRankText(player: Player) -> String {
-        let rank = playerRank(player: player)
+    func playerRankText() -> String {
+        let rank = playerRank()
         switch rank {
         case 1:
             return String(rank) + "st"
@@ -59,9 +61,8 @@ struct ResultView: View {
             return String(rank) + "th"
         }
     }
-    func playerRankTextColor(player: Player) -> Color {
-        let rank = playerRank(player: player)
-        switch rank {
+    func playerRankTextColor() -> Color {
+        switch playerRank() {
         case 1:
             return Color.pink
         case 2:
@@ -73,13 +74,14 @@ struct ResultView: View {
         }
     }
     func clearDataStore() {
+        userDataStore.listeners.remove(listenerType: .friendShips)
+        userDataStore.listeners.remove(listenerType: .userData)
         playerDataStore.playingRoom = PlayTagRoom()
         playerDataStore.dealTarget = Player()
         playerDataStore.userArray.removeAll()
         playerDataStore.playerArray.removeAll()
         playerDataStore.dealArray.removeAll()
         playerDataStore.negotiationArray.removeAll()
-        pathDataStore.navigatetionPath.removeAll()
     }
 }
 

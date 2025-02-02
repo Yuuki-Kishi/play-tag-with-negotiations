@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ApplyingViewCell: View {
     @Binding var friendShip: FriendShip
-    @State var friend: User
     @State private var isShowDeleteFirendAlert = false
     
     var body: some View {
@@ -27,10 +26,10 @@ struct ApplyingViewCell: View {
                     .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
             }
             VStack {
-                Text(friend.userName)
+                Text(friendShip.pertnerUser.userName)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.system(size: 25))
-                Text(friend.profile)
+                Text(friendShip.pertnerUser.profile)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(1)
                     .font(.system(size: 15))
@@ -50,7 +49,7 @@ struct ApplyingViewCell: View {
             })
             Button(role: .destructive, action: {
                 Task {
-                    await FriendShipRepository.deleteFriend(friendShipId: friendShip.friendShipId, pertnerUserId: friend.userId)
+                    await FriendShipRepository.deleteFriend(pertnerUserId: friendShip.pertnerUser.userId)
                 }
             }, label: {
                 Text("削除")
@@ -58,7 +57,7 @@ struct ApplyingViewCell: View {
         })
     }
     func iconImage() -> UIImage? {
-        guard let iconData = friend.iconData else { return nil }
+        guard let iconData = friendShip.pertnerUser.iconData else { return nil }
         return UIImage(data: iconData)
     }
 }

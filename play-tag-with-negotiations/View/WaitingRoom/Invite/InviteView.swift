@@ -51,7 +51,7 @@ struct InviteView: View {
         }
         .onAppear() {
             Task {
-                guard let friends = userDataStore.signInUser?.friendShips else { return }
+                guard let friends = userDataStore.signInUser?.friendUsers else { return }
                 for friend in friends {
                     guard let user = await UserRepository.getUserData(userId: friend) else { return }
                     friendsArray.append(noDuplicate: user)

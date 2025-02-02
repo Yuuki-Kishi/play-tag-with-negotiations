@@ -30,19 +30,17 @@ extension Array where Element == User {
 
 extension Array where Element == FriendShip {
     var friends: [Element] {
-        return self.filter { $0.isFriend }
+        return self.filter { $0.status == .accepted }
     }
     
     var pendings: [Element] {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
-        let notFriends = self.filter { !$0.isFriend }
-        return notFriends.filter { $0.consenterUserId == myUserId }
+        return self.filter { $0.status == .pending && $0.consenterUserId == myUserId }
     }
     
     var applyings: [Element] {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
-        let notFriends = self.filter { !$0.isFriend }
-        return notFriends.filter { $0.proposerUserId == myUserId }
+        return self.filter { $0.status == .pending && $0.proposerUserId == myUserId }
     }
     
     mutating func append(noDuplicate item: Element) {
@@ -112,6 +110,10 @@ extension Array where Element == Player {
 }
 
 extension Array where Element == Notice {
+    var nonChecks: [Element] {
+        return self.filter { !$0.isChecked }
+    }
+    
     mutating func append(noDuplicate item: Element) {
         if let index = self.firstIndex(where: { $0.noticeId == item.noticeId }) {
             self[index] = item

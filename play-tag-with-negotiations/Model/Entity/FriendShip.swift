@@ -15,12 +15,17 @@ struct FriendShip: Codable, Hashable, Identifiable, Equatable {
     var friendShipId: String
     var proposerUserId: String
     var consenterUserId: String
+    var pertnerUser: User
     var proposalDate: Date
-    var excutionDate: Date
-    var isFriend: Bool
+    var executionDate: Date
+    var status: FriendShipStatus
+    
+    enum FriendShipStatus: String {
+        case pending, accepted, rejected, unknown
+    }
     
     enum CodingKeys: String, CodingKey {
-        case friendShipId, proposerUserId, consenterUserId, proposalDate, excutionDate, isFriend
+        case friendShipId, proposerUserId, consenterUserId, proposalDate, executionDate, status
     }
     
     init(from decoder: Decoder) throws {
@@ -29,6 +34,7 @@ struct FriendShip: Codable, Hashable, Identifiable, Equatable {
         self.friendShipId = try container.decode(String.self, forKey: .friendShipId)
         self.proposerUserId = try container.decode(String.self, forKey: .proposerUserId)
         self.consenterUserId = try container.decode(String.self, forKey: .consenterUserId)
+        self.pertnerUser = User()
         let formatter = ISO8601DateFormatter()
         let proposalDateString = try container.decode(String.self, forKey: .proposalDate)
         if let date = formatter.date(from: proposalDateString) {
@@ -36,13 +42,14 @@ struct FriendShip: Codable, Hashable, Identifiable, Equatable {
         } else {
             throw DecodingError.dataCorruptedError(forKey: .proposalDate, in: container, debugDescription: "Failed to decode editedTime.")
         }
-        let excutionDateString = try container.decode(String.self, forKey: .excutionDate)
-        if let date = formatter.date(from: excutionDateString) {
-            self.excutionDate = date
+        let executionDateString = try container.decode(String.self, forKey: .executionDate)
+        if let date = formatter.date(from: executionDateString) {
+            self.executionDate = date
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .excutionDate, in: container, debugDescription: "Failed to decode editedTime.")
+            throw DecodingError.dataCorruptedError(forKey: .executionDate, in: container, debugDescription: "Failed to decode editedTime.")
         }
-        self.isFriend = try container.decode(Bool.self, forKey: .isFriend)
+        let type = try container.decode(String.self, forKey: .status)
+        self.status = FriendShipStatus(rawValue: type) ?? .unknown
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -53,29 +60,31 @@ struct FriendShip: Codable, Hashable, Identifiable, Equatable {
         let formatter = ISO8601DateFormatter()
         let proposalDateString = formatter.string(from: proposalDate)
         try container.encode(proposalDateString, forKey: .proposalDate)
-        let excutionDateString = formatter.string(from: excutionDate)
-        try container.encode(excutionDateString, forKey: .excutionDate)
-        try container.encode(self.isFriend, forKey: .isFriend)
+        let executionDateString = formatter.string(from: executionDate)
+        try container.encode(executionDateString, forKey: .executionDate)
+        try container.encode(self.status.rawValue, forKey: .status)
     }
     
-    init(friendShipId: String, proposerUserId: String, consenterUserId: String, proposalDate: Date, excutionDate: Date, isFriend: Bool) {
+    init(friendShipId: String, proposerUserId: String, consenterUserId: String, pertnerUser: User, proposalDate: Date, executionDate: Date, status: FriendShipStatus) {
         self.id = UUID()
         self.friendShipId = friendShipId
         self.proposerUserId = proposerUserId
         self.consenterUserId = consenterUserId
+        self.pertnerUser = pertnerUser
         self.proposalDate = proposalDate
-        self.excutionDate = excutionDate
-        self.isFriend = isFriend
+        self.executionDate = executionDate
+        self.status = status
     }
     
-    init(proposerUserId: String, consentUserId: String) {
+    init(proposerUserId: String, consenterUserId: String) {
         self.id = UUID()
-        self.friendShipId = UUID().uuidString
+        self.friendShipId = [proposerUserId, consenterUserId].sorted().joined(separator: "_")
         self.proposerUserId = proposerUserId
-        self.consenterUserId = consentUserId
+        self.consenterUserId = consenterUserId
+        self.pertnerUser = User()
         self.proposalDate = Date()
-        self.excutionDate = Date()
-        self.isFriend = false
+        self.executionDate = Date()
+        self.status = .pending
     }
     
     init() {
@@ -83,8 +92,9 @@ struct FriendShip: Codable, Hashable, Identifiable, Equatable {
         self.friendShipId = UUID().uuidString
         self.proposerUserId = "unknownUserId"
         self.consenterUserId = "unknownUserId"
+        self.pertnerUser = User()
         self.proposalDate = Date()
-        self.excutionDate = Date()
-        self.isFriend = false
+        self.executionDate = Date()
+        self.status = .unknown
     }
 }

@@ -27,36 +27,9 @@ class NoticeRepository {
     
 //    check
     
-//    get
-//    static func getNotice(noticeId: String) async -> Notice? {
-//        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return nil }
-//        do {
-//            let document = try await Firestore.firestore().collection("Users").document(myUserId).collection("Notices").document(noticeId).getDocument()
-//            var notice = try document.data(as: Notice.self)
-//            guard let sendUser = await getUserData(userId: notice.senderUserId) else { return nil }
-//            notice.sendUser = sendUser
-//            return notice
-//        } catch {
-//            print(error)
-//        }
-//        return nil
-//    }
     
-//    static func getNonCheckedNotice() async -> [Notice] {
-//        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return [] }
-//        do {
-//            let documents = try await Firestore.firestore().collection("Users").document(myUserId).collection("Notices").whereField("isChecked", isEqualTo: false).getDocuments().documents
-//            var notices: [Notice] = []
-//            for document in documents {
-//                guard let notice = await getNotice(noticeId: document.documentID) else { return [] }
-//                notices.append(notice)
-//            }
-//            return notices
-//        } catch {
-//            print(error)
-//        }
-//        return []
-//    }
+//    get
+    
     
 //    update
     static func checkNotice(noticeId: String) async {
@@ -69,7 +42,7 @@ class NoticeRepository {
     }
     
     static func allCheckNotice() async {
-        let nonCheckNotices = UserDataStore.shared.noticeArray.filter { !$0.isChecked }
+        let nonCheckNotices = UserDataStore.shared.noticeArray.nonChecks
         for notice in nonCheckNotices {
             await checkNotice(noticeId: notice.noticeId)
         }
@@ -85,33 +58,46 @@ class NoticeRepository {
         }
     }
     
+    static func deleteAllNotice() async {
+        let notices = UserDataStore.shared.noticeArray
+        for notice in notices {
+            await deleteNotice(noticeId: notice.noticeId)
+        }
+    }
+    
 //    observe
     static func observeNotice() {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
         let listener = Firestore.firestore().collection("Users").document(myUserId).collection("Notices").addSnapshotListener { querySnapshot, error in
             guard let documentChanges = querySnapshot?.documentChanges else { return }
-            do {
-                for documentChange in documentChanges {
-                    let document = documentChange.document
-                    let notice = try document.data(as: Notice.self)
-                    switch documentChange.type {
-                    case .added:
-                        DispatchQueue.main.async {
-                            UserDataStore.shared.noticeArray.append(noDuplicate: notice)
-                        }
-                    case .modified:
-                        DispatchQueue.main.async {
-                            UserDataStore.shared.noticeArray.append(noDuplicate: notice)
-                        }
-                    case .removed:
-                        guard let index = UserDataStore.shared.noticeArray.firstIndex(of: notice) else { return }
-                        DispatchQueue.main.async {
-                            UserDataStore.shared.noticeArray.remove(at: index)
+            Task {
+                do {
+                    for documentChange in documentChanges {
+                        let document = documentChange.document
+                        var notice = try document.data(as: Notice.self)
+                        guard let sendUser = await UserRepository.getUserData(userId: notice.senderUserId) else { return }
+                        notice.sendUser = sendUser
+                        switch documentChange.type {
+                        case .added:
+                            DispatchQueue.main.async {
+                                UserDataStore.shared.noticeArray.append(noDuplicate: notice)
+                                UserDataStore.shared.noticeArray.sort { $0.sendDate > $1.sendDate }
+                            }
+                        case .modified:
+                            DispatchQueue.main.async {
+                                UserDataStore.shared.noticeArray.append(noDuplicate: notice)
+                                UserDataStore.shared.noticeArray.sort { $0.sendDate > $1.sendDate }
+                            }
+                        case .removed:
+                            guard let index = UserDataStore.shared.noticeArray.firstIndex(of: notice) else { return }
+                            DispatchQueue.main.async {
+                                UserDataStore.shared.noticeArray.remove(at: index)
+                            }
                         }
                     }
+                } catch {
+                    print(error)
                 }
-            } catch {
-                print(error)
             }
         }
         DispatchQueue.main.async {

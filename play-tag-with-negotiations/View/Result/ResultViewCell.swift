@@ -10,6 +10,7 @@ import SwiftUI
 struct ResultViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
+    @StateObject var friendDataStore = FriendDataStore.shared
     @Binding var player: Player
     @State private var isShowAlert = false
     
@@ -30,7 +31,7 @@ struct ResultViewCell: View {
             Text(String(player.point) + "pt")
                 .font(.system(size: 25))
                 .foregroundStyle(Color.primary)
-            if !FriendShipRepository.isExists(pertnerUserId: player.playerUserId) {
+            if isDisplayButton() {
                 Button(action: {
                     Task {
                         await FriendShipRepository.sendFriendRequest(consenter: player.playerUserId)
@@ -111,6 +112,12 @@ struct ResultViewCell: View {
     func user() -> User {
         guard let user = playerDataStore.userArray.first(where: { $0.userId == player.playerUserId }) else { return User() }
         return user
+    }
+    func isDisplayButton() -> Bool {
+        let isFriend = FriendShipRepository.isExists(pertnerUserId: player.playerUserId)
+        let isMe = player.playerUserId == userDataStore.signInUser?.userId
+        if !isFriend && !isMe { return true }
+        return false
     }
 }
 

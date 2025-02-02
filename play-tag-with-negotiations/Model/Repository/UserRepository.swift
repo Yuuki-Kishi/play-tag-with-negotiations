@@ -37,8 +37,8 @@ class UserRepository {
     }
     
     static func isBeingRoom() async -> Bool {
-        guard let beingRoomId = await getBeingRoomId() else { return false }
-        return true
+        if let beingRoomId = await getBeingRoomId() { return true }
+        return false
     }
     
 //    get
@@ -65,16 +65,6 @@ class UserRepository {
         }
         return nil
     }
-    
-//    static func getAllUsers() async -> [User] {
-//        let players = await getAllPlayers()
-//        for player in players {
-//            guard let user = await get(userId: player.playerUserId) else { return }
-//            DispatchQueue.main.async {
-//                PlayerDataStore.shared.userArray.append(noDuplicate: user)
-//            }
-//        }
-//    }
     
 //    update
     static func updateUserName(newName: String) async {

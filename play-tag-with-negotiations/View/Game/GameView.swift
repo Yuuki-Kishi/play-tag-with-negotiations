@@ -28,7 +28,6 @@ struct GameView: View {
                 SelectionView(userDataStore: userDataStore, playerDataStore: playerDataStore)
                 ControlPanelCoordination(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
                     .frame(height: UIScreen.main.bounds.height * 0.25)
-                Spacer(minLength: 20)
             }
             .frame(height: UIScreen.main.bounds.height * 0.35)
         }
@@ -48,6 +47,7 @@ struct GameView: View {
             })
         }
         .onChange(of: playerDataStore.playingRoom.isFinished) {
+            Task { await PlayerRepository.getAllPlayers() }
             pathDataStore.navigatetionPath.append(.result)
         }
         .navigationBarBackButtonHidden()
@@ -57,11 +57,12 @@ struct GameView: View {
                 if playerDataStore.playerArray.me.isHost {
                     PlayTagRoomRepository.observeIsDecided()
                 }
+                UserRepository.observeUserData()
                 PlayerRepository.observeMyPropaty()
                 DealRepository.observeDeals()
+                FriendShipRepository.observeFriend()
                 await PlayerRepository.getAlivePlayers()
                 await NegotiationRepository.getNegotiations()
-                await FriendShipRepository.getAllMyFriendShips()
             }
         }
         .onDisappear() {

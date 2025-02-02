@@ -20,30 +20,14 @@ struct PublicRoomsView: View {
     var body: some View {
         NavigationStack(path: $pathDataStore.navigatetionPath) {
             ZStack {
-                List(roomDataStore.publicRoomsArray) { playTagRoom in
-                    PublicRoomsViewCell(playerDataStore: playerDataStore, pathDataStore: pathDataStore, playTagRoom: playTagRoom)
-                }
-                .navigationDestination(for: PathDataStore.path.self) { path in
-                    switch path {
-                    case .roomSetting:
-                        RoomSettingView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                    case .notice:
-                        NoticeView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                    case .myPage:
-                        MyPageView(userDataStore: userDataStore, pathDataStore: pathDataStore)
-                    case .friend:
-                        FriendShipView(userDataStore: userDataStore, pickerStatus: .friend)
-                    case .waitingRoom:
-                        WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                    case .roomInfo:
-                        RoomInfomationView(playerDataStore: playerDataStore)
-                    case .invite:
-                        InviteView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                    case .game:
-                        GameView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                    case .result:
-                        ResultView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                if !roomDataStore.publicRoomsArray.isEmpty {
+                    List(roomDataStore.publicRoomsArray) { playTagRoom in
+                        PublicRoomsViewCell(playerDataStore: playerDataStore, pathDataStore: pathDataStore, playTagRoom: playTagRoom)
                     }
+                } else {
+                    Spacer()
+                    Text("公開中のルームはありません")
+                    Spacer()
                 }
                 Menu {
                     Button(action: {
@@ -69,6 +53,28 @@ struct PublicRoomsView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                 .padding(.trailing, 35)
                 .padding(.bottom, 35)
+            }
+            .navigationDestination(for: PathDataStore.path.self) { path in
+                switch path {
+                case .roomSetting:
+                    RoomSettingView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                case .notice:
+                    NoticeView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                case .myPage:
+                    MyPageView(userDataStore: userDataStore, pathDataStore: pathDataStore)
+                case .friend:
+                    FriendShipView(userDataStore: userDataStore, pickerStatus: .friend)
+                case .waitingRoom:
+                    WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                case .roomInfo:
+                    RoomInfomationView(playerDataStore: playerDataStore)
+                case .invite:
+                    InviteView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                case .game:
+                    GameView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                case .result:
+                    ResultView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                }
             }
             .navigationTitle("公開中")
             .navigationBarTitleDisplayMode(.inline)
@@ -131,7 +137,7 @@ struct PublicRoomsView: View {
         }
     }
     func noticeButtonIcon() -> String {
-        let noticeCount = userDataStore.noticeArray.filter { !$0.isChecked }.count
+        let noticeCount = userDataStore.noticeArray.nonChecks.count
         if noticeCount > 0 {
             return "envelope.fill"
         }
@@ -193,11 +199,13 @@ struct PublicRoomsView: View {
                 }
             } else {
                 PlayTagRoomRepository.observePublicRooms()
+                NoticeRepository.observeNotice()
             }
         }
     }
     func onDisappear() {
         userDataStore.listeners.remove(listenerType: .publicRooms)
+        userDataStore.listeners.remove(listenerType: .notice)
     }
 }
 

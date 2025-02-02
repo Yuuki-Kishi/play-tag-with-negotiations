@@ -43,7 +43,7 @@ struct FriendShipView: View {
             case .friend:
                 if !friendDataStore.friendShips.friends.isEmpty {
                     List(friendDataStore.friendShips.friends) { friendShip in
-                        FriendViewCell(friendShip: Binding(get: { friendShip }, set: {_ in}), friend: friendShipToFriendUser(friendShip: friendShip))
+                        FriendViewCell(friendShip: Binding(get: { friendShip }, set: {_ in}))
                     }
                 } else {
                     Spacer()
@@ -53,7 +53,7 @@ struct FriendShipView: View {
             case .pending:
                 if !friendDataStore.friendShips.pendings.isEmpty {
                     List(friendDataStore.friendShips.pendings) { friendShip in
-                        PendingViewCell(friendShip: Binding(get: { friendShip }, set: {_ in}), friend: friendShipToFriendUser(friendShip: friendShip))
+                        PendingViewCell(friendShip: Binding(get: { friendShip }, set: {_ in}))
                     }
                 } else {
                     Spacer()
@@ -63,7 +63,7 @@ struct FriendShipView: View {
             case .applying:
                 if !friendDataStore.friendShips.applyings.isEmpty {
                     List(friendDataStore.friendShips.applyings) { friendShip in
-                        ApplyingViewCell(friendShip: Binding(get: { friendShip }, set: {_ in}), friend: friendShipToFriendUser(friendShip: friendShip))
+                        ApplyingViewCell(friendShip: Binding(get: { friendShip }, set: {_ in}))
                     }
                 } else {
                     Spacer()
@@ -78,24 +78,9 @@ struct FriendShipView: View {
             FriendShipRepository.observeFriend()
         }
         .onDisappear() {
-            userDataStore.listeners.remove(listenerType: .friend)
+            userDataStore.listeners.remove(listenerType: .friendShips)
         }
         .background(Color(UIColor.systemGray6))
-    }
-    func friendShipToFriendUser(friendShip: FriendShip) -> User {
-        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return User() }
-        if friendShip.proposerUserId == myUserId {
-            Task {
-                guard let consenter = await UserRepository.getUserData(userId: friendShip.consenterUserId) else { return User() }
-                return consenter
-            }
-        } else if friendShip.consenterUserId == myUserId {
-            Task {
-                guard let proposer = await UserRepository.getUserData(userId: friendShip.proposerUserId) else { return User() }
-                return proposer
-            }
-        }
-        return User()
     }
 }
 

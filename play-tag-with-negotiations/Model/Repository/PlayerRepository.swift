@@ -123,6 +123,7 @@ class PlayerRepository {
     }
     
     static func isDecidedToFalse() async {
+        print("isCaptured:", PlayerDataStore.shared.playerArray.me.isCaptured)
         if !PlayerDataStore.shared.playerArray.me.isCaptured {
             let roomId = PlayerDataStore.shared.playingRoom.roomId
             guard let userId = UserDataStore.shared.signInUser?.userId else { return }

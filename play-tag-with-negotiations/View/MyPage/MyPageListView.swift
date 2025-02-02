@@ -75,7 +75,7 @@ struct MyPageListView: View {
                     .font(.system(size: 13))
             }
             VStack {
-                Text("代名詞")
+                Text("自己紹介")
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
                 ScrollView {
