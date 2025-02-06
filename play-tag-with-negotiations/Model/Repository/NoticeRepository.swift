@@ -32,21 +32,7 @@ class NoticeRepository {
     
     
 //    update
-    static func checkNotice(noticeId: String) async {
-        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
-        do {
-            try await Firestore.firestore().collection("Users").document(myUserId).collection("Notices").document(noticeId).updateData(["isChecked": true])
-        } catch {
-            print(error)
-        }
-    }
     
-    static func allCheckNotice() async {
-        let nonCheckNotices = UserDataStore.shared.noticeArray.nonChecks
-        for notice in nonCheckNotices {
-            await checkNotice(noticeId: notice.noticeId)
-        }
-    }
     
 //    delete
     static func deleteNotice(noticeId: String) async {

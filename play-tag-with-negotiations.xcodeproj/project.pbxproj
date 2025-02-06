@@ -18,6 +18,7 @@
 		DE12A7662C7A242900F7B0DF /* InviteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7652C7A242900F7B0DF /* InviteView.swift */; };
 		DE12A7682C7A243300F7B0DF /* InviteViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12A7672C7A243300F7B0DF /* InviteViewCell.swift */; };
 		DE2052FC2D43923C00D2A82E /* ApplyingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2052FB2D43923C00D2A82E /* ApplyingViewCell.swift */; };
+		DE2053052D51BA9000D2A82E /* PlayerInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2053042D51BA9000D2A82E /* PlayerInfoView.swift */; };
 		DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB384D2C1DC27D007639F6 /* WaitingRoomView.swift */; };
 		DEAB385B2C1E9165007639F6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEAB385A2C1E9165007639F6 /* GoogleService-Info.plist */; };
 		DEAB38622C1EA178007639F6 /* Google.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB38612C1EA178007639F6 /* Google.swift */; };
@@ -95,6 +96,7 @@
 		DE12A7652C7A242900F7B0DF /* InviteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteView.swift; sourceTree = "<group>"; };
 		DE12A7672C7A243300F7B0DF /* InviteViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewCell.swift; sourceTree = "<group>"; };
 		DE2052FB2D43923C00D2A82E /* ApplyingViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyingViewCell.swift; sourceTree = "<group>"; };
+		DE2053042D51BA9000D2A82E /* PlayerInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerInfoView.swift; sourceTree = "<group>"; };
 		DEAB384D2C1DC27D007639F6 /* WaitingRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomView.swift; sourceTree = "<group>"; };
 		DEAB385A2C1E9165007639F6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DEAB38612C1EA178007639F6 /* Google.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Google.swift; sourceTree = "<group>"; };
@@ -208,6 +210,14 @@
 				DE12A7672C7A243300F7B0DF /* InviteViewCell.swift */,
 			);
 			path = Invite;
+			sourceTree = "<group>";
+		};
+		DE2052FF2D51BA5500D2A82E /* PlayerInfo */ = {
+			isa = PBXGroup;
+			children = (
+				DE2053042D51BA9000D2A82E /* PlayerInfoView.swift */,
+			);
+			path = PlayerInfo;
 			sourceTree = "<group>";
 		};
 		DEAB38632C1EA17C007639F6 /* Model */ = {
@@ -441,6 +451,7 @@
 			children = (
 				DE12A7482C553F3800F7B0DF /* MovePanel */,
 				DECFBB212C7ACA0600093544 /* DealClientPanel */,
+				DE2052FF2D51BA5500D2A82E /* PlayerInfo */,
 			);
 			path = Elements;
 			sourceTree = "<group>";
@@ -583,6 +594,7 @@
 				DEAB38622C1EA178007639F6 /* Google.swift in Sources */,
 				DEDD96BC2D070D15008BAAF7 /* PlayerPositionRepository.swift in Sources */,
 				DEDB91582C189BCB00A8DA37 /* RoomSettingViewCell.swift in Sources */,
+				DE2053052D51BA9000D2A82E /* PlayerInfoView.swift in Sources */,
 				DEFA55072C4149A100CF6BD1 /* DealClientPanelView.swift in Sources */,
 				DEFA55222C4C1FB200CF6BD1 /* SignInView.swift in Sources */,
 				DEFA54DF2C3989FC00CF6BD1 /* Upload.swift in Sources */,
@@ -777,6 +789,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -809,6 +822,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

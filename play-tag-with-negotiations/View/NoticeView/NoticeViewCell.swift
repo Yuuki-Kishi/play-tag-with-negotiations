@@ -12,6 +12,7 @@ struct NoticeViewCell: View {
     @ObservedObject var playerDataStore: PlayerDataStore
     @ObservedObject var pathDataStore: PathDataStore
     @Binding var notice: Notice
+    @State private var isShowAlert: Bool = false
     
     var body: some View {
         HStack {
@@ -48,22 +49,27 @@ struct NoticeViewCell: View {
                     Spacer()
                 }
             }
-            Image(systemName: "circle.fill")
-                .foregroundStyle(isNewNotice())
         }
         .onTapGesture {
             Task {
-                await NoticeRepository.checkNotice(noticeId: notice.noticeId)
                 switch notice.noticeType {
                 case .friendShip:
                     pathDataStore.navigatetionPath.append(.friend)
                 case .invite:
-                    joinRoom()
+                    await joinRoom()
                 case .unknown:
                     break
                 }
+                await NoticeRepository.deleteNotice(noticeId: notice.noticeId)
             }
         }
+        .alert("部屋が存在しません", isPresented: $isShowAlert, actions: {
+            Button(action: {}, label: {
+                Text("OK")
+            })
+        }, message: {
+            Text("通知から時間が経過している可能性があります。\n詳細は招待者にお尋ねください。")
+        })
     }
     func noticeType() -> String {
         switch notice.noticeType {
@@ -97,22 +103,16 @@ struct NoticeViewCell: View {
         dateformatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
         return dateformatter.string(from: notice.sendDate)
     }
-    func isNewNotice() -> Color {
-        if notice.isChecked {
-            return .clear
-        }
-        return .red
-    }
-    func joinRoom() {
-        Task {
-            if await PlayTagRoomRepository.isExists(roomId: notice.roomId) {
-                guard let playingRoom = await PlayTagRoomRepository.getRoomData(roomId: notice.roomId) else { return }
-                DispatchQueue.main.async {
-                    playerDataStore.playingRoom = playingRoom
-                }
-                await PlayerRepository.enterRoom(roomId: notice.roomId, isHost: false)
-                pathDataStore.navigatetionPath.append(.waitingRoom)
+    func joinRoom() async {
+        if await PlayTagRoomRepository.isExists(roomId: notice.roomId) {
+            guard let playingRoom = await PlayTagRoomRepository.getRoomData(roomId: notice.roomId) else { return }
+            DispatchQueue.main.async {
+                playerDataStore.playingRoom = playingRoom
             }
+            await PlayerRepository.enterRoom(roomId: notice.roomId, isHost: false)
+            pathDataStore.navigatetionPath.append(.waitingRoom)
+        } else {
+            isShowAlert = true
         }
     }
 }

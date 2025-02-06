@@ -110,10 +110,6 @@ extension Array where Element == Player {
 }
 
 extension Array where Element == Notice {
-    var nonChecks: [Element] {
-        return self.filter { !$0.isChecked }
-    }
-    
     mutating func append(noDuplicate item: Element) {
         if let index = self.firstIndex(where: { $0.noticeId == item.noticeId }) {
             self[index] = item

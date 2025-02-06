@@ -21,7 +21,7 @@ struct NoticeView: View {
                 }
             } else {
                 Spacer()
-                Text("通知はありません")
+                Text("未閲覧の通知はありません")
                 Spacer()
             }
         }
@@ -52,11 +52,22 @@ struct NoticeView: View {
     }
     func toolBarMenu() -> some View {
         Menu {
-            Button(action: {
-                Task { await NoticeRepository.allCheckNotice() }
-            }, label: {
-                Label("全て既読", systemImage: "checkmark")
-            })
+            Menu {
+                Button(action: { userDataStore.noticeArray.sort { $0.senderUserId < $1.senderUserId }}, label: {
+                    Text("ユーザー名昇順")
+                })
+                Button(action: { userDataStore.noticeArray.sort { $0.senderUserId > $1.senderUserId }}, label: {
+                    Text("ユーザー名降順")
+                })
+                Button(action: { userDataStore.noticeArray.sort { $0.sendDate < $1.sendDate }}, label: {
+                    Text("通知日時昇順")
+                })
+                Button(action: { userDataStore.noticeArray.sort { $0.sendDate > $1.sendDate }}, label: {
+                    Text("通知日時降順")
+                })
+            } label: {
+                Label("並び替え", systemImage: "arrow.up.arrow.down")
+            }
             Divider()
             Button(role: .destructive, action: {
                 isShowAlert = true

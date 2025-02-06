@@ -17,7 +17,6 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
     var sendUser: User
     var sendDate: Date
     var roomId: String
-    var isChecked: Bool
     var noticeType: NoticeType
     
     enum NoticeType: String {
@@ -42,7 +41,6 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
             throw DecodingError.dataCorruptedError(forKey: .sendDate, in: container, debugDescription: "Failed to decode sendDate.")
         }
         self.roomId = try container.decode(String.self, forKey: .roomId)
-        self.isChecked = try container.decode(Bool.self, forKey: .isChecked)
         let type = try container.decode(String.self, forKey: .noticeType)
         self.noticeType = NoticeType(rawValue: type) ?? .unknown
     }
@@ -55,18 +53,16 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
         let dateString = formatter.string(from: sendDate)
         try container.encode(dateString, forKey: .sendDate)
         try container.encode(self.roomId, forKey: .roomId)
-        try container.encode(self.isChecked, forKey: .isChecked)
         try container.encode(self.noticeType.rawValue, forKey: .noticeType)
     }
     
-    init(noticeId: String, senderUserId: String, user: User, sendDate: Date, roomId: String, isChecked: Bool, noticeType: NoticeType) {
+    init(noticeId: String, senderUserId: String, user: User, sendDate: Date, roomId: String, noticeType: NoticeType) {
         self.id = UUID()
         self.noticeId = noticeId
         self.senderUserId = senderUserId
         self.sendUser = user
         self.sendDate = sendDate
         self.roomId = roomId
-        self.isChecked = isChecked
         self.noticeType = noticeType
     }
     
@@ -77,7 +73,6 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
         self.sendUser = User()
         self.sendDate = Date()
         self.roomId = ""
-        self.isChecked = false
         self.noticeType = .friendShip
     }
     
@@ -88,7 +83,6 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
         self.sendUser = User()
         self.sendDate = Date()
         self.roomId = roomId
-        self.isChecked = false
         self.noticeType = .invite
     }
     
@@ -99,7 +93,6 @@ struct Notice: Codable, Hashable, Identifiable, Equatable {
         self.sendUser = User()
         self.sendDate = Date()
         self.roomId = ""
-        self.isChecked = false
         self.noticeType = .unknown
     }
 }

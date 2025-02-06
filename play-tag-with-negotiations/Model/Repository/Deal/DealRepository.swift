@@ -29,7 +29,7 @@ class DealRepository {
     }
     
 //    check
-    static func isSucceed(phaseNow: Int) async {
+    static func isFulfilled(phaseNow: Int) async {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
         let myDeals = PlayerDataStore.shared.dealArray.filter { $0.proposerUserId == myUserId && $0.condition != .fulfilled }
         for myDeal in myDeals {

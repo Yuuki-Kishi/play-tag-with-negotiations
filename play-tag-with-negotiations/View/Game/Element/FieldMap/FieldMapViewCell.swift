@@ -14,7 +14,7 @@ struct FieldMapViewCell: View {
     @State private var isShowAlert = false
     
     var body: some View {
-        switch numToPlayers().count {
+        switch numToPlayers().filter({ !$0.isCaptured }).count {
         case 0:
             noIcon()
         case 1:
@@ -148,7 +148,7 @@ struct FieldMapViewCell: View {
         var players: [Player] = []
         let phaseNow = playerDataStore.playingRoom.phaseNow
         for player in playerDataStore.playerArray {
-            guard let position = player.move.first(where: { $0.phase == phaseNow }) else { return [] }
+            guard let position = player.move.first(where: { $0.phase == phaseNow }) else { continue }
             if position == playerPosition { players.append(player) }
         }
         return players

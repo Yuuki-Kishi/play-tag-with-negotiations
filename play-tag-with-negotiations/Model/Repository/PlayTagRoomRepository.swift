@@ -123,9 +123,8 @@ class PlayTagRoomRepository {
                 guard let playingRoom = try DocumentSnapshot?.data(as: PlayTagRoom.self) else { return }
                 if PlayerDataStore.shared.playingRoom.phaseNow < playingRoom.phaseNow {
                     Task {
-                        await DealRepository.isSucceed(phaseNow: playingRoom.phaseNow)
-                        await PlayerRepository.isDecidedToFalse()
-                        await PlayerRepository.getAlivePlayers()
+                        await DealRepository.isFulfilled(phaseNow: playingRoom.phaseNow)
+                        await PlayerRepository.getAlivePlayers(phaseNow: playingRoom.phaseNow)
                     }
                 }
                 DispatchQueue.main.async {

@@ -137,7 +137,7 @@ struct PublicRoomsView: View {
         }
     }
     func noticeButtonIcon() -> String {
-        let noticeCount = userDataStore.noticeArray.nonChecks.count
+        let noticeCount = userDataStore.noticeArray.count
         if noticeCount > 0 {
             return "envelope.fill"
         }

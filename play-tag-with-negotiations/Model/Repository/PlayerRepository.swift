@@ -72,40 +72,41 @@ class PlayerRepository {
         return []
     }
     
-    static func getAlivePlayers() async {
+    static func getAlivePlayers(phaseNow: Int) async {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
-        let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
-        let players = await getAllPlayers().filter { !$0.isCaptured }
+        let players = await getAllPlayers()
         let chasers = players.filter { $0.isChaser }
         let fugitives = players.filter { !$0.isChaser }
         var survivors: [Player] = chasers
-        var capturedPlayers: [Player] = []
         fugitiveLoop: for fugitive in fugitives {
-            guard let fugitivePosition = fugitive.move.first(where: { $0.phase == phaseNow }) else { return }
+            guard let fugitivePosition = fugitive.move.first(where: { $0.phase == phaseNow }) else { continue }
             for chaser in chasers {
                 guard let chaserPosition = chaser.move.first(where: { $0.phase == phaseNow }) else { continue }
                 if fugitivePosition == chaserPosition {
                     let isContain = fugitive.catchers.contains(chaser.playerUserId)
-                    if isContain {
-                        capturedPlayers.append(noDuplicate: fugitive)
-                        continue fugitiveLoop
-                    }
+                    if isContain { continue fugitiveLoop }
                 }
-                survivors.append(noDuplicate: fugitive)
             }
+            survivors.append(noDuplicate: fugitive)
         }
-        let isCaptured = capturedPlayers.contains(where: { $0.playerUserId == myUserId })
-        if isCaptured { await PlayerRepository.wasCaptured() }
-        for survivor in survivors {
-            DispatchQueue.main.async {
-                PlayerDataStore.shared.playerArray.append(noDuplicate: survivor)
-            }
-        }
-        for capturedPlayer in capturedPlayers {
-            var player = capturedPlayer
-            player.isCaptured = true
-            DispatchQueue.main.async {
-                PlayerDataStore.shared.playerArray.append(noDuplicate: player)
+        for player in players {
+            let isSurvive = survivors.contains { $0.playerUserId == player.playerUserId }
+            if isSurvive {
+                DispatchQueue.main.async {
+                    PlayerDataStore.shared.playerArray.append(noDuplicate: player)
+                }
+                if player.playerUserId == myUserId {
+                    await PlayerRepository.isDecidedToFalse()
+                }
+            } else {
+                var capturedPlayer = player
+                capturedPlayer.isCaptured = true
+                DispatchQueue.main.async {
+                    PlayerDataStore.shared.playerArray.append(noDuplicate: capturedPlayer)
+                }
+                if player.playerUserId == myUserId {
+                    await PlayerRepository.wasCaptured()
+                }
             }
         }
         if survivors.filter({ !$0.isChaser }).isEmpty {
@@ -123,8 +124,7 @@ class PlayerRepository {
     }
     
     static func isDecidedToFalse() async {
-        print("isCaptured:", PlayerDataStore.shared.playerArray.me.isCaptured)
-        if !PlayerDataStore.shared.playerArray.me.isCaptured {
+//        if !PlayerDataStore.shared.playerArray.me.isCaptured {
             let roomId = PlayerDataStore.shared.playingRoom.roomId
             guard let userId = UserDataStore.shared.signInUser?.userId else { return }
             do {
@@ -132,12 +132,17 @@ class PlayerRepository {
             } catch {
                 print(error)
             }
-        }
+//        }
     }
     
     static func wasCaptured() async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+//        DispatchQueue.main.async {
+//            var me = PlayerDataStore.shared.playerArray.me
+//            me.isCaptured = true
+//            PlayerDataStore.shared.playerArray.append(noDuplicate: me)
+//        }
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isCaptured": true])
         } catch {
