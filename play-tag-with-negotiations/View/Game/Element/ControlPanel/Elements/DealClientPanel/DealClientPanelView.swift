@@ -7,19 +7,19 @@
 
 import SwiftUI
 
-struct DealClientPanelView: View {
+struct DealClientListView: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     
     var body: some View {
-        List(playerDataStore.playerArray.users) { user in
-            if user.userId != userDataStore.signInUser?.userId {
-                DealClientPanelViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, user: user)
+        List(playerDataStore.selectedPlayers) { player in
+            if player.playerUserId != userDataStore.signInUser?.userId {
+                DealClientListViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, player: Binding(get: { player  }, set: {_ in}))
             }
         }
     }
 }
 
 #Preview {
-    DealClientPanelView(userDataStore: UserDataStore.shared,  playerDataStore: PlayerDataStore.shared)
+    DealClientListView(userDataStore: UserDataStore.shared,  playerDataStore: PlayerDataStore.shared)
 }

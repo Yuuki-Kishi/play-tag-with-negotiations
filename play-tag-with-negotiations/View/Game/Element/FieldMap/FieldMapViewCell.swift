@@ -11,7 +11,6 @@ struct FieldMapViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     @State var num: Int
-    @State private var isShowAlert = false
     
     var body: some View {
         switch numToPlayers().filter({ !$0.isCaptured }).count {
@@ -20,15 +19,16 @@ struct FieldMapViewCell: View {
         case 1:
             singleIcon()
                 .onTapGesture {
-                    isShowAlert = true
+                    guard let player = numToPlayers().first else { return }
+                    playerDataStore.selectedPlayers = []
+                    playerDataStore.selectedPlayer = player
                 }
-                .alert(userName(), isPresented: $isShowAlert, actions: {
-                    Button(action: {}) {
-                        Text("OK")
-                    }
-                })
         default :
             multiIcon()
+                .onTapGesture {
+                    playerDataStore.selectedPlayers = numToPlayers().filter({ !$0.isCaptured })
+                    playerDataStore.selectedPlayer = Player()
+                }
         }
     }
     func noIcon() -> some View {
@@ -38,7 +38,7 @@ struct FieldMapViewCell: View {
     }
     func singleIcon() -> some View {
         Group {
-            if let player = numToPlayers().first {
+            if let player = numToPlayers().filter({ !$0.isCaptured }).first {
                 if player.isChaser {
                     singleChaserIcon(player: player)
                 } else {

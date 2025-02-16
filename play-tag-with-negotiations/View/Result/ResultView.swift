@@ -77,7 +77,7 @@ struct ResultView: View {
         userDataStore.listeners.remove(listenerType: .friendShips)
         userDataStore.listeners.remove(listenerType: .userData)
         playerDataStore.playingRoom = PlayTagRoom()
-        playerDataStore.dealTarget = Player()
+        playerDataStore.selectedPlayers = []
         playerDataStore.userArray.removeAll()
         playerDataStore.playerArray.removeAll()
         playerDataStore.dealArray.removeAll()

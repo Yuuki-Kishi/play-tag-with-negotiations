@@ -11,10 +11,9 @@ import FirebaseFirestore
 
 class DealRepository {
 //    create
-    static func proposeDeal(negotiationId: String, point: String) async {
+    static func proposeDeal(targetUserId: String, negotiationId: String, point: String) async {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
         let roomId = PlayerDataStore.shared.playingRoom.roomId
-        let targetUserId = PlayerDataStore.shared.dealTarget.playerUserId
         guard let consideration = Int(point) else { return }
         if PlayerDataStore.shared.playerArray.me.point < consideration { return }
         await PlayerRepository.confiscatePoint(userId: myUserId, howMany: consideration)

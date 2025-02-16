@@ -54,6 +54,15 @@ class UserRepository {
         return nil
     }
     
+    static func getUsersData() async {
+        for player in PlayerDataStore.shared.playerArray {
+            guard let user = await getUserData(userId: player.playerUserId) else { continue }
+            DispatchQueue.main.async {
+                PlayerDataStore.shared.userArray.append(noDuplicate: user)
+            }
+        }
+    }
+    
     static func getBeingRoomId() async -> String? {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return nil }
         do {

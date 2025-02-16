@@ -33,7 +33,8 @@ struct DealPanelViewNegotiationCell: View {
                 Text("キャンセル")
             })
             Button(action: {
-                Task { await DealRepository.proposeDeal(negotiationId: negotiation.negotiationId, point: point) }
+                let targetUserId = PlayerDataStore.shared.selectedPlayer.playerUserId
+                Task { await DealRepository.proposeDeal(targetUserId: targetUserId, negotiationId: negotiation.negotiationId, point: point) }
             }, label: {
                 Text("提案")
             })

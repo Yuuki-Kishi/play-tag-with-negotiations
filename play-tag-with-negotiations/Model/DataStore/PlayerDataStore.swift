@@ -12,7 +12,8 @@ class PlayerDataStore: ObservableObject {
     @Published var playingRoom: PlayTagRoom = PlayTagRoom()
     @Published var userArray: [User] = []
     @Published var playerArray: [Player] = []
-    @Published var dealTarget: Player = Player()
+    @Published var selectedPlayers: [Player] = []
+    @Published var selectedPlayer: Player = Player()
     @Published var negotiationArray: [Negotiation] = []
     @Published var dealArray: [Deal] = []
 }

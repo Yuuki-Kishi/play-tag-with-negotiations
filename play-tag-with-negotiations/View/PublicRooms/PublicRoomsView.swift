@@ -90,7 +90,7 @@ struct PublicRoomsView: View {
                     }
                 })
             }
-            .alert("参加するルームID", isPresented: $isShowEnterRoomAlert, actions: {
+            .alert("参加先のするルームID", isPresented: $isShowEnterRoomAlert, actions: {
                 TextField("ルームID", text: $roomId)
                 Button("キャンセル", role: .cancel, action: {})
                 Button("入室", action: {
@@ -188,7 +188,8 @@ struct PublicRoomsView: View {
                     if playingRoom.isFinished {
                         await UserRepository.finishGame()
                     } else {
-                        DispatchQueue.main.async {
+                        await PlayerRepository.getAllPlayers()
+                            DispatchQueue.main.async {
                             pathDataStore.navigatetionPath.append(.game)
                         }
                     }

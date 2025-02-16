@@ -61,6 +61,7 @@ struct GameView: View {
                 PlayerRepository.observeMyPropaty()
                 DealRepository.observeDeals()
                 FriendShipRepository.observeFriend()
+                await UserRepository.getUsersData()
                 await PlayerRepository.getAlivePlayers(phaseNow: 1)
                 await NegotiationRepository.getNegotiations()
             }

@@ -17,10 +17,14 @@ struct ControlPanelCoordination: View {
         case .movement:
             MovePanelView(userDataStore: userDataStore, playerDataStore: playerDataStore)
         case .deal(.client):
-            DealClientPanelView(userDataStore: userDataStore, playerDataStore: playerDataStore)
+            DealClientListView(userDataStore: userDataStore, playerDataStore: playerDataStore)
         case .deal(.negotiation):
             DealPanelView(playerDataStore: playerDataStore)
                 .transition(.move(edge: .trailing))
+        case .playerInfo(.players):
+            PlayerInfoListView(userDataStore: userDataStore,  playerDataStore: playerDataStore)
+        case .playerInfo(.info):
+            PlayerInfoView(userDataStore: userDataStore, playerDataStore: playerDataStore)
         }
     }
 }

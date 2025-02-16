@@ -1,13 +1,13 @@
 //
-//  NegotiationPanelViewCell.swift
+//  PlayerListView.swift
 //  play-tag-with-negotiations
 //
-//  Created by 岸　優樹 on 2024/07/12.
+//  Created by 岸　優樹 on 2025/02/16.
 //
 
 import SwiftUI
 
-struct DealClientListViewCell: View {
+struct PlayerInfoListViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     @Binding var player: Player
@@ -38,9 +38,10 @@ struct DealClientListViewCell: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
+            guard let player = playerDataStore.playerArray.first(where: { $0.playerUserId == user().userId }) else { return }
             playerDataStore.selectedPlayer = player
             withAnimation {
-                userDataStore.displayControlPanel = .deal(.negotiation)
+                userDataStore.displayControlPanel = .playerInfo(.info)
             }
         }
     }
@@ -58,5 +59,5 @@ struct DealClientListViewCell: View {
 }
 
 //#Preview {
-//    DealClientListViewCell(user: User())
+//    PlayerInfoListViewCell(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared, player: Player())
 //}

@@ -23,11 +23,27 @@ struct SelectionView: View {
             })
             Spacer()
             Button(action: {
-                userDataStore.displayControlPanel = .deal(.client)
+                if playerDataStore.selectedPlayers.isEmpty {
+                    userDataStore.displayControlPanel = .deal(.negotiation)
+                } else {
+                    userDataStore.displayControlPanel = .deal(.client)
+                }
             }, label: {
                 Image(systemName: "bubble.left.and.bubble.right.fill")
                     .font(.system(size: 25))
                     .foregroundStyle(iconColor(panelMode: .deal(.client)))
+            })
+            Spacer()
+            Button(action: {
+                if playerDataStore.selectedPlayers.isEmpty {
+                    userDataStore.displayControlPanel = .playerInfo(.info)
+                } else {
+                    userDataStore.displayControlPanel = .playerInfo(.players)
+                }
+            }, label: {
+                Image(systemName: "info.circle")
+                    .font(.system(size: 25))
+                    .foregroundStyle(iconColor(panelMode: .playerInfo(.players)))
             })
             Spacer()
         }
@@ -41,12 +57,25 @@ struct SelectionView: View {
                 return .accentColor
             case .deal:
                 return .gray
+            case .playerInfo:
+                return .gray
             }
         case .deal:
             switch panelMode {
             case .movement:
                 return .gray
             case .deal:
+                return .accentColor
+            case .playerInfo:
+                return .gray
+            }
+        case .playerInfo:
+            switch panelMode {
+            case .movement:
+                return .gray
+            case .deal:
+                return .gray
+            case .playerInfo:
                 return .accentColor
             }
         }
