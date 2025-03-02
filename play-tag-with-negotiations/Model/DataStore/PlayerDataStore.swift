@@ -16,4 +16,5 @@ class PlayerDataStore: ObservableObject {
     @Published var selectedPlayer: Player = Player()
     @Published var negotiationArray: [Negotiation] = []
     @Published var dealArray: [Deal] = []
+    @Published var countDownTimer: Int = 60
 }

@@ -17,9 +17,12 @@ struct GameView: View {
     var body: some View {
         VStack {
             FieldMapView(userDataStore: userDataStore, playerDataStore: playerDataStore)
+                .frame(maxHeight: .infinity)
             HStack {
                 Text(displayPhase())
                     .padding(.leading)
+                Spacer()
+                Text(countDown())
                 Spacer()
                 Text(point())
                     .padding(.trailing)
@@ -67,6 +70,7 @@ struct GameView: View {
             }
         }
         .onDisappear() {
+            TimerDataStore.shared.invalidate()
             userDataStore.listeners.remove(listenerType: .roomField)
             userDataStore.listeners.remove(listenerType: .isDecided)
             userDataStore.listeners.remove(listenerType: .myPropaty)
@@ -76,12 +80,15 @@ struct GameView: View {
     func displayPhase() -> String {
         let phaseNow = String(playerDataStore.playingRoom.phaseNow)
         let phaseMax = String(playerDataStore.playingRoom.phaseMax)
-        let text = phaseNow + "フェーズ / " + phaseMax + "フェーズ"
+        let text = phaseNow + " / " + phaseMax
         return text
+    }
+    func countDown() -> String {
+        return String("あと") + String(playerDataStore.countDownTimer) + String("秒")
     }
     func point() -> String {
         let point = playerDataStore.playerArray.me.point
-        return "保有ポイント : " + String(point) + "pt"
+        return String(point) + "pt"
     }
 }
 

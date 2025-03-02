@@ -138,13 +138,8 @@ class PlayerRepository {
     static func wasCaptured() async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-//        DispatchQueue.main.async {
-//            var me = PlayerDataStore.shared.playerArray.me
-//            me.isCaptured = true
-//            PlayerDataStore.shared.playerArray.append(noDuplicate: me)
-//        }
         do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isCaptured": true])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["isDecided": true, "isCaptured": true])
         } catch {
             print(error)
         }

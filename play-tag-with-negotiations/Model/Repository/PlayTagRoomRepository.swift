@@ -126,6 +126,7 @@ class PlayTagRoomRepository {
                         await DealRepository.isFulfilled(phaseNow: playingRoom.phaseNow)
                         await PlayerRepository.getAlivePlayers(phaseNow: playingRoom.phaseNow)
                     }
+                    TimerDataStore.shared.setTimer(limit: 60)
                 }
                 DispatchQueue.main.async {
                     PlayerDataStore.shared.playingRoom = playingRoom

@@ -29,6 +29,8 @@
 		DEAB387B2C2061C2007639F6 /* WaitingRoomViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB387A2C2061C2007639F6 /* WaitingRoomViewCell.swift */; };
 		DEB2B1EA2D5C7AAA007E01C9 /* PlayerInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB2B1E92D5C7AAA007E01C9 /* PlayerInfoView.swift */; };
 		DEB2B1EC2D617835007E01C9 /* PlayerInfoListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB2B1EB2D617835007E01C9 /* PlayerInfoListViewCell.swift */; };
+		DEB2B1EE2D7402C7007E01C9 /* TimerDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB2B1ED2D7402C7007E01C9 /* TimerDataStore.swift */; };
+		DEB2B1F02D741B7A007E01C9 /* AppVersionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB2B1EF2D741B7A007E01C9 /* AppVersionRepository.swift */; };
 		DECFBB232C7ACA1700093544 /* DealPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB222C7ACA1700093544 /* DealPanelView.swift */; };
 		DECFBB252C7ACA2300093544 /* DealPanelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB242C7ACA2300093544 /* DealPanelViewCell.swift */; };
 		DECFBB272C7ADF7000093544 /* Negotiation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFBB262C7ADF7000093544 /* Negotiation.swift */; };
@@ -110,6 +112,8 @@
 		DEAB387A2C2061C2007639F6 /* WaitingRoomViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomViewCell.swift; sourceTree = "<group>"; };
 		DEB2B1E92D5C7AAA007E01C9 /* PlayerInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerInfoView.swift; sourceTree = "<group>"; };
 		DEB2B1EB2D617835007E01C9 /* PlayerInfoListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerInfoListViewCell.swift; sourceTree = "<group>"; };
+		DEB2B1ED2D7402C7007E01C9 /* TimerDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDataStore.swift; sourceTree = "<group>"; };
+		DEB2B1EF2D741B7A007E01C9 /* AppVersionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionRepository.swift; sourceTree = "<group>"; };
 		DECFBB222C7ACA1700093544 /* DealPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealPanelView.swift; sourceTree = "<group>"; };
 		DECFBB242C7ACA2300093544 /* DealPanelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealPanelViewCell.swift; sourceTree = "<group>"; };
 		DECFBB262C7ADF7000093544 /* Negotiation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Negotiation.swift; sourceTree = "<group>"; };
@@ -271,6 +275,7 @@
 				DEFA55102C42669500CF6BD1 /* FriendDataStore.swift */,
 				DEFA54F32C3D5C6700CF6BD1 /* RoomDataStore.swift */,
 				DEFA54F62C3E9EB800CF6BD1 /* PathDataStore.swift */,
+				DEB2B1ED2D7402C7007E01C9 /* TimerDataStore.swift */,
 			);
 			path = DataStore;
 			sourceTree = "<group>";
@@ -285,6 +290,7 @@
 				DE06B9792CFC431400CB4AEA /* PlayerRepository.swift */,
 				DEDD96BB2D070D15008BAAF7 /* PlayerPositionRepository.swift */,
 				DEDD96BD2D0711E5008BAAF7 /* NegotiationRepository.swift */,
+				DEB2B1EF2D741B7A007E01C9 /* AppVersionRepository.swift */,
 				DEFA1C1D2C8C971C00CB4458 /* Deal */,
 				DEAB38692C1EAA7F007639F6 /* Auth */,
 				DEFA54DD2C3989D500CF6BD1 /* Storage */,
@@ -605,6 +611,7 @@
 				DEFA55222C4C1FB200CF6BD1 /* SignInView.swift in Sources */,
 				DEFA54DF2C3989FC00CF6BD1 /* Upload.swift in Sources */,
 				DEFA1C212C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift in Sources */,
+				DEB2B1F02D741B7A007E01C9 /* AppVersionRepository.swift in Sources */,
 				DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */,
 				DE12A7632C75999700F7B0DF /* NoticeViewCell.swift in Sources */,
 				DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */,
@@ -625,6 +632,7 @@
 				DEFA55032C40204500CF6BD1 /* SelectionView.swift in Sources */,
 				DEFA54F42C3D5C6700CF6BD1 /* RoomDataStore.swift in Sources */,
 				DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */,
+				DEB2B1EE2D7402C7007E01C9 /* TimerDataStore.swift in Sources */,
 				DEFA54E12C39955200CF6BD1 /* Download.swift in Sources */,
 				DEFA55112C42669500CF6BD1 /* FriendDataStore.swift in Sources */,
 				DEDD96C02D071381008BAAF7 /* DealRepository.swift in Sources */,

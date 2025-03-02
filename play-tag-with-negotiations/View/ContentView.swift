@@ -12,6 +12,7 @@ import AuthenticationServices
 struct ContentView: View {
     @StateObject var userDataStore = UserDataStore.shared
     @StateObject var playerDataStore = PlayerDataStore.shared
+    @State private var isShowUpdateAlert: Bool = false
     
     var body: some View {
         Group {
@@ -35,8 +36,24 @@ struct ContentView: View {
                 }
             }
         }
+        .alert("最新版があります", isPresented: $isShowUpdateAlert, actions: {
+            Button(action: {
+                if let url = URL(string: "https://itunes.apple.com/app/apple-store/id6504573276") {
+                    if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
+                }
+            }, label: {
+                Text("App Storeへ")
+            })
+        }, message: {
+            Text("App Storeからアプリを最新版に更新してください。")
+        })
         .onAppear() {
-            Task { await CheckSignIn.isSignIn() }
+            Task {
+                await CheckSignIn.isSignIn()
+                isShowUpdateAlert = await AppVersionRepository.versionCheck()
+            }
         }
     }
 }

@@ -184,18 +184,23 @@ struct PublicRoomsView: View {
                 DispatchQueue.main.async {
                     playerDataStore.playingRoom = playingRoom
                 }
-                if playingRoom.isPlaying {
-                    if playingRoom.isFinished {
-                        await UserRepository.finishGame()
-                    } else {
-                        await PlayerRepository.getAllPlayers()
-                            DispatchQueue.main.async {
-                            pathDataStore.navigatetionPath.append(.game)
-                        }
-                    }
+                if playingRoom.playerNumber >= playingRoom.fugitiveNumber + playingRoom.chaserNumber {
+                    isShowOverPlayerAlert = true
+                    await UserRepository.finishGame()
                 } else {
-                    DispatchQueue.main.async {
-                        pathDataStore.navigatetionPath.append(.waitingRoom)
+                    if playingRoom.isPlaying {
+                        if playingRoom.isFinished {
+                            await UserRepository.finishGame()
+                        } else {
+                            await PlayerRepository.getAlivePlayers(phaseNow: playingRoom.phaseNow)
+                            DispatchQueue.main.async {
+                                pathDataStore.navigatetionPath.append(.game)
+                            }
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            pathDataStore.navigatetionPath.append(.waitingRoom)
+                        }
                     }
                 }
             } else {

@@ -36,6 +36,7 @@ struct MovePanelViewButton: View {
                 let phase = playerPosition.phase
                 await PlayerRepository.grantMePoint(howMany: 20)
                 await PlayerPositionRepository.updateMyPosition(phase: phase, x: x, y: y)
+//                timer?.invalidate()
             }
         }
     }
