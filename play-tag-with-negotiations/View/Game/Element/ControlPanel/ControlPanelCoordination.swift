@@ -19,7 +19,7 @@ struct ControlPanelCoordination: View {
         case .deal(.client):
             DealClientListView(userDataStore: userDataStore, playerDataStore: playerDataStore)
         case .deal(.negotiation):
-            DealPanelView(playerDataStore: playerDataStore)
+            DealPanelView(userDataStore: userDataStore, playerDataStore: playerDataStore)
                 .transition(.move(edge: .trailing))
         case .playerInfo(.players):
             PlayerInfoListView(userDataStore: userDataStore,  playerDataStore: playerDataStore)

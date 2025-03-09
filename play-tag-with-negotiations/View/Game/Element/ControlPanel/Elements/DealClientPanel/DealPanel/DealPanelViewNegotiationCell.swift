@@ -34,7 +34,7 @@ struct DealPanelViewNegotiationCell: View {
             })
             Button(action: {
                 let targetUserId = PlayerDataStore.shared.selectedPlayer.playerUserId
-                Task { await DealRepository.proposeDeal(targetUserId: targetUserId, negotiationId: negotiation.negotiationId, point: point) }
+                Task { await DealRepository.proposeDeal(targetUserId: targetUserId, negotiation: negotiation, point: point) }
             }, label: {
                 Text("提案")
             })

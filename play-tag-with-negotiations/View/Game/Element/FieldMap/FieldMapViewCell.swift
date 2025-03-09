@@ -19,15 +19,54 @@ struct FieldMapViewCell: View {
         case 1:
             singleIcon()
                 .onTapGesture {
-                    guard let player = numToPlayers().first else { return }
-                    playerDataStore.selectedPlayers = []
-                    playerDataStore.selectedPlayer = player
+                    switch userDataStore.displayControlPanel {
+                    case .movement:
+                        break
+                    case .deal(.client):
+                        guard let player = numToPlayers().first else { return }
+                        playerDataStore.selectedPlayers = []
+                        playerDataStore.selectedPlayer = player
+                        userDataStore.displayControlPanel = .deal(.negotiation)
+                    case .deal(.negotiation):
+                        guard let player = numToPlayers().first else { return }
+                        playerDataStore.selectedPlayers = []
+                        playerDataStore.selectedPlayer = player
+                        userDataStore.displayControlPanel = .deal(.negotiation)
+                    case .playerInfo(.players):
+                        guard let player = numToPlayers().first else { return }
+                        playerDataStore.selectedPlayers = []
+                        playerDataStore.selectedPlayer = player
+                        userDataStore.displayControlPanel = .playerInfo(.info)
+                    case .playerInfo(.info):
+                        guard let player = numToPlayers().first else { return }
+                        playerDataStore.selectedPlayers = []
+                        playerDataStore.selectedPlayer = player
+                        userDataStore.displayControlPanel = .playerInfo(.info)
+                    }
                 }
         default :
             multiIcon()
                 .onTapGesture {
-                    playerDataStore.selectedPlayers = numToPlayers().filter({ !$0.isCaptured })
-                    playerDataStore.selectedPlayer = Player()
+                    switch userDataStore.displayControlPanel {
+                    case .movement:
+                        break
+                    case .deal(.client):
+                        playerDataStore.selectedPlayers = numToPlayers().filter({ !$0.isCaptured })
+                        playerDataStore.selectedPlayer = Player()
+                        userDataStore.displayControlPanel = .deal(.client)
+                    case .deal(.negotiation):
+                        playerDataStore.selectedPlayers = numToPlayers().filter({ !$0.isCaptured })
+                        playerDataStore.selectedPlayer = Player()
+                        userDataStore.displayControlPanel = .deal(.client)
+                    case .playerInfo(.players):
+                        playerDataStore.selectedPlayers = numToPlayers().filter({ !$0.isCaptured })
+                        playerDataStore.selectedPlayer = Player()
+                        userDataStore.displayControlPanel = .playerInfo(.players)
+                    case .playerInfo(.info):
+                        playerDataStore.selectedPlayers = numToPlayers().filter({ !$0.isCaptured })
+                        playerDataStore.selectedPlayer = Player()
+                        userDataStore.displayControlPanel = .playerInfo(.players)
+                    }
                 }
         }
     }

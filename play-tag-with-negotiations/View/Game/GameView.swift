@@ -67,6 +67,7 @@ struct GameView: View {
                 await UserRepository.getUsersData()
                 await PlayerRepository.getAlivePlayers(phaseNow: 1)
                 await NegotiationRepository.getNegotiations()
+                playerDataStore.selectedPlayers = await PlayerRepository.getAllPlayers()
             }
         }
         .onDisappear() {

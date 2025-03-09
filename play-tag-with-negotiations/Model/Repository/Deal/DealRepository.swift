@@ -11,13 +11,13 @@ import FirebaseFirestore
 
 class DealRepository {
 //    create
-    static func proposeDeal(targetUserId: String, negotiationId: String, point: String) async {
+    static func proposeDeal(targetUserId: String, negotiation: Negotiation, point: String) async {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
         let roomId = PlayerDataStore.shared.playingRoom.roomId
         guard let consideration = Int(point) else { return }
         if PlayerDataStore.shared.playerArray.me.point < consideration { return }
         await PlayerRepository.confiscatePoint(userId: myUserId, howMany: consideration)
-        let deal = Deal(negotiationId: negotiationId, proposerUserId: myUserId, clientUserId: targetUserId, period: 2, consideration: consideration)
+        let deal = DealCreate.createDeal(targetUserId: targetUserId, negotiation: negotiation, consideration: consideration)
         let encoded = try! JSONEncoder().encode(deal)
         do {
             guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }

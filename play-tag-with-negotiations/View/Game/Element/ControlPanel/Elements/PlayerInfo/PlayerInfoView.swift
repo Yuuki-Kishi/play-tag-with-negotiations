@@ -44,6 +44,13 @@ struct PlayerInfoView: View {
                             .lineLimit(1)
                             .font(.system(size: 15))
                     }
+                    Button(action: {
+                        selectClear()
+                    }, label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 15))
+                            .foregroundStyle(Color.gray)
+                    })
                 }
                 HStack {
                     Text(playerRankText())
@@ -102,8 +109,13 @@ struct PlayerInfoView: View {
             return Color.indigo
         }
     }
+    func selectClear() {
+        playerDataStore.selectedPlayers = playerDataStore.playerArray
+        userDataStore.displayControlPanel = .playerInfo(.players)
+        playerDataStore.selectedPlayer = Player()
+    }
 }
 
-//#Preview {
-//    PlayerInfoView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
-//}
+#Preview {
+    PlayerInfoView(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared)
+}

@@ -83,7 +83,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.id = UUID()
         self.playerUserId = playerUserId
         self.isHost = isHost
-        self.point = 20
+        self.point = 100
         self.enteredTime = Date()
         self.isChaser = false
         self.isDecided = false
