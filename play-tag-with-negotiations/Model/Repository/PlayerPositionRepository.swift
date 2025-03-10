@@ -38,10 +38,20 @@ class PlayerPositionRepository {
     
     static func updatePosition(phase: Int, userId: String, x: Int, y: Int) async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId
-        do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["move": FieldValue.arrayUnion([["phase": phase, "x": x, "y": y]]), "isDecided": true])
-        } catch {
-            print(error)
+        if PlayerDataStore.shared.playerArray.me.isDecided {
+            var move = PlayerDataStore.shared.playerArray.me.move
+            move[move.count - 1] = PlayerPosition(phase: phase, x: x, y: y)
+            do {
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["move": move, "isDecided": true])
+            } catch {
+                print(error)
+            }
+        } else {
+            do {
+                try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).updateData(["move": FieldValue.arrayUnion([["phase": phase, "x": x, "y": y]]), "isDecided": true])
+            } catch {
+                print(error)
+            }
         }
     }
     

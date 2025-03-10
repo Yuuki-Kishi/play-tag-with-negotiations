@@ -25,6 +25,7 @@ struct ControlPanelCoordination: View {
             PlayerInfoListView(userDataStore: userDataStore,  playerDataStore: playerDataStore)
         case .playerInfo(.info):
             PlayerInfoView(userDataStore: userDataStore, playerDataStore: playerDataStore)
+                .transition(.move(edge: .trailing))
         }
     }
 }

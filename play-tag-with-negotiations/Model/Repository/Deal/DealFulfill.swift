@@ -13,6 +13,10 @@ class DealFulfill {
         switch negotiation.negotiationName {
         case .missOnce:
             await missOnce(deal: deal)
+        case .freezeOnce:
+            await freezeOnce(deal: deal)
+        case .changePosition:
+            await changePosition(deal: deal)
         case .unknown:
             break
         }
@@ -20,6 +24,14 @@ class DealFulfill {
     
     static func missOnce(deal: Deal) async {
         await PlayerRepository.catcher(userId: deal.clientUserId)
+        await DealRepository.dealFulfill(deal: deal)
+    }
+    
+    static func freezeOnce(deal: Deal) async {
+        await DealRepository.dealFulfill(deal: deal)
+    }
+    
+    static func changePosition(deal: Deal) async {
         await DealRepository.dealFulfill(deal: deal)
     }
 }

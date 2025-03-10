@@ -25,7 +25,7 @@ struct Negotiation: Codable, Hashable, Identifiable, Equatable {
     }
     
     enum NegotiationName: String {
-        case missOnce, unknown
+        case missOnce, freezeOnce, changePosition, unknown
     }
     
     enum CodingKeys: String, CodingKey {

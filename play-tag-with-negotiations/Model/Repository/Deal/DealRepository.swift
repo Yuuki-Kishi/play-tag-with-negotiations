@@ -43,8 +43,10 @@ class DealRepository {
 //    update
     static func dealSuccess(deal: Deal) async {
         let roomId = PlayerDataStore.shared.playingRoom.roomId
+        let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
+        let expiredPhase = phaseNow + deal.period
         do {
-            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Deals").document(deal.dealId).updateData(["condition": Deal.dealCondition.success.rawValue])
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Deals").document(deal.dealId).updateData(["successPhase": phaseNow, "expiredPhase": expiredPhase, "condition": Deal.dealCondition.success.rawValue])
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(deal.proposerUserId).updateData(["deals": FieldValue.arrayUnion([deal.dealId])])
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(deal.clientUserId).updateData(["deals": FieldValue.arrayUnion([deal.dealId])])
         } catch {

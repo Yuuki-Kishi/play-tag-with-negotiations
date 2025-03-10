@@ -18,7 +18,9 @@ struct Deal: Codable, Hashable, Identifiable, Equatable {
     var proposerUserId: String
     var clientUserId: String
     var proposedPhase: Int
+    var successPhase: Int
     var expiredPhase: Int
+    var period: Int
     var consideration: Int
     var condition: dealCondition
     
@@ -27,7 +29,7 @@ struct Deal: Codable, Hashable, Identifiable, Equatable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case dealId, negotiationId, proposerUserId, clientUserId, proposedPhase, expiredPhase, consideration, condition
+        case dealId, negotiationId, proposerUserId, clientUserId, proposedPhase, successPhase, expiredPhase, period, consideration, condition
     }
     
     init(from decoder: any Decoder) throws {
@@ -38,7 +40,9 @@ struct Deal: Codable, Hashable, Identifiable, Equatable {
         self.proposerUserId = try container.decode(String.self, forKey: .proposerUserId)
         self.clientUserId = try container.decode(String.self, forKey: .clientUserId)
         self.proposedPhase = try container.decode(Int.self, forKey: .proposedPhase)
+        self.successPhase = try container.decode(Int.self, forKey: .successPhase)
         self.expiredPhase = try container.decode(Int.self, forKey: .expiredPhase)
+        self.period = try container.decode(Int.self, forKey: .period)
         self.consideration = try container.decode(Int.self, forKey: .consideration)
         let condition = try container.decode(String.self, forKey: .condition)
         self.condition = dealCondition(rawValue: condition) ?? .unknown
@@ -51,19 +55,23 @@ struct Deal: Codable, Hashable, Identifiable, Equatable {
         try container.encode(self.proposerUserId, forKey: .proposerUserId)
         try container.encode(self.clientUserId, forKey: .clientUserId)
         try container.encode(self.proposedPhase, forKey: .proposedPhase)
+        try container.encode(self.successPhase, forKey: .successPhase)
         try container.encode(self.expiredPhase, forKey: .expiredPhase)
+        try container.encode(self.period, forKey: .period)
         try container.encode(self.consideration, forKey: .consideration)
         try container.encode(self.condition.rawValue, forKey: .condition)
     }
     
-    init(dealId: String, negotiationId: String, proposerUserId: String, clientUserId: String, proposedPhase: Int, expiredPhase: Int, consideration: Int, condition: dealCondition) {
+    init(dealId: String, negotiationId: String, proposerUserId: String, clientUserId: String, proposedPhase: Int, successPhase: Int, expiredPhase: Int, period: Int, consideration: Int, condition: dealCondition) {
         self.id = UUID()
         self.dealId = dealId
         self.negotiationId = negotiationId
         self.proposerUserId = proposerUserId
         self.clientUserId = clientUserId
         self.proposedPhase = proposedPhase
+        self.successPhase = proposedPhase
         self.expiredPhase = expiredPhase
+        self.period = period
         self.consideration = consideration
         self.condition = condition
     }
@@ -75,7 +83,9 @@ struct Deal: Codable, Hashable, Identifiable, Equatable {
         self.proposerUserId = proposerUserId
         self.clientUserId = clientUserId
         self.proposedPhase = PlayerDataStore.shared.playingRoom.phaseNow
+        self.successPhase = PlayerDataStore.shared.playingRoom.phaseNow
         self.expiredPhase = PlayerDataStore.shared.playingRoom.phaseNow + period
+        self.period = period
         self.consideration = consideration
         self.condition = .proposed
     }
@@ -86,7 +96,9 @@ struct Deal: Codable, Hashable, Identifiable, Equatable {
         self.proposerUserId = "unknownProposerUserId"
         self.clientUserId = "unknownTargetUserId"
         self.proposedPhase = 0
+        self.successPhase = 0
         self.expiredPhase = 0
+        self.period = 0
         self.consideration = 0
         self.condition = .unknown
     }
