@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseCore
 import GoogleSignIn
+import TipKit
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
@@ -23,6 +24,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct play_tag_with_negotiationsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+    init() {
+        try? Tips.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

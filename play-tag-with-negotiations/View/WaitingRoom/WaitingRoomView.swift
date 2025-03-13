@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 struct WaitingRoomView: View {
     @ObservedObject var userDataStore: UserDataStore
@@ -17,19 +18,23 @@ struct WaitingRoomView: View {
     
     var body: some View {
         ZStack {
-            List {
-                Section(content: {
-                    WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, userId: Binding(get: { playerDataStore.playerArray.host.playerUserId }, set: {_ in}))
-                }, header: {
-                    Text("ホスト")
-                })
-                Section(content: {
-                    ForEach(playerDataStore.playerArray.guests, id: \.playerUserId) { player in
-                        WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, userId: Binding(get: { player.playerUserId }, set: {_ in}))
-                    }
-                }, header: {
-                    Text("ゲスト")
-                })
+            VStack {
+                TipView(WaitingRoomTip())
+                    .padding(.horizontal)
+                List {
+                    Section(content: {
+                        WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, userId: Binding(get: { playerDataStore.playerArray.host.playerUserId }, set: {_ in}))
+                    }, header: {
+                        Text("ホスト")
+                    })
+                    Section(content: {
+                        ForEach(playerDataStore.playerArray.guests, id: \.playerUserId) { player in
+                            WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, userId: Binding(get: { player.playerUserId }, set: {_ in}))
+                        }
+                    }, header: {
+                        Text("ゲスト")
+                    })
+                }
             }
             if userDataStore.signInUser?.userId == playerDataStore.playingRoom.hostUserId {
                 Button(action: {
@@ -39,14 +44,13 @@ struct WaitingRoomView: View {
                         await PlayTagRoomRepository.gameStart()
                     }
                 }, label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 25)
-                            .frame(width: 75, height: 75)
-                        Image(systemName: "play.fill")
-                            .font(.system(size: 30))
-                            .foregroundStyle(Color.primary)
-                    }
+                    Image(systemName: "play.fill")
+                        .font(.system(size: 30))
+                        .foregroundStyle(Color.primary)
+                        .background(RoundedRectangle(cornerRadius: 25).frame(width: 75, height: 75))
+                        .padding(25)
                 })
+                .popoverTip(GameStartTip(), arrowEdge: .trailing)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                 .padding(.trailing, 35)
                 .padding(.bottom, 35)
@@ -110,6 +114,7 @@ struct WaitingRoomView: View {
             }
         }
         .onDisappear() {
+            userDataStore.listeners.remove(listenerType: .roomField)
             userDataStore.listeners.remove(listenerType: .players)
         }
     }

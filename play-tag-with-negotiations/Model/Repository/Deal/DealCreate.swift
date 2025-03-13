@@ -35,7 +35,7 @@ class DealCreate {
     
     static func changePosition(targetUserId: String, negotiation: Negotiation, consideration: Int) -> Deal {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return Deal() }
-        let deal = Deal(negotiationId: negotiation.negotiationId, proposerUserId: myUserId, clientUserId: targetUserId, period: 2, consideration: consideration)
+        let deal = Deal(negotiationId: negotiation.negotiationId, proposerUserId: myUserId, clientUserId: targetUserId, period: 1, consideration: consideration)
         return deal
     }
 }

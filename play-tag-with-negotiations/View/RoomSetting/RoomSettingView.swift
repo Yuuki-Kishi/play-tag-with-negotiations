@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 struct RoomSettingView: View {
     @ObservedObject var userDataStore: UserDataStore
@@ -14,7 +15,9 @@ struct RoomSettingView: View {
     @State private var isShowAlert = false
     
     var body: some View {
-        ZStack {
+        VStack {
+            TipView(RuleSettingTip())
+                .padding(.horizontal)
             List {
                 ForEach(PlayTagRoom.displayItemType.allCases, id: \.self) { itemType in
                     RoomSettingViewCell(playerDataStore: playerDataStore, itemType: itemType)

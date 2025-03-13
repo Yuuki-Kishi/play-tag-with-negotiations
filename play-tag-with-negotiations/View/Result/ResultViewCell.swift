@@ -24,6 +24,7 @@ struct ResultViewCell: View {
                 .frame(alignment: .leading)
                 .font(.system(size: 20))
                 .foregroundStyle(userNameColor())
+                .lineLimit(1)
             Spacer()
             Image(systemName: isChaserIcon())
                 .foregroundStyle(iconColor())

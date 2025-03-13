@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 struct PublicRoomsView: View {
     @ObservedObject var userDataStore: UserDataStore
@@ -41,12 +42,15 @@ struct PublicRoomsView: View {
                         Label("ルームに参加", systemImage: "arrow.right.to.line.compact")
                     })
                 } label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 25)
-                            .frame(width: 75, height: 75)
+                    HStack {
+                        TipView(MakeRoomTip(), arrowEdge: .trailing)
+                            .padding(.horizontal)
                         Image(systemName: "figure.run")
                             .font(.system(size: 30))
                             .foregroundStyle(Color.primary)
+                            .background(RoundedRectangle(cornerRadius: 25).frame(width: 75, height: 75))
+                            .padding(.trailing, 20)
+                            .padding(.bottom, 20)
                     }
                 }
                 .menuOrder(.fixed)
@@ -92,18 +96,26 @@ struct PublicRoomsView: View {
             }
             .alert("参加先のするルームID", isPresented: $isShowEnterRoomAlert, actions: {
                 TextField("ルームID", text: $roomId)
-                Button("キャンセル", role: .cancel, action: {})
+                Button("キャンセル", role: .cancel, action: {
+                    roomId = ""
+                })
                 Button("入室", action: {
-                    enterRoom()
+                    if roomId != "" {
+                        enterRoom()
+                    }
                 })
             })
             .alert("該当ルームが存在しません", isPresented: $isShowNotThereRoomAlert, actions: {
-                Button(action: {}) {
+                Button(action: {
+                    roomId = ""
+                }) {
                     Text("OK")
                 }
             })
             .alert("参加できる人数を超えています", isPresented: $isShowOverPlayerAlert, actions: {
-                Button(action: {}) {
+                Button(action: {
+                    roomId = ""
+                }) {
                     Text("OK")
                 }
             })
@@ -148,7 +160,7 @@ struct PublicRoomsView: View {
             Button(action: {
                 pathDataStore.navigatetionPath.append(.myPage)
             }, label: {
-                Label("マイページ", systemImage: "person.circle")
+                Label("マイページ", systemImage: "person.circle.fill")
             })
             Menu {
                 Button(action: { roomDataStore.publicRoomsArray.sort {$0.playTagName < $1.playTagName}}, label: {
@@ -175,7 +187,7 @@ struct PublicRoomsView: View {
         } label: {
             Image(systemName: "ellipsis.circle")
         }
-        
+        .popoverTip(MyPageTip(), arrowEdge: .bottom)
     }
     func onAppear() {
         Task {
@@ -192,6 +204,7 @@ struct PublicRoomsView: View {
                         if playingRoom.isFinished {
                             await UserRepository.finishGame()
                         } else {
+                            await UserRepository.getUsersData()
                             await PlayerRepository.getAlivePlayers(phaseNow: playingRoom.phaseNow)
                             DispatchQueue.main.async {
                                 pathDataStore.navigatetionPath.append(.game)

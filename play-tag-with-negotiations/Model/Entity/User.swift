@@ -74,7 +74,7 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         self.iconUrl = "default"
         self.iconData = nil
         self.friendUsers = []
-        self.profile = "未設定"
+        self.profile = "初心者なのでお手柔らかにお願いします。"
     }
     
     init() {

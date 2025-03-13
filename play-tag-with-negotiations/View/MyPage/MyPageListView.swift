@@ -94,8 +94,8 @@ struct MyPageListView: View {
                 }
                 isShowPronounAlert = true
             }
-            .alert("代名詞を変更", isPresented: $isShowPronounAlert, actions: {
-                TextField("代名詞", text: $text)
+            .alert("自己紹介を変更", isPresented: $isShowPronounAlert, actions: {
+                TextField("自己紹介", text: $text)
                 Button(role: .cancel, action: {}, label: {
                     Text("キャンセル")
                 })
@@ -105,7 +105,7 @@ struct MyPageListView: View {
                     }
                 })
             }, message: {
-                Text("代名詞を入力してください。")
+                Text("自己紹介を入力してください。")
             })
         }
     }

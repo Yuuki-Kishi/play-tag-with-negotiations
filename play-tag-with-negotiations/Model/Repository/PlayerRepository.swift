@@ -74,42 +74,50 @@ class PlayerRepository {
     
     static func getAlivePlayers(phaseNow: Int) async {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
-        let players = await getAllPlayers()
+        var players = await getAllPlayers()
         let chasers = players.filter { $0.isChaser }
         let fugitives = players.filter { !$0.isChaser }
-        var survivors: [Player] = chasers
         fugitiveLoop: for fugitive in fugitives {
             guard let fugitivePosition = fugitive.move.first(where: { $0.phase == phaseNow }) else { continue }
             for chaser in chasers {
                 guard let chaserPosition = chaser.move.first(where: { $0.phase == phaseNow }) else { continue }
+                print("fugitiveUserId:", fugitive.playerUserId)
+                print("fugitivePosition:", fugitivePosition)
+                print("chaserPosition:", chaserPosition)
                 if fugitivePosition == chaserPosition {
                     let isContain = fugitive.catchers.contains(chaser.playerUserId)
-                    if isContain { continue fugitiveLoop }
+                    print("same position")
+                    if isContain {
+                        var newFugitive = fugitive
+                        newFugitive.isCaptured = true
+                        players.append(noDuplicate: newFugitive)
+                        print("")
+                        continue fugitiveLoop
+                    }
                 }
+                print("")
             }
-            survivors.append(noDuplicate: fugitive)
         }
+        print("players:", players)
+        print("")
         for player in players {
-            let isSurvive = survivors.contains { $0.playerUserId == player.playerUserId }
-            if isSurvive {
-                DispatchQueue.main.async {
-                    PlayerDataStore.shared.playerArray.append(noDuplicate: player)
-                }
-                if player.playerUserId == myUserId {
-                    await PlayerRepository.isDecidedToFalse()
-                }
-            } else {
-                var capturedPlayer = player
-                capturedPlayer.isCaptured = true
-                DispatchQueue.main.async {
-                    PlayerDataStore.shared.playerArray.append(noDuplicate: capturedPlayer)
-                }
+            DispatchQueue.main.async {
+                PlayerDataStore.shared.playerArray.append(noDuplicate: player)
+            }
+            if player.isCaptured {
                 if player.playerUserId == myUserId {
                     await PlayerRepository.wasCaptured()
                 }
+            } else {
+                if player.isMe {
+                    let nextMove = player.move.filter { $0.phase == phaseNow + 1 }
+                    if nextMove.isEmpty {
+                        await PlayerRepository.isDecidedToFalse()
+                    }
+                }
             }
         }
-        if survivors.filter({ !$0.isChaser }).isEmpty {
+        if players.filter({ !$0.isChaser && !$0.isCaptured }).isEmpty {
             await PlayTagRoomRepository.gameFinished()
         }
     }
@@ -252,24 +260,26 @@ class PlayerRepository {
         }
     }
     
-    static func observeMyPropaty() {
+    static func observePlayersPropaty() {
         let roomId = PlayerDataStore.shared.playingRoom.roomId
-        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
-        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(myUserId).addSnapshotListener { DocumentSnapshot, error in
-            do {
-                guard let player = try DocumentSnapshot?.data(as: Player.self) else { return }
-                var me = PlayerDataStore.shared.playerArray.me
-                me.point = player.point
-                me.isDecided = player.isDecided
-                DispatchQueue.main.async {
-                    PlayerDataStore.shared.playerArray.append(noDuplicate: me)
+        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").addSnapshotListener { querySnapshot, error  in
+            guard let documents = querySnapshot?.documents else { return }
+            for document in documents {
+                do {
+                    let newPlayer = try document.data(as: Player.self)
+                    guard var player = PlayerDataStore.shared.playerArray.first(where: { $0.playerUserId == document.documentID }) else { return }
+                    player.point = newPlayer.point
+                    player.isDecided = newPlayer.isDecided
+                    DispatchQueue.main.async {
+                        PlayerDataStore.shared.playerArray.append(noDuplicate: newPlayer)
+                    }
+                } catch {
+                    print(error)
                 }
-            } catch {
-                print(error)
             }
         }
         DispatchQueue.main.async {
-            UserDataStore.shared.listeners[UserDataStore.listenerType.myPropaty] = listener
+            UserDataStore.shared.listeners[UserDataStore.listenerType.playersPropaty] = listener
         }
     }
 }

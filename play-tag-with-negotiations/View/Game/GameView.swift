@@ -57,24 +57,22 @@ struct GameView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
             Task {
-                if playerDataStore.playerArray.me.isHost {
-                    PlayTagRoomRepository.observeIsDecided()
-                }
-                UserRepository.observeUserData()
-                PlayerRepository.observeMyPropaty()
-                DealRepository.observeDeals()
-                FriendShipRepository.observeFriend()
                 await UserRepository.getUsersData()
                 await PlayerRepository.getAlivePlayers(phaseNow: 1)
                 await NegotiationRepository.getNegotiations()
                 playerDataStore.selectedPlayers = await PlayerRepository.getAllPlayers()
+                PlayTagRoomRepository.observeIsDecided()
+                PlayTagRoomRepository.observeRoomFieldAndPhaseNow()
+                PlayerRepository.observePlayersPropaty()
+                DealRepository.observeDeals()
+                FriendShipRepository.observeFriend()
+                TimerDataStore.shared.setTimer(limit: 60)
             }
         }
         .onDisappear() {
             TimerDataStore.shared.invalidate()
-            userDataStore.listeners.remove(listenerType: .roomField)
             userDataStore.listeners.remove(listenerType: .isDecided)
-            userDataStore.listeners.remove(listenerType: .myPropaty)
+            userDataStore.listeners.remove(listenerType: .phaseNow)
             userDataStore.listeners.remove(listenerType: .deal)
         }
     }

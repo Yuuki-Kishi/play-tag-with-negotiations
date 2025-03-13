@@ -29,12 +29,17 @@ struct DealPanelViewNegotiationCell: View {
         }
         .alert("支払うポイント数を入力", isPresented: $isShowAlert, actions: {
             TextField("支払うポイント数", text: $point)
-            Button(role: .cancel, action: {}, label: {
+            Button(role: .cancel, action: {
+                point = ""
+            }, label: {
                 Text("キャンセル")
             })
             Button(action: {
                 let targetUserId = PlayerDataStore.shared.selectedPlayer.playerUserId
-                Task { await DealRepository.proposeDeal(targetUserId: targetUserId, negotiation: negotiation, point: point) }
+                Task {
+                    await DealRepository.proposeDeal(targetUserId: targetUserId, negotiation: negotiation, point: point)
+                    point = ""
+                }
             }, label: {
                 Text("提案")
             })

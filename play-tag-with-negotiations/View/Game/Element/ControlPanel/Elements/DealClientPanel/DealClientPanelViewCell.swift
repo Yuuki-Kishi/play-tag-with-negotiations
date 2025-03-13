@@ -35,6 +35,11 @@ struct DealClientListViewCell: View {
                     .lineLimit(1)
                     .font(.system(size: 15))
             }
+            Spacer()
+            if playerDataStore.dealArray.proposed.contains(where: { $0.proposerUserId == player.playerUserId }) {
+                Image(systemName: "circle.fill")
+                    .foregroundStyle(Color.red)
+            }
         }
         .contentShape(Rectangle())
         .onTapGesture {

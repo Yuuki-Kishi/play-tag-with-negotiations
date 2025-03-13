@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 struct SelectionView: View {
     @ObservedObject var userDataStore: UserDataStore
@@ -21,19 +22,23 @@ struct SelectionView: View {
                     .font(.system(size: 25))
                     .foregroundStyle(iconColor(panelMode: .movement))
             })
+            .popoverTip(MovePanelTip(), arrowEdge: .bottom)
             Spacer()
-            Button(action: {
-                if playerDataStore.selectedPlayers.isEmpty {
-                    userDataStore.displayControlPanel = .deal(.negotiation)
-                } else {
-                    userDataStore.displayControlPanel = .deal(.client)
-                }
-            }, label: {
-                Image(systemName: "bubble.left.and.bubble.right.fill")
-                    .font(.system(size: 25))
-                    .foregroundStyle(iconColor(panelMode: .deal(.client)))
-            })
-            Spacer()
+            if playerDataStore.playingRoom.isDeal {
+                Button(action: {
+                    if playerDataStore.selectedPlayers.isEmpty {
+                        userDataStore.displayControlPanel = .deal(.negotiation)
+                    } else {
+                        userDataStore.displayControlPanel = .deal(.client)
+                    }
+                }, label: {
+                    Image(systemName: "bubble.left.and.bubble.right.fill")
+                        .font(.system(size: 25))
+                        .foregroundStyle(iconColor(panelMode: .deal(.client)))
+                })
+                .popoverTip(DealPanelTip(), arrowEdge: .bottom)
+                Spacer()
+            }
             Button(action: {
                 if playerDataStore.selectedPlayers.isEmpty {
                     userDataStore.displayControlPanel = .playerInfo(.info)
@@ -41,10 +46,11 @@ struct SelectionView: View {
                     userDataStore.displayControlPanel = .playerInfo(.players)
                 }
             }, label: {
-                Image(systemName: "info.circle")
+                Image(systemName: "info.circle.fill")
                     .font(.system(size: 25))
                     .foregroundStyle(iconColor(panelMode: .playerInfo(.players)))
             })
+            .popoverTip(PlayerInfoPanelTip(), arrowEdge: .bottom)
             Spacer()
         }
         .background(Color(UIColor.systemGray5))
@@ -56,6 +62,9 @@ struct SelectionView: View {
             case .movement:
                 return .accentColor
             case .deal:
+                if !playerDataStore.dealArray.proposed.isEmpty {
+                    return .red
+                }
                 return .gray
             case .playerInfo:
                 return .gray
@@ -65,6 +74,9 @@ struct SelectionView: View {
             case .movement:
                 return .gray
             case .deal:
+                if !playerDataStore.dealArray.proposed.isEmpty {
+                    return .red
+                }
                 return .accentColor
             case .playerInfo:
                 return .gray
@@ -74,6 +86,9 @@ struct SelectionView: View {
             case .movement:
                 return .gray
             case .deal:
+                if !playerDataStore.dealArray.proposed.isEmpty {
+                    return .red
+                }
                 return .gray
             case .playerInfo:
                 return .accentColor

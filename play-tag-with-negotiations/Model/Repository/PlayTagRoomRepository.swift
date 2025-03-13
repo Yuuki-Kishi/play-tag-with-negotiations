@@ -116,7 +116,7 @@ class PlayTagRoomRepository {
     
     
 //    observe
-    static func observeRoomField() {
+    static func observeRoomFieldAndPhaseNow() {
         let roomId = PlayerDataStore.shared.playingRoom.roomId
         let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).addSnapshotListener { DocumentSnapshot, error in
             do {
@@ -136,6 +136,23 @@ class PlayTagRoomRepository {
             }
         }
         DispatchQueue.main.async {
+            UserDataStore.shared.listeners[UserDataStore.listenerType.phaseNow] = listener
+        }
+    }
+    
+    static func observeRoomField() {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
+        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).addSnapshotListener { DocumentSnapshot, error in
+            do {
+                guard let playingRoom = try DocumentSnapshot?.data(as: PlayTagRoom.self) else { return }
+                DispatchQueue.main.async {
+                    PlayerDataStore.shared.playingRoom = playingRoom
+                }
+            } catch {
+                print(error)
+            }
+        }
+        DispatchQueue.main.async {
             UserDataStore.shared.listeners[UserDataStore.listenerType.roomField] = listener
         }
     }
@@ -144,7 +161,7 @@ class PlayTagRoomRepository {
         let roomId = PlayerDataStore.shared.playingRoom.roomId
         let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").whereField("isDecided", isEqualTo: true).addSnapshotListener { QuerySnapshot, error in
             guard let documents = QuerySnapshot?.documents else { return }
-            if PlayerDataStore.shared.playingRoom.playerNumber <= documents.count {
+            if PlayerDataStore.shared.playerArray.me.isHost && PlayerDataStore.shared.playingRoom.playerNumber <= documents.count {
                 Task { await moveToNextPhase() }
             }
         }
