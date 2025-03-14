@@ -13,6 +13,7 @@ struct GameView: View {
     @ObservedObject var pathDataStore: PathDataStore
     
     @State private var isShowWasCapturedAlert = false
+    @State private var isShowExitGameAlert = false
     
     var body: some View {
         VStack {
@@ -38,36 +39,33 @@ struct GameView: View {
         .background(Color(UIColor.systemGray6))
         .toolbar {
             ToolbarItem(placement: .topBarTrailing, content: {
-                Menu {
-                    Button(action: {
-                        pathDataStore.navigatetionPath.append(.roomInfo)
-                    }, label: {
-                        Label("ルール", systemImage: "info.circle")
-                    })
-                } label: {
-                    Image(systemName: "ellipsis.circle")
-                }
+                menu()
             })
         }
         .onChange(of: playerDataStore.playingRoom.isFinished) {
             Task { await PlayerRepository.getAllPlayers() }
             pathDataStore.navigatetionPath.append(.result)
         }
+        .alert("ゲームを退出しますか？", isPresented: $isShowExitGameAlert, actions: {
+            Button(role: .cancel, action: {}, label: {
+                Text("キャンセル")
+            })
+            Button(role: .destructive, action: {
+                if playerDataStore.playerArray.me.isHost {
+                    Task { await PlayerRepository.hostExitRoom() }
+                } else {
+                    Task { await PlayerRepository.exitRoom() }
+                }
+            }, label: {
+                Text("退出")
+            })
+        }, message: {
+            Text("退出するとこれまでの記録が消えます。この操作は取り消すことができません。")
+        })
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
-            Task {
-                await UserRepository.getUsersData()
-                await PlayerRepository.getAlivePlayers(phaseNow: 1)
-                await NegotiationRepository.getNegotiations()
-                playerDataStore.selectedPlayers = await PlayerRepository.getAllPlayers()
-                PlayTagRoomRepository.observeIsDecided()
-                PlayTagRoomRepository.observeRoomFieldAndPhaseNow()
-                PlayerRepository.observePlayersPropaty()
-                DealRepository.observeDeals()
-                FriendShipRepository.observeFriend()
-                TimerDataStore.shared.setTimer(limit: 60)
-            }
+            onAppear()
         }
         .onDisappear() {
             TimerDataStore.shared.invalidate()
@@ -88,6 +86,37 @@ struct GameView: View {
     func point() -> String {
         let point = playerDataStore.playerArray.me.point
         return String(point) + "pt"
+    }
+    func onAppear() {
+        Task {
+            await UserRepository.getUsersData()
+            await PlayerRepository.getAlivePlayers(phaseNow: 1)
+            await NegotiationRepository.getNegotiations()
+            playerDataStore.selectedPlayers = await PlayerRepository.getAllPlayers()
+            PlayTagRoomRepository.observeIsDecided()
+            PlayTagRoomRepository.observeRoomFieldAndPhaseNow()
+            PlayerRepository.observePlayersPropaty()
+            DealRepository.observeDeals()
+            FriendShipRepository.observeFriend()
+            TimerDataStore.shared.setTimer(limit: 60)
+        }
+    }
+    func menu() -> some View {
+        Menu {
+            Button(action: {
+                pathDataStore.navigatetionPath.append(.roomInfo)
+            }, label: {
+                Label("ルール", systemImage: "info.circle")
+            })
+            Divider()
+            Button(action: {
+                isShowExitGameAlert = true
+            }, label: {
+                Label("退出", systemImage: "figure.walk.arrival")
+            })
+        } label: {
+            Image(systemName: "ellipsis.circle")
+        }
     }
 }
 

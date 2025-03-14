@@ -80,7 +80,7 @@ struct WaitingRoomView: View {
                 Text("退出")
             })
         }, message: {
-            Text("あなたが退出するとこのルームは削除されます。\n再度ルームが必要な場合はルームを作成してください。")
+            Text("あなたが退出するとこのルームは削除されます。再度ルームが必要な場合はルームを作成してください。")
         })
         .alert("あなたはホストです", isPresented: $isShowHostAlert, actions: {
             Button(role: .cancel, action: {}, label: {

@@ -122,7 +122,8 @@ class PlayerRepository {
         }
     }
 //    update
-    static func playerUpToHost(roomId: String, nextHostUserId: String) async {
+    static func playerUpToHost(nextHostUserId: String) async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(nextHostUserId).updateData(["isHost": true])
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["hostUserId": nextHostUserId])
@@ -206,20 +207,27 @@ class PlayerRepository {
     }
     
 //    delete
-    static func exitRoom(roomId: String) async {
+    static func exitRoom() async {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        let playerNumber = PlayerDataStore.shared.playingRoom.playerNumber - 1
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).delete()
+            try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["playerNumber": playerNumber])
             try await Firestore.firestore().collection("Users").document(userId).updateData(["beingRoomId": FieldValue.delete()])
         } catch {
             print(error)
         }
     }
     
-    static func hostExitRoom(roomId: String) async {
-        guard let nextHostUserId = PlayerDataStore.shared.playerArray.guests.randomElement() else { return }
-        await playerUpToHost(roomId: roomId, nextHostUserId: nextHostUserId.playerUserId)
-        await exitRoom(roomId: roomId)
+    static func hostExitRoom() async {
+        guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
+        DispatchQueue.main.async {
+            PlayerDataStore.shared.playerArray.remove(userId: myUserId)
+        }
+        guard let nextHostUserId = PlayerDataStore.shared.playerArray.guests.randomElement()?.playerUserId else { return }
+        await playerUpToHost(nextHostUserId: nextHostUserId)
+        await exitRoom()
     }
     
 //    observe
