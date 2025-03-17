@@ -54,15 +54,6 @@ class UserRepository {
         return nil
     }
     
-    static func getUsersData() async {
-        for player in PlayerDataStore.shared.playerArray {
-            guard let user = await getUserData(userId: player.playerUserId) else { continue }
-            DispatchQueue.main.async {
-                PlayerDataStore.shared.userArray.append(noDuplicate: user)
-            }
-        }
-    }
-    
     static func getBeingRoomId() async -> String? {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return nil }
         do {
@@ -137,15 +128,48 @@ class UserRepository {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         let listener = Firestore.firestore().collection("Users").document(userId).addSnapshotListener { documentSnapshot, error in
             Task {
-                guard let documentId = documentSnapshot?.documentID else { return }
-                guard let user = await getUserData(userId: documentId) else { return }
-                DispatchQueue.main.async {
-                    UserDataStore.shared.signInUser = user
+                do {
+                    guard var user = try documentSnapshot?.data(as: User.self) else { return }
+                    user.iconData = await Download.getIconImage(iconUrl: user.iconUrl)
+                    DispatchQueue.main.async {
+                        UserDataStore.shared.signInUser = user
+                    }
+                } catch {
+                    print(error)
                 }
             }
         }
         DispatchQueue.main.async {
-            UserDataStore.shared.listeners[UserDataStore.listenerType.userData] = listener
+            UserDataStore.shared.listeners[UserDataStore.listenerType.myUserData] = listener
+        }
+    }
+    
+    static func observeUsersData() {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
+        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").addSnapshotListener { querySnapshot, error in
+            guard let documentChanges = querySnapshot?.documentChanges else { return }
+            Task {
+                for documentChange in documentChanges {
+                    guard let user = await getUserData(userId: documentChange.document.documentID) else { continue }
+                    switch documentChange.type {
+                    case .added:
+                        DispatchQueue.main.async {
+                            PlayerDataStore.shared.userArray.append(noDuplicate: user)
+                        }
+                    case .modified:
+                        DispatchQueue.main.async {
+                            PlayerDataStore.shared.userArray.append(noDuplicate: user)
+                        }
+                    case .removed:
+                        DispatchQueue.main.async {
+                            PlayerDataStore.shared.userArray.remove(userId: user.userId)
+                        }
+                    }
+                }
+            }
+        }
+        DispatchQueue.main.async {
+            UserDataStore.shared.listeners[UserDataStore.listenerType.usersData] = listener
         }
     }
 }

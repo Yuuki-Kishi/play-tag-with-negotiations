@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct SelectionView: View {
     @ObservedObject var userDataStore: UserDataStore
@@ -22,7 +21,6 @@ struct SelectionView: View {
                     .font(.system(size: 25))
                     .foregroundStyle(iconColor(panelMode: .movement))
             })
-            .popoverTip(MovePanelTip(), arrowEdge: .bottom)
             Spacer()
             if playerDataStore.playingRoom.isDeal {
                 Button(action: {
@@ -36,7 +34,6 @@ struct SelectionView: View {
                         .font(.system(size: 25))
                         .foregroundStyle(iconColor(panelMode: .deal(.client)))
                 })
-                .popoverTip(DealPanelTip(), arrowEdge: .bottom)
                 Spacer()
             }
             Button(action: {
@@ -50,7 +47,6 @@ struct SelectionView: View {
                     .font(.system(size: 25))
                     .foregroundStyle(iconColor(panelMode: .playerInfo(.players)))
             })
-            .popoverTip(PlayerInfoPanelTip(), arrowEdge: .bottom)
             Spacer()
         }
         .background(Color(UIColor.systemGray5))

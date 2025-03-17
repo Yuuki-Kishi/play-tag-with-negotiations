@@ -122,10 +122,8 @@ class PlayTagRoomRepository {
             do {
                 guard let playingRoom = try DocumentSnapshot?.data(as: PlayTagRoom.self) else { return }
                 if PlayerDataStore.shared.playingRoom.phaseNow < playingRoom.phaseNow {
-                    Task {
-                        await DealRepository.isFulfilled(phaseNow: playingRoom.phaseNow)
-                        await PlayerRepository.getAlivePlayers(phaseNow: playingRoom.phaseNow)
-                    }
+                    Task { await DealRepository.isFulfilled(phaseNow: playingRoom.phaseNow) }
+                    if !PlayerDataStore.shared.playerArray.me.isCaptured { Task { await PlayerRepository.isDecidedToFalse() }}
                     TimerDataStore.shared.setTimer(limit: 60)
                 }
                 DispatchQueue.main.async {
@@ -161,8 +159,10 @@ class PlayTagRoomRepository {
         let roomId = PlayerDataStore.shared.playingRoom.roomId
         let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").whereField("isDecided", isEqualTo: true).addSnapshotListener { QuerySnapshot, error in
             guard let documents = QuerySnapshot?.documents else { return }
-            if PlayerDataStore.shared.playerArray.me.isHost && PlayerDataStore.shared.playingRoom.playerNumber <= documents.count {
-                Task { await moveToNextPhase() }
+            if PlayerDataStore.shared.playerArray.me.isHost {
+                if PlayerDataStore.shared.playingRoom.playerNumber <= documents.count {
+                    Task { await moveToNextPhase() }
+                }
             }
         }
         DispatchQueue.main.async {

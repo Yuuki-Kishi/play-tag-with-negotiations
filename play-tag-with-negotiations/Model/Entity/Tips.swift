@@ -28,7 +28,7 @@ struct MyPageTip: Tip {
     }
     
     var message: Text? {
-        Text("自分のアイコンやユーザーネームを設定しよう。")
+        Text("メニューから自分のアイコンやユーザーネームを設定しよう。")
     }
     
     var image: Image? {
@@ -56,7 +56,7 @@ struct WaitingRoomTip: Tip {
     }
     
     var message: Text? {
-        Text("ゲームを一緒に遊ぶ人にルームIDを共有してルームに入ってもらおう。")
+        Text("ゲームを一緒に遊ぶ人にルームIDを共有してルームに入ってもらおう。\nアプリを閉じるとホストでなくなります。")
     }
     
     var image: Image? {

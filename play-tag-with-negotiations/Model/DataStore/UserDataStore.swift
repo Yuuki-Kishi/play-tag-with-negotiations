@@ -27,6 +27,6 @@ class UserDataStore: ObservableObject {
         }
     }
     enum listenerType {
-        case userData, roomField, phaseNow, notice, players, playersPropaty, isDecided, publicRooms, friendShips, negotiation, deal
+        case myUserData, usersData, roomField, phaseNow, notice, players, game, isDecided, publicRooms, friendShips, negotiation, deal
     }
 }

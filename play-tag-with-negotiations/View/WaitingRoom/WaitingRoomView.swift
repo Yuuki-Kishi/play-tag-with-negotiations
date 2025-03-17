@@ -6,54 +6,56 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct WaitingRoomView: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     @ObservedObject var pathDataStore: PathDataStore
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var previousPhase: ScenePhase = .active
     @State private var isShowExitAlert = false
     @State private var isShowHostAlert = false
     @State private var isShowLastUserAlert = false
     
     var body: some View {
         ZStack {
-            VStack {
-                TipView(WaitingRoomTip())
-                    .padding(.horizontal)
-                List {
-                    Section(content: {
-                        WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, userId: Binding(get: { playerDataStore.playerArray.host.playerUserId }, set: {_ in}))
-                    }, header: {
-                        Text("ホスト")
-                    })
-                    Section(content: {
-                        ForEach(playerDataStore.playerArray.guests, id: \.playerUserId) { player in
-                            WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, userId: Binding(get: { player.playerUserId }, set: {_ in}))
-                        }
-                    }, header: {
-                        Text("ゲスト")
-                    })
-                }
+            
+            List {
+                Section(content: {
+                    WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, userId: Binding(get: { playerDataStore.playerArray.host.playerUserId }, set: {_ in}))
+                }, header: {
+                    Text("ホスト")
+                })
+                Section(content: {
+                    ForEach(playerDataStore.playerArray.guests, id: \.playerUserId) { player in
+                        WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, userId: Binding(get: { player.playerUserId }, set: {_ in}))
+                    }
+                }, header: {
+                    Text("ゲスト")
+                })
             }
             if userDataStore.signInUser?.userId == playerDataStore.playingRoom.hostUserId {
-                Button(action: {
-                    Task {
-                        await PlayTagRoomRepository.appointmentChaser()
-                        await PlayTagRoomRepository.moveToNextPhase()
-                        await PlayTagRoomRepository.gameStart()
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            Task {
+                                await PlayTagRoomRepository.appointmentChaser()
+                                await PlayTagRoomRepository.moveToNextPhase()
+                                await PlayTagRoomRepository.gameStart()
+                            }
+                        }, label: {
+                            Image(systemName: "play.fill")
+                                .font(.system(size: 30))
+                                .foregroundStyle(Color.primary)
+                                .background(RoundedRectangle(cornerRadius: 25).frame(width: 75, height: 75))
+                                .frame(width: 75, height: 75)
+                        })
+                        .padding(.trailing, 40)
+                        .padding(.bottom, 40)
                     }
-                }, label: {
-                    Image(systemName: "play.fill")
-                        .font(.system(size: 30))
-                        .foregroundStyle(Color.primary)
-                        .background(RoundedRectangle(cornerRadius: 25).frame(width: 75, height: 75))
-                        .padding(25)
-                })
-                .popoverTip(GameStartTip(), arrowEdge: .trailing)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                .padding(.trailing, 35)
-                .padding(.bottom, 35)
+                }
             }
         }
         .navigationTitle("待合室")
@@ -63,6 +65,32 @@ struct WaitingRoomView: View {
             if playerDataStore.playingRoom.isPlaying {
                 Task { await PlayerRepository.writeIsCatchable() }
                 pathDataStore.navigatetionPath.append(.game)
+            }
+        }
+        .onChange(of: scenePhase) {
+            switch scenePhase {
+            case .active:
+                previousPhase = .active
+            case .inactive:
+                switch previousPhase {
+                case .active:
+                    Task {
+                        if playerDataStore.playerArray.me.isHost {
+                            await PlayerRepository.playerUpToHost()
+                        }
+                        await PlayerRepository.stopPlaying()
+                    }
+                case .inactive:
+                    break
+                case .background:
+                    Task { await PlayerRepository.continuePlaying() }
+                @unknown default:
+                    break
+                }
+            case .background:
+                previousPhase = .background
+            @unknown default:
+                break
             }
         }
         .toolbar {
@@ -107,15 +135,16 @@ struct WaitingRoomView: View {
             Text("非公開ルームの場合、再入室するにはルームIDが必要です。")
         })
         .onAppear() {
-            PlayTagRoomRepository.observeRoomField()
-            PlayerRepository.observePlayers()
             Task {
                 await PlayerPositionRepository.randomInitialPosition()
+                await PlayerRepository.continuePlaying()
             }
+            PlayTagRoomRepository.observeRoomField()
+            UserRepository.observeUsersData()
+            PlayerRepository.observePlayers()
         }
         .onDisappear() {
             userDataStore.listeners.remove(listenerType: .roomField)
-            userDataStore.listeners.remove(listenerType: .players)
         }
     }
     func toolBarMenu() -> some View {
@@ -134,7 +163,7 @@ struct WaitingRoomView: View {
             Button(role: .destructive, action: {
                 guard let userId = userDataStore.signInUser?.userId else { return }
                 let hostUserId = playerDataStore.playingRoom.hostUserId
-                if playerDataStore.playerArray.guestUsers.count == 0 {
+                if playerDataStore.playerArray.count == 1 {
                     isShowLastUserAlert = true
                 } else {
                     if userId == hostUserId {
@@ -158,15 +187,13 @@ struct WaitingRoomView: View {
     }
     func hostExit() {
         Task {
-            let roomId = playerDataStore.playingRoom.roomId
-            await PlayerRepository.hostExitRoom(roomId: roomId)
+            await PlayerRepository.hostExitRoom()
             pathDataStore.navigatetionPath.removeAll()
         }
     }
     func exit() {
         Task {
-            let roomId = playerDataStore.playingRoom.roomId
-            await PlayerRepository.exitRoom(roomId: roomId)
+            await PlayerRepository.exitRoom()
             pathDataStore.navigatetionPath.removeAll()
         }
     }

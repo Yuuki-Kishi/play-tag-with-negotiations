@@ -19,13 +19,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
         return GIDSignIn.sharedInstance.handle(url)
     }
-    func applicationWillTerminate(_ application: UIApplication) {
-        if PlayerDataStore.shared.playerArray.me.isHost {
-            Task { await PlayerRepository.hostExitRoom() }
-        } else {
-            Task { await PlayerRepository.exitRoom() }
-        }
-    }
+//    func applicationWillTerminate(_ application: UIApplication) {
+//        if PlayerDataStore.shared.playerArray.me.isHost {
+//            Task { await PlayerRepository.hostExitRoom() }
+//        } else {
+//            Task { await PlayerRepository.exitRoom() }
+//        }
+//    }
 }
 
 @main
@@ -33,6 +33,7 @@ struct play_tag_with_negotiationsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     init() {
+        try? Tips.resetDatastore()
         try? Tips.configure()
     }
     

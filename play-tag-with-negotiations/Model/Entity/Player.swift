@@ -19,13 +19,14 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
     var isChaser: Bool
     var isDecided: Bool
     var isCaptured: Bool
+    var isPlaying: Bool
     var point: Int
     var move: [PlayerPosition]
     var catchers: [String]
     var deals: [String]
     
     enum CodingKeys: String, CodingKey {
-        case playerUserId, enteredTime, isHost, isChaser, isDecided, isCaptured, point, move, catchers, deals
+        case playerUserId, enteredTime, isHost, isChaser, isDecided, isCaptured, isPlaying, point, move, catchers, deals
     }
         
     init(from decoder: Decoder) throws {
@@ -43,6 +44,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.isChaser = try container.decode(Bool.self, forKey: .isChaser)
         self.isDecided = try container.decode(Bool.self, forKey: .isDecided)
         self.isCaptured = try container.decode(Bool.self, forKey: .isCaptured)
+        self.isPlaying = try container.decode(Bool.self, forKey: .isPlaying)
         self.point = try container.decode(Int.self, forKey: .point)
         self.move = try container.decode([PlayerPosition].self, forKey: .move)
         self.catchers = try container.decodeIfPresent([String].self, forKey: .catchers) ?? []
@@ -59,13 +61,14 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         try container.encode(self.isChaser, forKey: .isChaser)
         try container.encode(self.isDecided, forKey: .isDecided)
         try container.encode(self.isCaptured, forKey: .isCaptured)
+        try container.encode(self.isPlaying, forKey: .isPlaying)
         try container.encode(self.point, forKey: .point)
         try container.encode(self.move, forKey: .move)
         try container.encode(self.catchers, forKey: .catchers)
         try container.encode(self.deals, forKey: .deals)
     }
     
-    init(playerUserId: String, isHost: Bool, point: Int, enteredTime: Date, isChaser: Bool, isDecided: Bool, isCaptured: Bool, move: [PlayerPosition], catchers: [String], deala: [String]) {
+    init(playerUserId: String, isHost: Bool, point: Int, enteredTime: Date, isChaser: Bool, isDecided: Bool, isCaptured: Bool, isPlaying: Bool, move: [PlayerPosition], catchers: [String], deala: [String]) {
         self.id = UUID()
         self.playerUserId = playerUserId
         self.enteredTime = enteredTime
@@ -73,6 +76,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.isChaser = isChaser
         self.isDecided = isDecided
         self.isCaptured = isCaptured
+        self.isPlaying = isPlaying
         self.point = point
         self.move = move
         self.catchers = catchers
@@ -88,6 +92,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.isChaser = false
         self.isDecided = false
         self.isCaptured = false
+        self.isPlaying = true
         self.move = []
         self.catchers = []
         self.deals = []
@@ -102,6 +107,7 @@ struct Player: Codable, Hashable, Identifiable, Equatable {
         self.isChaser = false
         self.isDecided = true
         self.isCaptured = false
+        self.isPlaying = false
         self.move = []
         self.catchers = []
         self.deals = []

@@ -49,7 +49,7 @@ struct MyPageView: View {
             UserRepository.observeUserData()
         }
         .onDisappear() {
-            userDataStore.listeners.remove(listenerType: .userData)
+            userDataStore.listeners.remove(listenerType: .myUserData)
         }
     }
     func toolBarMenu() -> some View {

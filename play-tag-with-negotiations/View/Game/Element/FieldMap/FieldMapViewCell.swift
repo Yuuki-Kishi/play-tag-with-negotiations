@@ -187,8 +187,15 @@ struct FieldMapViewCell: View {
         var players: [Player] = []
         let phaseNow = playerDataStore.playingRoom.phaseNow
         for player in playerDataStore.playerArray {
-            guard let position = player.move.first(where: { $0.phase == phaseNow }) else { continue }
-            if position == playerPosition { players.append(player) }
+            if let position = player.move.first(where: { $0.phase == phaseNow }) {
+                if position == playerPosition && player.isPlaying { players.append(player) }
+            }  else {
+                if let lastPosition = player.move.last {
+                    if lastPosition == playerPosition && player.isPlaying { players.append(player) }
+                } else {
+                    continue
+                }
+            }
         }
         return players
     }

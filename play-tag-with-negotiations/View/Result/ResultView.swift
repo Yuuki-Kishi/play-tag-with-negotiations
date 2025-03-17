@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct ResultView: View {
     @ObservedObject var userDataStore: UserDataStore
@@ -20,8 +19,6 @@ struct ResultView: View {
                 .foregroundStyle(playerRankTextColor())
                 .font(.system(size: 150))
                 .frame(height: UIScreen.main.bounds.height * 0.2)
-            TipView(FriendShipTip())
-                .padding(.horizontal)
             List($playerDataStore.playerArray) { player in
                 ResultViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, player: player)
             }
@@ -77,15 +74,10 @@ struct ResultView: View {
         }
     }
     func clearDataStore() {
-        userDataStore.listeners.remove(listenerType: .playersPropaty)
         userDataStore.listeners.remove(listenerType: .friendShips)
-        userDataStore.listeners.remove(listenerType: .userData)
+        userDataStore.listeners.remove(listenerType: .myUserData)
+        userDataStore.listeners.remove(listenerType: .players)
         playerDataStore.playingRoom = PlayTagRoom()
-        playerDataStore.selectedPlayers = []
-        playerDataStore.userArray.removeAll()
-        playerDataStore.playerArray.removeAll()
-        playerDataStore.dealArray.removeAll()
-        playerDataStore.negotiationArray.removeAll()
     }
 }
 

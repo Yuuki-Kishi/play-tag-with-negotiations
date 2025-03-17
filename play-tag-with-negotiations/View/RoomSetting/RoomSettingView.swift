@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct RoomSettingView: View {
     @ObservedObject var userDataStore: UserDataStore
@@ -15,44 +14,40 @@ struct RoomSettingView: View {
     @State private var isShowAlert = false
     
     var body: some View {
-        VStack {
-            TipView(RuleSettingTip())
-                .padding(.horizontal)
-            List {
-                ForEach(PlayTagRoom.displayItemType.allCases, id: \.self) { itemType in
-                    RoomSettingViewCell(playerDataStore: playerDataStore, itemType: itemType)
-                }
+        List {
+            ForEach(PlayTagRoom.displayItemType.allCases, id: \.self) { itemType in
+                RoomSettingViewCell(playerDataStore: playerDataStore, itemType: itemType)
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        isShowAlert = true
-                    }, label: {
-                        Text("作成")
-                    })
-                }
-            }
-            .alert("ルームを作成しますか？", isPresented: $isShowAlert, actions: {
-                Button(role: .cancel, action: {}, label: {
-                    Text("キャンセル")
-                })
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    Task {
-                        await PlayTagRoomRepository.createPlayTagRoom()
-                        pathDataStore.navigatetionPath.append(.waitingRoom)
-                    }
+                    isShowAlert = true
                 }, label: {
                     Text("作成")
                 })
-            }, message: {
-                Text("あとから設定を変更することはできません。")
+            }
+        }
+        .alert("ルームを作成しますか？", isPresented: $isShowAlert, actions: {
+            Button(role: .cancel, action: {}, label: {
+                Text("キャンセル")
             })
-            .navigationTitle("ルーム作成")
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear() {
-                DispatchQueue.main.async {
-                    playerDataStore.playingRoom = PlayTagRoom(playTagName: "鬼ごっこ")
+            Button(action: {
+                Task {
+                    await PlayTagRoomRepository.createPlayTagRoom()
+                    pathDataStore.navigatetionPath.append(.waitingRoom)
                 }
+            }, label: {
+                Text("作成")
+            })
+        }, message: {
+            Text("あとから設定を変更することはできません。")
+        })
+        .navigationTitle("ルーム作成")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear() {
+            DispatchQueue.main.async {
+                playerDataStore.playingRoom = PlayTagRoom(playTagName: "鬼ごっこ")
             }
         }
     }

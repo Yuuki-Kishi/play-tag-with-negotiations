@@ -26,9 +26,7 @@ struct MovePanelViewButton: View {
         })
     }
     func move() {
-        let isDecided = playerDataStore.playerArray.me.isDecided
-        let isCaptured = playerDataStore.playerArray.me.isCaptured
-        if !isDecided && !isCaptured && isCanDisplay() {
+        if !playerDataStore.playerArray.me.isDecided && !playerDataStore.playerArray.me.isCaptured && isCanDisplay() {
             Task {
                 let playerPosition = calculateCoordinate()
                 let x = playerPosition.x
@@ -152,12 +150,10 @@ struct MovePanelViewButton: View {
     }
     func buttonColor() -> Color {
         if isCanDisplay() {
-            let isDecided = playerDataStore.playerArray.me.isDecided
-            let isCaptured = playerDataStore.playerArray.me.isCaptured
-            if isCaptured {
+            if playerDataStore.playerArray.me.isCaptured {
                 return .gray
             } else {
-                if isDecided {
+                if playerDataStore.playerArray.me.isDecided {
                     return .gray
                 } else {
                     return .accentColor

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct PublicRoomsView: View {
     @ObservedObject var userDataStore: UserDataStore
@@ -16,6 +15,7 @@ struct PublicRoomsView: View {
     @State private var isShowEnterRoomAlert = false
     @State private var isShowNotThereRoomAlert = false
     @State private var isShowOverPlayerAlert = false
+    @State private var isShowReplayAlert = false
     @State private var roomId = ""
     
     var body: some View {
@@ -30,33 +30,33 @@ struct PublicRoomsView: View {
                     Text("公開中のルームはありません")
                     Spacer()
                 }
-                Menu {
-                    Button(action: {
-                        pathDataStore.navigatetionPath.append(.roomSetting)
-                    }, label: {
-                        Label("ルーム作成", systemImage: "plus")
-                    })
-                    Button(action: {
-                        isShowEnterRoomAlert = true
-                    }, label: {
-                        Label("ルームに参加", systemImage: "arrow.right.to.line.compact")
-                    })
-                } label: {
+                VStack {
+                    Spacer()
                     HStack {
-                        TipView(MakeRoomTip(), arrowEdge: .trailing)
-                            .padding(.horizontal)
-                        Image(systemName: "figure.run")
-                            .font(.system(size: 30))
-                            .foregroundStyle(Color.primary)
-                            .background(RoundedRectangle(cornerRadius: 25).frame(width: 75, height: 75))
-                            .padding(.trailing, 20)
-                            .padding(.bottom, 20)
+                        Spacer()
+                        Menu {
+                            Button(action: {
+                                pathDataStore.navigatetionPath.append(.roomSetting)
+                            }, label: {
+                                Label("ルーム作成", systemImage: "plus")
+                            })
+                            Button(action: {
+                                isShowEnterRoomAlert = true
+                            }, label: {
+                                Label("ルームに参加", systemImage: "arrow.right.to.line.compact")
+                            })
+                        } label: {
+                            Image(systemName: "figure.run")
+                                .font(.system(size: 30))
+                                .foregroundStyle(Color.primary)
+                                .background(RoundedRectangle(cornerRadius: 25).frame(width: 75, height: 75))
+                                .frame(width: 75, height: 75)
+                        }
+                        .menuOrder(.fixed)
+                        .padding(.trailing, 40)
+                        .padding(.bottom, 40)
                     }
                 }
-                .menuOrder(.fixed)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                .padding(.trailing, 35)
-                .padding(.bottom, 35)
             }
             .navigationDestination(for: PathDataStore.path.self) { path in
                 switch path {
@@ -94,7 +94,7 @@ struct PublicRoomsView: View {
                     }
                 })
             }
-            .alert("参加先のするルームID", isPresented: $isShowEnterRoomAlert, actions: {
+            .alert("参加先のルームID", isPresented: $isShowEnterRoomAlert, actions: {
                 TextField("ルームID", text: $roomId)
                 Button("キャンセル", role: .cancel, action: {
                     roomId = ""
@@ -118,6 +118,20 @@ struct PublicRoomsView: View {
                 }) {
                     Text("OK")
                 }
+            })
+            .alert("再度参加しますか？", isPresented: $isShowReplayAlert, actions: {
+                Button(action: {
+                    replayGame()
+                }, label: {
+                    Text("参加")
+                })
+                Button(role: .destructive, action: {
+                    cancelReplayGame()
+                }, label: {
+                    Text("やめる")
+                })
+            }, message: {
+                Text("再度参加できるルームがあります。参加をやめると再度参加にはルームIDが必要です。")
             })
             .onAppear() {
                 onAppear()
@@ -145,6 +159,46 @@ struct PublicRoomsView: View {
                 }
             } else {
                 isShowNotThereRoomAlert = true
+            }
+        }
+    }
+    func replayGame() {
+        Task {
+            if await PlayTagRoomRepository.isExists(roomId: roomId) {
+                if await !PlayTagRoomRepository.isOverPlayerCount(roomId: roomId) {
+                    guard let playingRoom = await PlayTagRoomRepository.getRoomData(roomId: roomId) else { return }
+                    DispatchQueue.main.async {
+                        playerDataStore.playingRoom = playingRoom
+                    }
+                    roomId = ""
+                    if playingRoom.isFinished {
+                        await PlayTagRoomRepository.gameFinished()
+                    } else {
+                        if playingRoom.isPlaying {
+                            pathDataStore.navigatetionPath.append(.game)
+                        } else {
+                            pathDataStore.navigatetionPath.append(.waitingRoom)
+                        }
+                    }
+                } else {
+                    isShowOverPlayerAlert = true
+                }
+            } else {
+                isShowNotThereRoomAlert = true
+            }
+        }
+    }
+    func cancelReplayGame() {
+        Task {
+            if await PlayTagRoomRepository.isExists(roomId: roomId) {
+                guard let playingRoom = await PlayTagRoomRepository.getRoomData(roomId: roomId) else { return }
+                DispatchQueue.main.async {
+                    playerDataStore.playingRoom = playingRoom
+                }
+                roomId = ""
+                await PlayerRepository.exitRoom(roomId: playingRoom.roomId)
+            } else {
+                await PlayTagRoomRepository.gameFinished()
             }
         }
     }
@@ -187,35 +241,18 @@ struct PublicRoomsView: View {
         } label: {
             Image(systemName: "ellipsis.circle")
         }
-        .popoverTip(MyPageTip(), arrowEdge: .bottom)
     }
     func onAppear() {
+        playerDataStore.selectedPlayers = []
+        playerDataStore.userArray.removeAll()
+        playerDataStore.playerArray.removeAll()
+        playerDataStore.dealArray.removeAll()
+        playerDataStore.negotiationArray.removeAll()
+        UserRepository.observeUserData()
         Task {
             if let roomId = await UserRepository.getBeingRoomId() {
-                guard let playingRoom = await PlayTagRoomRepository.getRoomData(roomId: roomId) else { return }
-                DispatchQueue.main.async {
-                    playerDataStore.playingRoom = playingRoom
-                }
-                if playingRoom.playerNumber >= playingRoom.fugitiveNumber + playingRoom.chaserNumber {
-                    isShowOverPlayerAlert = true
-                    await UserRepository.finishGame()
-                } else {
-                    if playingRoom.isPlaying {
-                        if playingRoom.isFinished {
-                            await UserRepository.finishGame()
-                        } else {
-                            await UserRepository.getUsersData()
-                            await PlayerRepository.getAlivePlayers(phaseNow: playingRoom.phaseNow)
-                            DispatchQueue.main.async {
-                                pathDataStore.navigatetionPath.append(.game)
-                            }
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            pathDataStore.navigatetionPath.append(.waitingRoom)
-                        }
-                    }
-                }
+                self.roomId = roomId
+                isShowReplayAlert = true
             } else {
                 PlayTagRoomRepository.observePublicRooms()
                 NoticeRepository.observeNotice()
