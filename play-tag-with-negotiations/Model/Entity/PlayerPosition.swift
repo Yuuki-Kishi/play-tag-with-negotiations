@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct PlayerPosition: Codable, Hashable {
+struct PlayerPosition: Codable, Hashable, Equatable {
+    static func == (lhs: PlayerPosition, rhs: PlayerPosition) -> Bool {
+        return lhs.x == rhs.x && lhs.y == rhs.y
+    }
+    
     var phase: Int
     var x: Int
     var y: Int

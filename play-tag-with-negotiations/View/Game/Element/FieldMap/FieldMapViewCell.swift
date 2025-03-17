@@ -190,7 +190,7 @@ struct FieldMapViewCell: View {
             if let position = player.move.first(where: { $0.phase == phaseNow }) {
                 if position == playerPosition && player.isPlaying { players.append(player) }
             }  else {
-                if let lastPosition = player.move.last {
+                if let lastPosition = player.move.filter({ $0.phase <= phaseNow }).last {
                     if lastPosition == playerPosition && player.isPlaying { players.append(player) }
                 } else {
                     continue
