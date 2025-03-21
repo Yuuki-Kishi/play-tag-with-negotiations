@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import TipKit
 
 struct PublicRoomsView: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     @StateObject var roomDataStore = RoomDataStore.shared
     @StateObject var pathDataStore = PathDataStore.shared
+    @StateObject var tutorialDataStore =  TutorialDataStore.shared
     @State private var isShowEnterRoomAlert = false
     @State private var isShowNotThereRoomAlert = false
     @State private var isShowOverPlayerAlert = false
@@ -59,28 +61,9 @@ struct PublicRoomsView: View {
                 }
             }
             .navigationDestination(for: PathDataStore.path.self) { path in
-                switch path {
-                case .roomSetting:
-                    RoomSettingView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                case .notice:
-                    NoticeView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                case .myPage:
-                    MyPageView(userDataStore: userDataStore, pathDataStore: pathDataStore)
-                case .friend:
-                    FriendShipView(userDataStore: userDataStore, pickerStatus: .friend)
-                case .waitingRoom:
-                    WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                case .roomInfo:
-                    RoomInfomationView(playerDataStore: playerDataStore)
-                case .invite:
-                    InviteView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                case .game:
-                    GameView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                case .result:
-                    ResultView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
-                }
+                destination(path: path)
             }
-            .navigationTitle("公開中")
+            .navigationTitle("ホーム")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing, content: {
@@ -91,6 +74,7 @@ struct PublicRoomsView: View {
                             Image(systemName: noticeButtonIcon())
                         })
                         toolBarMenu()
+                            .popoverTip(TutorialTip())
                     }
                 })
             }
@@ -139,6 +123,41 @@ struct PublicRoomsView: View {
             .onDisappear() {
                 onDisappear()
             }
+        }
+    }
+    @ViewBuilder
+    func destination(path: PathDataStore.path) -> some View {
+        switch path {
+        case .tutorial:
+            TutorialView(tutorialDataStore: tutorialDataStore, pathDataStore: pathDataStore)
+        case .tutorialPublicRooms:
+            TutorialPublicRoomsView(tutorailDataStore: tutorialDataStore, pathDataStore: pathDataStore)
+        case .tutorialRoomSetting:
+            TutorialRoomSettingView(tutorialDataStore: tutorialDataStore, pathDataStore: pathDataStore)
+        case .tutorialWaitingRoom:
+            TutorialWaitingRoomView(tutorialDataStore: tutorialDataStore, pathDataStore: pathDataStore)
+        case .tutorialGame:
+            TutorialGameVIew(tutorialDataStore: tutorialDataStore, pathDataStore: pathDataStore)
+        case .TutorialResult:
+            TutorialResultView(tutorialDataStore: tutorialDataStore, pathDataStore: pathDataStore)
+        case .roomSetting:
+            RoomSettingView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+        case .notice:
+            NoticeView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+        case .myPage:
+            MyPageView(userDataStore: userDataStore, pathDataStore: pathDataStore)
+        case .friend:
+            FriendShipView(userDataStore: userDataStore, pickerStatus: .friend)
+        case .waitingRoom:
+            WaitingRoomView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+        case .roomInfo:
+            RoomInfomationView(playerDataStore: playerDataStore)
+        case .invite:
+            InviteView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+        case .game:
+            GameView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+        case .result:
+            ResultView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
         }
     }
     func enterRoom() {
@@ -214,7 +233,12 @@ struct PublicRoomsView: View {
             Button(action: {
                 pathDataStore.navigatetionPath.append(.myPage)
             }, label: {
-                Label("マイページ", systemImage: "person.circle.fill")
+                Label("マイページ", systemImage: "person.circle")
+            })
+            Button(action: {
+                pathDataStore.navigatetionPath.append(.tutorial)
+            }, label: {
+                Label("チュートリアル", systemImage: "questionmark.circle")
             })
             Menu {
                 Button(action: { roomDataStore.publicRoomsArray.sort {$0.playTagName < $1.playTagName}}, label: {
@@ -236,7 +260,7 @@ struct PublicRoomsView: View {
             Button(role: .destructive, action: {
                 SignOut.signOut()
             }, label: {
-                Text("サインアウト")
+                Label("サインアウト", systemImage: "figure.walk.arrival")
             })
         } label: {
             Image(systemName: "ellipsis.circle")

@@ -8,13 +8,27 @@
 import Foundation
 import TipKit
 
+struct TutorialTip: Tip {
+    var title: Text {
+        Text("チュートリアル")
+    }
+    
+    var message: Text? {
+        Text("チュートリアルで使い方をマスターしよう。")
+    }
+    
+    var image: Image? {
+        Image(systemName: "questionmark.circle")
+    }
+}
+
 struct MakeRoomTip: Tip {
     var title: Text {
         Text("ルーム作成")
     }
     
     var message: Text? {
-        Text("ルームを作成して一緒に遊ぶ人を招待しよう。")
+        Text("鬼ごっこをするルームを作成しよう。")
     }
     
     var image: Image? {
@@ -32,7 +46,7 @@ struct MyPageTip: Tip {
     }
     
     var image: Image? {
-        Image(systemName: "person.circle.fill")
+        Image(systemName: "person.circle")
     }
 }
 
@@ -64,20 +78,6 @@ struct WaitingRoomTip: Tip {
     }
 }
 
-struct FriendInviteTip: Tip {
-    var title: Text {
-        Text("招待状を送信")
-    }
-    
-    var message: Text? {
-        Text("ゲームを一緒に遊ぶフレンドに招待状を送信しよう。")
-    }
-    
-    var image: Image? {
-        Image(systemName: "paperplane.fill")
-    }
-}
-
 struct GameStartTip: Tip {
     var title: Text {
         Text("ゲーム開始")
@@ -92,13 +92,41 @@ struct GameStartTip: Tip {
     }
 }
 
+struct IconTip: Tip {
+    var title: Text {
+        Text("マップ")
+    }
+    
+    var message: Text? {
+        Text("赤いマークが鬼、青いマークが逃げる人。\n色で塗りつぶされたマークが自分だよ。")
+    }
+    
+    var image: Image? {
+        Image(systemName: "figure.run.circle")
+    }
+}
+
+struct SelectionPanelTip: Tip {
+    var title: Text {
+        Text("操作パネル")
+    }
+    
+    var message: Text? {
+        Text("操作パネルから、移動や取引をしたり、相手の情報を見たりしよう。")
+    }
+    
+    var image: Image? {
+        Image(systemName: "hand.tap")
+    }
+}
+
 struct MovePanelTip: Tip {
     var title: Text {
         Text("移動")
     }
     
     var message: Text? {
-        Text("60秒以内に次の移動先を指定しよう。")
+        Text("矢印ボタンで移動して逃げる人を捕まえよう。")
     }
     
     var image: Image? {
@@ -112,7 +140,7 @@ struct DealPanelTip: Tip {
     }
     
     var message: Text? {
-        Text("他のプレイヤーと取引をしよう。取引にはポイントを消費するよ。")
+        Text("他のプレイヤーと取引をしてゲームを有利に進めよう。")
     }
     
     var image: Image? {
@@ -126,7 +154,7 @@ struct PlayerInfoPanelTip: Tip {
     }
     
     var message: Text? {
-        Text("選択したプレイヤーの情報を見よう。")
+        Text("選択したプレイヤーの情報を見て戦略を立てよう。")
     }
     
     var image: Image? {
@@ -140,7 +168,7 @@ struct FriendShipTip: Tip {
     }
     
     var message: Text? {
-        Text("このボタンを押して、フレンド申請を送信しよう。")
+        Text("紙飛行機マークを押して、フレンド申請を送信しよう。")
     }
     
     var image: Image? {

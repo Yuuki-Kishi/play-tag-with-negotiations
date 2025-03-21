@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct InviteView: View {
     @ObservedObject var userDataStore: UserDataStore
@@ -16,54 +15,50 @@ struct InviteView: View {
     @State private var selectionValue: Set<User> = []
     
     var body: some View {
-        VStack {
-            TipView(FriendInviteTip())
-                .padding(.horizontal)
-            List(selection: $selectionValue) {
-                ForEach($friendsArray, id: \.self) { friend in
-                    InviteViewCell(friend: friend)
-                }
+        List(selection: $selectionValue) {
+            ForEach($friendsArray, id: \.self) { friend in
+                InviteViewCell(friend: friend)
             }
-            .environment(\.editMode, .constant(.active))
-            .navigationTitle("招待するフレンドを選択")
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing, content: {
-                    HStack {
-                        Button(action: {
-                            if selectionValue.isEmpty {
-                                selectionValue = Set(friendsArray)
-                            } else {
-                                selectionValue = []
-                            }
-                        }, label: {
-                            if selectionValue.isEmpty {
-                                Text("全選択")
-                            } else {
-                                Text("全解除")
-                            }
-                        })
-                        Button(action: {
-                            Task {
-                                await NoticeRepository.sendInviteNotice(users: selectionValue, roomId: playerDataStore.playingRoom.roomId)
-                                pathDataStore.navigatetionPath.removeLast()
-                            }
-                        }, label: {
-                            Image(systemName: "paperplane.fill")
-                        })
-                    }
-                })
-            }
-            .onAppear() {
-                Task {
-                    guard let friends = userDataStore.signInUser?.friendUsers else { return }
-                    for friend in friends {
-                        guard let user = await UserRepository.getUserData(userId: friend) else { return }
-                        friendsArray.append(noDuplicate: user)
-                    }
-                }
-            }
-            .navigationBarTitleDisplayMode(.inline)
         }
+        .environment(\.editMode, .constant(.active))
+        .navigationTitle("招待するフレンドを選択")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing, content: {
+                HStack {
+                    Button(action: {
+                        if selectionValue.isEmpty {
+                            selectionValue = Set(friendsArray)
+                        } else {
+                            selectionValue = []
+                        }
+                    }, label: {
+                        if selectionValue.isEmpty {
+                            Text("全選択")
+                        } else {
+                            Text("全解除")
+                        }
+                    })
+                    Button(action: {
+                        Task {
+                            await NoticeRepository.sendInviteNotice(users: selectionValue, roomId: playerDataStore.playingRoom.roomId)
+                            pathDataStore.navigatetionPath.removeLast()
+                        }
+                    }, label: {
+                        Image(systemName: "paperplane.fill")
+                    })
+                }
+            })
+        }
+        .onAppear() {
+            Task {
+                guard let friends = userDataStore.signInUser?.friendUsers else { return }
+                for friend in friends {
+                    guard let user = await UserRepository.getUserData(userId: friend) else { return }
+                    friendsArray.append(noDuplicate: user)
+                }
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

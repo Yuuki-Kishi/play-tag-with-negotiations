@@ -23,6 +23,27 @@
 		DE5747EA2D7DE7480054CD52 /* PlayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5747E92D7DE7480054CD52 /* PlayerExtension.swift */; };
 		DE5747EE2D7DED7E0054CD52 /* DealPanelViewProposedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5747ED2D7DED7E0054CD52 /* DealPanelViewProposedCell.swift */; };
 		DE5748762D8324ED0054CD52 /* Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748752D8324ED0054CD52 /* Tips.swift */; };
+		DE5748792D890B650054CD52 /* TutorialPublicRoomsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748782D890B650054CD52 /* TutorialPublicRoomsView.swift */; };
+		DE57487B2D890B8D0054CD52 /* TutorialRoomSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE57487A2D890B8D0054CD52 /* TutorialRoomSettingView.swift */; };
+		DE57487D2D890BDA0054CD52 /* TutorialWaitingRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE57487C2D890BDA0054CD52 /* TutorialWaitingRoomView.swift */; };
+		DE57487F2D890BE90054CD52 /* TutorialGameVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE57487E2D890BE90054CD52 /* TutorialGameVIew.swift */; };
+		DE5748822D890C150054CD52 /* TutorialResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748812D890C150054CD52 /* TutorialResultView.swift */; };
+		DE5748842D890C260054CD52 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748832D890C260054CD52 /* TutorialView.swift */; };
+		DE5748862D890CC60054CD52 /* TutorialDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748852D890CC60054CD52 /* TutorialDataStore.swift */; };
+		DE5748882D893F000054CD52 /* TutorialRoomSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748872D893F000054CD52 /* TutorialRoomSettingViewCell.swift */; };
+		DE57488A2D89457E0054CD52 /* TutorialWaitingRoomViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748892D89457E0054CD52 /* TutorialWaitingRoomViewCell.swift */; };
+		DE57488C2D8963100054CD52 /* TutorialFieldMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE57488B2D8963100054CD52 /* TutorialFieldMapView.swift */; };
+		DE57488E2D89631D0054CD52 /* TutorialFieldMapViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE57488D2D89631D0054CD52 /* TutorialFieldMapViewCell.swift */; };
+		DE5748942D89659E0054CD52 /* TutorialSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748932D89659E0054CD52 /* TutorialSelectionView.swift */; };
+		DE5748962D8965B10054CD52 /* TutorialControlPanelCoordination.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748952D8965B10054CD52 /* TutorialControlPanelCoordination.swift */; };
+		DE5748992D8965CF0054CD52 /* TutorialMovePanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748982D8965CF0054CD52 /* TutorialMovePanelView.swift */; };
+		DE57489C2D8965EE0054CD52 /* TutorialMovePanelViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE57489B2D8965EE0054CD52 /* TutorialMovePanelViewButton.swift */; };
+		DE57489F2D89671E0054CD52 /* TutorialDealPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE57489E2D89671E0054CD52 /* TutorialDealPanelView.swift */; };
+		DE5748A12D8967790054CD52 /* TutorialDealPanelViewProposedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748A02D8967790054CD52 /* TutorialDealPanelViewProposedCell.swift */; };
+		DE5748A42D8967A90054CD52 /* TutorialPlayerInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748A32D8967A90054CD52 /* TutorialPlayerInfoView.swift */; };
+		DE5748A82D896A2F0054CD52 /* TutorialDealPanelViewNegotiationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748A72D896A2F0054CD52 /* TutorialDealPanelViewNegotiationCell.swift */; };
+		DE5748AA2D896CCC0054CD52 /* TutorialDealPanelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748A92D896CCC0054CD52 /* TutorialDealPanelViewCell.swift */; };
+		DE5748AD2D897CEB0054CD52 /* TutorialResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748AC2D897CEB0054CD52 /* TutorialResultViewCell.swift */; };
 		DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB384D2C1DC27D007639F6 /* WaitingRoomView.swift */; };
 		DEAB385B2C1E9165007639F6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEAB385A2C1E9165007639F6 /* GoogleService-Info.plist */; };
 		DEAB38622C1EA178007639F6 /* Google.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB38612C1EA178007639F6 /* Google.swift */; };
@@ -109,6 +130,27 @@
 		DE5747E92D7DE7480054CD52 /* PlayerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerExtension.swift; sourceTree = "<group>"; };
 		DE5747ED2D7DED7E0054CD52 /* DealPanelViewProposedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealPanelViewProposedCell.swift; sourceTree = "<group>"; };
 		DE5748752D8324ED0054CD52 /* Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tips.swift; sourceTree = "<group>"; };
+		DE5748782D890B650054CD52 /* TutorialPublicRoomsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPublicRoomsView.swift; sourceTree = "<group>"; };
+		DE57487A2D890B8D0054CD52 /* TutorialRoomSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialRoomSettingView.swift; sourceTree = "<group>"; };
+		DE57487C2D890BDA0054CD52 /* TutorialWaitingRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialWaitingRoomView.swift; sourceTree = "<group>"; };
+		DE57487E2D890BE90054CD52 /* TutorialGameVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialGameVIew.swift; sourceTree = "<group>"; };
+		DE5748812D890C150054CD52 /* TutorialResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialResultView.swift; sourceTree = "<group>"; };
+		DE5748832D890C260054CD52 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		DE5748852D890CC60054CD52 /* TutorialDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialDataStore.swift; sourceTree = "<group>"; };
+		DE5748872D893F000054CD52 /* TutorialRoomSettingViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialRoomSettingViewCell.swift; sourceTree = "<group>"; };
+		DE5748892D89457E0054CD52 /* TutorialWaitingRoomViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialWaitingRoomViewCell.swift; sourceTree = "<group>"; };
+		DE57488B2D8963100054CD52 /* TutorialFieldMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialFieldMapView.swift; sourceTree = "<group>"; };
+		DE57488D2D89631D0054CD52 /* TutorialFieldMapViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialFieldMapViewCell.swift; sourceTree = "<group>"; };
+		DE5748932D89659E0054CD52 /* TutorialSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialSelectionView.swift; sourceTree = "<group>"; };
+		DE5748952D8965B10054CD52 /* TutorialControlPanelCoordination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialControlPanelCoordination.swift; sourceTree = "<group>"; };
+		DE5748982D8965CF0054CD52 /* TutorialMovePanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialMovePanelView.swift; sourceTree = "<group>"; };
+		DE57489B2D8965EE0054CD52 /* TutorialMovePanelViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialMovePanelViewButton.swift; sourceTree = "<group>"; };
+		DE57489E2D89671E0054CD52 /* TutorialDealPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialDealPanelView.swift; sourceTree = "<group>"; };
+		DE5748A02D8967790054CD52 /* TutorialDealPanelViewProposedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialDealPanelViewProposedCell.swift; sourceTree = "<group>"; };
+		DE5748A32D8967A90054CD52 /* TutorialPlayerInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPlayerInfoView.swift; sourceTree = "<group>"; };
+		DE5748A72D896A2F0054CD52 /* TutorialDealPanelViewNegotiationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialDealPanelViewNegotiationCell.swift; sourceTree = "<group>"; };
+		DE5748A92D896CCC0054CD52 /* TutorialDealPanelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialDealPanelViewCell.swift; sourceTree = "<group>"; };
+		DE5748AC2D897CEB0054CD52 /* TutorialResultViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialResultViewCell.swift; sourceTree = "<group>"; };
 		DEAB384D2C1DC27D007639F6 /* WaitingRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomView.swift; sourceTree = "<group>"; };
 		DEAB385A2C1E9165007639F6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DEAB38612C1EA178007639F6 /* Google.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Google.swift; sourceTree = "<group>"; };
@@ -238,6 +280,113 @@
 			path = PlayerInfo;
 			sourceTree = "<group>";
 		};
+		DE5748772D890AF30054CD52 /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				DE5748832D890C260054CD52 /* TutorialView.swift */,
+				DE5748782D890B650054CD52 /* TutorialPublicRoomsView.swift */,
+				DE57488F2D8965120054CD52 /* TutorialRoomSetting */,
+				DE5748902D89653F0054CD52 /* TutorialWaitingRoom */,
+				DE5748912D8965550054CD52 /* TutorialGame */,
+				DE5748AB2D897CBF0054CD52 /* TutorialResult */,
+			);
+			path = Tutorial;
+			sourceTree = "<group>";
+		};
+		DE5748802D890C030054CD52 /* TutorialControlPanel */ = {
+			isa = PBXGroup;
+			children = (
+				DE5748932D89659E0054CD52 /* TutorialSelectionView.swift */,
+				DE5748952D8965B10054CD52 /* TutorialControlPanelCoordination.swift */,
+				DE5748972D8965B90054CD52 /* TutorialElements */,
+			);
+			path = TutorialControlPanel;
+			sourceTree = "<group>";
+		};
+		DE57488F2D8965120054CD52 /* TutorialRoomSetting */ = {
+			isa = PBXGroup;
+			children = (
+				DE57487A2D890B8D0054CD52 /* TutorialRoomSettingView.swift */,
+				DE5748872D893F000054CD52 /* TutorialRoomSettingViewCell.swift */,
+			);
+			path = TutorialRoomSetting;
+			sourceTree = "<group>";
+		};
+		DE5748902D89653F0054CD52 /* TutorialWaitingRoom */ = {
+			isa = PBXGroup;
+			children = (
+				DE57487C2D890BDA0054CD52 /* TutorialWaitingRoomView.swift */,
+				DE5748892D89457E0054CD52 /* TutorialWaitingRoomViewCell.swift */,
+			);
+			path = TutorialWaitingRoom;
+			sourceTree = "<group>";
+		};
+		DE5748912D8965550054CD52 /* TutorialGame */ = {
+			isa = PBXGroup;
+			children = (
+				DE57487E2D890BE90054CD52 /* TutorialGameVIew.swift */,
+				DE5748922D8965640054CD52 /* TutorialFieldMap */,
+				DE5748802D890C030054CD52 /* TutorialControlPanel */,
+			);
+			path = TutorialGame;
+			sourceTree = "<group>";
+		};
+		DE5748922D8965640054CD52 /* TutorialFieldMap */ = {
+			isa = PBXGroup;
+			children = (
+				DE57488B2D8963100054CD52 /* TutorialFieldMapView.swift */,
+				DE57488D2D89631D0054CD52 /* TutorialFieldMapViewCell.swift */,
+			);
+			path = TutorialFieldMap;
+			sourceTree = "<group>";
+		};
+		DE5748972D8965B90054CD52 /* TutorialElements */ = {
+			isa = PBXGroup;
+			children = (
+				DE57489A2D8965D20054CD52 /* TutorialMovePanel */,
+				DE57489D2D8966EF0054CD52 /* TutorialDeal */,
+				DE5748A22D89678D0054CD52 /* TutorialPlayerInfo */,
+			);
+			path = TutorialElements;
+			sourceTree = "<group>";
+		};
+		DE57489A2D8965D20054CD52 /* TutorialMovePanel */ = {
+			isa = PBXGroup;
+			children = (
+				DE5748982D8965CF0054CD52 /* TutorialMovePanelView.swift */,
+				DE57489B2D8965EE0054CD52 /* TutorialMovePanelViewButton.swift */,
+			);
+			path = TutorialMovePanel;
+			sourceTree = "<group>";
+		};
+		DE57489D2D8966EF0054CD52 /* TutorialDeal */ = {
+			isa = PBXGroup;
+			children = (
+				DE57489E2D89671E0054CD52 /* TutorialDealPanelView.swift */,
+				DE5748A92D896CCC0054CD52 /* TutorialDealPanelViewCell.swift */,
+				DE5748A02D8967790054CD52 /* TutorialDealPanelViewProposedCell.swift */,
+				DE5748A72D896A2F0054CD52 /* TutorialDealPanelViewNegotiationCell.swift */,
+			);
+			path = TutorialDeal;
+			sourceTree = "<group>";
+		};
+		DE5748A22D89678D0054CD52 /* TutorialPlayerInfo */ = {
+			isa = PBXGroup;
+			children = (
+				DE5748A32D8967A90054CD52 /* TutorialPlayerInfoView.swift */,
+			);
+			path = TutorialPlayerInfo;
+			sourceTree = "<group>";
+		};
+		DE5748AB2D897CBF0054CD52 /* TutorialResult */ = {
+			isa = PBXGroup;
+			children = (
+				DE5748812D890C150054CD52 /* TutorialResultView.swift */,
+				DE5748AC2D897CEB0054CD52 /* TutorialResultViewCell.swift */,
+			);
+			path = TutorialResult;
+			sourceTree = "<group>";
+		};
 		DEAB38632C1EA17C007639F6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -253,6 +402,7 @@
 			children = (
 				DEDB913D2C17343500A8DA37 /* ContentView.swift */,
 				DEFA55212C4C1FB200CF6BD1 /* SignInView.swift */,
+				DE5748772D890AF30054CD52 /* Tutorial */,
 				DEAB38732C205F2B007639F6 /* PublicRooms */,
 				DE12A75F2C758E7900F7B0DF /* NoticeView */,
 				DEDB91562C189BAF00A8DA37 /* RoomSetting */,
@@ -284,6 +434,7 @@
 				DEFA54F32C3D5C6700CF6BD1 /* RoomDataStore.swift */,
 				DEFA54F62C3E9EB800CF6BD1 /* PathDataStore.swift */,
 				DEB2B1ED2D7402C7007E01C9 /* TimerDataStore.swift */,
+				DE5748852D890CC60054CD52 /* TutorialDataStore.swift */,
 			);
 			path = DataStore;
 			sourceTree = "<group>";
@@ -607,11 +758,15 @@
 				DEDD96B82D06EAC0008BAAF7 /* FriendShipRepository.swift in Sources */,
 				DEAB38752C205FA8007639F6 /* PublicRoomsViewCell.swift in Sources */,
 				DECFBB232C7ACA1700093544 /* DealPanelView.swift in Sources */,
+				DE57489F2D89671E0054CD52 /* TutorialDealPanelView.swift in Sources */,
 				DEDEF6EA2C23303600A01FFF /* SignOut.swift in Sources */,
 				DE12A7612C758E8900F7B0DF /* NoticeView.swift in Sources */,
+				DE57487B2D890B8D0054CD52 /* TutorialRoomSettingView.swift in Sources */,
 				DE2052FC2D43923C00D2A82E /* ApplyingViewCell.swift in Sources */,
 				DE12A7532C6672CD00F7B0DF /* ResultViewCell.swift in Sources */,
 				DE12A74A2C553F6D00F7B0DF /* MovePanelViewButton.swift in Sources */,
+				DE5748822D890C150054CD52 /* TutorialResultView.swift in Sources */,
+				DE5748AD2D897CEB0054CD52 /* TutorialResultViewCell.swift in Sources */,
 				DEDD96BA2D06F922008BAAF7 /* PlayTagRoomRepository.swift in Sources */,
 				DE12A74F2C66722C00F7B0DF /* ResultView.swift in Sources */,
 				DEFA54DC2C3907D800CF6BD1 /* RoomInfomationViewCell.swift in Sources */,
@@ -619,32 +774,41 @@
 				DEDD96BC2D070D15008BAAF7 /* PlayerPositionRepository.swift in Sources */,
 				DEDB91582C189BCB00A8DA37 /* RoomSettingViewCell.swift in Sources */,
 				DE2053052D51BA9000D2A82E /* PlayerInfoListView.swift in Sources */,
+				DE5748862D890CC60054CD52 /* TutorialDataStore.swift in Sources */,
 				DEFA55072C4149A100CF6BD1 /* DealClientPanelView.swift in Sources */,
+				DE5748A82D896A2F0054CD52 /* TutorialDealPanelViewNegotiationCell.swift in Sources */,
 				DEFA55222C4C1FB200CF6BD1 /* SignInView.swift in Sources */,
 				DEFA54DF2C3989FC00CF6BD1 /* Upload.swift in Sources */,
 				DEFA1C212C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift in Sources */,
 				DEB2B1F02D741B7A007E01C9 /* AppVersionRepository.swift in Sources */,
 				DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */,
+				DE5748792D890B650054CD52 /* TutorialPublicRoomsView.swift in Sources */,
 				DE12A7632C75999700F7B0DF /* NoticeViewCell.swift in Sources */,
+				DE5748A12D8967790054CD52 /* TutorialDealPanelViewProposedCell.swift in Sources */,
 				DEDB915A2C1B378900A8DA37 /* MyPageView.swift in Sources */,
 				DEFA54F72C3E9EB800CF6BD1 /* PathDataStore.swift in Sources */,
+				DE5748842D890C260054CD52 /* TutorialView.swift in Sources */,
 				DEFA550C2C416F8700CF6BD1 /* ControlPanelCoordination.swift in Sources */,
 				DEDB91502C173F7C00A8DA37 /* Player.swift in Sources */,
 				DEFA54DA2C39076C00CF6BD1 /* RoomInfomationView.swift in Sources */,
 				DEB2B1EC2D617835007E01C9 /* PlayerInfoListViewCell.swift in Sources */,
 				DEDD96B62D06E49A008BAAF7 /* NoticeRepository.swift in Sources */,
+				DE57488E2D89631D0054CD52 /* TutorialFieldMapViewCell.swift in Sources */,
 				DEDEF6F52C23C9BB00A01FFF /* FieldMapView.swift in Sources */,
+				DE57489C2D8965EE0054CD52 /* TutorialMovePanelViewButton.swift in Sources */,
 				DEFA551B2C43A07D00CF6BD1 /* ArrayExtension.swift in Sources */,
 				DE12A7682C7A243300F7B0DF /* InviteViewCell.swift in Sources */,
 				DECFBB272C7ADF7000093544 /* Negotiation.swift in Sources */,
 				DE06B9762CFC38B900CB4AEA /* UserRepository.swift in Sources */,
 				DEDB914E2C173A2400A8DA37 /* PlayTagRoom.swift in Sources */,
+				DE57488A2D89457E0054CD52 /* TutorialWaitingRoomViewCell.swift in Sources */,
 				DEAB386C2C1EAAA6007639F6 /* UserDataStore.swift in Sources */,
 				DEAB38782C2060D3007639F6 /* MyPageListView.swift in Sources */,
 				DEFA55032C40204500CF6BD1 /* SelectionView.swift in Sources */,
 				DEFA54F42C3D5C6700CF6BD1 /* RoomDataStore.swift in Sources */,
 				DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */,
 				DEB2B1EE2D7402C7007E01C9 /* TimerDataStore.swift in Sources */,
+				DE57487D2D890BDA0054CD52 /* TutorialWaitingRoomView.swift in Sources */,
 				DEFA54E12C39955200CF6BD1 /* Download.swift in Sources */,
 				DE5747E82D780BB70054CD52 /* DealCreate.swift in Sources */,
 				DEFA55112C42669500CF6BD1 /* FriendDataStore.swift in Sources */,
@@ -654,15 +818,21 @@
 				DEFA55052C402DB700CF6BD1 /* MovePanelView.swift in Sources */,
 				DEDD96BE2D0711E5008BAAF7 /* NegotiationRepository.swift in Sources */,
 				DEFA55162C42BDF800CF6BD1 /* PendingViewCell.swift in Sources */,
+				DE5748AA2D896CCC0054CD52 /* TutorialDealPanelViewCell.swift in Sources */,
 				DEB2B1EA2D5C7AAA007E01C9 /* PlayerInfoView.swift in Sources */,
+				DE5748992D8965CF0054CD52 /* TutorialMovePanelView.swift in Sources */,
 				DE5747EE2D7DED7E0054CD52 /* DealPanelViewProposedCell.swift in Sources */,
 				DEFA1C1F2C8C976400CB4458 /* DealSuccess.swift in Sources */,
+				DE5748882D893F000054CD52 /* TutorialRoomSettingViewCell.swift in Sources */,
 				DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */,
 				DE06B97A2CFC431400CB4AEA /* PlayerRepository.swift in Sources */,
 				DEAB386F2C1EB32E007639F6 /* User.swift in Sources */,
 				DEFA54D22C3103D100CF6BD1 /* PlayerDataStore.swift in Sources */,
+				DE5748942D89659E0054CD52 /* TutorialSelectionView.swift in Sources */,
 				DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */,
 				DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */,
+				DE5748962D8965B10054CD52 /* TutorialControlPanelCoordination.swift in Sources */,
+				DE5748A42D8967A90054CD52 /* TutorialPlayerInfoView.swift in Sources */,
 				DEFA550A2C414AC500CF6BD1 /* DealClientPanelViewCell.swift in Sources */,
 				DEFA55132C426CD200CF6BD1 /* FriendViewCell.swift in Sources */,
 				DEFA1C252C8DB0FF00CB4458 /* DealFulfill.swift in Sources */,
@@ -674,6 +844,8 @@
 				DE5747EA2D7DE7480054CD52 /* PlayerExtension.swift in Sources */,
 				DE12A7662C7A242900F7B0DF /* InviteView.swift in Sources */,
 				DEFA550F2C4265A500CF6BD1 /* FriendShipView.swift in Sources */,
+				DE57487F2D890BE90054CD52 /* TutorialGameVIew.swift in Sources */,
+				DE57488C2D8963100054CD52 /* TutorialFieldMapView.swift in Sources */,
 				DEFA55262C4EA1B300CF6BD1 /* FieldMapViewCell.swift in Sources */,
 				DEDEF6F32C23C9AF00A01FFF /* GameView.swift in Sources */,
 				DE12A75E2C75883B00F7B0DF /* Notice.swift in Sources */,

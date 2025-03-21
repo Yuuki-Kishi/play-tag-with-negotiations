@@ -77,12 +77,9 @@ class PlayerRepository {
         if player.isChaser { return judgelayer }
         let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
         let chasers = players.filter { $0.isChaser }
-//        print("player:", player.playerUserId)
         guard let fugitivePosition = player.move.first(where: { $0.phase == phaseNow }) else { return player }
-//        print("fugitivePosition:", fugitivePosition)
         for chaser in chasers {
             guard let chaserPosition = chaser.move.first(where: { $0.phase == phaseNow }) else { continue }
-//            print("chaserPosition:", chaserPosition)
             if chaserPosition == fugitivePosition {
                 let isContain = player.catchers.contains(chaser.playerUserId)
                 if isContain {
@@ -254,7 +251,6 @@ class PlayerRepository {
                     do {
                         let player = try documentChange.document.data(as: Player.self)
                         let judgedPlayer = await judgeIsAlive(player: player, players: players)
-//                        print("judgedPlayer:", judgedPlayer)
                         switch documentChange.type {
                         case .added:
                             DispatchQueue.main.async {

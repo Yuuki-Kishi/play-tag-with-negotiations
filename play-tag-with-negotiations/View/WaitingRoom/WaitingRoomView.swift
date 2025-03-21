@@ -19,7 +19,6 @@ struct WaitingRoomView: View {
     
     var body: some View {
         ZStack {
-            
             List {
                 Section(content: {
                     WaitingRoomViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, userId: Binding(get: { playerDataStore.playerArray.host.playerUserId }, set: {_ in}))
@@ -34,7 +33,7 @@ struct WaitingRoomView: View {
                     Text("ゲスト")
                 })
             }
-            if userDataStore.signInUser?.userId == playerDataStore.playingRoom.hostUserId {
+            if playerDataStore.playerArray.me.isHost {
                 VStack {
                     Spacer()
                     HStack {

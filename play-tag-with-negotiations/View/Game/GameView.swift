@@ -32,7 +32,7 @@ struct GameView: View {
             }
             VStack {
                 SelectionView(userDataStore: userDataStore, playerDataStore: playerDataStore)
-                ControlPanelCoordination(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+                ControlPanelCoordination(userDataStore: userDataStore, playerDataStore: playerDataStore)
                     .frame(height: UIScreen.main.bounds.height * 0.25)
             }
             .frame(height: UIScreen.main.bounds.height * 0.35)

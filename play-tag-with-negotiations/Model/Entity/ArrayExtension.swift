@@ -121,7 +121,7 @@ extension Array where Element == Notice {
 
 extension Array where Element == Negotiation {
     var canPropose: [Element] {
-        let deals = PlayerDataStore.shared.dealArray.proposing + PlayerDataStore.shared.dealArray.success
+        let deals = PlayerDataStore.shared.dealArray.proposing + PlayerDataStore.shared.dealArray.success + PlayerDataStore.shared.dealArray.proposed
         let negotiations = deals.map { $0.negotiationId }
         let forChasers = self.filter { $0.target == .chaser }
         let forFugitives = self.filter { $0.target == .fugitive }

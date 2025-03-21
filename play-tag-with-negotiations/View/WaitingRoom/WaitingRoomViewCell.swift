@@ -11,7 +11,6 @@ struct WaitingRoomViewCell: View {
     @ObservedObject var userDataStore: UserDataStore
     @ObservedObject var playerDataStore: PlayerDataStore
     @Binding var userId: String
-    @State private var isShowAlert = false
     
     var body: some View {
         HStack {

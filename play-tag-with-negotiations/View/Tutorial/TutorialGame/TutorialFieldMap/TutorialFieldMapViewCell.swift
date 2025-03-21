@@ -1,73 +1,25 @@
 //
-//  FieldMapViewCell.swift
+//  TutorialMovePanelViewCell.swift
 //  play-tag-with-negotiations
 //
-//  Created by 岸　優樹 on 2024/07/22.
+//  Created by 岸　優樹 on 2025/03/18.
 //
 
 import SwiftUI
 
-struct FieldMapViewCell: View {
-    @ObservedObject var userDataStore: UserDataStore
-    @ObservedObject var playerDataStore: PlayerDataStore
+struct TutorialFieldMapViewCell: View {
+    @StateObject var userDataStore = UserDataStore.shared
+    @ObservedObject var tutorialDataStore: TutorialDataStore
     @State var num: Int
     
     var body: some View {
-        switch numToPlayers().filter({ !$0.isCaptured }).count {
+        switch numToPlayers().count {
         case 0:
             noIcon()
         case 1:
             singleIcon()
-                .onTapGesture {
-                    switch userDataStore.displayControlPanel {
-                    case .movement:
-                        break
-                    case .deal(.client):
-                        guard let player = numToPlayers().first else { return }
-                        playerDataStore.selectedPlayers = []
-                        playerDataStore.selectedPlayer = player
-                        userDataStore.displayControlPanel = .deal(.negotiation)
-                    case .deal(.negotiation):
-                        guard let player = numToPlayers().first else { return }
-                        playerDataStore.selectedPlayers = []
-                        playerDataStore.selectedPlayer = player
-                        userDataStore.displayControlPanel = .deal(.negotiation)
-                    case .playerInfo(.players):
-                        guard let player = numToPlayers().first else { return }
-                        playerDataStore.selectedPlayers = []
-                        playerDataStore.selectedPlayer = player
-                        userDataStore.displayControlPanel = .playerInfo(.info)
-                    case .playerInfo(.info):
-                        guard let player = numToPlayers().first else { return }
-                        playerDataStore.selectedPlayers = []
-                        playerDataStore.selectedPlayer = player
-                        userDataStore.displayControlPanel = .playerInfo(.info)
-                    }
-                }
         default :
             multiIcon()
-                .onTapGesture {
-                    switch userDataStore.displayControlPanel {
-                    case .movement:
-                        break
-                    case .deal(.client):
-                        playerDataStore.selectedPlayers = numToPlayers().filter({ !$0.isCaptured })
-                        playerDataStore.selectedPlayer = Player()
-                        userDataStore.displayControlPanel = .deal(.client)
-                    case .deal(.negotiation):
-                        playerDataStore.selectedPlayers = numToPlayers().filter({ !$0.isCaptured })
-                        playerDataStore.selectedPlayer = Player()
-                        userDataStore.displayControlPanel = .deal(.client)
-                    case .playerInfo(.players):
-                        playerDataStore.selectedPlayers = numToPlayers().filter({ !$0.isCaptured })
-                        playerDataStore.selectedPlayer = Player()
-                        userDataStore.displayControlPanel = .playerInfo(.players)
-                    case .playerInfo(.info):
-                        playerDataStore.selectedPlayers = numToPlayers().filter({ !$0.isCaptured })
-                        playerDataStore.selectedPlayer = Player()
-                        userDataStore.displayControlPanel = .playerInfo(.players)
-                    }
-                }
         }
     }
     func noIcon() -> some View {
@@ -175,32 +127,27 @@ struct FieldMapViewCell: View {
         let width = UIScreen.main.bounds.width
         let height = UIScreen.main.bounds.height * 0.6
         if width > height {
-            return height * 0.8 / CGFloat(playerDataStore.playingRoom.horizontalCount)
+            return height * 0.8 / CGFloat(tutorialDataStore.tutorialPlayTagRoom.horizontalCount)
         } else {
-            return width * 0.8 / CGFloat(playerDataStore.playingRoom.horizontalCount)
+            return width * 0.8 / CGFloat(tutorialDataStore.tutorialPlayTagRoom.horizontalCount)
         }
     }
     func numToPlayers() -> [Player] {
-        let x = num % playerDataStore.playingRoom.horizontalCount
-        let y = num / playerDataStore.playingRoom.horizontalCount
+        let x = num % tutorialDataStore.tutorialPlayTagRoom.horizontalCount
+        let y = num / tutorialDataStore.tutorialPlayTagRoom.horizontalCount
         let playerPosition = PlayerPosition(x: x, y: y)
         var players: [Player] = []
-        let phaseNow = playerDataStore.playingRoom.phaseNow
-        for player in playerDataStore.playerArray {
-            if let position = player.move.first(where: { $0.phase == phaseNow }) {
-                if position == playerPosition && player.isPlaying { players.append(player) }
+        for player in tutorialDataStore.tutorialPlayerArray {
+            if let position = player.move.first {
+                if position == playerPosition { players.append(player) }
             }  else {
-                if let lastPosition = player.move.filter({ $0.phase <= phaseNow }).last {
-                    if lastPosition == playerPosition && player.isPlaying { players.append(player) }
-                } else {
-                    continue
-                }
+                continue
             }
         }
         return players
     }
 }
 
-//#Preview {
-//    FieldMapViewCell(players: [])
-//}
+#Preview {
+    TutorialFieldMapViewCell(tutorialDataStore: TutorialDataStore.shared, num: 0)
+}

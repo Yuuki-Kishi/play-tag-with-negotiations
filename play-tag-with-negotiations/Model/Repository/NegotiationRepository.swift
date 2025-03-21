@@ -46,26 +46,4 @@ class NegotiationRepository {
 //    delete
     
 //    observe
-//    static func observeNegotiations() {
-//        guard let version = Double(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String) else { return }
-//        DispatchQueue.main.async {
-//            PlayerDataStore.shared.negotiationArray = []
-//        }
-//        let listener = Firestore.firestore().collection("Negotiations").whereField("version", isLessThanOrEqualTo: version).addSnapshotListener { QuerySnapshot, error in
-//            guard let documents = QuerySnapshot?.documents else { return }
-//            for document in documents {
-//                do {
-//                    let negotiation = try document.data(as: Negotiation.self)
-//                    DispatchQueue.main.async {
-//                        PlayerDataStore.shared.negotiationArray.append(noDuplicate: negotiation)
-//                    }
-//                } catch {
-//                    print(error)
-//                }
-//            }
-//        }
-//        DispatchQueue.main.async {
-//            UserDataStore.shared.listeners[UserDataStore.listenerType.negotiation] = listener
-//        }
-//    }
 }
