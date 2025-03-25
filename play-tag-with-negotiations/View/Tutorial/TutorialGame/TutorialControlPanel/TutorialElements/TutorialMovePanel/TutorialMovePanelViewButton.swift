@@ -16,15 +16,17 @@ struct TutorialMovePanelViewButton: View {
     
     var body: some View {
         Button(action: {
-            tutorialDataStore.tutorialPlayTagRoom.phaseNow += 1
-            tutorialDataStore.updateMyPosition(newPosition: calculateCoordinate())
-            if tutorialDataStore.tutorialPlayTagRoom.phaseNow >= tutorialDataStore.tutorialPlayTagRoom.phaseMax {
-                tutorialDataStore.tutorialPlayTagRoom.isFinished = true
+            if isCanDisplay() {
+                tutorialDataStore.tutorialPlayTagRoom.phaseNow += 1
+                tutorialDataStore.updateMyPosition(newPosition: calculateCoordinate())
+                if tutorialDataStore.tutorialPlayTagRoom.phaseNow >= tutorialDataStore.tutorialPlayTagRoom.phaseMax {
+                    tutorialDataStore.tutorialPlayTagRoom.isFinished = true
+                }
             }
         }, label: {
             Image(systemName: imageName())
                 .resizable()
-                .foregroundStyle(.accent)
+                .foregroundStyle(buttonColor())
                 .aspectRatio(contentMode: .fit)
         })
     }
@@ -137,6 +139,13 @@ struct TutorialMovePanelViewButton: View {
             y += 1
         }
         return PlayerPosition(phase: phaseNow, x: x, y: y)
+    }
+    func buttonColor() -> Color {
+        if isCanDisplay() {
+            return .accentColor
+        } else {
+            return .clear
+        }
     }
 }
 

@@ -10,7 +10,7 @@ import FirebaseAuth
 import AuthenticationServices
 import CryptoKit
 
-class Apple {
+class Apple: NSObject, ASAuthorizationControllerDelegate {
     static let shared = Apple()
     var currentNonce: String?
     
@@ -68,13 +68,16 @@ class Apple {
     func login(authRequest: Result<ASAuthorization, any Error>) {
         switch authRequest {
         case .success(let authResults):
-            let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential
+            guard let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential else {
+                fatalError("Invalid state: A login callback was received, but no login request was sent.")
+                return
+            }
             
             guard let nonce = currentNonce else {
                 fatalError("Invalid state: A login callback was received, but no login request was sent.")
                 return
             }
-            guard let appleIDToken = appleIDCredential?.identityToken else {
+            guard let appleIDToken = appleIDCredential.identityToken else {
                 fatalError("Invalid state: A login callback was received, but no login request was sent.")
                 return
             }
@@ -82,18 +85,20 @@ class Apple {
                 print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
                 return
             }
-            
-            let credential = OAuthProvider.credential(withProviderID: "apple.com",idToken: idTokenString,rawNonce: nonce)
+            let credential = OAuthProvider.appleCredential(withIDToken: idTokenString, rawNonce: nonce, fullName: appleIDCredential.fullName)
             Auth.auth().signIn(with: credential) { result, error in
                 if result?.user != nil{
                     Task {
                         guard let userId = result?.user.uid else { return }
                         guard let creationDate = result?.user.metadata.creationDate else { return }
-                        let user = User(userId: userId, creationDate: creationDate)
+                        let user = User(userId: userId, creationDate: creationDate, signInType: .apple)
                         if await !UserRepository.isExists(userId: userId) {
                             await UserRepository.createUser(user: user)
+                        } else {
+                            await UserRepository.updateSignInType(user: user)
                         }
                         DispatchQueue.main.async {
+                            UserDataStore.shared.userResult = .success(user)
                             UserDataStore.shared.signInUser = user
                         }
                     }
@@ -103,6 +108,44 @@ class Apple {
         case .failure(let error):
             print("Authentication failed: \(error.localizedDescription)")
             break
+        }
+    }
+    
+    static func reauthenticateAndDeleteUser() {
+        guard let appleId = Auth.auth().currentUser?.providerData.first(where: { $0.providerID == "apple.com" })?.uid else { return }
+        let request = ASAuthorizationAppleIDProvider().createRequest()
+        request.user = appleId
+        Apple.shared.signInWithApple(request: request)
+        let controller = ASAuthorizationController(authorizationRequests: [request])
+        controller.delegate = shared
+        controller.performRequests()
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential else {
+            fatalError("Invalid state: A login callback was received, but no login request was sent.")
+            return
+        }
+        
+        guard let nonce = currentNonce else {
+            fatalError("Invalid state: A login callback was received, but no login request was sent.")
+            return
+        }
+        guard let appleIDToken = appleIDCredential.identityToken else {
+            fatalError("Invalid state: A login callback was received, but no login request was sent.")
+            return
+        }
+        guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+            print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+            return
+        }
+        let credential = OAuthProvider.appleCredential(withIDToken: idTokenString, rawNonce: nonce, fullName: appleIDCredential.fullName)
+        Auth.auth().currentUser?.reauthenticate(with: credential) { result, error in
+            if let error = error {
+                print("Error reauthenticating with Apple: \(error)")
+                return
+            }
+            AuthRepository.deleteUser()
         }
     }
 }

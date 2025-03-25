@@ -79,7 +79,7 @@ class DealRepository {
     static func observeDeals() {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return }
         let roomId = PlayerDataStore.shared.playingRoom.roomId
-        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Deals").whereField("condition", isNotEqualTo: "fulfilled").addSnapshotListener { QuerySnapshot, error in
+        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Deals").addSnapshotListener { QuerySnapshot, error in
             guard let documentChanges = QuerySnapshot?.documentChanges else { return }
             for documentChange in documentChanges {
                 do {

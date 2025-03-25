@@ -17,11 +17,11 @@ class PlayerRepository {
             let player = Player(playerUserId: userId, isHost: isHost)
             guard let playerNumber = await PlayTagRoomRepository.getRoomData(roomId: roomId)?.playerNumber else { return }
             let encoded = try! JSONEncoder().encode(player)
+            await UserRepository.addPlayedRoomIds(roomId: roomId)
             do {
                 guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
                 try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).setData(jsonObject)
                 try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["playerNumber": playerNumber + 1])
-                try await Firestore.firestore().collection("Users").document(userId).setData(["beingRoomId": roomId], merge: true)
             } catch {
                 print(error)
             }
@@ -100,7 +100,7 @@ class PlayerRepository {
         DispatchQueue.main.async {
             PlayerDataStore.shared.playerArray.remove(userId: myUserId)
         }
-        guard let nextHostUserId = PlayerDataStore.shared.playerArray.guests.randomElement()?.playerUserId else { return }
+        guard let nextHostUserId = PlayerDataStore.shared.playerArray.guests.filter({ $0.isPlaying }).randomElement()?.playerUserId else { return }
         let roomId = PlayerDataStore.shared.playingRoom.roomId
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(myUserId).updateData(["isHost": false])
@@ -217,8 +217,8 @@ class PlayerRepository {
     static func exitRoom(roomId: String = PlayerDataStore.shared.playingRoom.roomId) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         let playerNumber = PlayerDataStore.shared.playingRoom.playerNumber - 1
+        await UserRepository.removePlayedRoomIds(roomId: roomId)
         do {
-            try await Firestore.firestore().collection("Users").document(userId).updateData(["beingRoomId": FieldValue.delete()])
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).delete()
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["playerNumber": playerNumber])
         } catch {
@@ -289,7 +289,9 @@ class PlayerRepository {
                     print(error)
                 }
             }
-            if alivePlayers.count <= 1 || alivePlayers.filter ({ !$0.isChaser }).isEmpty {
+            let isAliveFugitive = alivePlayers.filter ({ !$0.isChaser }).isEmpty
+            let playingPlayersCount = alivePlayers.filter { $0.isPlaying }
+            if alivePlayers.count <= 1 || isAliveFugitive || playingPlayersCount.count <= 1 {
                 if PlayerDataStore.shared.playerArray.me.isHost {
                     Task { await PlayTagRoomRepository.gameFinished() }
                 }

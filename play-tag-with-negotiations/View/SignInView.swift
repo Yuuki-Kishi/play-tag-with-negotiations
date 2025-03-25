@@ -17,7 +17,7 @@ struct SignInView: View {
             Image("Icon")
                 .resizable()
                 .frame(width: UIScreen.main.bounds.height / 4, height: UIScreen.main.bounds.height / 4)
-                .clipShape(RoundedRectangle(cornerRadius: 50))
+                .clipShape(RoundedRectangle(cornerRadius: UIScreen.main.bounds.height / 4 * 0.1675))
             Spacer(minLength: UIScreen.main.bounds.height / 4)
             GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .light, style: .wide, state: .normal), action: Google.handleSignInButton)
                 .frame(width: UIScreen.main.bounds.width / 1.5)

@@ -44,6 +44,7 @@
 		DE5748A82D896A2F0054CD52 /* TutorialDealPanelViewNegotiationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748A72D896A2F0054CD52 /* TutorialDealPanelViewNegotiationCell.swift */; };
 		DE5748AA2D896CCC0054CD52 /* TutorialDealPanelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748A92D896CCC0054CD52 /* TutorialDealPanelViewCell.swift */; };
 		DE5748AD2D897CEB0054CD52 /* TutorialResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748AC2D897CEB0054CD52 /* TutorialResultViewCell.swift */; };
+		DE5748AF2D92F07F0054CD52 /* DeleteUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5748AE2D92F07F0054CD52 /* DeleteUserView.swift */; };
 		DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB384D2C1DC27D007639F6 /* WaitingRoomView.swift */; };
 		DEAB385B2C1E9165007639F6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEAB385A2C1E9165007639F6 /* GoogleService-Info.plist */; };
 		DEAB38622C1EA178007639F6 /* Google.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB38612C1EA178007639F6 /* Google.swift */; };
@@ -82,7 +83,6 @@
 		DEDD96BE2D0711E5008BAAF7 /* NegotiationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDD96BD2D0711E5008BAAF7 /* NegotiationRepository.swift */; };
 		DEDD96C02D071381008BAAF7 /* DealRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDD96BF2D071381008BAAF7 /* DealRepository.swift */; };
 		DEDD96C32D072D1D008BAAF7 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = DEDD96C22D072D1D008BAAF7 /* Algorithms */; };
-		DEDEF6EA2C23303600A01FFF /* SignOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6E92C23303600A01FFF /* SignOut.swift */; };
 		DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6EE2C2341D600A01FFF /* Apple.swift */; };
 		DEDEF6F32C23C9AF00A01FFF /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F22C23C9AF00A01FFF /* GameView.swift */; };
 		DEDEF6F52C23C9BB00A01FFF /* FieldMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */; };
@@ -95,7 +95,7 @@
 		DEFA54DC2C3907D800CF6BD1 /* RoomInfomationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54DB2C3907D800CF6BD1 /* RoomInfomationViewCell.swift */; };
 		DEFA54DF2C3989FC00CF6BD1 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54DE2C3989FC00CF6BD1 /* Upload.swift */; };
 		DEFA54E12C39955200CF6BD1 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54E02C39955200CF6BD1 /* Download.swift */; };
-		DEFA54F22C3D4E6400CF6BD1 /* CheckSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54F12C3D4E6400CF6BD1 /* CheckSignIn.swift */; };
+		DEFA54F22C3D4E6400CF6BD1 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54F12C3D4E6400CF6BD1 /* AuthRepository.swift */; };
 		DEFA54F42C3D5C6700CF6BD1 /* RoomDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54F32C3D5C6700CF6BD1 /* RoomDataStore.swift */; };
 		DEFA54F72C3E9EB800CF6BD1 /* PathDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54F62C3E9EB800CF6BD1 /* PathDataStore.swift */; };
 		DEFA55002C401D6200CF6BD1 /* FriendShip.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA54FF2C401D6200CF6BD1 /* FriendShip.swift */; };
@@ -151,6 +151,7 @@
 		DE5748A72D896A2F0054CD52 /* TutorialDealPanelViewNegotiationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialDealPanelViewNegotiationCell.swift; sourceTree = "<group>"; };
 		DE5748A92D896CCC0054CD52 /* TutorialDealPanelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialDealPanelViewCell.swift; sourceTree = "<group>"; };
 		DE5748AC2D897CEB0054CD52 /* TutorialResultViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialResultViewCell.swift; sourceTree = "<group>"; };
+		DE5748AE2D92F07F0054CD52 /* DeleteUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteUserView.swift; sourceTree = "<group>"; };
 		DEAB384D2C1DC27D007639F6 /* WaitingRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomView.swift; sourceTree = "<group>"; };
 		DEAB385A2C1E9165007639F6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DEAB38612C1EA178007639F6 /* Google.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Google.swift; sourceTree = "<group>"; };
@@ -185,7 +186,6 @@
 		DEDD96BB2D070D15008BAAF7 /* PlayerPositionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPositionRepository.swift; sourceTree = "<group>"; };
 		DEDD96BD2D0711E5008BAAF7 /* NegotiationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegotiationRepository.swift; sourceTree = "<group>"; };
 		DEDD96BF2D071381008BAAF7 /* DealRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealRepository.swift; sourceTree = "<group>"; };
-		DEDEF6E92C23303600A01FFF /* SignOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOut.swift; sourceTree = "<group>"; };
 		DEDEF6ED2C233C5B00A01FFF /* play-tag-with-negotiations.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "play-tag-with-negotiations.entitlements"; sourceTree = "<group>"; };
 		DEDEF6EE2C2341D600A01FFF /* Apple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apple.swift; sourceTree = "<group>"; };
 		DEDEF6F22C23C9AF00A01FFF /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
@@ -199,7 +199,7 @@
 		DEFA54DB2C3907D800CF6BD1 /* RoomInfomationViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfomationViewCell.swift; sourceTree = "<group>"; };
 		DEFA54DE2C3989FC00CF6BD1 /* Upload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
 		DEFA54E02C39955200CF6BD1 /* Download.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
-		DEFA54F12C3D4E6400CF6BD1 /* CheckSignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSignIn.swift; sourceTree = "<group>"; };
+		DEFA54F12C3D4E6400CF6BD1 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
 		DEFA54F32C3D5C6700CF6BD1 /* RoomDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDataStore.swift; sourceTree = "<group>"; };
 		DEFA54F62C3E9EB800CF6BD1 /* PathDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathDataStore.swift; sourceTree = "<group>"; };
 		DEFA54FF2C401D6200CF6BD1 /* FriendShip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendShip.swift; sourceTree = "<group>"; };
@@ -402,6 +402,7 @@
 			children = (
 				DEDB913D2C17343500A8DA37 /* ContentView.swift */,
 				DEFA55212C4C1FB200CF6BD1 /* SignInView.swift */,
+				DE5748AE2D92F07F0054CD52 /* DeleteUserView.swift */,
 				DE5748772D890AF30054CD52 /* Tutorial */,
 				DEAB38732C205F2B007639F6 /* PublicRooms */,
 				DE12A75F2C758E7900F7B0DF /* NoticeView */,
@@ -419,8 +420,7 @@
 			children = (
 				DEAB38612C1EA178007639F6 /* Google.swift */,
 				DEDEF6EE2C2341D600A01FFF /* Apple.swift */,
-				DEFA54F12C3D4E6400CF6BD1 /* CheckSignIn.swift */,
-				DEDEF6E92C23303600A01FFF /* SignOut.swift */,
+				DEFA54F12C3D4E6400CF6BD1 /* AuthRepository.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -759,7 +759,6 @@
 				DEAB38752C205FA8007639F6 /* PublicRoomsViewCell.swift in Sources */,
 				DECFBB232C7ACA1700093544 /* DealPanelView.swift in Sources */,
 				DE57489F2D89671E0054CD52 /* TutorialDealPanelView.swift in Sources */,
-				DEDEF6EA2C23303600A01FFF /* SignOut.swift in Sources */,
 				DE12A7612C758E8900F7B0DF /* NoticeView.swift in Sources */,
 				DE57487B2D890B8D0054CD52 /* TutorialRoomSettingView.swift in Sources */,
 				DE2052FC2D43923C00D2A82E /* ApplyingViewCell.swift in Sources */,
@@ -813,7 +812,7 @@
 				DE5747E82D780BB70054CD52 /* DealCreate.swift in Sources */,
 				DEFA55112C42669500CF6BD1 /* FriendDataStore.swift in Sources */,
 				DEDD96C02D071381008BAAF7 /* DealRepository.swift in Sources */,
-				DEFA54F22C3D4E6400CF6BD1 /* CheckSignIn.swift in Sources */,
+				DEFA54F22C3D4E6400CF6BD1 /* AuthRepository.swift in Sources */,
 				DEAB387B2C2061C2007639F6 /* WaitingRoomViewCell.swift in Sources */,
 				DEFA55052C402DB700CF6BD1 /* MovePanelView.swift in Sources */,
 				DEDD96BE2D0711E5008BAAF7 /* NegotiationRepository.swift in Sources */,
@@ -835,6 +834,7 @@
 				DE5748A42D8967A90054CD52 /* TutorialPlayerInfoView.swift in Sources */,
 				DEFA550A2C414AC500CF6BD1 /* DealClientPanelViewCell.swift in Sources */,
 				DEFA55132C426CD200CF6BD1 /* FriendViewCell.swift in Sources */,
+				DE5748AF2D92F07F0054CD52 /* DeleteUserView.swift in Sources */,
 				DEFA1C252C8DB0FF00CB4458 /* DealFulfill.swift in Sources */,
 				DECFBB292C81F17900093544 /* Deal.swift in Sources */,
 				DEDB91532C17417700A8DA37 /* PublicRoomsView.swift in Sources */,

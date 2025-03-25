@@ -70,7 +70,15 @@ class UserRepository {
     static func updateUserName(newName: String) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
-            try await Firestore.firestore().collection("Users").document(userId).setData(["userName": newName], merge: true)
+            try await Firestore.firestore().collection("Users").document(userId).updateData(["userName": newName])
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func updateSignInType(user: User) async {
+        do {
+            try await Firestore.firestore().collection("Users").document(user.userId).updateData(["signInType": user.signInType.rawValue])
         } catch {
             print(error)
         }
@@ -79,7 +87,7 @@ class UserRepository {
     static func updateprofile(newProfile: String) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
-            try await Firestore.firestore().collection("Users").document(userId).setData(["profile": newProfile], merge: true)
+            try await Firestore.firestore().collection("Users").document(userId).updateData(["profile": newProfile])
         } catch {
             print(error)
         }
@@ -88,7 +96,26 @@ class UserRepository {
     static func updateIconUrl(iconUrl: String) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
-            try await Firestore.firestore().collection("Users").document(userId).setData(["iconUrl": iconUrl], merge: true)
+            try await Firestore.firestore().collection("Users").document(userId).updateData(["iconUrl": iconUrl])
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func addPlayedRoomIds(roomId: String) async {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        do {
+            try await Firestore.firestore().collection("Users").document(userId).setData(["beingRoomId": roomId], merge: true)
+            try await Firestore.firestore().collection("Users").document(userId).updateData(["playedRoomIds": FieldValue.arrayUnion([roomId])])
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func removePlayedRoomIds(roomId: String) async {
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        do {
+            try await Firestore.firestore().collection("Users").document(userId).updateData(["beingRoomId": FieldValue.delete(), "playedRoomIds": FieldValue.arrayRemove([roomId])])
         } catch {
             print(error)
         }

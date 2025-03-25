@@ -158,6 +158,8 @@ struct PublicRoomsView: View {
             GameView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
         case .result:
             ResultView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
+        case .deleteUser:
+            DeleteUserView()
         }
     }
     func enterRoom() {
@@ -211,9 +213,6 @@ struct PublicRoomsView: View {
         Task {
             if await PlayTagRoomRepository.isExists(roomId: roomId) {
                 guard let playingRoom = await PlayTagRoomRepository.getRoomData(roomId: roomId) else { return }
-                DispatchQueue.main.async {
-                    playerDataStore.playingRoom = playingRoom
-                }
                 roomId = ""
                 await PlayerRepository.exitRoom(roomId: playingRoom.roomId)
             } else {
@@ -258,7 +257,12 @@ struct PublicRoomsView: View {
             }
             Divider()
             Button(role: .destructive, action: {
-                SignOut.signOut()
+                pathDataStore.navigatetionPath.append(.deleteUser)
+            }, label: {
+                Label("アカウント削除", systemImage: "trash.fill")
+            })
+            Button(role: .destructive, action: {
+                AuthRepository.signOut()
             }, label: {
                 Label("サインアウト", systemImage: "figure.walk.arrival")
             })

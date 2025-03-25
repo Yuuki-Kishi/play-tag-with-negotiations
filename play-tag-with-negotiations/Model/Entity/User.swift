@@ -18,11 +18,17 @@ struct User: Codable, Hashable, Identifiable, Equatable {
     var creationDate: Date
     var iconUrl: String
     var iconData: Data?
+    var signInType: SignInTypeEnum
     var friendUsers: [String]
     var profile: String
+    var playedRoomIds: [String]
+    
+    enum SignInTypeEnum: String {
+        case google, apple, unknown
+    }
     
     enum CodingKeys: String, CodingKey {
-        case userId, userName, creationDate, iconUrl, iconData, friendUsers, profile
+        case userId, userName, creationDate, iconUrl, iconData, signInType, friendUsers, profile, playedRoomIds
     }
     
     init(from decoder: Decoder) throws {
@@ -39,8 +45,11 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         }
         self.iconUrl = try container.decode(String.self, forKey: .iconUrl)
         self.iconData = nil
+        let type = try container.decode(String.self, forKey: .signInType)
+        self.signInType = SignInTypeEnum(rawValue: type) ?? .unknown
         self.friendUsers = try container.decodeIfPresent([String].self, forKey: .friendUsers) ?? []
         self.profile = try container.decode(String.self, forKey: .profile)
+        self.playedRoomIds = try container.decode([String].self, forKey: .playedRoomIds)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -51,30 +60,36 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         let dateString = formatter.string(from: creationDate)
         try container.encode(dateString, forKey: .creationDate)
         try container.encode(self.iconUrl, forKey: .iconUrl)
+        try container.encode(self.signInType.rawValue, forKey: .signInType)
         try container.encode(self.friendUsers, forKey: .friendUsers)
         try container.encode(self.profile, forKey: .profile)
+        try container.encode(self.playedRoomIds, forKey: .playedRoomIds)
     }
     
-    init(userId: String, userName: String, creationDate: Date, iconUrl: String, iconData: Data?, friendUsers: [String], profile: String) {
+    init(userId: String, userName: String, creationDate: Date, iconUrl: String, iconData: Data?, singInType: SignInTypeEnum, friendUsers: [String], profile: String, playedRoomIds: [String]) {
         self.id = UUID()
         self.userId = userId
         self.userName = userName
         self.creationDate = creationDate
         self.iconUrl = iconUrl
         self.iconData = iconData
+        self.signInType = singInType
         self.friendUsers = friendUsers
         self.profile = profile
+        self.playedRoomIds = playedRoomIds
     }
     
-    init(userId: String, creationDate: Date) {
+    init(userId: String, creationDate: Date, signInType: SignInTypeEnum) {
         self.id = UUID()
         self.userId = userId
         self.userName = "未設定"
         self.creationDate = creationDate
         self.iconUrl = "default"
         self.iconData = nil
+        self.signInType = signInType
         self.friendUsers = []
         self.profile = "初心者なのでお手柔らかにお願いします。"
+        self.playedRoomIds = []
     }
     
     init() {
@@ -84,7 +99,9 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         self.creationDate = Date()
         self.iconUrl = "default"
         self.iconData = nil
+        self.signInType = .unknown
         self.friendUsers = []
         self.profile = "Who am I?"
+        self.playedRoomIds = []
     }
 }

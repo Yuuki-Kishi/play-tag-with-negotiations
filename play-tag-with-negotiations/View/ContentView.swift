@@ -51,7 +51,7 @@ struct ContentView: View {
         })
         .onAppear() {
             Task {
-                await CheckSignIn.isSignIn()
+                await AuthRepository.isSignIn()
                 isShowUpdateAlert = await AppVersionRepository.versionCheck()
             }
         }
