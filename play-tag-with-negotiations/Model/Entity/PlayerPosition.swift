@@ -7,11 +7,12 @@
 
 import Foundation
 
-struct PlayerPosition: Codable, Hashable, Equatable {
+struct PlayerPosition: Codable, Hashable, Identifiable, Equatable {
     static func == (lhs: PlayerPosition, rhs: PlayerPosition) -> Bool {
         return lhs.x == rhs.x && lhs.y == rhs.y
     }
     
+    var id = UUID()
     var phase: Int
     var x: Int
     var y: Int
@@ -35,18 +36,21 @@ struct PlayerPosition: Codable, Hashable, Equatable {
     }
     
     init(phase: Int, x: Int, y: Int) {
+        self.id = UUID()
         self.phase = phase
         self.x = x
         self.y = y
     }
     
     init(x: Int, y: Int) {
+        self.id = UUID()
         self.phase = PlayerDataStore.shared.playingRoom.phaseNow
         self.x = x
         self.y = y
     }
     
     init() {
+        self.id = UUID()
         self.phase = 0
         self.x = 0
         self.y = 0

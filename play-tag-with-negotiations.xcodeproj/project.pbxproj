@@ -86,6 +86,7 @@
 		DEDEF6EF2C2341D600A01FFF /* Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6EE2C2341D600A01FFF /* Apple.swift */; };
 		DEDEF6F32C23C9AF00A01FFF /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F22C23C9AF00A01FFF /* GameView.swift */; };
 		DEDEF6F52C23C9BB00A01FFF /* FieldMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */; };
+		DEE9FA7D2D939CB4005D8276 /* PlayedRoomId.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE9FA7C2D939CB4005D8276 /* PlayedRoomId.swift */; };
 		DEFA1C1F2C8C976400CB4458 /* DealSuccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C1E2C8C976400CB4458 /* DealSuccess.swift */; };
 		DEFA1C212C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C202C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift */; };
 		DEFA1C252C8DB0FF00CB4458 /* DealFulfill.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C242C8DB0FF00CB4458 /* DealFulfill.swift */; };
@@ -190,6 +191,7 @@
 		DEDEF6EE2C2341D600A01FFF /* Apple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apple.swift; sourceTree = "<group>"; };
 		DEDEF6F22C23C9AF00A01FFF /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldMapView.swift; sourceTree = "<group>"; };
+		DEE9FA7C2D939CB4005D8276 /* PlayedRoomId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayedRoomId.swift; sourceTree = "<group>"; };
 		DEFA1C1E2C8C976400CB4458 /* DealSuccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealSuccess.swift; sourceTree = "<group>"; };
 		DEFA1C202C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealPanelViewNegotiationCell.swift; sourceTree = "<group>"; };
 		DEFA1C242C8DB0FF00CB4458 /* DealFulfill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealFulfill.swift; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 			isa = PBXGroup;
 			children = (
 				DEAB386E2C1EB32E007639F6 /* User.swift */,
+				DEE9FA7C2D939CB4005D8276 /* PlayedRoomId.swift */,
 				DE12A75D2C75883B00F7B0DF /* Notice.swift */,
 				DEFA54FF2C401D6200CF6BD1 /* FriendShip.swift */,
 				DEDB914D2C173A2400A8DA37 /* PlayTagRoom.swift */,
@@ -808,6 +811,7 @@
 				DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */,
 				DEB2B1EE2D7402C7007E01C9 /* TimerDataStore.swift in Sources */,
 				DE57487D2D890BDA0054CD52 /* TutorialWaitingRoomView.swift in Sources */,
+				DEE9FA7D2D939CB4005D8276 /* PlayedRoomId.swift in Sources */,
 				DEFA54E12C39955200CF6BD1 /* Download.swift in Sources */,
 				DE5747E82D780BB70054CD52 /* DealCreate.swift in Sources */,
 				DEFA55112C42669500CF6BD1 /* FriendDataStore.swift in Sources */,

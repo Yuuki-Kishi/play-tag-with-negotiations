@@ -21,7 +21,7 @@ struct User: Codable, Hashable, Identifiable, Equatable {
     var signInType: SignInTypeEnum
     var friendUsers: [String]
     var profile: String
-    var playedRoomIds: [String]
+    var playedRoomIds: [PlayedRoomId]
     
     enum SignInTypeEnum: String {
         case google, apple, unknown
@@ -49,7 +49,7 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         self.signInType = SignInTypeEnum(rawValue: type) ?? .unknown
         self.friendUsers = try container.decodeIfPresent([String].self, forKey: .friendUsers) ?? []
         self.profile = try container.decode(String.self, forKey: .profile)
-        self.playedRoomIds = try container.decode([String].self, forKey: .playedRoomIds)
+        self.playedRoomIds = try container.decode([PlayedRoomId].self, forKey: .playedRoomIds)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -66,7 +66,7 @@ struct User: Codable, Hashable, Identifiable, Equatable {
         try container.encode(self.playedRoomIds, forKey: .playedRoomIds)
     }
     
-    init(userId: String, userName: String, creationDate: Date, iconUrl: String, iconData: Data?, singInType: SignInTypeEnum, friendUsers: [String], profile: String, playedRoomIds: [String]) {
+    init(userId: String, userName: String, creationDate: Date, iconUrl: String, iconData: Data?, singInType: SignInTypeEnum, friendUsers: [String], profile: String, playedRoomIds: [PlayedRoomId]) {
         self.id = UUID()
         self.userId = userId
         self.userName = userName
