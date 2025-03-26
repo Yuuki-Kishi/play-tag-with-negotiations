@@ -95,6 +95,14 @@ extension Array where Element == Player {
         
     }
     
+    var playing: [Element] {
+        return self.filter { $0.isPlaying }
+    }
+    
+    var notPlaying: [Element] {
+        return self.filter { !$0.isPlaying }
+    }
+    
     mutating func append(noDuplicate item: Element) {
         if let index = self.firstIndex(where: { $0.playerUserId == item.playerUserId }) {
             self[index] = item

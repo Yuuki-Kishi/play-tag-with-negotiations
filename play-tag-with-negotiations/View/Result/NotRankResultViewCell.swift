@@ -1,25 +1,19 @@
 //
-//  ResultViewCell.swift
+//  NotRankResultViewCell.swift
 //  play-tag-with-negotiations
 //
-//  Created by 岸　優樹 on 2024/08/10.
+//  Created by 岸　優樹 on 2025/03/26.
 //
 
 import SwiftUI
 
-struct ResultViewCell: View {
-    @ObservedObject var userDataStore: UserDataStore
+struct NotRankResultViewCell: View {
     @ObservedObject var playerDataStore: PlayerDataStore
-    @StateObject var friendDataStore = FriendDataStore.shared
     @Binding var player: Player
     @State private var isShowAlert = false
     
     var body: some View {
         HStack {
-            Text(playerRankText())
-                .font(.system(size: 25))
-                .frame(width: 50)
-                .foregroundStyle(playerRankTextColor())
             Text(user().userName)
                 .frame(alignment: .leading)
                 .font(.system(size: 20))
@@ -59,39 +53,9 @@ struct ResultViewCell: View {
             }
         }
     }
-    func playerRank() -> Int {
-        guard let index = playerDataStore.playerArray.firstIndex(where: { $0.playerUserId == player.playerUserId }) else { return playerDataStore.playerArray.count }
-        return index + 1
-    }
-    func playerRankText() -> String {
-        let rank = playerRank()
-        switch rank {
-        case 1:
-            return String(rank) + "st"
-        case 2:
-            return String(rank) + "nd"
-        case 3:
-            return String(rank) + "rd"
-        default:
-            return String(rank) + "th"
-        }
-    }
-    func playerRankTextColor() -> Color {
-        let rank = playerRank()
-        switch rank {
-        case 1:
-            return Color.pink
-        case 2:
-            return Color.mint
-        case 3:
-            return Color.orange
-        default:
-            return Color.indigo
-        }
-    }
     func userNameColor() -> Color {
         var color = Color.primary
-        if player.playerUserId == userDataStore.signInUser?.userId {
+        if player.isMe {
             color = .green
         }
         return color
@@ -116,12 +80,11 @@ struct ResultViewCell: View {
     }
     func isDisplayButton() -> Bool {
         let isFriend = FriendShipRepository.isExists(pertnerUserId: player.playerUserId)
-        let isMe = player.playerUserId == userDataStore.signInUser?.userId
-        if !isFriend && !isMe { return true }
+        if !isFriend && !player.isMe { return true }
         return false
     }
 }
 
 //#Preview {
-//    ResultViewCell(userDataStore: UserDataStore.shared, playerDataStore: PlayerDataStore.shared, player: Player())
+//    NotRankResultViewCell(playerDataStore: PlayerDataStore.shared, player: Player())
 //}

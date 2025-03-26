@@ -19,8 +19,19 @@ struct ResultView: View {
                 .foregroundStyle(playerRankTextColor())
                 .font(.system(size: 150))
                 .frame(height: UIScreen.main.bounds.height * 0.2)
-            List($playerDataStore.playerArray) { player in
-                ResultViewCell(userDataStore: userDataStore, playerDataStore: playerDataStore, player: player)
+            List {
+                Section(content: {
+                    ForEach(playerDataStore.playerArray.playing, id: \.playerUserId) { player in
+                        RankResultViewCell(playerDataStore: playerDataStore, player: Binding(get: { player }, set: {_ in}))
+                    }
+                })
+                Section(content: {
+                    ForEach(playerDataStore.playerArray.notPlaying, id: \.playerUserId) { player in
+                        NotRankResultViewCell(playerDataStore: playerDataStore, player: Binding(get: { player }, set: {_ in}))
+                    }
+                }, header: {
+                    Text("ゲーム離脱者")
+                })
             }
         }
         .toolbar {

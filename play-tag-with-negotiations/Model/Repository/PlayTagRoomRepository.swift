@@ -104,18 +104,16 @@ class PlayTagRoomRepository {
     static func deleteRoom() async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         let roomId = PlayerDataStore.shared.playingRoom.roomId
+        await UserRepository.removePlayedRoomIds(roomId: roomId)
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).delete()
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).delete()
-            try await Firestore.firestore().collection("Users").document(userId).updateData(["beingRoomId": FieldValue.delete()])
         } catch {
             print(error)
         }
     }
     
-    
-    
-//    observe
+    //    observe
     static func observeRoomFieldAndPhaseNow() {
         let roomId = PlayerDataStore.shared.playingRoom.roomId
         let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).addSnapshotListener { DocumentSnapshot, error in
