@@ -45,8 +45,7 @@ class NoticeRepository {
     }
     
     static func deleteAllNotice() async {
-        let notices = UserDataStore.shared.noticeArray
-        for notice in notices {
+        for notice in UserDataStore.shared.noticeArray {
             await deleteNotice(noticeId: notice.noticeId)
         }
     }

@@ -27,7 +27,7 @@ class UserDataStore: ObservableObject {
         }
     }
     enum listenerType: CaseIterable {
-        case myUserData, usersData, roomField, phaseNow, notice, players, game, isDecided, publicRooms, friendShips, negotiation, deal
+        case myUserData, usersData, roomField, phaseNow, notice, players, publicRooms, friendShips, negotiation, deal
     }
     
     func cleanUpListeners() {

@@ -126,7 +126,9 @@ class PlayTagRoomRepository {
                 guard let playingRoom = try DocumentSnapshot?.data(as: PlayTagRoom.self) else { return }
                 if PlayerDataStore.shared.playingRoom.phaseNow < playingRoom.phaseNow {
                     Task { await DealRepository.isFulfilled(phaseNow: playingRoom.phaseNow) }
-                    if !PlayerDataStore.shared.playerArray.me.isCaptured { Task { await PlayerRepository.isDecidedToFalse() }}
+                    if !PlayerDataStore.shared.playerArray.me.isCaptured {
+                        Task { await PlayerRepository.isDecidedToFalse() }
+                    }
                     TimerDataStore.shared.setTimer(limit: 60)
                 }
                 DispatchQueue.main.async {
@@ -161,32 +163,26 @@ class PlayTagRoomRepository {
         }
     }
     
-//    static func observeIsDecided() {
-//        let roomId = PlayerDataStore.shared.playingRoom.roomId
-//        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").whereField("isDecided", isEqualTo: true).addSnapshotListener { QuerySnapshot, error in
-//            guard let documents = QuerySnapshot?.documents else { return }
-//            if PlayerDataStore.shared.playerArray.me.isHost {
-//                if PlayerDataStore.shared.playingRoom.playerNumber <= documents.count {
-//                    Task { await moveToNextPhase() }
-//                }
-//            }
-//        }
-//        DispatchQueue.main.async {
-//            UserDataStore.shared.listeners[UserDataStore.listenerType.isDecided] = listener
-//        }
-//    }
-    
     static func observePublicRooms() {
         let listener = Firestore.firestore().collection("PlayTagRooms").whereField("isPublic", isEqualTo: true).addSnapshotListener { QuerySnapshot, error in
-            guard let documents = QuerySnapshot?.documents else { return }
-            DispatchQueue.main.async {
-                RoomDataStore.shared.publicRoomsArray = []
-            }
-            for document in documents {
+            guard let documentChanges = QuerySnapshot?.documentChanges else { return }
+            for documentChange in documentChanges {
+                let document = documentChange.document
                 do {
                     let publicRoom = try document.data(as: PlayTagRoom.self)
-                    DispatchQueue.main.async {
-                        RoomDataStore.shared.publicRoomsArray.append(publicRoom)
+                    switch documentChange.type {
+                    case .added:
+                        DispatchQueue.main.async {
+                            RoomDataStore.shared.publicRoomsArray.append(noDuplicate: publicRoom)
+                        }
+                    case .modified:
+                        DispatchQueue.main.async {
+                            RoomDataStore.shared.publicRoomsArray.append(noDuplicate: publicRoom)
+                        }
+                    case .removed:
+                        DispatchQueue.main.async {
+                            RoomDataStore.shared.publicRoomsArray.remove(playTagRoom: publicRoom)
+                        }
                     }
                 } catch {
                     print(error)

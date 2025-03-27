@@ -57,6 +57,21 @@ extension Array where Element == FriendShip {
     }
 }
 
+extension Array where Element == PlayTagRoom {
+    mutating func append(noDuplicate item: Element) {
+        if let index = self.firstIndex(of: item) {
+            self[index] = item
+        } else {
+            self.append(item)
+        }
+    }
+    
+    mutating func remove(playTagRoom: PlayTagRoom) {
+        guard let index = self.firstIndex(of: playTagRoom) else { return }
+        self.remove(at: index)
+    }
+}
+
 extension Array where Element == Player {
     var me: Element {
         guard let myUserId = UserDataStore.shared.signInUser?.userId else { return Player() }

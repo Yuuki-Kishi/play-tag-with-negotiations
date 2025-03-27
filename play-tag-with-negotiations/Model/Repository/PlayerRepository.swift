@@ -85,7 +85,6 @@ class PlayerRepository {
     static func judgeIsAlive(player: Player, players: [Player]) -> Player {
         var judgelayer = player
         if player.isChaser { return judgelayer }
-        let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
         let chasers = players.filter { $0.isChaser }
         guard let fugitivePosition = player.move.determinePosition else { return player }
         for chaser in chasers {
@@ -294,30 +293,4 @@ class PlayerRepository {
             UserDataStore.shared.listeners[UserDataStore.listenerType.players] = listener
         }
     }
-    
-//    static func observeGame() {
-//        let roomId = PlayerDataStore.shared.playingRoom.roomId
-//        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").whereField("isCaptured", isEqualTo: false).addSnapshotListener { querySnapshot, error in
-//            var alivePlayers: [Player] = []
-//            guard let documents = querySnapshot?.documents else { return }
-//            for document in documents {
-//                do {
-//                    let player = try document.data(as: Player.self)
-//                    alivePlayers.append(noDuplicate: player)
-//                } catch {
-//                    print(error)
-//                }
-//            }
-//            let isAliveFugitive = alivePlayers.filter ({ !$0.isChaser }).isEmpty
-//            let playingPlayersCount = alivePlayers.filter { $0.isPlaying }
-//            if alivePlayers.count <= 1 || isAliveFugitive || playingPlayersCount.count <= 1 {
-//                if PlayerDataStore.shared.playerArray.me.isHost {
-//                    Task { await PlayTagRoomRepository.gameFinished() }
-//                }
-//            }
-//        }
-//        DispatchQueue.main.async {
-//            UserDataStore.shared.listeners[UserDataStore.listenerType.game] = listener
-//        }
-//    }
 }
