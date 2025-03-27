@@ -133,9 +133,7 @@ struct GameView: View {
                 UserRepository.observeUsersData()
                 PlayerRepository.observePlayers()
             }
-            PlayTagRoomRepository.observeIsDecided()
             PlayTagRoomRepository.observeRoomFieldAndPhaseNow()
-            PlayerRepository.observeGame()
             DealRepository.observeDeals()
             FriendShipRepository.observeFriend()
             TimerDataStore.shared.setTimer(limit: 60)

@@ -102,6 +102,13 @@ extension Array where Element == Player {
         return self.filter { !$0.isPlaying }
     }
     
+    var isAllDecided: Bool {
+        if self.filter({ $0.isDecided }).count == self.count {
+            return true
+        }
+        return false
+    }
+    
     mutating func append(noDuplicate item: Element) {
         if let index = self.firstIndex(where: { $0.playerUserId == item.playerUserId }) {
             self[index] = item

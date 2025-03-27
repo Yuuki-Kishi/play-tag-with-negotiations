@@ -33,10 +33,9 @@ class PlayTagRoomRepository {
     static func isExists(roomId: String) async -> Bool {
         do {
             let document = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).getDocument()
-            if document.exists { return true }
+            return document.exists
         } catch {
             print(error)
-            return false
         }
         return false
     }
@@ -162,20 +161,20 @@ class PlayTagRoomRepository {
         }
     }
     
-    static func observeIsDecided() {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId
-        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").whereField("isDecided", isEqualTo: true).addSnapshotListener { QuerySnapshot, error in
-            guard let documents = QuerySnapshot?.documents else { return }
-            if PlayerDataStore.shared.playerArray.me.isHost {
-                if PlayerDataStore.shared.playingRoom.playerNumber <= documents.count {
-                    Task { await moveToNextPhase() }
-                }
-            }
-        }
-        DispatchQueue.main.async {
-            UserDataStore.shared.listeners[UserDataStore.listenerType.isDecided] = listener
-        }
-    }
+//    static func observeIsDecided() {
+//        let roomId = PlayerDataStore.shared.playingRoom.roomId
+//        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").whereField("isDecided", isEqualTo: true).addSnapshotListener { QuerySnapshot, error in
+//            guard let documents = QuerySnapshot?.documents else { return }
+//            if PlayerDataStore.shared.playerArray.me.isHost {
+//                if PlayerDataStore.shared.playingRoom.playerNumber <= documents.count {
+//                    Task { await moveToNextPhase() }
+//                }
+//            }
+//        }
+//        DispatchQueue.main.async {
+//            UserDataStore.shared.listeners[UserDataStore.listenerType.isDecided] = listener
+//        }
+//    }
     
     static func observePublicRooms() {
         let listener = Firestore.firestore().collection("PlayTagRooms").whereField("isPublic", isEqualTo: true).addSnapshotListener { QuerySnapshot, error in

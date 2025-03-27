@@ -42,6 +42,16 @@ class PlayerRepository {
     }
     
 //    check
+    static func isExsits(playerUserId: String) async -> Bool {
+        let roomId = PlayerDataStore.shared.playingRoom.roomId
+        do {
+            let document = try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(playerUserId).getDocument()
+            return document.exists
+        } catch {
+            print(error)
+        }
+        return false
+    }
     
 //    get
     static func getPlayer(userId: String) async -> Player? {
@@ -72,7 +82,7 @@ class PlayerRepository {
         return []
     }
     
-    static func judgeIsAlive(player: Player, players: [Player]) async -> Player {
+    static func judgeIsAlive(player: Player, players: [Player]) -> Player {
         var judgelayer = player
         if player.isChaser { return judgelayer }
         let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
@@ -84,14 +94,25 @@ class PlayerRepository {
                 let isContain = player.catchers.contains(chaser.playerUserId)
                 if isContain {
                     judgelayer.isCaptured = true
-                    if judgelayer.isMe {
-                        await PlayerRepository.wasCaptured()
-                    }
                     break
                 }
             }
         }
         return judgelayer
+    }
+    
+    static func isFinish(players: [Player]) -> Bool {
+        if PlayerDataStore.shared.playingRoom.isPlaying {
+            let alivePlayers = players.filter { !$0.isCaptured }
+            let isAliveFugitive = alivePlayers.filter ({ !$0.isChaser }).isEmpty
+            let playingPlayersCount = alivePlayers.filter { $0.isPlaying }.count
+            if alivePlayers.count <= 1 || isAliveFugitive || playingPlayersCount <= 1 {
+                return true
+            } else {
+                return false
+            }
+        }
+        return false
     }
     
 //    update
@@ -246,59 +267,57 @@ class PlayerRepository {
                 }
             }
             guard let documentChanges = querySnapshot?.documentChanges else { return }
-            Task {
-                for documentChange in documentChanges {
-                    do {
-                        let player = try documentChange.document.data(as: Player.self)
-                        let judgedPlayer = await judgeIsAlive(player: player, players: players)
-                        switch documentChange.type {
-                        case .added:
-                            DispatchQueue.main.async {
-                                PlayerDataStore.shared.playerArray.append(noDuplicate: judgedPlayer)
-                            }
-                        case .modified:
-                            DispatchQueue.main.async {
-                                PlayerDataStore.shared.playerArray.append(noDuplicate: judgedPlayer)
-                            }
-                        case .removed:
-                            DispatchQueue.main.async {
-                                PlayerDataStore.shared.playerArray.remove(userId: judgedPlayer.playerUserId)
-                            }
-                        }
-                    } catch {
-                        print(error)
+            for documentChange in documentChanges {
+                do {
+                    let player = try documentChange.document.data(as: Player.self)
+                    let judgedPlayer = judgeIsAlive(player: player, players: players)
+                    switch documentChange.type {
+                    case .added:
+                        players.append(noDuplicate: judgedPlayer)
+                    case .modified:
+                        players.append(noDuplicate: judgedPlayer)
+                    case .removed:
+                        players.remove(userId: judgedPlayer.playerUserId)
                     }
+                } catch {
+                    print(error)
                 }
             }
+            DispatchQueue.main.async {
+                PlayerDataStore.shared.playerArray = players
+            }
+            if players.me.isCaptured { Task { await wasCaptured() } }
+            if players.me.isHost && players.isAllDecided { Task { await PlayTagRoomRepository.moveToNextPhase() } }
+            if isFinish(players: players) { Task { await PlayTagRoomRepository.gameFinished() } }
         }
         DispatchQueue.main.async {
             UserDataStore.shared.listeners[UserDataStore.listenerType.players] = listener
         }
     }
     
-    static func observeGame() {
-        let roomId = PlayerDataStore.shared.playingRoom.roomId
-        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").whereField("isCaptured", isEqualTo: false).addSnapshotListener { querySnapshot, error in
-            var alivePlayers: [Player] = []
-            guard let documents = querySnapshot?.documents else { return }
-            for document in documents {
-                do {
-                    let player = try document.data(as: Player.self)
-                    alivePlayers.append(noDuplicate: player)
-                } catch {
-                    print(error)
-                }
-            }
-            let isAliveFugitive = alivePlayers.filter ({ !$0.isChaser }).isEmpty
-            let playingPlayersCount = alivePlayers.filter { $0.isPlaying }
-            if alivePlayers.count <= 1 || isAliveFugitive || playingPlayersCount.count <= 1 {
-                if PlayerDataStore.shared.playerArray.me.isHost {
-                    Task { await PlayTagRoomRepository.gameFinished() }
-                }
-            }
-        }
-        DispatchQueue.main.async {
-            UserDataStore.shared.listeners[UserDataStore.listenerType.game] = listener
-        }
-    }
+//    static func observeGame() {
+//        let roomId = PlayerDataStore.shared.playingRoom.roomId
+//        let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").whereField("isCaptured", isEqualTo: false).addSnapshotListener { querySnapshot, error in
+//            var alivePlayers: [Player] = []
+//            guard let documents = querySnapshot?.documents else { return }
+//            for document in documents {
+//                do {
+//                    let player = try document.data(as: Player.self)
+//                    alivePlayers.append(noDuplicate: player)
+//                } catch {
+//                    print(error)
+//                }
+//            }
+//            let isAliveFugitive = alivePlayers.filter ({ !$0.isChaser }).isEmpty
+//            let playingPlayersCount = alivePlayers.filter { $0.isPlaying }
+//            if alivePlayers.count <= 1 || isAliveFugitive || playingPlayersCount.count <= 1 {
+//                if PlayerDataStore.shared.playerArray.me.isHost {
+//                    Task { await PlayTagRoomRepository.gameFinished() }
+//                }
+//            }
+//        }
+//        DispatchQueue.main.async {
+//            UserDataStore.shared.listeners[UserDataStore.listenerType.game] = listener
+//        }
+//    }
 }
