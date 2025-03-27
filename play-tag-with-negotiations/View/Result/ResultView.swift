@@ -24,6 +24,8 @@ struct ResultView: View {
                     ForEach(playerDataStore.playerArray.playing, id: \.playerUserId) { player in
                         RankResultViewCell(playerDataStore: playerDataStore, player: Binding(get: { player }, set: {_ in}))
                     }
+                }, header: {
+                    Text("ランキング")
                 })
                 Section(content: {
                     ForEach(playerDataStore.playerArray.notPlaying, id: \.playerUserId) { player in

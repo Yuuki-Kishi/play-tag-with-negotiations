@@ -172,7 +172,7 @@ struct WaitingRoomView: View {
                     }
                 }
             }, label: {
-                Text("退出")
+                Label("退室", systemImage: "figure.walk.arrival")
             })
         } label: {
             Image(systemName: "ellipsis.circle")

@@ -11,16 +11,22 @@ import FirebaseFirestore
 
 class PlayTagRoomRepository {
     //    create
-    static func createPlayTagRoom() async {
-        let playTagRoom = PlayerDataStore.shared.playingRoom
-        let encoded = try! JSONEncoder().encode(playTagRoom)
+    static func createAndEnterPlayTagRoom() async {
+        var playTagRoom = PlayerDataStore.shared.playingRoom
+        playTagRoom.playerNumber += 1
+        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
+        let player = Player(playerUserId: userId, isHost: true)
+        let encodedPlayTagRoom = try! JSONEncoder().encode(playTagRoom)
+        let encodedPlayer = try! JSONEncoder().encode(player)
         do {
-            guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
-            try await Firestore.firestore().collection("PlayTagRooms").document(playTagRoom.roomId).setData(jsonObject)
-            await PlayerRepository.enterRoom(roomId: playTagRoom.roomId, isHost: true)
+            guard let jsonObjectPlayTagRoom = try JSONSerialization.jsonObject(with: encodedPlayTagRoom, options: []) as? [String: Any] else { return }
+            guard let jsonObjectPlayer = try JSONSerialization.jsonObject(with: encodedPlayer, options: []) as? [String: Any] else { return }
+            try await Firestore.firestore().collection("PlayTagRooms").document(playTagRoom.roomId).setData(jsonObjectPlayTagRoom)
+            try await Firestore.firestore().collection("PlayTagRooms").document(playTagRoom.roomId).collection("Players").document(userId).setData(jsonObjectPlayer)
         } catch {
             print(error)
         }
+        await UserRepository.addPlayedRoomIds(roomId: playTagRoom.roomId)
     }
     
     //    check
@@ -104,13 +110,13 @@ class PlayTagRoomRepository {
     static func deleteRoom() async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         let roomId = PlayerDataStore.shared.playingRoom.roomId
-        await UserRepository.removePlayedRoomIds(roomId: roomId)
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).delete()
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).delete()
         } catch {
             print(error)
         }
+        await UserRepository.removePlayedRoomIds(roomId: roomId)
     }
     
     //    observe
@@ -139,13 +145,16 @@ class PlayTagRoomRepository {
     static func observeRoomField() {
         let roomId = PlayerDataStore.shared.playingRoom.roomId
         let listener = Firestore.firestore().collection("PlayTagRooms").document(roomId).addSnapshotListener { DocumentSnapshot, error in
-            do {
-                guard let playingRoom = try DocumentSnapshot?.data(as: PlayTagRoom.self) else { return }
-                DispatchQueue.main.async {
-                    PlayerDataStore.shared.playingRoom = playingRoom
+            guard let ducument = DocumentSnapshot else { return }
+            if ducument.exists {
+                do {
+                    guard let playingRoom = try DocumentSnapshot?.data(as: PlayTagRoom.self) else { return }
+                    DispatchQueue.main.async {
+                        PlayerDataStore.shared.playingRoom = playingRoom
+                    }
+                } catch {
+                    print(error)
                 }
-            } catch {
-                print(error)
             }
         }
         DispatchQueue.main.async {

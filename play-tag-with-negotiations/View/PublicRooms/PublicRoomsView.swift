@@ -23,14 +23,18 @@ struct PublicRoomsView: View {
     var body: some View {
         NavigationStack(path: $pathDataStore.navigatetionPath) {
             ZStack {
-                if !roomDataStore.publicRoomsArray.isEmpty {
-                    List(roomDataStore.publicRoomsArray) { playTagRoom in
-                        PublicRoomsViewCell(playerDataStore: playerDataStore, pathDataStore: pathDataStore, playTagRoom: playTagRoom)
+                VStack {
+                    TipView(TutorialTip())
+                        .padding(.horizontal)
+                    if !roomDataStore.publicRoomsArray.isEmpty {
+                        List(roomDataStore.publicRoomsArray) { playTagRoom in
+                            PublicRoomsViewCell(playerDataStore: playerDataStore, pathDataStore: pathDataStore, playTagRoom: playTagRoom)
+                        }
+                    } else {
+                        Spacer()
+                        Text("公開中のルームはありません")
+                        Spacer()
                     }
-                } else {
-                    Spacer()
-                    Text("公開中のルームはありません")
-                    Spacer()
                 }
                 VStack {
                     Spacer()
@@ -74,8 +78,14 @@ struct PublicRoomsView: View {
                             Image(systemName: noticeButtonIcon())
                         })
                         toolBarMenu()
-                            .popoverTip(TutorialTip())
                     }
+                })
+                ToolbarItem(placement: .topBarLeading, content: {
+                    Button(action: {
+                        pathDataStore.navigatetionPath.append(.tutorial)
+                    }, label: {
+                        Label("チュートリアル", systemImage: "questionmark.circle")
+                    })
                 })
             }
             .alert("参加先のルームID", isPresented: $isShowEnterRoomAlert, actions: {
@@ -103,19 +113,19 @@ struct PublicRoomsView: View {
                     Text("OK")
                 }
             })
-            .alert("再度参加しますか？", isPresented: $isShowReplayAlert, actions: {
-                Button(action: {
-                    replayGame()
-                }, label: {
-                    Text("参加")
-                })
+            .alert("参加中のルームがあります", isPresented: $isShowReplayAlert, actions: {
                 Button(role: .destructive, action: {
                     cancelReplayGame()
                 }, label: {
                     Text("やめる")
                 })
+                Button(role: .cancel, action: {
+                    replayGame()
+                }, label: {
+                    Text("参加")
+                })
             }, message: {
-                Text("再度参加できるルームがあります。参加をやめると再度参加にはルームIDが必要です。")
+                Text("参加中のルームに戻りますか？参加をやめると再度参加にはルームIDが必要です。")
             })
             .onAppear() {
                 onAppear()
@@ -188,9 +198,7 @@ struct PublicRoomsView: View {
             if await PlayTagRoomRepository.isExists(roomId: roomId) {
                 if await !PlayTagRoomRepository.isOverPlayerCount(roomId: roomId) {
                     guard let playingRoom = await PlayTagRoomRepository.getRoomData(roomId: roomId) else { return }
-                    DispatchQueue.main.async {
-                        playerDataStore.playingRoom = playingRoom
-                    }
+                    playerDataStore.playingRoom = playingRoom
                     roomId = ""
                     if playingRoom.isFinished {
                         await PlayTagRoomRepository.gameFinished()
@@ -234,11 +242,6 @@ struct PublicRoomsView: View {
             }, label: {
                 Label("マイページ", systemImage: "person.circle")
             })
-            Button(action: {
-                pathDataStore.navigatetionPath.append(.tutorial)
-            }, label: {
-                Label("チュートリアル", systemImage: "questionmark.circle")
-            })
             Menu {
                 Button(action: { roomDataStore.publicRoomsArray.sort {$0.playTagName < $1.playTagName}}, label: {
                     Text("名前昇順")
@@ -271,14 +274,11 @@ struct PublicRoomsView: View {
         }
     }
     func onAppear() {
-        playerDataStore.selectedPlayers = []
-        playerDataStore.userArray.removeAll()
-        playerDataStore.playerArray.removeAll()
-        playerDataStore.dealArray.removeAll()
-        playerDataStore.negotiationArray.removeAll()
+        userDataStore.cleanUpListeners()
+        playerDataStore.cleanUp()
         UserRepository.observeUserData()
         Task {
-            if let roomId = await UserRepository.getBeingRoomId() {
+            if let roomId = await UserRepository.getCurrentRoomId() {
                 self.roomId = roomId
                 isShowReplayAlert = true
             } else {

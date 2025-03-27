@@ -17,4 +17,14 @@ class PlayerDataStore: ObservableObject {
     @Published var negotiationArray: [Negotiation] = []
     @Published var dealArray: [Deal] = []
     @Published var countDownTimer: Int = 60
+    
+    func cleanUp() {
+        self.playingRoom = PlayTagRoom()
+        self.userArray.removeAll()
+        self.playerArray.removeAll()
+        self.selectedPlayers.removeAll()
+        self.selectedPlayer = Player()
+        self.negotiationArray.removeAll()
+        self.dealArray.removeAll()
+    }
 }

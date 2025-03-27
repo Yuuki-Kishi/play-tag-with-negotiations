@@ -37,7 +37,7 @@ class UserRepository {
     }
     
     static func isBeingRoom() async -> Bool {
-        if let beingRoomId = await getBeingRoomId() { return true }
+        if let currentRoomId = await getCurrentRoomId() { return true }
         return false
     }
     
@@ -54,12 +54,12 @@ class UserRepository {
         return nil
     }
     
-    static func getBeingRoomId() async -> String? {
+    static func getCurrentRoomId() async -> String? {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return nil }
         do {
             let document = try await Firestore.firestore().collection("Users").document(userId).getDocument()
-            guard let beingRoomId = document.get("beingRoomId") as? String else { return nil }
-            return beingRoomId
+            guard let currentRoomId = document.get("currentRoomId") as? String else { return nil }
+            return currentRoomId
         } catch {
             print(error)
         }
@@ -108,7 +108,7 @@ class UserRepository {
         let encoded = try! JSONEncoder().encode(playedRoomId)
         do {
             guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
-            try await Firestore.firestore().collection("Users").document(userId).setData(["beingRoomId": roomId], merge: true)
+            try await Firestore.firestore().collection("Users").document(userId).setData(["currentRoomId": roomId], merge: true)
             try await Firestore.firestore().collection("Users").document(userId).updateData(["playedRoomIds": FieldValue.arrayUnion([jsonObject])])
         } catch {
             print(error)
@@ -121,7 +121,7 @@ class UserRepository {
         let encoded = try! JSONEncoder().encode(playedRoomId)
         do {
             guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
-            try await Firestore.firestore().collection("Users").document(userId).updateData(["beingRoomId": FieldValue.delete(), "playedRoomIds": FieldValue.arrayRemove([jsonObject])])
+            try await Firestore.firestore().collection("Users").document(userId).updateData(["currentRoomId": FieldValue.delete(), "playedRoomIds": FieldValue.arrayRemove([jsonObject])])
         } catch {
             print(error)
         }
@@ -131,7 +131,7 @@ class UserRepository {
     static func finishGame() async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         do {
-            try await Firestore.firestore().collection("Users").document(userId).updateData(["beingRoomId": FieldValue.delete()])
+            try await Firestore.firestore().collection("Users").document(userId).updateData(["currentRoomId": FieldValue.delete()])
         } catch {
             print(error)
         }

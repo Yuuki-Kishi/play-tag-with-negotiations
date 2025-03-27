@@ -34,7 +34,7 @@ struct RoomSettingView: View {
             })
             Button(action: {
                 Task {
-                    await PlayTagRoomRepository.createPlayTagRoom()
+                    await PlayTagRoomRepository.createAndEnterPlayTagRoom()
                     pathDataStore.navigatetionPath.append(.waitingRoom)
                 }
             }, label: {
