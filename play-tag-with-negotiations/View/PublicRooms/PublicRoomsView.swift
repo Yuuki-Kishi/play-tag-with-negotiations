@@ -197,17 +197,11 @@ struct PublicRoomsView: View {
         Task {
             if await PlayTagRoomRepository.isExists(roomId: roomId) {
                 if await !PlayTagRoomRepository.isOverPlayerCount(roomId: roomId) {
-                    guard let playingRoom = await PlayTagRoomRepository.getRoomData(roomId: roomId) else { return }
-                    playerDataStore.playingRoom = playingRoom
                     roomId = ""
-                    if playingRoom.isFinished {
-                        await PlayTagRoomRepository.gameFinished()
+                    if playerDataStore.playingRoom.isPlaying {
+                        pathDataStore.navigatetionPath.append(.game)
                     } else {
-                        if playingRoom.isPlaying {
-                            pathDataStore.navigatetionPath.append(.game)
-                        } else {
-                            pathDataStore.navigatetionPath.append(.waitingRoom)
-                        }
+                        pathDataStore.navigatetionPath.append(.waitingRoom)
                     }
                 } else {
                     isShowOverPlayerAlert = true
@@ -279,8 +273,14 @@ struct PublicRoomsView: View {
         UserRepository.observeUserData()
         Task {
             if let roomId = await UserRepository.getCurrentRoomId() {
-                self.roomId = roomId
-                isShowReplayAlert = true
+                guard let playingRoom = await PlayTagRoomRepository.getRoomData(roomId: roomId) else { return }
+                playerDataStore.playingRoom = playingRoom
+                if playingRoom.isFinished {
+                    await PlayTagRoomRepository.gameFinished()
+                } else {
+                    self.roomId = roomId
+                    isShowReplayAlert = true
+                }
             } else {
                 PlayTagRoomRepository.observePublicRooms()
                 NoticeRepository.observeNotice()

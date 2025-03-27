@@ -77,9 +77,9 @@ class PlayerRepository {
         if player.isChaser { return judgelayer }
         let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
         let chasers = players.filter { $0.isChaser }
-        guard let fugitivePosition = player.move.first(where: { $0.phase == phaseNow }) else { return player }
+        guard let fugitivePosition = player.move.determinePosition else { return player }
         for chaser in chasers {
-            guard let chaserPosition = chaser.move.first(where: { $0.phase == phaseNow }) else { continue }
+            guard let chaserPosition = chaser.move.determinePosition else { continue }
             if chaserPosition == fugitivePosition {
                 let isContain = player.catchers.contains(chaser.playerUserId)
                 if isContain {

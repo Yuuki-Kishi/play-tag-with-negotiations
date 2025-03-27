@@ -92,7 +92,6 @@ extension Array where Element == Player {
     var guestUsers: [User] {
         let guests = self.guests
         return guests.users
-        
     }
     
     var playing: [Element] {
@@ -114,6 +113,21 @@ extension Array where Element == Player {
     mutating func remove(userId: String) {
         guard let index = firstIndex(where: { $0.playerUserId == userId }) else { return }
         self.remove(at: index)
+    }
+}
+
+extension Array where Element == PlayerPosition {
+    var determinePosition: Element? {
+        let phaseNow = PlayerDataStore.shared.playingRoom.phaseNow
+        if let position = self.first(where: { $0.phase ==  phaseNow }) {
+            return position
+        } else {
+            if let lastPosition = self.filter({ $0.phase <= phaseNow }).last {
+                return lastPosition
+            } else {
+                return nil
+            }
+        }
     }
 }
 

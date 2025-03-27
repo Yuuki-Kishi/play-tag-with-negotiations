@@ -14,18 +14,34 @@ struct NotRankResultViewCell: View {
     
     var body: some View {
         HStack {
-            Text(user().userName)
-                .frame(alignment: .leading)
-                .font(.system(size: 20))
-                .foregroundStyle(userNameColor())
-                .lineLimit(1)
-            Spacer()
-            Image(systemName: isChaserIcon())
-                .foregroundStyle(iconColor())
-                .font(.system(size: 25))
-            Text(String(player.point) + "pt")
-                .font(.system(size: 25))
-                .foregroundStyle(Color.primary)
+            if let iconImage = getIconImage() {
+                Image(uiImage: iconImage)
+                    .resizable()
+                    .scaledToFill()
+                    .clipShape(Circle())
+                    .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
+            } else {
+                Image(systemName: "person.circle")
+                    .foregroundStyle(Color.accentColor)
+                    .font(.system(size: 40.0))
+                    .frame(width: UIScreen.main.bounds.width / 10, height: UIScreen.main.bounds.width / 10)
+            }
+            VStack {
+                Text(user().userName)
+                    .foregroundStyle(userNameColor())
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.system(size: 25))
+                HStack {
+                    Text(String(player.point) + "pt")
+                        .font(.system(size: 15))
+                        .frame(width: 60)
+                        .foregroundStyle(Color.primary)
+                    Image(systemName: isChaserIcon())
+                        .foregroundStyle(iconColor())
+                        .font(.system(size: 25))
+                    Spacer()
+                }
+            }
             if isDisplayButton() {
                 Button(action: {
                     Task {
@@ -60,6 +76,13 @@ struct NotRankResultViewCell: View {
         }
         return color
     }
+    func getIconImage() -> UIImage? {
+        if let iconData = user().iconData {
+            return UIImage(data: iconData)
+        } else {
+            return nil
+        }
+    }
     func isChaserIcon() -> String {
         if player.isChaser {
             return "figure.run.circle"
@@ -85,6 +108,6 @@ struct NotRankResultViewCell: View {
     }
 }
 
-//#Preview {
-//    NotRankResultViewCell(playerDataStore: PlayerDataStore.shared, player: Player())
-//}
+#Preview {
+    NotRankResultViewCell(playerDataStore: PlayerDataStore.shared, player: Binding(get: { Player()}, set: {_ in}))
+}
