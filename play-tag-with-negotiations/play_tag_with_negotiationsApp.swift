@@ -32,10 +32,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct play_tag_with_negotiationsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
-    init() {
-        try? Tips.resetDatastore()
-        try? Tips.configure()
-    }
+//    init() {
+//        try? Tips.resetDatastore()
+//        try? Tips.configure()
+//    }
     
     var body: some Scene {
         WindowGroup {
