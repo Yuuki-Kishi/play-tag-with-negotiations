@@ -10,6 +10,7 @@ import SwiftUI
 struct FriendShipView: View {
     @ObservedObject var userDataStore: UserDataStore
     @StateObject var friendDataStore =  FriendDataStore.shared
+    @State private var isShowDeleteFriend = false
     
     enum status: String, CaseIterable, Identifiable {
         case friend
@@ -44,7 +45,27 @@ struct FriendShipView: View {
                 if !friendDataStore.friendShips.friends.isEmpty {
                     List(friendDataStore.friendShips.friends) { friendShip in
                         FriendViewCell(friendShip: Binding(get: { friendShip }, set: {_ in}))
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive, action: {
+                                    isShowDeleteFriend = true
+                                }, label: {
+                                    Text("解消")
+                                })
+                            }
+                            
                     }
+                    .alert("フレンドを解消しますか？", isPresented: $isShowDeleteFriend, actions: {
+                        Button(role: .cancel, action: {}, label: {
+                            Text("キャンセル")
+                        })
+                        Button(role: .destructive, action: {
+                            Task {
+                                await FriendShipRepository.deleteFriend(pertnerUserId: friendShip.pertnerUser.userId)
+                            }
+                        }, label: {
+                            Text("解消")
+                        })
+                    })
                 } else {
                     Spacer()
                     Text("フレンドがいません")

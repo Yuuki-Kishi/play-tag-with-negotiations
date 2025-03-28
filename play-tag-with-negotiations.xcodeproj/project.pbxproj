@@ -88,6 +88,11 @@
 		DEDEF6F52C23C9BB00A01FFF /* FieldMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */; };
 		DEE9FA7D2D939CB4005D8276 /* PlayedRoomId.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE9FA7C2D939CB4005D8276 /* PlayedRoomId.swift */; };
 		DEE9FA7F2D93DDC1005D8276 /* NotRankResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE9FA7E2D93DDC1005D8276 /* NotRankResultViewCell.swift */; };
+		DEE9FA822D9637A0005D8276 /* FightRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE9FA812D9637A0005D8276 /* FightRecordView.swift */; };
+		DEE9FA882D963979005D8276 /* FightRecordViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE9FA872D963979005D8276 /* FightRecordViewCell.swift */; };
+		DEE9FA8C2D963A14005D8276 /* PlayedRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE9FA8B2D963A14005D8276 /* PlayedRoom.swift */; };
+		DEE9FA8E2D964245005D8276 /* PlayedRoomRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE9FA8D2D964245005D8276 /* PlayedRoomRepository.swift */; };
+		DEE9FA902D96720E005D8276 /* PlayedRoomIdRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE9FA8F2D96720E005D8276 /* PlayedRoomIdRepository.swift */; };
 		DEFA1C1F2C8C976400CB4458 /* DealSuccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C1E2C8C976400CB4458 /* DealSuccess.swift */; };
 		DEFA1C212C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C202C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift */; };
 		DEFA1C252C8DB0FF00CB4458 /* DealFulfill.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFA1C242C8DB0FF00CB4458 /* DealFulfill.swift */; };
@@ -194,6 +199,11 @@
 		DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldMapView.swift; sourceTree = "<group>"; };
 		DEE9FA7C2D939CB4005D8276 /* PlayedRoomId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayedRoomId.swift; sourceTree = "<group>"; };
 		DEE9FA7E2D93DDC1005D8276 /* NotRankResultViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotRankResultViewCell.swift; sourceTree = "<group>"; };
+		DEE9FA812D9637A0005D8276 /* FightRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FightRecordView.swift; sourceTree = "<group>"; };
+		DEE9FA872D963979005D8276 /* FightRecordViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FightRecordViewCell.swift; sourceTree = "<group>"; };
+		DEE9FA8B2D963A14005D8276 /* PlayedRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayedRoom.swift; sourceTree = "<group>"; };
+		DEE9FA8D2D964245005D8276 /* PlayedRoomRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayedRoomRepository.swift; sourceTree = "<group>"; };
+		DEE9FA8F2D96720E005D8276 /* PlayedRoomIdRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayedRoomIdRepository.swift; sourceTree = "<group>"; };
 		DEFA1C1E2C8C976400CB4458 /* DealSuccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealSuccess.swift; sourceTree = "<group>"; };
 		DEFA1C202C8CB17700CB4458 /* DealPanelViewNegotiationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealPanelViewNegotiationCell.swift; sourceTree = "<group>"; };
 		DEFA1C242C8DB0FF00CB4458 /* DealFulfill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealFulfill.swift; sourceTree = "<group>"; };
@@ -410,6 +420,7 @@
 				DE5748AE2D92F07F0054CD52 /* DeleteUserView.swift */,
 				DE5748772D890AF30054CD52 /* Tutorial */,
 				DEAB38732C205F2B007639F6 /* PublicRooms */,
+				DEE9FA802D963786005D8276 /* FightRecord */,
 				DE12A75F2C758E7900F7B0DF /* NoticeView */,
 				DEDB91562C189BAF00A8DA37 /* RoomSetting */,
 				DEAB38762C206083007639F6 /* MyPage */,
@@ -448,6 +459,8 @@
 			isa = PBXGroup;
 			children = (
 				DE06B9752CFC38B900CB4AEA /* UserRepository.swift */,
+				DEE9FA8D2D964245005D8276 /* PlayedRoomRepository.swift */,
+				DEE9FA8F2D96720E005D8276 /* PlayedRoomIdRepository.swift */,
 				DEDD96B52D06E49A008BAAF7 /* NoticeRepository.swift */,
 				DEDD96B72D06EAC0008BAAF7 /* FriendShipRepository.swift */,
 				DEDD96B92D06F922008BAAF7 /* PlayTagRoomRepository.swift */,
@@ -546,6 +559,7 @@
 			children = (
 				DEAB386E2C1EB32E007639F6 /* User.swift */,
 				DEE9FA7C2D939CB4005D8276 /* PlayedRoomId.swift */,
+				DEE9FA8B2D963A14005D8276 /* PlayedRoom.swift */,
 				DE12A75D2C75883B00F7B0DF /* Notice.swift */,
 				DEFA54FF2C401D6200CF6BD1 /* FriendShip.swift */,
 				DEDB914D2C173A2400A8DA37 /* PlayTagRoom.swift */,
@@ -585,6 +599,15 @@
 				DEFA54F52C3D71B300CF6BD1 /* ControlPanel */,
 			);
 			path = Element;
+			sourceTree = "<group>";
+		};
+		DEE9FA802D963786005D8276 /* FightRecord */ = {
+			isa = PBXGroup;
+			children = (
+				DEE9FA812D9637A0005D8276 /* FightRecordView.swift */,
+				DEE9FA872D963979005D8276 /* FightRecordViewCell.swift */,
+			);
+			path = FightRecord;
 			sourceTree = "<group>";
 		};
 		DEFA1C1D2C8C971C00CB4458 /* Deal */ = {
@@ -799,6 +822,7 @@
 				DEB2B1EC2D617835007E01C9 /* PlayerInfoListViewCell.swift in Sources */,
 				DEDD96B62D06E49A008BAAF7 /* NoticeRepository.swift in Sources */,
 				DE57488E2D89631D0054CD52 /* TutorialFieldMapViewCell.swift in Sources */,
+				DEE9FA8E2D964245005D8276 /* PlayedRoomRepository.swift in Sources */,
 				DEDEF6F52C23C9BB00A01FFF /* FieldMapView.swift in Sources */,
 				DE57489C2D8965EE0054CD52 /* TutorialMovePanelViewButton.swift in Sources */,
 				DEFA551B2C43A07D00CF6BD1 /* ArrayExtension.swift in Sources */,
@@ -811,6 +835,7 @@
 				DEAB38782C2060D3007639F6 /* MyPageListView.swift in Sources */,
 				DEFA55032C40204500CF6BD1 /* SelectionView.swift in Sources */,
 				DEFA54F42C3D5C6700CF6BD1 /* RoomDataStore.swift in Sources */,
+				DEE9FA882D963979005D8276 /* FightRecordViewCell.swift in Sources */,
 				DEDB913E2C17343500A8DA37 /* ContentView.swift in Sources */,
 				DEB2B1EE2D7402C7007E01C9 /* TimerDataStore.swift in Sources */,
 				DE57487D2D890BDA0054CD52 /* TutorialWaitingRoomView.swift in Sources */,
@@ -830,17 +855,20 @@
 				DE5747EE2D7DED7E0054CD52 /* DealPanelViewProposedCell.swift in Sources */,
 				DEFA1C1F2C8C976400CB4458 /* DealSuccess.swift in Sources */,
 				DE5748882D893F000054CD52 /* TutorialRoomSettingViewCell.swift in Sources */,
+				DEE9FA822D9637A0005D8276 /* FightRecordView.swift in Sources */,
 				DEDB913C2C17343500A8DA37 /* play_tag_with_negotiationsApp.swift in Sources */,
 				DE06B97A2CFC431400CB4AEA /* PlayerRepository.swift in Sources */,
 				DEAB386F2C1EB32E007639F6 /* User.swift in Sources */,
 				DEFA54D22C3103D100CF6BD1 /* PlayerDataStore.swift in Sources */,
 				DEE9FA7F2D93DDC1005D8276 /* NotRankResultViewCell.swift in Sources */,
 				DE5748942D89659E0054CD52 /* TutorialSelectionView.swift in Sources */,
+				DEE9FA902D96720E005D8276 /* PlayedRoomIdRepository.swift in Sources */,
 				DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */,
 				DEDB91552C18890400A8DA37 /* RoomSettingView.swift in Sources */,
 				DE5748962D8965B10054CD52 /* TutorialControlPanelCoordination.swift in Sources */,
 				DE5748A42D8967A90054CD52 /* TutorialPlayerInfoView.swift in Sources */,
 				DEFA550A2C414AC500CF6BD1 /* DealClientPanelViewCell.swift in Sources */,
+				DEE9FA8C2D963A14005D8276 /* PlayedRoom.swift in Sources */,
 				DEFA55132C426CD200CF6BD1 /* FriendViewCell.swift in Sources */,
 				DE5748AF2D92F07F0054CD52 /* DeleteUserView.swift in Sources */,
 				DEFA1C252C8DB0FF00CB4458 /* DealFulfill.swift in Sources */,

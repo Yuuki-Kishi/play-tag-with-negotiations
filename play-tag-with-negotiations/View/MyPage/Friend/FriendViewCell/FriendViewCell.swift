@@ -9,7 +9,6 @@ import SwiftUI
 
 struct FriendViewCell: View {
     @Binding var friendShip: FriendShip
-    @State private var isShowAlert = false
     
     var body: some View {
         HStack {
@@ -35,26 +34,6 @@ struct FriendViewCell: View {
                     .font(.system(size: 15))
             }
         }
-        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            Button(action: {
-                isShowAlert = true
-            }, label: {
-                Text("解消")
-            })
-        }
-        .tint(Color.red)
-        .alert("フレンドを解消しますか？", isPresented: $isShowAlert, actions: {
-            Button(role: .cancel, action: {}, label: {
-                Text("キャンセル")
-            })
-            Button(role: .destructive, action: {
-                Task {
-                    await FriendShipRepository.deleteFriend(pertnerUserId: friendShip.pertnerUser.userId)
-                }
-            }, label: {
-                Text("解消")
-            })
-        })
     }
     func iconImage() -> UIImage? {
         guard let iconData = friendShip.pertnerUser.iconData else { return nil }

@@ -147,6 +147,8 @@ struct PublicRoomsView: View {
             TutorialGameVIew(tutorialDataStore: tutorialDataStore, pathDataStore: pathDataStore)
         case .TutorialResult:
             TutorialResultView(tutorialDataStore: tutorialDataStore, pathDataStore: pathDataStore)
+        case .fightRecord:
+            FightRecordView(userDataStore: userDataStore)
         case .roomSetting:
             RoomSettingView(userDataStore: userDataStore, playerDataStore: playerDataStore, pathDataStore: pathDataStore)
         case .notice:
@@ -235,6 +237,11 @@ struct PublicRoomsView: View {
                 pathDataStore.navigatetionPath.append(.myPage)
             }, label: {
                 Label("マイページ", systemImage: "person.circle")
+            })
+            Button(action: {
+                pathDataStore.navigatetionPath.append(.fightRecord)
+            }, label: {
+                Label("戦績", systemImage: "clock.arrow.trianglehead.counterclockwise.rotate.90")
             })
             Menu {
                 Button(action: { roomDataStore.publicRoomsArray.sort {$0.playTagName < $1.playTagName}}, label: {

@@ -17,7 +17,7 @@ class PlayerRepository {
             let player = Player(playerUserId: userId, isHost: isHost)
             guard let playerNumber = await PlayTagRoomRepository.getRoomData(roomId: roomId)?.playerNumber else { return }
             let encoded = try! JSONEncoder().encode(player)
-            await UserRepository.addPlayedRoomIds(roomId: roomId)
+            await PlayedRoomIdRepository.addPlayedRoomIds(roomId: roomId)
             do {
                 guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
                 try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).setData(jsonObject)
@@ -237,7 +237,7 @@ class PlayerRepository {
     static func exitRoom(roomId: String = PlayerDataStore.shared.playingRoom.roomId) async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }
         let playerNumber = PlayerDataStore.shared.playingRoom.playerNumber - 1
-        await UserRepository.removePlayedRoomIds(roomId: roomId)
+        await PlayedRoomIdRepository.removePlayedRoomIds(roomId: roomId)
         do {
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).collection("Players").document(userId).delete()
             try await Firestore.firestore().collection("PlayTagRooms").document(roomId).updateData(["playerNumber": playerNumber])

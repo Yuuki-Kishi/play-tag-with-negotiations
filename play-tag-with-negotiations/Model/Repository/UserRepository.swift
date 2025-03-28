@@ -102,31 +102,6 @@ class UserRepository {
         }
     }
     
-    static func addPlayedRoomIds(roomId: String) async {
-        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-        let playedRoomId = PlayedRoomId(roomId: roomId)
-        let encoded = try! JSONEncoder().encode(playedRoomId)
-        do {
-            guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
-            try await Firestore.firestore().collection("Users").document(userId).setData(["currentRoomId": roomId], merge: true)
-            try await Firestore.firestore().collection("Users").document(userId).updateData(["playedRoomIds": FieldValue.arrayUnion([jsonObject])])
-        } catch {
-            print(error)
-        }
-    }
-    
-    static func removePlayedRoomIds(roomId: String) async {
-        guard let userId = UserDataStore.shared.signInUser?.userId else { return }
-        guard let playedRoomId = UserDataStore.shared.signInUser?.playedRoomIds.first(where: { $0.roomId == roomId }) else { return }
-        let encoded = try! JSONEncoder().encode(playedRoomId)
-        do {
-            guard let jsonObject = try JSONSerialization.jsonObject(with: encoded, options: []) as? [String: Any] else { return }
-            try await Firestore.firestore().collection("Users").document(userId).updateData(["currentRoomId": FieldValue.delete(), "playedRoomIds": FieldValue.arrayRemove([jsonObject])])
-        } catch {
-            print(error)
-        }
-    }
-    
 //    delete
     static func finishGame() async {
         guard let userId = UserDataStore.shared.signInUser?.userId else { return }

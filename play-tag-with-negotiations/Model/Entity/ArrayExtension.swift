@@ -57,6 +57,25 @@ extension Array where Element == FriendShip {
     }
 }
 
+extension Array where Element == PlayedRoom {
+    var isFinished: [Element] {
+        return self.filter { $0.isFinished && $0.isPlaying }
+    }
+    
+    mutating func append(noDuplicate item: Element) {
+        if let index = self.firstIndex(of: item) {
+            self[index] = item
+        } else {
+            self.append(item)
+        }
+    }
+    
+    mutating func remove(playedRoom: PlayedRoom) {
+        guard let index = self.firstIndex(of: playedRoom) else { return }
+        self.remove(at: index)
+    }
+}
+
 extension Array where Element == PlayTagRoom {
     mutating func append(noDuplicate item: Element) {
         if let index = self.firstIndex(of: item) {

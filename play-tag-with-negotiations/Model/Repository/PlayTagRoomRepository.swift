@@ -26,7 +26,7 @@ class PlayTagRoomRepository {
         } catch {
             print(error)
         }
-        await UserRepository.addPlayedRoomIds(roomId: playTagRoom.roomId)
+        await PlayedRoomIdRepository.addPlayedRoomIds(roomId: playTagRoom.roomId)
     }
     
     //    check
@@ -115,7 +115,7 @@ class PlayTagRoomRepository {
         } catch {
             print(error)
         }
-        await UserRepository.removePlayedRoomIds(roomId: roomId)
+        await PlayedRoomIdRepository.removePlayedRoomIds(roomId: roomId)
     }
     
     //    observe

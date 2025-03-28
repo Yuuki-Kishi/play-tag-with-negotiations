@@ -14,6 +14,7 @@ class UserDataStore: ObservableObject {
     @Published var signInUser: User? = nil
     @Published var displayControlPanel: controlPanelMode = .movement
     @Published var noticeArray: [Notice] = []
+    @Published var fightRecordArray: [PlayedRoom] = []
     @Published var listeners: [listenerType: ListenerRegistration] = [:]
     enum controlPanelMode {
         case movement

@@ -13,6 +13,6 @@ class PathDataStore: ObservableObject {
     @Published var navigatetionPath: [path] = []
     
     enum path {
-        case tutorial, tutorialPublicRooms, tutorialRoomSetting, tutorialWaitingRoom, tutorialGame, TutorialResult, roomSetting, notice, myPage, friend, waitingRoom, roomInfo, invite, game, result, deleteUser
+        case tutorial, tutorialPublicRooms, tutorialRoomSetting, tutorialWaitingRoom, tutorialGame, TutorialResult, fightRecord, roomSetting, notice, myPage, friend, waitingRoom, roomInfo, invite, game, result, deleteUser
     }
 }
