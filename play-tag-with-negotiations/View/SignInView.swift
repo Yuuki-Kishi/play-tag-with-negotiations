@@ -30,8 +30,16 @@ struct SignInView: View {
             .signInWithAppleButtonStyle(.whiteOutline)
             .frame(width: UIScreen.main.bounds.width / 1.5, height: 40)
             Spacer()
+            HStack {
+                Spacer()
+                Text(AppVersion())
+            }
         }
         .padding()
+    }
+    func AppVersion() -> String {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        return String("Version: ") + version
     }
 }
 

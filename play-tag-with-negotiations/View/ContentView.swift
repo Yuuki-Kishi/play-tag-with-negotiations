@@ -27,6 +27,10 @@ struct ContentView: View {
                     Spacer()
                     Text("ログインデータを確認中...")
                     Spacer()
+                    HStack {
+                        Spacer()
+                        Text(AppVersion())
+                    }
                 }
             } else {
                 if userDataStore.signInUser == nil {
@@ -55,6 +59,10 @@ struct ContentView: View {
                 isShowUpdateAlert = await AppVersionRepository.versionCheck()
             }
         }
+    }
+    func AppVersion() -> String {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        return String("Version: ") + version
     }
 }
 
