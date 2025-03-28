@@ -9,8 +9,7 @@ import SwiftUI
 
 struct PendingViewCell: View {
     @Binding var friendShip: FriendShip
-    @State private var isShowBeFriendAlert = false
-    @State private var isShowDeleteFirendAlert = false
+    @State private var isShowAlert = false
     
     var body: some View {
         HStack {
@@ -36,21 +35,10 @@ struct PendingViewCell: View {
                     .font(.system(size: 15))
             }
         }
-        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            Button(action: {
-                isShowDeleteFirendAlert = true
-            }, label: {
-                Text("削除")
-            })
-        }
-        .tint(Color.red)
         .onTapGesture {
-            isShowBeFriendAlert = true
+            isShowAlert = true
         }
-        .alert("フレンド申請を承認しますか？", isPresented: $isShowBeFriendAlert, actions: {
-            Button(role: .cancel, action: {}, label: {
-                Text("キャンセル")
-            })
+        .alert("フレンド申請を承認しますか？", isPresented: $isShowAlert, actions: {
             Button(action: {
                 Task {
                     await FriendShipRepository.becomeFriend(consenter: friendShip.pertnerUser.userId)
@@ -58,17 +46,15 @@ struct PendingViewCell: View {
             }, label: {
                 Text("承認")
             })
-        })
-        .alert("フレンド申請を削除しますか？", isPresented: $isShowDeleteFirendAlert, actions: {
-            Button(role: .cancel, action: {}, label: {
-                Text("キャンセル")
-            })
             Button(role: .destructive, action: {
                 Task {
                     await FriendShipRepository.deleteFriend(pertnerUserId: friendShip.pertnerUser.userId)
                 }
             }, label: {
-                Text("削除")
+                Text("拒否")
+            })
+            Button(role: .cancel, action: {}, label: {
+                Text("キャンセル")
             })
         })
     }

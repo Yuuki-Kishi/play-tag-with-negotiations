@@ -60,6 +60,10 @@ struct PlayerInfoView: View {
                     Text(String(playerDataStore.selectedPlayer.point) + "pt")
                         .font(.system(size: 50))
                         .frame(maxWidth: .infinity, alignment: .trailing)
+                    Image(systemName: isChaserIcon())
+                        .resizable()
+                        .foregroundStyle(iconColor())
+                        .frame(width: 50, height: 50)
                 }
             }
             .padding(.horizontal)
@@ -77,11 +81,9 @@ struct PlayerInfoView: View {
         return user
     }
     func playerRank() -> Int {
-        let me = PlayerDataStore.shared.playerArray.me
-        DispatchQueue.main.async {
-            PlayerDataStore.shared.playerArray.sort { $0.point > $1.point }
-        }
-        guard let index = PlayerDataStore.shared.playerArray.firstIndex(where: { $0.playerUserId == me.playerUserId }) else { return PlayerDataStore.shared.playerArray.count }
+        var playingPlayers = playerDataStore.playerArray.filter { $0.isPlaying }
+        playingPlayers.sort { $0.point > $1.point }
+        guard let index = playingPlayers.firstIndex(where: { $0.isMe }) else { return playingPlayers.count }
         return index + 1
     }
     func playerRankText() -> String {
@@ -107,6 +109,28 @@ struct PlayerInfoView: View {
             return Color.orange
         default:
             return Color.indigo
+        }
+    }
+    func isChaserIcon() -> String {
+        if playerDataStore.selectedPlayer.isChaser {
+            if playerDataStore.selectedPlayer.isMe {
+                return "figure.run.circle.fill"
+            } else {
+                return "figure.run.circle"
+            }
+        } else {
+            if playerDataStore.selectedPlayer.isMe {
+                return "figure.walk.circle.fill"
+            } else {
+                return "figure.walk.circle"
+            }
+        }
+    }
+    func iconColor() -> Color {
+        if playerDataStore.selectedPlayer.isChaser {
+            return .red
+        } else {
+            return .blue
         }
     }
     func selectClear() {

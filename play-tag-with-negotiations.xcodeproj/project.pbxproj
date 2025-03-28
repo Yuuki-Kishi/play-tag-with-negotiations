@@ -87,7 +87,6 @@
 		DEDEF6F32C23C9AF00A01FFF /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F22C23C9AF00A01FFF /* GameView.swift */; };
 		DEDEF6F52C23C9BB00A01FFF /* FieldMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */; };
 		DEE9FA7D2D939CB4005D8276 /* PlayedRoomId.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE9FA7C2D939CB4005D8276 /* PlayedRoomId.swift */; };
-		DEE9FA7F2D93DDC1005D8276 /* NotRankResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE9FA7E2D93DDC1005D8276 /* NotRankResultViewCell.swift */; };
 		DEE9FA822D9637A0005D8276 /* FightRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE9FA812D9637A0005D8276 /* FightRecordView.swift */; };
 		DEE9FA882D963979005D8276 /* FightRecordViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE9FA872D963979005D8276 /* FightRecordViewCell.swift */; };
 		DEE9FA8C2D963A14005D8276 /* PlayedRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE9FA8B2D963A14005D8276 /* PlayedRoom.swift */; };
@@ -198,7 +197,6 @@
 		DEDEF6F22C23C9AF00A01FFF /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		DEDEF6F42C23C9BB00A01FFF /* FieldMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldMapView.swift; sourceTree = "<group>"; };
 		DEE9FA7C2D939CB4005D8276 /* PlayedRoomId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayedRoomId.swift; sourceTree = "<group>"; };
-		DEE9FA7E2D93DDC1005D8276 /* NotRankResultViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotRankResultViewCell.swift; sourceTree = "<group>"; };
 		DEE9FA812D9637A0005D8276 /* FightRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FightRecordView.swift; sourceTree = "<group>"; };
 		DEE9FA872D963979005D8276 /* FightRecordViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FightRecordViewCell.swift; sourceTree = "<group>"; };
 		DEE9FA8B2D963A14005D8276 /* PlayedRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayedRoom.swift; sourceTree = "<group>"; };
@@ -262,7 +260,6 @@
 			children = (
 				DE12A74E2C66722C00F7B0DF /* ResultView.swift */,
 				DE12A7522C6672CD00F7B0DF /* RankResultViewCell.swift */,
-				DEE9FA7E2D93DDC1005D8276 /* NotRankResultViewCell.swift */,
 			);
 			path = Result;
 			sourceTree = "<group>";
@@ -860,7 +857,6 @@
 				DE06B97A2CFC431400CB4AEA /* PlayerRepository.swift in Sources */,
 				DEAB386F2C1EB32E007639F6 /* User.swift in Sources */,
 				DEFA54D22C3103D100CF6BD1 /* PlayerDataStore.swift in Sources */,
-				DEE9FA7F2D93DDC1005D8276 /* NotRankResultViewCell.swift in Sources */,
 				DE5748942D89659E0054CD52 /* TutorialSelectionView.swift in Sources */,
 				DEE9FA902D96720E005D8276 /* PlayedRoomIdRepository.swift in Sources */,
 				DEAB384E2C1DC27D007639F6 /* WaitingRoomView.swift in Sources */,

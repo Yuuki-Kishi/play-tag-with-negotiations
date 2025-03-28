@@ -33,8 +33,9 @@ struct FightRecordViewCell: View {
         }
     }
     func playerRank() -> Int {
-        playedRoom.players.sort { $0.point > $1.point }
-        guard let index = playedRoom.players.firstIndex(where: { $0.isMe }) else { return playedRoom.players.count }
+        var playingPlayers = playedRoom.players.filter { $0.isPlaying }
+        playingPlayers.sort { $0.point > $1.point }
+        guard let index = playingPlayers.firstIndex(where: { $0.isMe }) else { return playingPlayers.count }
         return index + 1
     }
     func playerRankText() -> String {

@@ -50,6 +50,7 @@ struct NoticeViewCell: View {
                 }
             }
         }
+        .clipShape(Rectangle())
         .onTapGesture {
             Task {
                 switch notice.noticeType {

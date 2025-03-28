@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ApplyingViewCell: View {
     @Binding var friendShip: FriendShip
-    @State private var isShowDeleteFirendAlert = false
+    @State private var isShowAlert = false
     
     var body: some View {
         HStack {
@@ -35,15 +35,10 @@ struct ApplyingViewCell: View {
                     .font(.system(size: 15))
             }
         }
-        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            Button(action: {
-                isShowDeleteFirendAlert = true
-            }, label: {
-                Text("削除")
-            })
+        .onTapGesture {
+            isShowAlert = true
         }
-        .tint(Color.red)
-        .alert("フレンド申請を削除しますか？", isPresented: $isShowDeleteFirendAlert, actions: {
+        .alert("フレンド申請を削除しますか？", isPresented: $isShowAlert, actions: {
             Button(role: .cancel, action: {}, label: {
                 Text("キャンセル")
             })

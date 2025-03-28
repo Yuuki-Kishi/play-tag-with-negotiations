@@ -22,14 +22,14 @@ struct ResultView: View {
             List {
                 Section(content: {
                     ForEach(playerDataStore.playerArray.playing, id: \.playerUserId) { player in
-                        RankResultViewCell(playerDataStore: playerDataStore, player: Binding(get: { player }, set: {_ in}))
+                        ResultViewCell(playerDataStore: playerDataStore, player: Binding(get: { player }, set: {_ in}))
                     }
                 }, header: {
                     Text("ランキング")
                 })
                 Section(content: {
                     ForEach(playerDataStore.playerArray.notPlaying, id: \.playerUserId) { player in
-                        NotRankResultViewCell(playerDataStore: playerDataStore, player: Binding(get: { player }, set: {_ in}))
+                        ResultViewCell(playerDataStore: playerDataStore, player: Binding(get: { player }, set: {_ in}))
                     }
                 }, header: {
                     Text("ゲーム離脱者")
@@ -54,14 +54,15 @@ struct ResultView: View {
         }
     }
     func playerRank() -> Int {
-        let me = PlayerDataStore.shared.playerArray.me
-        DispatchQueue.main.async {
-            PlayerDataStore.shared.playerArray.sort { $0.point > $1.point }
-        }
-        guard let index = PlayerDataStore.shared.playerArray.firstIndex(where: { $0.playerUserId == me.playerUserId }) else { return PlayerDataStore.shared.playerArray.count }
+        var playingPlayers = playerDataStore.playerArray.filter { $0.isPlaying }
+        playingPlayers.sort { $0.point > $1.point }
+        guard let index = playingPlayers.firstIndex(where: { $0.isMe }) else { return playingPlayers.count }
         return index + 1
     }
     func playerRankText() -> String {
+        if !playerDataStore.playerArray.me.isPlaying {
+            return "N/A"
+        }
         let rank = playerRank()
         switch rank {
         case 1:
@@ -75,6 +76,9 @@ struct ResultView: View {
         }
     }
     func playerRankTextColor() -> Color {
+        if !playerDataStore.playerArray.me.isPlaying {
+            return .primary
+        }
         switch playerRank() {
         case 1:
             return Color.pink

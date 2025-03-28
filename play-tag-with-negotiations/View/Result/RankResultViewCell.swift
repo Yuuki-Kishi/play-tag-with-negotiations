@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RankResultViewCell: View {
+struct ResultViewCell: View {
     @ObservedObject var playerDataStore: PlayerDataStore
     @Binding var player: Player
     @State private var isShowAlert = false
@@ -15,8 +15,8 @@ struct RankResultViewCell: View {
     var body: some View {
         HStack {
             Text(playerRankText())
-                .font(.system(size: 40))
-                .frame(width: 70)
+                .font(.system(size: 30))
+                .frame(width: 60)
                 .foregroundStyle(playerRankTextColor())
             if let iconImage = getIconImage() {
                 Image(uiImage: iconImage)
@@ -34,18 +34,16 @@ struct RankResultViewCell: View {
                 Text(user().userName)
                     .foregroundStyle(userNameColor())
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.system(size: 25))
-                HStack {
-                    Text(String(player.point) + "pt")
-                        .font(.system(size: 15))
-                        .frame(width: 60)
-                        .foregroundStyle(Color.primary)
-                    Image(systemName: isChaserIcon())
-                        .foregroundStyle(iconColor())
-                        .font(.system(size: 25))
-                    Spacer()
-                }
+                    .font(.system(size: 20))
+                Text(String(player.point) + "pt")
+                    .font(.system(size: 15))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundStyle(Color.primary)
             }
+            Image(systemName: isChaserIcon())
+                .resizable()
+                .foregroundStyle(iconColor())
+                .frame(width: 30, height: 30)
             if isDisplayButton() {
                 Button(action: {
                     Task {
@@ -74,10 +72,15 @@ struct RankResultViewCell: View {
         }
     }
     func playerRank() -> Int {
-        guard let index = playerDataStore.playerArray.firstIndex(where: { $0.playerUserId == player.playerUserId }) else { return playerDataStore.playerArray.count }
+        var playingPlayers = playerDataStore.playerArray.filter { $0.isPlaying }
+        playingPlayers.sort { $0.point > $1.point }
+        guard let index = playingPlayers.firstIndex(where: { $0.playerUserId == player.playerUserId }) else { return playingPlayers.count }
         return index + 1
     }
     func playerRankText() -> String {
+        if !player.isPlaying {
+            return "N/A"
+        }
         let rank = playerRank()
         switch rank {
         case 1:
@@ -91,6 +94,9 @@ struct RankResultViewCell: View {
         }
     }
     func playerRankTextColor() -> Color {
+        if !player.isPlaying {
+            return .primary
+        }
         let rank = playerRank()
         switch rank {
         case 1:
@@ -119,9 +125,17 @@ struct RankResultViewCell: View {
     }
     func isChaserIcon() -> String {
         if player.isChaser {
-            return "figure.run.circle"
+            if player.isMe {
+                return "figure.run.circle.fill"
+            } else {
+                return "figure.run.circle"
+            }
         } else {
-            return "figure.walk.circle"
+            if player.isMe {
+                return "figure.walk.circle.fill"
+            } else {
+                return "figure.walk.circle"
+            }
         }
     }
     func iconColor() -> Color {
@@ -142,6 +156,6 @@ struct RankResultViewCell: View {
     }
 }
 
-//#Preview {
-//    RankResultViewCell(playerDataStore: PlayerDataStore.shared, player: Player())
-//}
+#Preview {
+    ResultViewCell(playerDataStore: PlayerDataStore.shared, player: Binding(get: {Player()}, set: {_ in}))
+}

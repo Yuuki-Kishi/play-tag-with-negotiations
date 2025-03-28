@@ -10,7 +10,9 @@ import SwiftUI
 struct FriendShipView: View {
     @ObservedObject var userDataStore: UserDataStore
     @StateObject var friendDataStore =  FriendDataStore.shared
-    @State private var isShowDeleteFriend = false
+    @State private var isShowRequestAlert = false
+    @State private var isShowSendedAlert = false
+    @State private var consenterUserId = ""
     
     enum status: String, CaseIterable, Identifiable {
         case friend
@@ -20,8 +22,8 @@ struct FriendShipView: View {
         var displayName: String {
             switch self {
             case .friend: return "フレンド"
-            case .pending: return "保留中"
-            case .applying: return "申請中"
+            case .pending: return "届いた申請"
+            case .applying: return "送った申請"
             }
         }
         var id: Self {
@@ -45,27 +47,7 @@ struct FriendShipView: View {
                 if !friendDataStore.friendShips.friends.isEmpty {
                     List(friendDataStore.friendShips.friends) { friendShip in
                         FriendViewCell(friendShip: Binding(get: { friendShip }, set: {_ in}))
-                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                Button(role: .destructive, action: {
-                                    isShowDeleteFriend = true
-                                }, label: {
-                                    Text("解消")
-                                })
-                            }
-                            
                     }
-                    .alert("フレンドを解消しますか？", isPresented: $isShowDeleteFriend, actions: {
-                        Button(role: .cancel, action: {}, label: {
-                            Text("キャンセル")
-                        })
-                        Button(role: .destructive, action: {
-                            Task {
-                                await FriendShipRepository.deleteFriend(pertnerUserId: friendShip.pertnerUser.userId)
-                            }
-                        }, label: {
-                            Text("解消")
-                        })
-                    })
                 } else {
                     Spacer()
                     Text("フレンドがいません")
@@ -95,13 +77,44 @@ struct FriendShipView: View {
         }
         .navigationTitle("フレンド")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing, content: {
+                Button(action: {
+                    isShowRequestAlert = true
+                }, label: {
+                    Image(systemName: "plus")
+                })
+            })
+        }
+        .alert("フレンド申請を送る", isPresented: $isShowRequestAlert, actions: {
+            TextField("ユーザーID", text: $consenterUserId)
+            Button(action: {
+                if consenterUserId != "" {
+                    Task {
+                        await FriendShipRepository.sendFriendRequest(consenter: consenterUserId)
+                        isShowSendedAlert = true
+                    }
+                }
+            }, label: {
+                Text("送信")
+            })
+            Button(role: .cancel, action: {}, label: {
+                Text("キャンセル")
+            })
+        }, message: {
+            Text("フレンドのユーザーIDを入力してください。")
+        })
+        .alert("フレンド申請を送信しました", isPresented: $isShowSendedAlert, actions: {
+            Button(action: {}, label: {
+                Text("OK")
+            })
+        })
         .onAppear() {
             FriendShipRepository.observeFriend()
         }
         .onDisappear() {
             userDataStore.listeners.remove(listenerType: .friendShips)
         }
-        .background(Color(UIColor.systemGray6))
     }
 }
 
