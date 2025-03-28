@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct TutorialGameVIew: View {
     @ObservedObject var tutorialDataStore: TutorialDataStore
@@ -14,8 +13,6 @@ struct TutorialGameVIew: View {
     
     var body: some View {
         VStack {
-            TipView(IconTip())
-                .padding(.horizontal)
             TutorialFieldMapView(tutorialDataStore: tutorialDataStore)
                 .frame(maxHeight: .infinity)
             HStack {

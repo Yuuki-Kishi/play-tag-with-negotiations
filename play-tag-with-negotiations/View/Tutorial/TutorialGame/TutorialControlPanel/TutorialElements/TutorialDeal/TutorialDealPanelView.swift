@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct TutorialDealPanelView: View {
     @ObservedObject var tutorialDataStore: TutorialDataStore
@@ -33,8 +32,6 @@ struct TutorialDealPanelView: View {
     
     var body: some View {
         VStack {
-            TipView(DealPanelTip())
-                .padding(.horizontal)
             userInfo()
             Picker("取引", selection: $pickerStatus) {
                 ForEach(status.allCases) { status in

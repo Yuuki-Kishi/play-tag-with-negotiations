@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct TutorialRoomSettingView: View {
     @ObservedObject var tutorialDataStore: TutorialDataStore
@@ -15,8 +14,6 @@ struct TutorialRoomSettingView: View {
     
     var body: some View {
         VStack {
-            TipView(RuleSettingTip())
-                .padding(.horizontal)
             List {
                 ForEach(PlayTagRoom.displayItemType.allCases, id: \.self) { itemType in
                     TutorialRoomSettingViewCell(tutorialDataStore: tutorialDataStore, itemType: itemType)

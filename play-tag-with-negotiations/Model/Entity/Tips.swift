@@ -31,6 +31,10 @@ struct MakeRoomTip: Tip {
         Text("鬼ごっこをするルームを作成しよう。")
     }
     
+    var displayCount: Int {
+        0
+    }
+    
     var image: Image? {
         Image(systemName: "plus")
     }

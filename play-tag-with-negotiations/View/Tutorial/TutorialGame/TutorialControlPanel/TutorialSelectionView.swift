@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct TutorialSelectionView: View {
     @ObservedObject var tutorialDataStore: TutorialDataStore

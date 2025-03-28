@@ -105,10 +105,8 @@ struct GameView: View {
         .onDisappear() {
             TimerDataStore.shared.invalidate()
             userDataStore.listeners.remove(listenerType: .usersData)
-            userDataStore.listeners.remove(listenerType: .isDecided)
             userDataStore.listeners.remove(listenerType: .phaseNow)
             userDataStore.listeners.remove(listenerType: .deal)
-            userDataStore.listeners.remove(listenerType: .game)
         }
     }
     func displayPhase() -> String {

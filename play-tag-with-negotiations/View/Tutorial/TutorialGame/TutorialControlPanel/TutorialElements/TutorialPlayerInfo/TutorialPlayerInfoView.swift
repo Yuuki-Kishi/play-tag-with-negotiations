@@ -6,15 +6,12 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct TutorialPlayerInfoView: View {
     @ObservedObject var tutorialDataStore: TutorialDataStore
     
     var body: some View {
         VStack {
-            TipView(PlayerInfoPanelTip())
-                .padding(.horizontal)
             HStack {
                 Image(systemName: "person.circle")
                     .foregroundStyle(Color.accentColor)

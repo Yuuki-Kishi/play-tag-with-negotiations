@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct TutorialResultView: View {
     @ObservedObject var tutorialDataStore: TutorialDataStore
@@ -19,8 +18,6 @@ struct TutorialResultView: View {
                 .foregroundStyle(Color.pink)
                 .font(.system(size: 150))
                 .frame(height: UIScreen.main.bounds.height * 0.2)
-            TipView(FriendShipTip())
-                .padding(.horizontal)
             List($tutorialDataStore.tutorialPlayerArray) { player in
                 TutorialResultViewCell(tutorialDataStore: tutorialDataStore, player: player)
             }

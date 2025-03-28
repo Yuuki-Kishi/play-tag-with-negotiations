@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct PublicRoomsView: View {
     @ObservedObject var userDataStore: UserDataStore
@@ -24,8 +23,6 @@ struct PublicRoomsView: View {
         NavigationStack(path: $pathDataStore.navigatetionPath) {
             ZStack {
                 VStack {
-                    TipView(TutorialTip())
-                        .padding(.horizontal)
                     if !roomDataStore.publicRoomsArray.isEmpty {
                         List(roomDataStore.publicRoomsArray) { playTagRoom in
                             PublicRoomsViewCell(playerDataStore: playerDataStore, pathDataStore: pathDataStore, playTagRoom: playTagRoom)
@@ -80,13 +77,13 @@ struct PublicRoomsView: View {
                         toolBarMenu()
                     }
                 })
-                ToolbarItem(placement: .topBarLeading, content: {
-                    Button(action: {
-                        pathDataStore.navigatetionPath.append(.tutorial)
-                    }, label: {
-                        Label("チュートリアル", systemImage: "questionmark.circle")
-                    })
-                })
+//                ToolbarItem(placement: .topBarLeading, content: {
+//                    Button(action: {
+//                        pathDataStore.navigatetionPath.append(.tutorial)
+//                    }, label: {
+//                        Label("チュートリアル", systemImage: "questionmark.circle")
+//                    })
+//                })
             }
             .alert("参加先のルームID", isPresented: $isShowEnterRoomAlert, actions: {
                 TextField("ルームID", text: $roomId)

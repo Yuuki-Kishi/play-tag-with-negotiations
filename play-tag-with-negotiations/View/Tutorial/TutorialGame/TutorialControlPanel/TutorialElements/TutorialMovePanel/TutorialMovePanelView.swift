@@ -6,15 +6,12 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct TutorialMovePanelView: View {
     @ObservedObject var tutorialDataStore: TutorialDataStore
     
     var body: some View {
         VStack {
-            TipView(MovePanelTip())
-                .padding(.horizontal)
             HStack {
                 TutorialMovePanelViewButton(tutorialDataStore: tutorialDataStore, direction: .leftUp)
                 TutorialMovePanelViewButton(tutorialDataStore: tutorialDataStore, direction: .up)

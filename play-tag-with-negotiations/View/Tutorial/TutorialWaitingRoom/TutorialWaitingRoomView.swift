@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 struct TutorialWaitingRoomView: View {
     @ObservedObject var tutorialDataStore: TutorialDataStore
@@ -15,8 +14,6 @@ struct TutorialWaitingRoomView: View {
     var body: some View {
         ZStack {
             VStack {
-                TipView(WaitingRoomTip())
-                    .padding(.horizontal)
                 List {
                     Section(content: {
                         TutorialWaitingRoomViewCell(tutorialDataStore: tutorialDataStore, userId: Binding(get: { tutorialDataStore.tutorialPlayerArray.me.playerUserId }, set: {_ in}))
@@ -46,7 +43,6 @@ struct TutorialWaitingRoomView: View {
                             .background(RoundedRectangle(cornerRadius: 25).frame(width: 75, height: 75))
                             .frame(width: 75, height: 75)
                     })
-                    .popoverTip(GameStartTip())
                     .padding(.trailing, 40)
                     .padding(.bottom, 40)
                 }
