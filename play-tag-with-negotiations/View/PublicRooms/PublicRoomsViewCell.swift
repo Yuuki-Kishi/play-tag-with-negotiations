@@ -19,10 +19,12 @@ struct PublicRoomsViewCell: View {
             }, label: {
                 VStack {
                     Text(playTagRoom.playTagName)
+                        .foregroundStyle(Color.primary)
                         .font(.system(size: 30.0))
                         .lineLimit(1)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text(playTagRoomPhase())
+                        .foregroundStyle(Color.primary)
                         .lineLimit(1)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }

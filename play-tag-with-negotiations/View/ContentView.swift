@@ -62,7 +62,7 @@ struct ContentView: View {
     }
     func AppVersion() -> String {
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        return String("Version: ") + version
+        return String("Version: ") + version + String(" ")
     }
 }
 

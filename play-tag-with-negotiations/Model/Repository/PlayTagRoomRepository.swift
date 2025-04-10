@@ -164,7 +164,7 @@ class PlayTagRoomRepository {
     }
     
     static func observePublicRooms() {
-        let listener = Firestore.firestore().collection("PlayTagRooms").whereField("isPublic", isEqualTo: true).addSnapshotListener { QuerySnapshot, error in
+        let listener = Firestore.firestore().collection("PlayTagRooms").whereField("isPublic", isEqualTo: true).whereField("isFinished", isEqualTo: false).addSnapshotListener { QuerySnapshot, error in
             guard let documentChanges = QuerySnapshot?.documentChanges else { return }
             for documentChange in documentChanges {
                 let document = documentChange.document
