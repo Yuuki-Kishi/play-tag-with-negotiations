@@ -17,6 +17,7 @@ struct PublicRoomsView: View {
     @State private var isShowNotThereRoomAlert = false
     @State private var isShowOverPlayerAlert = false
     @State private var isShowReplayAlert = false
+    @State private var isShowUpdateAlert: Bool = false
     @State private var roomId = ""
     
     var body: some View {
@@ -123,6 +124,19 @@ struct PublicRoomsView: View {
                 })
             }, message: {
                 Text("参加中のルームに戻りますか？参加をやめると再度参加にはルームIDが必要です。")
+            })
+            .alert("最新版があります", isPresented: $isShowUpdateAlert, actions: {
+                Button(action: {
+                    if let url = URL(string: "https://itunes.apple.com/app/apple-store/id6504573276") {
+                        if UIApplication.shared.canOpenURL(url) {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        }
+                    }
+                }, label: {
+                    Text("App Storeへ")
+                })
+            }, message: {
+                Text("App Storeからアプリを最新版に更新してください。")
             })
             .onAppear() {
                 onAppear()
@@ -289,6 +303,7 @@ struct PublicRoomsView: View {
                     isShowReplayAlert = true
                 }
             } else {
+                isShowUpdateAlert = await AppVersionRepository.versionCheck()
                 PlayTagRoomRepository.observePublicRooms()
                 NoticeRepository.observeNotice()
             }
